@@ -1,17 +1,13 @@
-:root {
-    /* --- PALETTE GREY CORNER : MIDNIGHT BLUE & SOFT GOLD (Très Pro & Attrayant) --- */
-    --bg: #0A0F1A;          /* Bleu nuit très profond, extrêmement élégant et moderne */
-    --card: #121A2A;        /* Bleu nuit légèrement plus clair pour les cartes */
-    --text: #F8F9FA;        /* Blanc cassé pur (Ivory) pour un contraste optimal */
-    --muted: #A0ABC0;       /* Gris bleuté doux pour les textes secondaires */
-
-    /* COULEUR D'ACCENT : ORANGE CHALEUREUX & ÉLÉGANT */
-    --gold: #F26419;        /* Orange vibrant et chaleureux */
-    --gold-dark: #C64A0B;   /* Orange brûlé pour les ombres et reliefs */
-
-    --radius: 20px;         /* Bordures arrondies équilibrées (modernes mais structurées) */
+::root {
+    --bg: #0A0F1A;
+    --card: #121A2A;
+    --text: #F8F9FA;
+    --muted: #A0ABC0;
+    --gold: #F26419;
+    --gold-dark: #C64A0B;
+    --radius: 20px;
     --shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
-    --shadow-hover: 0 16px 45px rgba(242, 100, 25, 0.15); /* Douce lueur orange */
+    --shadow-hover: 0 16px 45px rgba(242, 100, 25, 0.15);
 }
 
 /* =========================================
@@ -27,6 +23,7 @@ body {
     font-family: "Poppins", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden !important;
 }
 
 img { max-width: 100%; display: block; }
@@ -102,8 +99,8 @@ header {
     width: 32px;
     height: 32px;
     border-radius: 8px;
-    background: transparent; /* suppression plaque orange */
-    box-shadow: none;        /* suppression ombre orange */
+    background: transparent;
+    box-shadow: none;
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
@@ -117,18 +114,32 @@ header {
     opacity: 0.85;
 }
 
-/* Burger button */
-.burger-img { position: fixed; top: 15px; left: 15px; z-index: 9999; }
+/* =========================================
+   BURGER BUTTON
+========================================= */
+.burger-img {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 9999;
+    pointer-events: auto;
+}
+
 .burger-img img {
-    width: 65px; height: 65px; border-radius: 50%;
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
     background: var(--card);
     border: 3px solid var(--gold);
-    padding: 14px;
+    outline: none;
+    padding: 18px;
     transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    display: block;
 }
-.burger-img img:hover { 
-    transform: scale(1.1) translateY(-2px); 
+
+.burger-img img:hover {
+    transform: scale(1.1) translateY(-2px);
     box-shadow: 0 8px 30px rgba(242, 100, 25, 0.6);
 }
 
@@ -152,7 +163,7 @@ header {
 .burger-nav-hidden.active { left: 0; }
 
 /* =========================================
-   CATEGORIES HORIZONTALES (boutons)
+   CATEGORIES HORIZONTALES
 ========================================= */
 .categories-horizontal {
     display: flex; overflow-x: auto; gap: 12px; padding: 12px 16px;
@@ -172,11 +183,12 @@ header {
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
-.categories-horizontal a:hover, .categories-horizontal a:active { 
+.categories-horizontal a:hover,
+.categories-horizontal a:active {
     background: linear-gradient(135deg, var(--gold), var(--gold-dark));
     color: #F8F9FA;
     border-color: transparent;
-    transform: translateY(-2px); 
+    transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(242, 100, 25, 0.4);
 }
 
@@ -198,7 +210,7 @@ header {
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     border: 1px solid rgba(255,255,255,0.05);
-    overflow: hidden; cursor: pointer; 
+    overflow: hidden; cursor: pointer;
     transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 .menu-item:hover { transform: translateY(-4px) scale(1.01); box-shadow: var(--shadow-hover); }
@@ -220,7 +232,6 @@ header {
 
 .item-info { padding: 14px; }
 
-/* Nom du plat - Elegance Serif */
 .item-name {
     display: inline-block;
     flex-grow: 1;
@@ -238,13 +249,11 @@ header {
     line-height: 1.2;
 }
 
-/* Ligne nom + prix */
 .item-price-line {
     display: flex; justify-content: space-between; align-items: flex-end;
     width: 100%; margin-bottom: 4px;
 }
 
-/* Prix */
 .item-price {
     flex-shrink: 0;
     font-size: 1.15rem;
@@ -267,9 +276,14 @@ header {
 }
 .secure-lightbox.active { display: flex; }
 .secure-lightbox-content {
-    width: 88%; max-width: 480px; height: 70vh;
-    background-size: contain; background-repeat: no-repeat; background-position: center;
-    pointer-events: none; position: relative;
+    width: 96%;
+    max-width: 700px;
+    height: 85vh;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    pointer-events: none;
+    position: relative;
 }
 
 /* =========================================
@@ -324,13 +338,9 @@ header {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
 }
-@media (max-width: 768px) {
-    .event-banner { font-size: .9rem; padding: 6px 10px; margin-top: 10px; }
-    .event-text-wrapper { animation-duration: 20s; }
-}
 
 /* =========================================
-   NOM RESTAURANT (logo text)
+   NOM RESTAURANT
 ========================================= */
 .logo-text {
     font-family: 'Playfair Display', serif;
@@ -340,7 +350,7 @@ header {
 @media (min-width: 768px) { .logo-text { font-size: 3rem; } }
 
 /* =========================================
-   TITRES DE CATÉGORIES — PROPRE
+   TITRES DE CATÉGORIES
 ========================================= */
 #menu-grid h2.category-title,
 #menu-grid h3.category-title,
@@ -370,199 +380,8 @@ header {
     border-radius: 2px;
 }
 
-/* ============================================================
-   🌐 OPTIMISATION MOBILE (max-width: 480px)
-============================================================ */
-@media (max-width: 480px) {
-
-    body {
-        font-size: 14px;
-        padding: 0;
-        overflow-x: hidden;
-    }
-
-    header {
-        height: auto;
-        min-height: 170px;
-        background-position: center 55%;
-    }
-
-    .header-center {
-        padding-top: 10px;
-        padding-bottom: 20px;
-        gap: 15px;
-    }
-
-    .logo-big {
-        width: 85px;
-        height: 85px;
-        margin-top: 0;
-    }
-
-    /* Shortcut Icons - Spécial Mobile */
-    .shortcut-icons {
-        position: relative;
-        top: 0;
-        right: 0;
-        justify-content: center;
-        width: 100%;
-        gap: 15px;
-    }
-    
-    .shortcut-icons a {
-        width: 46px;
-        height: 46px;
-        border-radius: 12px;
-        background: transparent; /* garde suppression fond sur mobile */
-        box-shadow: none;
-    }
-    
-    .shortcut-icons a img {
-        width: 24px;
-        height: 24px;
-    }
-
-    .categories-horizontal {
-        gap: 8px;
-        padding: 8px 10px;
-    }
-
-    .categories-horizontal a {
-        padding: 6px 12px;
-        font-size: 0.8rem;
-        border-radius: 40px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    }
-
-    #menu-grid h2:not(.item-name),
-    #menu-grid h3:not(.item-name) {
-        font-size: 1.2rem;
-        margin: 20px 0 8px;
-        padding-bottom: 4px;
-        border-bottom-width: 2px;
-    }
-
-    .menu-item {
-        border-radius: 12px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-    }
-
-    .item-img-wrapper {
-        height: 140px;
-        background-size: cover !important;
-    }
-
-    .item-info {
-        padding: 10px;
-    }
-
-    .item-name {
-        font-size: 1rem;
-        padding-right: 10px;
-    }
-
-    .item-price {
-        font-size: 1rem;
-    }
-
-    .item-desc {
-        font-size: 0.8rem;
-        line-height: 1.2;
-    }
-
-    .back-to-top {
-        width: 45px;
-        height: 45px;
-        bottom: 18px;
-        font-size: 22px;
-    }
-
-    .burger-img { top: 10px; left: 10px; }
-    .burger-img img {
-        width: 55px;
-        height: 55px;
-        padding: 12px;
-        border-width: 3px;
-    }
-
-    .event-banner {
-        padding: 6px 8px;
-        font-size: 0.9rem;
-    }
-
-    #searchInput {
-        padding: 10px 12px;
-        font-size: 14px;
-    }
-}
-
-/* ============================================================
-   🛠 FIX : MENU QUI GLISSE À GAUCHE SUR MOBILE
-============================================================ */
-#menu-grid,
-.menu-item,
-.items {
-    margin: 0 auto !important;
-    padding: 0 !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-}
-
-.items {
-    display: grid !important;
-    justify-content: center !important;
-    align-items: start !important;
-}
-
-body, html {
-    overflow-x: hidden !important;
-}
-
-#menu-grid * {
-    position: relative !important;
-    left: 0 !important;
-}
-
-/* ============================
-   Mobile: images carrées et plus grandes
-============================ */
-@media (max-width: 680px) {
-
-  .items {
-    grid-template-columns: 1fr !important;
-    gap: 14px !important;
-    padding: 0 10px;
-  }
-
-  .menu-item {
-    width: 100% !important;
-    max-width: 540px;
-    margin: 0 auto;
-    border-radius: 12px;
-  }
-
-  .item-img-wrapper {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 3;
-    background-size: cover !important;
-    background-position: center !important;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-  }
-
-  .item-info {
-    padding: 10px !important;
-  }
-
-  .item-name { font-size: 1.05rem !important; }
-  .item-price { font-size: 1.05rem !important; }
-
-  body, html, #menu-grid { overflow-x: hidden !important; }
-}
-
 /* =========================================
-   DEUXIÈME BANDE (Caisse / Match)
+   TICKER CAISSE
 ========================================= */
 .ticker-cashier {
     width: 100%;
@@ -596,20 +415,13 @@ body, html {
     100% { transform: translateX(-33.33%); }
 }
 
-@media (max-width: 480px) {
-    .ticker-cashier {
-        font-size: 0.75rem;
-        padding: 5px 0;
-    }
-}
-
-/* Badge NOUVEAU — Version Champagne/Or & Midnight */
-.menu-item.nouveau-flash {
-    position: relative;
-}
+/* =========================================
+   BADGE NOUVEAU
+========================================= */
+.menu-item.nouveau-flash { position: relative; }
 
 .menu-item.nouveau-flash::after {
-    content: attr(data-badge); 
+    content: attr(data-badge);
     position: absolute;
     top: 12px;
     left: 12px;
@@ -628,7 +440,109 @@ body, html {
 }
 
 @keyframes gold-pulse {
-    0% { transform: scale(1); box-shadow: 0 2px 10px rgba(242, 100, 25, 0.2); }
-    50% { transform: scale(1.03); box-shadow: 0 6px 20px rgba(242, 100, 25, 0.6); }
-    100% { transform: scale(1); box-shadow: 0 2px 10px rgba(242, 100, 25, 0.2); }
+    0%   { transform: scale(1);    box-shadow: 0 2px 10px rgba(242, 100, 25, 0.2); }
+    50%  { transform: scale(1.03); box-shadow: 0 6px 20px rgba(242, 100, 25, 0.6); }
+    100% { transform: scale(1);    box-shadow: 0 2px 10px rgba(242, 100, 25, 0.2); }
+}
+
+/* =========================================
+   FIX LAYOUT MOBILE
+========================================= */
+#menu-grid,
+.menu-item,
+.items {
+    margin: 0 auto !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.items {
+    display: grid !important;
+    justify-content: center !important;
+    align-items: start !important;
+}
+
+#menu-grid * {
+    position: relative !important;
+    left: 0 !important;
+}
+
+/* =========================================
+   RESPONSIVE MOBILE ≤ 680px
+========================================= */
+@media (max-width: 680px) {
+
+    .items {
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+        padding: 0 10px;
+    }
+
+    .menu-item {
+        width: 100% !important;
+        max-width: 540px;
+        margin: 0 auto;
+        border-radius: 12px;
+    }
+
+    .item-img-wrapper {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4 / 3;
+        background-size: cover !important;
+        background-position: center !important;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+
+    .item-info { padding: 10px !important; }
+    .item-name  { font-size: 1.05rem !important; }
+    .item-price { font-size: 1.05rem !important; }
+}
+
+/* =========================================
+   RESPONSIVE MOBILE ≤ 480px
+========================================= */
+@media (max-width: 480px) {
+
+    body { font-size: 14px; padding: 0; }
+
+    header { height: auto; min-height: 170px; background-position: center 55%; }
+
+    .header-center { padding-top: 10px; padding-bottom: 20px; gap: 15px; }
+
+    .logo-big { width: 85px; height: 85px; margin-top: 0; }
+
+    .shortcut-icons {
+        position: relative; top: 0; right: 0;
+        justify-content: center; width: 100%; gap: 15px;
+    }
+    .shortcut-icons a { width: 46px; height: 46px; border-radius: 12px; background: transparent; box-shadow: none; }
+    .shortcut-icons a img { width: 24px; height: 24px; }
+
+    .categories-horizontal { gap: 8px; padding: 8px 10px; }
+    .categories-horizontal a { padding: 6px 12px; font-size: 0.8rem; border-radius: 40px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+
+    #menu-grid h2:not(.item-name),
+    #menu-grid h3:not(.item-name) {
+        font-size: 1.2rem; margin: 20px 0 8px;
+        padding-bottom: 4px; border-bottom-width: 2px;
+    }
+
+    .menu-item { border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+
+    .item-desc { font-size: 0.8rem; line-height: 1.2; }
+
+    .back-to-top { width: 45px; height: 45px; bottom: 18px; font-size: 22px; }
+
+    /* Burger mobile */
+    .burger-img { top: 10px; left: 10px; }
+    .burger-img img { width: 75px; height: 75px; padding: 16px; }
+
+    .event-banner { padding: 6px 8px; font-size: 0.9rem; margin-top: 10px; }
+    .event-text-wrapper { animation-duration: 20s; }
+
+    .ticker-cashier { font-size: 0.75rem; padding: 5px 0; }
+
+    #searchInput { padding: 10px 12px; font-size: 14px; }
 }
