@@ -1,4 +1,4 @@
-::root {
+:root {
     --bg: #0A0F1A;
     --card: #121A2A;
     --text: #F8F9FA;
@@ -462,10 +462,6 @@ header {
     align-items: start !important;
 }
 
-#menu-grid * {
-    position: relative !important;
-    left: 0 !important;
-}
 
 /* =========================================
    RESPONSIVE MOBILE ≤ 680px
