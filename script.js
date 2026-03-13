@@ -2323,15 +2323,15 @@ isNew: true
 // ==========================================
 
 // DOM
-const menuGrid    = document.getElementById("menu-grid");
-const langButtons = document.querySelectorAll(".lang-button");
-const burger      = document.getElementById("burger");
-const burgerNav   = document.getElementById("burgerNav");
+const menuGrid      = document.getElementById("menu-grid");
+const langButtons   = document.querySelectorAll(".lang-button");
+const burger        = document.getElementById("burger");
+const burgerNav     = document.getElementById("burgerNav");
 const burgerOverlay = document.getElementById("burgerOverlay");
-const backToTop   = document.getElementById("backToTop");
+const backToTop     = document.getElementById("backToTop");
 
-// NEW LIGHTBOX PROTÉGÉE
-const secureLightbox = document.getElementById("secureLightbox");
+// LIGHTBOX PROTÉGÉE
+const secureLightbox        = document.getElementById("secureLightbox");
 const secureLightboxContent = document.querySelector(".secure-lightbox-content");
 
 // Langue actuelle
@@ -2339,6 +2339,21 @@ let currentLang = localStorage.getItem("lang") || "fr";
 
 // Flag pour éviter d'attacher plusieurs fois les listeners de protection
 let imagesProtected = false;
+
+// ==========================================
+// ========= TEXTE PRIX EN DIRHAMS ==========
+// ==========================================
+
+const PRIX_TEXTS = {
+  fr: "★ Tous les prix sont en dirhams marocains (MAD)",
+  en: "★ All prices are in Moroccan Dirhams (MAD)",
+  de: "★ Alle Preise sind in Marokkanischen Dirham (MAD)"
+};
+
+function updatePrixInfo() {
+  const el = document.getElementById("prixInfo");
+  if (el) el.textContent = PRIX_TEXTS[currentLang] || PRIX_TEXTS.fr;
+}
 
 // ==========================================
 // =========== RENDER MENU DYNAMIC ==========
@@ -2365,31 +2380,26 @@ function renderMenu() {
         const itemsContainer = section.querySelector(".items");
 
         category.items.forEach(item => {
-            // CORRECTION : On ne déclare 'card' qu'une seule fois
             const card = document.createElement("article");
             card.className = "menu-item";
 
-            // Gestion du badge avec traduction (ROUGE ASSORTI)
+            // Badge NEW / NOUVEAU / NEU
             if (item.isNew === true) {
                 card.classList.add("nouveau-flash");
-                
-                let badgeText = "NOUVEAU"; 
+                let badgeText = "NOUVEAU";
                 if (currentLang === "en") badgeText = "NEW";
                 if (currentLang === "de") badgeText = "NEU";
-                
                 card.setAttribute("data-badge", badgeText);
             }
 
-            // Configuration de la lightbox
+            // Configuration lightbox
             card.dataset.img = item.image;
             card.dataset.alt = item.name[currentLang];
 
-            // Remplissage de la carte
             card.innerHTML = `
-                <div class="item-img-wrapper" 
+                <div class="item-img-wrapper"
                     style="background-image: url('${item.image}')">
                 </div>
-
                 <div class="item-info">
                     <div class="item-price-line">
                         <h3 class="item-name">${item.name[currentLang]}</h3>
@@ -2407,7 +2417,7 @@ function renderMenu() {
 
     enableSecureLightbox();
     protectImages();
-}// ... (Le reste de votre script.js ne change pas) ...
+}
 
 // ==========================================
 // ======= LIGHTBOX PROTÉGÉE (SECURE) =======
@@ -2416,47 +2426,43 @@ function renderMenu() {
 function enableSecureLightbox() {
     if (!secureLightbox || !secureLightboxContent) return;
 
-    // (Re-)attache aux .menu-item actuels
     document.querySelectorAll(".menu-item").forEach(card => {
-        // nécessité de retirer d'abord d'anciens listeners si re-render fréquent ?
         card.addEventListener("click", () => {
             const url = card.dataset.img;
             if (!url) return;
-
-            // Zoom totalement protégé
             secureLightboxContent.style.backgroundImage = `url("${url}")`;
             secureLightbox.classList.add("active");
         });
     });
 
-    // fermer en cliquant autour
     secureLightbox.addEventListener("click", (e) => {
         if (e.target === secureLightbox) {
             secureLightbox.classList.remove("active");
         }
     });
+
+    // Bouton fermer
+    const closeBtn = secureLightboxContent.querySelector(".close-btn");
+    if (closeBtn) {
+        closeBtn.addEventListener("click", () => {
+            secureLightbox.classList.remove("active");
+        });
+    }
 }
-
-
 
 // ==========================================
 // ======= PROTECTION DES IMAGES ============
 // ==========================================
 
 function protectImages() {
-    if (imagesProtected) return; // déjà protégé -> ne rien faire
+    if (imagesProtected) return;
 
-    // empêche le clic droit
     document.addEventListener("contextmenu", e => e.preventDefault());
 
-    // empêche sélection
     document.body.style.userSelect = "none";
     document.body.style.webkitUserSelect = "none";
-
-    // empêche appui long safari
     document.body.style.webkitTouchCallout = "none";
 
-    // empêche raccourcis
     document.addEventListener("keydown", e => {
         const key = (e.key || "").toLowerCase();
         if (
@@ -2471,8 +2477,6 @@ function protectImages() {
     imagesProtected = true;
 }
 
-
-
 // ==========================================
 // ============== LANG SWITCH ===============
 // ==========================================
@@ -2483,9 +2487,9 @@ function applyLanguageToStaticTexts() {
         const en = el.getAttribute("data-en");
         const de = el.getAttribute("data-de");
 
-        const value = (currentLang === "fr")
-            ? fr
-            : (currentLang === "en" ? en : de);
+        const value = currentLang === "fr" ? fr
+                    : currentLang === "en" ? en
+                    : de;
 
         if (value) el.textContent = value;
     });
@@ -2494,8 +2498,8 @@ function applyLanguageToStaticTexts() {
 function setLanguage(lang) {
     currentLang = lang;
     localStorage.setItem("lang", lang);
-
     applyLanguageToStaticTexts();
+    updatePrixInfo();
     renderMenu();
 }
 
@@ -2513,24 +2517,21 @@ langButtons.forEach(btn => {
     }
 });
 
-// ===== POPUP ÉVÉNEMENT =====
-const eventBtn = document.getElementById("eventBtn");
+// ==========================================
+// ============ POPUP ÉVÉNEMENT =============
+// ==========================================
+
+const eventBtn   = document.getElementById("eventBtn");
 const eventPopup = document.getElementById("eventPopup");
 const closePopup = document.getElementById("closePopup");
 
 if (eventBtn && eventPopup && closePopup) {
-
-    // Ouvrir
     eventBtn.addEventListener("click", () => {
         eventPopup.style.display = "flex";
     });
-
-    // Fermer
     closePopup.addEventListener("click", () => {
         eventPopup.style.display = "none";
     });
-
-    // Fermer en cliquant en dehors
     eventPopup.addEventListener("click", (e) => {
         if (e.target === eventPopup) {
             eventPopup.style.display = "none";
@@ -2564,18 +2565,13 @@ if (burger && burgerNav && burgerOverlay) {
     });
 }
 
-
 // ==========================================
 // ========= BOUTON REMONTER EN HAUT ========
 // ==========================================
 
 if (backToTop) {
     window.addEventListener("scroll", () => {
-        if (window.scrollY > 400) {
-            backToTop.classList.add("show");
-        } else {
-            backToTop.classList.remove("show");
-        }
+        backToTop.classList.toggle("show", window.scrollY > 400);
     });
 
     backToTop.addEventListener("click", () => {
@@ -2583,13 +2579,10 @@ if (backToTop) {
     });
 }
 
-
-
 // ==========================================
 // ============ BARRE DE RECHERCHE ==========
 // ==========================================
 
-// Filtre les éléments du menu selon la saisie
 function applySearchFilter() {
     const input = document.getElementById("searchInput");
     if (!input) return;
@@ -2598,76 +2591,56 @@ function applySearchFilter() {
     const cards = document.querySelectorAll(".menu-item");
 
     cards.forEach(card => {
-        const titleEl = card.querySelector(".item-name");
-        const descEl  = card.querySelector(".item-desc");
-
-        const title = titleEl ? titleEl.textContent.toLowerCase() : "";
-        const desc  = descEl  ? descEl.textContent.toLowerCase()  : "";
-
-        const matches = !term || title.includes(term) || desc.includes(term);
-
-        card.style.display = matches ? "" : "none";
+        const title = (card.querySelector(".item-name")?.textContent || "").toLowerCase();
+        const desc  = (card.querySelector(".item-desc")?.textContent  || "").toLowerCase();
+        card.style.display = (!term || title.includes(term) || desc.includes(term)) ? "" : "none";
     });
 }
 
-// Active les événements de la barre de recherche
 function activateSearch() {
     const searchInput = document.getElementById("searchInput");
     if (!searchInput) return;
-
-    searchInput.addEventListener("input", () => {
-        applySearchFilter();
-    });
-
-    // applique le filtre s’il y a déjà du texte
+    searchInput.addEventListener("input", applySearchFilter);
     applySearchFilter();
 }
+
 // ==========================================
-// ============== BANDE D'ÉVÉNEMENT (LIGHTBOX) ==
+// ======= BANDE D'ÉVÉNEMENT (LIGHTBOX) =====
 // ==========================================
 
 function activateEventBanner() {
     const eventBanner = document.getElementById("eventBanner");
-    
-    // Si la bannière n'est pas trouvée, on sort
-    if (!eventBanner) {
-        console.warn("La bande d'événement (eventBanner) est manquante dans le HTML.");
-        return;
-    }
-    
+    if (!eventBanner) return;
+
     const eventImageSrc = eventBanner.dataset.eventImg;
+    if (!eventImageSrc) return;
 
-    if (eventImageSrc) {
-        eventBanner.addEventListener("click", () => {
-            // Récupère les éléments de la LightBox Sécurisée (déjà existante dans votre index.html)
-            const secureLightbox = document.getElementById("secureLightbox");
-            const secureLightboxContent = document.querySelector(".secure-lightbox-content");
-            const secureLightboxCaption = document.getElementById("secureLightboxCaption");
+    eventBanner.addEventListener("click", () => {
+        const lb      = document.getElementById("secureLightbox");
+        const lbContent = document.querySelector(".secure-lightbox-content");
+        const lbCaption = document.getElementById("secureLightboxCaption");
 
-            if (secureLightbox && secureLightboxContent) {
-                secureLightboxContent.style.backgroundImage = `url('${eventImageSrc}')`;
-                secureLightboxContent.dataset.originalSrc = eventImageSrc; // Pour la protection
-                
-                // Récupère le texte de la bannière pour l'utiliser comme légende
-                const bannerText = eventBanner.querySelector(".event-text") ? eventBanner.querySelector(".event-text").textContent : "Événement Spécial";
-                secureLightboxCaption.textContent = bannerText; 
+        if (lb && lbContent) {
+            lbContent.style.backgroundImage = `url('${eventImageSrc}')`;
+            lbContent.dataset.originalSrc   = eventImageSrc;
 
-                // Ouvre la LightBox
-                secureLightbox.classList.add("active");
-                document.body.classList.add("no-scroll");
-            } else {
-                 console.error("Les éléments Lightbox (secureLightbox, secureLightboxContent) sont manquants. Assurez-vous que la LightBox existe dans index.html.");
+            if (lbCaption) {
+                const txt = eventBanner.querySelector(".event-text");
+                lbCaption.textContent = txt ? txt.textContent : "Événement Spécial";
             }
-        });
-    }
-}
 
+            lb.classList.add("active");
+            document.body.classList.add("no-scroll");
+        }
+    });
+}
 
 // ==========================================
 // ================ INITIAL LOAD ============
 // ==========================================
 
 applyLanguageToStaticTexts();
-renderMenu();          // Crée toutes les .menu-item
-setTimeout(activateSearch, 50); // Déclenchement de la recherche
-activateEventBanner(); // 💥 NOUVEL APPEL : Active le clic sur la bannière
+updatePrixInfo();
+renderMenu();
+setTimeout(activateSearch, 50);
+activateEventBanner();
