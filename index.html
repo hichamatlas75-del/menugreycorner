@@ -1,17 +1,54 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XD33HHNDHX"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-XD33HHNDHX');
-</script>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XD33HHNDHX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XD33HHNDHX');
+    </script>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Grey Corner Café — Menu</title>
+
+    <!-- ================================
+         SEO & META
+    ================================= -->
+    <title>Grey Corner Café — Menu | Fès, Maroc</title>
+    <meta name="description" content="Découvrez le menu complet du Grey Corner Café à Fès : petits-déjeuners, plats, pizzas, burgers, pâtes, boissons et desserts. Menu trilingue FR/EN/DE." />
+    <meta name="keywords" content="Grey Corner, café, restaurant, Fès, Maroc, menu, brunch, pizza, burger, pasta" />
+    <meta name="author" content="Grey Corner Café" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://menu.greycorner.ma/" />
+
+    <!-- Open Graph (WhatsApp, Facebook, LinkedIn) -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:title"       content="Grey Corner Café — Menu | Fès" />
+    <meta property="og:description" content="Menu complet du Grey Corner Café à Fès. Petits-déjeuners, plats du jour, pizzas, burgers, boissons et desserts." />
+    <meta property="og:image"       content="images/og-preview.jpg" />
+    <meta property="og:url"         content="https://menu.greycorner.ma/" />
+    <meta property="og:locale"      content="fr_MA" />
+    <meta property="og:site_name"   content="Grey Corner Café" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content="Grey Corner Café — Menu | Fès" />
+    <meta name="twitter:description" content="Menu complet du Grey Corner Café à Fès." />
+    <meta name="twitter:image"       content="images/og-preview.jpg" />
+
+    <!-- ================================
+         FAVICON
+    ================================= -->
+    <link rel="icon"               type="image/png" sizes="32x32" href="images/favicon-32.png" />
+    <link rel="icon"               type="image/png" sizes="16x16" href="images/favicon-16.png" />
+    <link rel="apple-touch-icon"   sizes="180x180"               href="images/apple-touch-icon.png" />
+    <link rel="shortcut icon"      href="images/favicon.ico" />
+
+    <!-- ================================
+         FONTS & CSS
+    ================================= -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -19,31 +56,34 @@
 <body>
     <div id="backToTop" class="back-to-top">⬆</div>
 
+    <!-- Burger button -->
     <div id="burger" class="burger-img">
         <img src="images/menu-style3.png" alt="Menu" />
     </div>
 
+    <!-- Nav latéral -->
     <nav id="burgerNav" class="burger-nav-hidden">
-        <a href="#petit-dejeuner" data-i18n data-fr="Petit Déj" data-en="Breakfast" data-de="Frühstück">Petit Déj</a>
-        <a href="#entrees" data-i18n data-fr="Entrées" data-en="Starters" data-de="Vorspeisen">Entrées</a>
-        <a href="#plats" data-i18n data-fr="Plats" data-en="Main Dishes" data-de="Hauptgerichte">Plats</a>
-        <a href="#sandwichs" data-i18n data-fr="Sandwichs" data-en="Sandwiches" data-de="Sandwiches">Sandwichs</a>
-        <a href="#burgers" data-i18n data-fr="Burgers" data-en="Burgers" data-de="Burger">Burgers</a>
-        <a href="#panini" data-i18n data-fr="Panini" data-en="Panini" data-de="Panini">Panini</a>
-        <a href="#pizza" data-i18n data-fr="Pizza" data-en="Pizza" data-de="Pizza">Pizza</a>
-        <a href="#pasta" data-i18n data-fr="Pasta" data-en="Pasta" data-de="Pasta">Pasta</a>
-        <a href="#crepes" data-i18n data-fr="Crêpes" data-en="Crepes" data-de="Pfannkuchen">Crêpes</a>
-        <a href="#gateaux" data-i18n data-fr="Gâteaux" data-en="Cakes" data-de="Kuchen">Gâteaux</a>
-        <a href="#boissons" data-i18n data-fr="Boissons" data-en="Drinks" data-de="Getränke">Boissons</a>
-        <a href="#glace" data-i18n data-fr="Glace" data-en="Ice Cream" data-de="Eis">Glace</a>
+        <a href="#petit-dejeuner" data-i18n data-fr="Petit Déj"   data-en="Breakfast"    data-de="Frühstück">Petit Déj</a>
+        <a href="#entrees"        data-i18n data-fr="Entrées"      data-en="Starters"     data-de="Vorspeisen">Entrées</a>
+        <a href="#plats"          data-i18n data-fr="Plats"        data-en="Main Dishes"  data-de="Hauptgerichte">Plats</a>
+        <a href="#sandwichs"      data-i18n data-fr="Sandwichs"    data-en="Sandwiches"   data-de="Sandwiches">Sandwichs</a>
+        <a href="#burgers"        data-i18n data-fr="Burgers"      data-en="Burgers"      data-de="Burger">Burgers</a>
+        <a href="#panini"         data-i18n data-fr="Panini"       data-en="Panini"       data-de="Panini">Panini</a>
+        <a href="#pizza"          data-i18n data-fr="Pizza"        data-en="Pizza"        data-de="Pizza">Pizza</a>
+        <a href="#pasta"          data-i18n data-fr="Pasta"        data-en="Pasta"        data-de="Pasta">Pasta</a>
+        <a href="#crepes"         data-i18n data-fr="Crêpes"       data-en="Crepes"       data-de="Pfannkuchen">Crêpes</a>
+        <a href="#gateaux"        data-i18n data-fr="Gâteaux"      data-en="Cakes"        data-de="Kuchen">Gâteaux</a>
+        <a href="#boissons"       data-i18n data-fr="Boissons"     data-en="Drinks"       data-de="Getränke">Boissons</a>
+        <a href="#glace"          data-i18n data-fr="Glace"        data-en="Ice Cream"    data-de="Eis">Glace</a>
     </nav>
 
     <div id="burgerOverlay" class="burger-overlay"></div>
 
+    <!-- Header -->
     <header>
         <div class="header-overlay"></div>
         <div class="container header-center">
-            <img src="images/logo.png" class="logo-big" alt="Grey Corner">
+            <img src="images/logo.png" class="logo-big" alt="Grey Corner Café">
             <div class="shortcut-icons">
                 <a href="tel:+212535940168"><img src="images/phone.jpg" alt="Téléphone"></a>
                 <a href="https://www.instagram.com/greycornerfes/" target="_blank" rel="noopener"><img src="images/instagram.png" alt="Instagram"></a>
@@ -53,29 +93,32 @@
         </div>
     </header>
 
+    <!-- Barre catégories horizontale -->
     <nav class="categories-horizontal">
-        <a href="#petit-dejeuner" data-i18n data-fr="Petit Déj" data-en="Breakfast" data-de="Frühstück">Petit Déj</a>
-        <a href="#entrees" data-i18n data-fr="Entrées" data-en="Starters" data-de="Vorspeisen">Entrées</a>
-        <a href="#plats" data-i18n data-fr="Plats" data-en="Main Dishes" data-de="Hauptgerichte">Plats</a>
-        <a href="#sandwichs" data-i18n data-fr="Sandwichs" data-en="Sandwiches" data-de="Sandwiches">Sandwichs</a>
-        <a href="#burgers" data-i18n data-fr="Burgers" data-en="Burgers" data-de="Burger">Burgers</a>
-        <a href="#panini" data-i18n data-fr="Panini" data-en="Panini" data-de="Panini">Panini</a>
-        <a href="#pizza" data-i18n data-fr="Pizza" data-en="Pizza" data-de="Pizza">Pizza</a>
-        <a href="#pasta" data-i18n data-fr="Pasta" data-en="Pasta" data-de="Pasta">Pasta</a>
-        <a href="#crepes" data-i18n data-fr="Crêpes" data-en="Crepes" data-de="Pfannkuchen">Crêpes</a>
-        <a href="#gateaux" data-i18n data-fr="Gâteaux" data-en="Cakes" data-de="Kuchen">Gâteaux</a>
-        <a href="#boissons" data-i18n data-fr="Boissons" data-en="Drinks" data-de="Getränke">Boissons</a>
-        <a href="#glace" data-i18n data-fr="Glace" data-en="Ice Cream" data-de="Eis">Glace</a>
+        <a href="#petit-dejeuner" data-i18n data-fr="Petit Déj"   data-en="Breakfast"    data-de="Frühstück">Petit Déj</a>
+        <a href="#entrees"        data-i18n data-fr="Entrées"      data-en="Starters"     data-de="Vorspeisen">Entrées</a>
+        <a href="#plats"          data-i18n data-fr="Plats"        data-en="Main Dishes"  data-de="Hauptgerichte">Plats</a>
+        <a href="#sandwichs"      data-i18n data-fr="Sandwichs"    data-en="Sandwiches"   data-de="Sandwiches">Sandwichs</a>
+        <a href="#burgers"        data-i18n data-fr="Burgers"      data-en="Burgers"      data-de="Burger">Burgers</a>
+        <a href="#panini"         data-i18n data-fr="Panini"       data-en="Panini"       data-de="Panini">Panini</a>
+        <a href="#pizza"          data-i18n data-fr="Pizza"        data-en="Pizza"        data-de="Pizza">Pizza</a>
+        <a href="#pasta"          data-i18n data-fr="Pasta"        data-en="Pasta"        data-de="Pasta">Pasta</a>
+        <a href="#crepes"         data-i18n data-fr="Crêpes"       data-en="Crepes"       data-de="Pfannkuchen">Crêpes</a>
+        <a href="#gateaux"        data-i18n data-fr="Gâteaux"      data-en="Cakes"        data-de="Kuchen">Gâteaux</a>
+        <a href="#boissons"       data-i18n data-fr="Boissons"     data-en="Drinks"       data-de="Getränke">Boissons</a>
+        <a href="#glace"          data-i18n data-fr="Glace"        data-en="Ice Cream"    data-de="Eis">Glace</a>
     </nav>
 
+    <!-- Recherche -->
     <div class="search-wrapper">
         <input id="searchInput" type="search" placeholder="Rechercher un plat..." />
-        <!-- Texte prix — se traduit automatiquement selon la langue choisie -->
         <p id="prixInfo" class="prix-info">★ Tous les prix sont en dirhams marocains (MAD)</p>
     </div>
 
+    <!-- Grille menu -->
     <main id="menu-grid"></main>
 
+    <!-- Lightbox protégée -->
     <div id="secureLightbox" class="secure-lightbox">
         <div class="secure-lightbox-content">
             <button class="close-btn">×</button>
@@ -83,6 +126,7 @@
         <div id="secureLightboxCaption" class="secure-lightbox-caption"></div>
     </div>
 
+    <!-- Footer -->
     <footer>
         <div class="container">
             © 2025 Grey Corner Café — Menu trilingue.
@@ -91,16 +135,19 @@
         </div>
     </footer>
 
+    <!-- Sélecteur de langue -->
     <div class="lang-switch">
         <button class="lang-button active" data-lang="fr">🇫🇷</button>
-        <button class="lang-button" data-lang="en">🇬🇧</button>
-        <button class="lang-button" data-lang="de">🇩🇪</button>
+        <button class="lang-button"        data-lang="en">🇬🇧</button>
+        <button class="lang-button"        data-lang="de">🇩🇪</button>
     </div>
 
+    <!-- Google Review FAB -->
     <a href="https://g.page/r/CXF0QNm04m-ZEAE/review" class="google-review-fab" target="_blank" rel="noopener">
         <img src="images/google-review.png" alt="Google Review">
     </a>
 
+    <!-- Scripts -->
     <script src="script.js" defer></script>
     <script>
         document.getElementById("shareMenu").addEventListener("click", e => {
