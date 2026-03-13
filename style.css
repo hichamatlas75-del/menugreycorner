@@ -136,9 +136,10 @@ header {
     border: 3px solid var(--gold);
     outline: none;
     -webkit-tap-highlight-color: transparent;
-    padding: 16px;
+    padding: 4px;
     transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     display: block;
+    object-fit: cover;
 }
 
 .burger-img img:hover {
@@ -536,7 +537,7 @@ header {
 
     /* Burger mobile */
     .burger-img { top: 10px; left: 10px; }
-    .burger-img img { width: 75px; height: 75px; padding: 16px; }
+    .burger-img img { width: 75px; height: 75px; padding: 4px; }
 
     .event-banner { padding: 6px 8px; font-size: 0.9rem; margin-top: 10px; }
     .event-text-wrapper { animation-duration: 20s; }
