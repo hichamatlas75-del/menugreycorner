@@ -385,6 +385,19 @@ header {
 }
 
 /* =========================================
+   TEXTE PRIX EN DIRHAMS
+========================================= */
+.prix-info {
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-style: italic;
+    letter-spacing: 0.5px;
+    margin: 4px 16px 10px;
+    opacity: 0.75;
+}
+
+/* =========================================
    TICKER CAISSE
 ========================================= */
 .ticker-cashier {
