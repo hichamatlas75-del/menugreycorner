@@ -1,19 +1,34 @@
+/* =========================================
+   GOOGLE FONTS
+========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
+
+/* =========================================
+   VARIABLES
+========================================= */
 :root {
-    --bg: #0A0F1A;
-    --card: #121A2A;
-    --text: #F8F9FA;
-    --muted: #A0ABC0;
-    --gold: #F26419;
-    --gold-dark: #C64A0B;
-    --radius: 20px;
-    --shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
-    --shadow-hover: 0 16px 45px rgba(242, 100, 25, 0.15);
+    --bg:          #0A0F1A;
+    --card:        #121A2A;
+    --text:        #F8F9FA;
+    --muted:       #A0ABC0;
+    --gold:        #F26419;
+    --gold-dark:   #C64A0B;
+    --radius:      20px;
+    --shadow:      0 12px 35px rgba(0, 0, 0, 0.4);
+    --shadow-hover:0 16px 45px rgba(242, 100, 25, 0.15);
+
+    /* Palette luxe shortcut icons */
+    --sc-gold:       #C9A84C;
+    --sc-gold-light: #E2C97E;
+    --sc-border:     rgba(201,168,76,0.28);
+    --sc-bg:         rgba(10,9,6,0.58);
+    --sc-bg-hover:   rgba(201,168,76,0.1);
 }
 
 /* =========================================
    GLOBAL
 ========================================= */
-* { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: border-box; }
 
 html.no-scroll,
 body.no-scroll {
@@ -44,7 +59,7 @@ img { max-width: 100%; display: block; }
 a { text-decoration: none; color: inherit; }
 
 /* =========================================
-   HEADER PREMIUM
+   HEADER
 ========================================= */
 header {
     height: 220px;
@@ -89,33 +104,145 @@ header {
     box-shadow: none;
 }
 
-/* Shortcut icons */
+/* =========================================
+   SHORTCUT ICONS — DARK LUXURY
+========================================= */
 .shortcut-icons {
     position: absolute;
-    top: 5px;
-    right: 15px;
+    top: 14px;
+    right: 16px;
     display: flex;
-    gap: 10px;
-    z-index: 5;
-}
-
-.shortcut-icons a {
-    display: flex;
-    justify-content: center;
     align-items: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    background: transparent;
-    box-shadow: none;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    gap: 7px;
+    z-index: 10;
 }
 
-.shortcut-icons a img { width: 18px; height: 18px; }
+.sc-btn {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 48px;
+    height: 48px;
+    background: var(--sc-bg);
+    border: 1px solid var(--sc-border);
+    border-radius: 12px;
+    color: rgba(240,234,216,0.52);
+    cursor: pointer;
+    text-decoration: none;
+    font-family: 'DM Sans', 'Poppins', sans-serif;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition:
+        color        0.28s ease,
+        border-color 0.28s ease,
+        background   0.28s ease,
+        transform    0.28s cubic-bezier(.22,1,.36,1),
+        box-shadow   0.28s ease,
+        height       0.28s ease;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    padding: 0;
+}
 
-.shortcut-icons a:hover {
-    transform: translateY(-2px);
-    opacity: 0.85;
+.sc-btn svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    transition: transform 0.28s cubic-bezier(.22,1,.36,1);
+    pointer-events: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.sc-label {
+    font-size: 7px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: inherit;
+    line-height: 1;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.22s ease, transform 0.22s ease;
+    pointer-events: none;
+    display: block;
+}
+
+/* Séparateur vertical entre icônes */
+.sc-btn + .sc-btn::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 22%;
+    height: 56%;
+    width: 1px;
+    background: rgba(201,168,76,0.13);
+    pointer-events: none;
+}
+
+/* Hover desktop */
+@media (hover: hover) {
+    .sc-btn:hover {
+        color: var(--sc-gold-light);
+        border-color: var(--sc-gold);
+        background: var(--sc-bg-hover);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(201,168,76,0.2);
+        height: 56px;
+    }
+    .sc-btn:hover .sc-label {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .sc-btn:hover svg {
+        transform: scale(1.1);
+    }
+}
+
+/* Tap mobile */
+.sc-btn:active {
+    transform: scale(0.93);
+    background: rgba(201,168,76,0.14);
+    border-color: var(--sc-gold);
+    color: var(--sc-gold-light);
+}
+
+/* Toast confirmation partage */
+.sc-toast {
+    position: fixed;
+    bottom: 86px;
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    background: rgba(10,9,6,0.94);
+    border: 1px solid rgba(201,168,76,0.32);
+    color: #E2C97E;
+    font-family: 'DM Sans', 'Poppins', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 10px 22px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    z-index: 999999;
+}
+.sc-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
 }
 
 /* =========================================
@@ -162,20 +289,25 @@ header {
     backdrop-filter: blur(2px);
     z-index: 9997;
 }
-
 .burger-overlay.active { display: block; }
 
 /* =========================================
-   BURGER NAV (LATÉRAL)
+   BURGER NAV LATÉRAL
 ========================================= */
 .burger-nav-hidden {
-    position: fixed; top: 0; left: -100%;
-    width: 70%; height: 100%;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 70%;
+    height: 100%;
     background: var(--card);
     padding: 80px 20px;
-    display: flex; flex-direction: column; gap: 18px;
-    transition: left .3s ease;
-    z-index: 9998; overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    transition: left 0.3s ease;
+    z-index: 9998;
+    overflow-y: auto;
     border-right: 1px solid rgba(242, 100, 25, 0.15);
     box-shadow: 4px 0 30px rgba(0,0,0,0.5);
 }
@@ -199,8 +331,12 @@ header {
    CATEGORIES HORIZONTALES
 ========================================= */
 .categories-horizontal {
-    display: flex; overflow-x: auto; gap: 12px; padding: 12px 16px;
-    white-space: nowrap; scrollbar-width: none;
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    padding: 12px 16px;
+    white-space: nowrap;
+    scrollbar-width: none;
     margin-bottom: 10px;
 }
 .categories-horizontal::-webkit-scrollbar { display: none; }
@@ -296,8 +432,9 @@ header {
     border: 1px solid rgba(255,255,255,0.05);
     overflow: hidden;
     cursor: pointer;
-    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
-                box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    transition:
+        transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+        box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .menu-item:hover {
@@ -306,7 +443,8 @@ header {
 }
 
 .item-img-wrapper {
-    width: 100%; height: 180px;
+    width: 100%;
+    height: 180px;
     background-size: cover !important;
     background-position: center !important;
     background-color: #000;
@@ -369,7 +507,8 @@ header {
    LIGHTBOX PROTÉGÉE
 ========================================= */
 .secure-lightbox {
-    position: fixed; inset: 0;
+    position: fixed;
+    inset: 0;
     background: rgba(0,0,0,0.88);
     display: none;
     justify-content: center;
@@ -440,14 +579,24 @@ header {
    BACK TO TOP
 ========================================= */
 .back-to-top {
-    position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%);
-    width: 55px; height: 55px;
-    background: var(--gold); border-radius: 50%;
-    font-size: 28px; color: #000;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: var(--shadow); cursor: pointer;
-    opacity: 0; pointer-events: none;
-    transition: opacity .3s, transform .2s;
+    position: fixed;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 55px;
+    height: 55px;
+    background: var(--gold);
+    border-radius: 50%;
+    font-size: 28px;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s, transform 0.2s;
     z-index: 9999;
 }
 .back-to-top.show { opacity: 1; pointer-events: auto; }
@@ -456,8 +605,12 @@ header {
    LANG SWITCH
 ========================================= */
 .lang-switch {
-    position: fixed; bottom: 90px; right: 18px;
-    display: flex; flex-direction: column; gap: 10px;
+    position: fixed;
+    bottom: 90px;
+    right: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     z-index: 9998;
 }
 
@@ -483,13 +636,17 @@ header {
 .lang-button:hover { border-color: var(--gold); }
 
 /* =========================================
-   GOOGLE REVIEW FLOAT
+   GOOGLE REVIEW FAB
 ========================================= */
 .google-review-fab {
-    position: fixed; bottom: 20px; left: 20px;
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
     background: var(--gold);
-    padding: 10px; border-radius: 18px;
-    box-shadow: var(--shadow); z-index: 9999;
+    padding: 10px;
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    z-index: 9999;
     transition: transform 0.2s;
 }
 .google-review-fab:hover { transform: scale(1.05); }
@@ -499,20 +656,30 @@ header {
    BANDE ÉVÉNEMENT
 ========================================= */
 .event-banner {
-    display: block; width: 100%; padding: 10px 15px; margin-bottom: 5px;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 5px;
     background: linear-gradient(90deg, var(--gold-dark), var(--gold));
-    color: #FFFFFF; font-weight: 700; font-size: 1.1rem; text-align: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: transform .2s;
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    transition: transform 0.2s;
     overflow: hidden;
 }
 .event-banner:hover { transform: scale(1.01); }
 
 .event-text-wrapper {
-    display: flex; width: max-content;
+    display: flex;
+    width: max-content;
     animation: continuousScroll 25s linear infinite;
 }
 .event-banner .event-text {
-    white-space: nowrap; display: block; padding-right: 50px;
+    white-space: nowrap;
+    display: block;
+    padding-right: 50px;
 }
 
 @keyframes continuousScroll {
@@ -525,10 +692,14 @@ header {
 ========================================= */
 .logo-text {
     font-family: 'Playfair Display', serif;
-    font-size: 2.2rem; font-weight: 700;
-    color: var(--gold); text-transform: uppercase;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
     text-shadow: 0 0 10px rgba(193,155,44,0.5);
-    text-align: center; margin: 0; line-height: 1.1;
+    text-align: center;
+    margin: 0;
+    line-height: 1.1;
 }
 @media (min-width: 768px) { .logo-text { font-size: 3rem; } }
 
@@ -605,11 +776,13 @@ header {
 .menu-item.nouveau-flash::after {
     content: attr(data-badge);
     position: absolute;
-    top: 12px; left: 12px;
+    top: 12px;
+    left: 12px;
     background: linear-gradient(135deg, var(--gold), var(--gold-dark));
     color: #FFFFFF;
     font-family: 'Poppins', sans-serif;
-    font-size: 0.75rem; font-weight: 700;
+    font-size: 0.75rem;
+    font-weight: 700;
     padding: 4px 12px;
     border-radius: 20px;
     z-index: 10;
@@ -620,9 +793,9 @@ header {
 }
 
 @keyframes gold-pulse {
-    0%   { transform: scale(1);    box-shadow: 0 2px 10px rgba(242, 100, 25, 0.2); }
-    50%  { transform: scale(1.03); box-shadow: 0 6px 20px rgba(242, 100, 25, 0.6); }
-    100% { transform: scale(1);    box-shadow: 0 2px 10px rgba(242, 100, 25, 0.2); }
+    0%   { transform: scale(1);    box-shadow: 0 2px 10px rgba(242,100,25,0.2); }
+    50%  { transform: scale(1.03); box-shadow: 0 6px 20px rgba(242,100,25,0.6); }
+    100% { transform: scale(1);    box-shadow: 0 2px 10px rgba(242,100,25,0.2); }
 }
 
 /* =========================================
@@ -644,7 +817,6 @@ footer a {
     font-weight: 600;
     transition: opacity 0.2s;
 }
-
 footer a:hover { opacity: 0.8; }
 
 /* =========================================
@@ -665,10 +837,9 @@ footer a:hover { opacity: 0.8; }
 }
 
 /* =========================================
-   RESPONSIVE MOBILE ≤ 680px
+   RESPONSIVE ≤ 680px
 ========================================= */
 @media (max-width: 680px) {
-
     .items {
         grid-template-columns: 1fr !important;
         gap: 14px !important;
@@ -686,8 +857,6 @@ footer a:hover { opacity: 0.8; }
         width: 100%;
         height: auto;
         aspect-ratio: 4 / 3;
-        background-size: cover !important;
-        background-position: center !important;
         border-top-left-radius: 12px;
         border-top-right-radius: 12px;
     }
@@ -698,10 +867,9 @@ footer a:hover { opacity: 0.8; }
 }
 
 /* =========================================
-   RESPONSIVE MOBILE ≤ 480px
+   RESPONSIVE ≤ 480px
 ========================================= */
 @media (max-width: 480px) {
-
     body { font-size: 14px; padding: 0; }
 
     header { height: auto; min-height: 170px; background-position: center 55%; }
@@ -710,12 +878,32 @@ footer a:hover { opacity: 0.8; }
 
     .logo-big { width: 85px; height: 85px; margin-top: 0; }
 
+    /* Icons en rangée centrée sous le logo */
     .shortcut-icons {
-        position: relative; top: 0; right: 0;
-        justify-content: center; width: 100%; gap: 15px;
+        position: relative;
+        top: auto;
+        right: auto;
+        justify-content: center;
+        width: 100%;
+        gap: 10px;
+        padding: 8px 0 4px;
     }
-    .shortcut-icons a { width: 46px; height: 46px; border-radius: 12px; background: transparent; box-shadow: none; }
-    .shortcut-icons a img { width: 24px; height: 24px; }
+
+    .sc-btn {
+        width: 54px;
+        height: 54px;
+        border-radius: 14px;
+        color: rgba(240,234,216,0.62);
+    }
+
+    /* Labels toujours visibles sur mobile */
+    .sc-btn .sc-label {
+        opacity: 1;
+        transform: translateY(0);
+        font-size: 6.5px;
+    }
+
+    .sc-btn + .sc-btn::before { display: none; }
 
     .categories-horizontal { gap: 8px; padding: 8px 10px; }
     .categories-horizontal a { padding: 6px 12px; font-size: 0.8rem; border-radius: 40px; }
@@ -747,4 +935,13 @@ footer a:hover { opacity: 0.8; }
     .close-btn { top: -38px; width: 32px; height: 32px; font-size: 1.3rem; }
 
     footer { font-size: 0.78rem; padding: 20px 10px; margin-top: 40px; }
+}
+
+/* =========================================
+   RESPONSIVE ≤ 360px
+========================================= */
+@media (max-width: 360px) {
+    .sc-btn { width: 46px; height: 50px; }
+    .sc-btn svg { width: 15px; height: 15px; }
+    .sc-btn .sc-label { font-size: 5.5px; }
 }
