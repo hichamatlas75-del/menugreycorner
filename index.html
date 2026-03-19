@@ -13,9 +13,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- ================================
-         SEO & META
-    ================================= -->
     <title>Grey Corner Café — Menu | Fès, Maroc</title>
     <meta name="description" content="Découvrez le menu complet du Grey Corner Café à Fès : petits-déjeuners, plats, pizzas, burgers, pâtes, boissons et desserts. Menu trilingue FR/EN/DE." />
     <meta name="keywords" content="Grey Corner, café, restaurant, Fès, Maroc, menu, brunch, pizza, burger, pasta" />
@@ -23,7 +20,6 @@
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://menugreycorner.pages.dev/" />
 
-    <!-- Open Graph (WhatsApp, Facebook, LinkedIn) -->
     <meta property="og:type"         content="website" />
     <meta property="og:title"        content="Grey Corner Café — Menu | Fès" />
     <meta property="og:description"  content="Menu complet du Grey Corner Café à Fès. Petits-déjeuners, plats du jour, pizzas, burgers, boissons et desserts." />
@@ -35,25 +31,207 @@
     <meta property="og:locale"       content="fr_MA" />
     <meta property="og:site_name"    content="Grey Corner Café" />
 
-    <!-- Twitter Card -->
     <meta name="twitter:card"        content="summary_large_image" />
     <meta name="twitter:title"       content="Grey Corner Café — Menu | Fès" />
     <meta name="twitter:description" content="Menu complet du Grey Corner Café à Fès." />
     <meta name="twitter:image"       content="https://menugreycorner.pages.dev/images/og-preview.jpg" />
 
-    <!-- ================================
-         FAVICON
-    ================================= -->
-    <link rel="icon"               type="image/png" sizes="32x32" href="images/favicon-32.png" />
-    <link rel="icon"               type="image/png" sizes="16x16" href="images/favicon-16.png" />
-    <link rel="apple-touch-icon"   sizes="180x180"               href="images/apple-touch-icon.png" />
-    <link rel="shortcut icon"      href="images/favicon.ico" />
+    <link rel="icon"             type="image/png" sizes="32x32" href="images/favicon-32.png" />
+    <link rel="icon"             type="image/png" sizes="16x16" href="images/favicon-16.png" />
+    <link rel="apple-touch-icon" sizes="180x180"               href="images/apple-touch-icon.png" />
+    <link rel="shortcut icon"    href="images/favicon.ico" />
 
-    <!-- ================================
-         FONTS & CSS
-    ================================= -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+
+    <style>
+    /* ================================================
+       SHORTCUT ICONS — DARK LUXURY (Grey Corner)
+       Remplace entièrement les règles .shortcut-icons
+       dans style.css
+    ================================================ */
+
+    /* Palette luxe cohérente avec l'accueil */
+    :root {
+        --sc-gold:       #C9A84C;
+        --sc-gold-light: #E2C97E;
+        --sc-border:     rgba(201,168,76,0.28);
+        --sc-bg:         rgba(10,9,6,0.58);
+        --sc-bg-hover:   rgba(201,168,76,0.1);
+    }
+
+    /* ── Conteneur ── */
+    .shortcut-icons {
+        position: absolute;
+        top: 14px;
+        right: 16px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        z-index: 10;
+    }
+
+    /* ── Chaque bouton/lien ── */
+    .sc-btn {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        width: 48px;
+        height: 48px;
+        background: var(--sc-bg);
+        border: 1px solid var(--sc-border);
+        border-radius: 12px;
+        color: rgba(240,234,216,0.52);
+        cursor: pointer;
+        text-decoration: none;
+        font-family: 'DM Sans', 'Poppins', sans-serif;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        transition:
+            color        0.28s ease,
+            border-color 0.28s ease,
+            background   0.28s ease,
+            transform    0.28s cubic-bezier(.22,1,.36,1),
+            box-shadow   0.28s ease;
+        -webkit-tap-highlight-color: transparent;
+        outline: none;
+        /* reset button */
+        appearance: none;
+        -webkit-appearance: none;
+        padding: 0;
+    }
+
+    .sc-btn svg {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+        transition: transform 0.28s cubic-bezier(.22,1,.36,1);
+        pointer-events: none;
+    }
+
+    /* Label sous l'icône */
+    .sc-label {
+        font-size: 7px;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: inherit;
+        line-height: 1;
+        white-space: nowrap;
+        opacity: 0;
+        transform: translateY(4px);
+        transition: opacity 0.22s ease, transform 0.22s ease;
+        pointer-events: none;
+        display: block;
+    }
+
+    /* Séparateur vertical entre icônes */
+    .sc-btn + .sc-btn::before {
+        content: '';
+        position: absolute;
+        left: -5px;
+        top: 22%;
+        height: 56%;
+        width: 1px;
+        background: rgba(201,168,76,0.13);
+        pointer-events: none;
+    }
+
+    /* ── Hover desktop ── */
+    @media (hover: hover) {
+        .sc-btn:hover {
+            color: var(--sc-gold-light);
+            border-color: var(--sc-gold);
+            background: var(--sc-bg-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(201,168,76,0.2);
+        }
+        .sc-btn:hover .sc-label {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .sc-btn:hover svg {
+            transform: scale(1.1);
+        }
+        /* Taille élargie au hover pour faire apparaître le label */
+        .sc-btn:hover {
+            height: 54px;
+        }
+    }
+
+    /* ── Tap mobile ── */
+    .sc-btn:active {
+        transform: scale(0.93);
+        background: rgba(201,168,76,0.14);
+        border-color: var(--sc-gold);
+        color: var(--sc-gold-light);
+    }
+
+    /* ── Toast ── */
+    .sc-toast {
+        position: fixed;
+        bottom: 86px;
+        left: 50%;
+        transform: translateX(-50%) translateY(8px);
+        background: rgba(10,9,6,0.94);
+        border: 1px solid rgba(201,168,76,0.32);
+        color: #E2C97E;
+        font-family: 'DM Sans', 'Poppins', sans-serif;
+        font-size: 11px;
+        font-weight: 400;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        padding: 10px 22px;
+        border-radius: 4px;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        z-index: 999999;
+    }
+    .sc-toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── Mobile ≤ 480px ── */
+    @media (max-width: 480px) {
+        .shortcut-icons {
+            position: relative;
+            top: auto;
+            right: auto;
+            justify-content: center;
+            width: 100%;
+            gap: 10px;
+            padding: 8px 0 4px;
+            flex-wrap: nowrap;
+        }
+        .sc-btn {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            /* Labels toujours visibles sur mobile */
+            color: rgba(240,234,216,0.6);
+        }
+        .sc-btn .sc-label {
+            opacity: 1;
+            transform: translateY(0);
+            font-size: 6.5px;
+        }
+        .sc-btn + .sc-btn::before { display: none; }
+    }
+
+    @media (max-width: 360px) {
+        .sc-btn { width: 46px; height: 50px; }
+        .sc-btn svg { width: 16px; height: 16px; }
+        .sc-btn .sc-label { font-size: 5.5px; }
+    }
+    </style>
 </head>
 
 <body>
@@ -82,19 +260,64 @@
 
     <div id="burgerOverlay" class="burger-overlay"></div>
 
-    <!-- Header -->
+    <!-- ================================
+         HEADER
+    ================================= -->
     <header>
         <div class="header-overlay"></div>
         <div class="container header-center">
             <img src="images/logo.png" class="logo-big" alt="Grey Corner Café">
+
+            <!-- SHORTCUT ICONS — SVG INLINE PREMIUM -->
             <div class="shortcut-icons">
-                <a href="tel:+212535940168"><img src="images/phone.jpg" alt="Téléphone"></a>
-                <a href="https://www.instagram.com/greycornerfes/" target="_blank" rel="noopener"><img src="images/instagram.png" alt="Instagram"></a>
-                <a href="https://maps.app.goo.gl/8CH1GGAvo2no6zp27" target="_blank" rel="noopener"><img src="images/maps.png" alt="Google Maps"></a>
-                <a href="#" id="shareMenu"><img src="images/partage.png" alt="Partager"></a>
+
+                <!-- Téléphone -->
+                <a href="tel:+212535940168" class="sc-btn" aria-label="Appeler Grey Corner">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C6.61 21 2 16.39 2 11c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                    </svg>
+                    <span class="sc-label" data-i18n data-fr="Appeler" data-en="Call" data-de="Anrufen">Appeler</span>
+                </a>
+
+                <!-- Instagram -->
+                <a href="https://www.instagram.com/greycornerfes/" target="_blank" rel="noopener" class="sc-btn" aria-label="Instagram Grey Corner">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                        <circle cx="12" cy="12" r="4"/>
+                        <circle cx="17.5" cy="6.5" r="0.7" fill="currentColor" stroke="none"/>
+                    </svg>
+                    <span class="sc-label">Instagram</span>
+                </a>
+
+                <!-- Google Maps -->
+                <a href="https://maps.app.goo.gl/8CH1GGAvo2no6zp27" target="_blank" rel="noopener" class="sc-btn" aria-label="Nous trouver sur Maps">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2C8.686 2 6 4.686 6 8c0 5.25 6 14 6 14s6-8.75 6-14c0-3.314-2.686-6-6-6z"/>
+                        <circle cx="12" cy="8" r="2.2"/>
+                    </svg>
+                    <span class="sc-label" data-i18n data-fr="Maps" data-en="Maps" data-de="Karte">Maps</span>
+                </a>
+
+                <!-- Partager -->
+                <button class="sc-btn" id="shareMenu" aria-label="Partager le menu">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="18" cy="5" r="3"/>
+                        <circle cx="6" cy="12" r="3"/>
+                        <circle cx="18" cy="19" r="3"/>
+                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                        <line x1="15.41" y1="6.51"  x2="8.59"  y2="10.49"/>
+                    </svg>
+                    <span class="sc-label" data-i18n data-fr="Partager" data-en="Share" data-de="Teilen">Partager</span>
+                </button>
+
             </div>
+            <!-- /SHORTCUT ICONS -->
+
         </div>
     </header>
+
+    <!-- Toast partage -->
+    <div class="sc-toast" id="scToast">Lien copié ✓</div>
 
     <!-- Barre catégories horizontale -->
     <nav class="categories-horizontal">
@@ -152,18 +375,47 @@
 
     <!-- Scripts -->
     <script src="script.js" defer></script>
+
     <script>
-        document.getElementById("shareMenu").addEventListener("click", e => {
-            e.preventDefault();
-            const url = window.location.href;
-            const messages = {
-                fr: "🍽️ Découvrez le menu Grey Corner Café !\n\n",
-                en: "🍽️ Discover the Grey Corner Café menu!\n\n",
-                de: "🍽️ Entdecken Sie das Menü des Grey Corner Café!\n\n"
-            };
-            const lang = localStorage.getItem("lang") || "fr";
-            window.open("https://wa.me/?text=" + encodeURIComponent(messages[lang] + url));
-        });
+    // ── PARTAGER ──
+    document.getElementById('shareMenu').addEventListener('click', async function() {
+        const url  = window.location.href;
+        const lang = localStorage.getItem('lang') || 'fr';
+        const texts = {
+            fr: { title: 'Grey Corner — Menu', text: '🍽️ Découvrez le menu Grey Corner Café à Fès !' },
+            en: { title: 'Grey Corner — Menu', text: '🍽️ Discover the Grey Corner Café menu in Fès!' },
+            de: { title: 'Grey Corner — Menü', text: '🍽️ Entdecken Sie das Menü des Grey Corner Café in Fès!' }
+        };
+        const t = texts[lang] || texts.fr;
+
+        // Web Share API (mobile natif — WhatsApp, SMS, etc.)
+        if (navigator.share) {
+            try {
+                await navigator.share({ title: t.title, text: t.text, url });
+                return;
+            } catch(e) { return; }
+        }
+
+        // Fallback desktop : copier dans le presse-papier
+        try {
+            await navigator.clipboard.writeText(url);
+        } catch {
+            const ta = document.createElement('textarea');
+            ta.value = url;
+            ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0;';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+        }
+
+        // Toast multilingue
+        const toastMsg = { fr: 'Lien copié ✓', en: 'Link copied ✓', de: 'Link kopiert ✓' };
+        const toast = document.getElementById('scToast');
+        toast.textContent = toastMsg[lang] || toastMsg.fr;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2400);
+    });
     </script>
 </body>
 </html>
