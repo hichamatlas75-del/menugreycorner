@@ -11,11 +11,11 @@
     --card:         #121A2A;
     --text:         #F8F9FA;
     --muted:        #A0ABC0;
-    --gold:         #F26419;
-    --gold-dark:    #C64A0B;
+    --gold:         #C9A84C;       /* ← gold logo */
+    --gold-dark:    #A8873C;       /* ← gold foncé */
     --radius:       20px;
     --shadow:       0 12px 35px rgba(0,0,0,0.4);
-    --shadow-hover: 0 16px 45px rgba(242,100,25,0.15);
+    --shadow-hover: 0 16px 45px rgba(201,168,76,0.15);
 
     /* Palette luxe — icons & logo */
     --sc-gold:       #C9A84C;
@@ -396,7 +396,7 @@ header {
     transition: left 0.3s ease;
     z-index: 9998;
     overflow-y: auto;
-    border-right: 1px solid rgba(242,100,25,0.15);
+    border-right: 1px solid rgba(201,168,76,0.15);
     box-shadow: 4px 0 30px rgba(0,0,0,0.5);
 }
 .burger-nav-hidden a {
@@ -425,7 +425,7 @@ header {
 
 .categories-horizontal a {
     background: var(--card);
-    border: 1px solid rgba(242,100,25,0.3);
+    border: 1px solid rgba(201,168,76,0.3);
     padding: 8px 18px;
     border-radius: 999px;
     color: var(--text);
@@ -440,7 +440,7 @@ header {
     color: #F8F9FA;
     border-color: transparent;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(242,100,25,0.4);
+    box-shadow: 0 8px 20px rgba(201,168,76,0.4);
 }
 
 /* =========================================
@@ -456,7 +456,7 @@ header {
     width: 100%;
     padding: 12px 18px;
     background: var(--card);
-    border: 1px solid rgba(242,100,25,0.3);
+    border: 1px solid rgba(201,168,76,0.3);
     border-radius: 999px;
     color: var(--text);
     font-family: "Poppins", sans-serif;
@@ -471,7 +471,7 @@ header {
 #searchInput::placeholder { color: var(--muted); font-size: 0.9rem; }
 #searchInput:focus {
     border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(242,100,25,0.15);
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
 }
 
 /* =========================================
@@ -682,7 +682,7 @@ header {
 
 .lang-button {
     background: var(--card);
-    border: 1px solid rgba(242,100,25,0.3);
+    border: 1px solid rgba(201,168,76,0.3);
     padding: 6px 8px;
     color: var(--text);
     border-radius: 10px;
@@ -794,7 +794,7 @@ header {
     font-weight: 700;
     color: var(--gold);
     text-transform: uppercase;
-    text-shadow: 0 0 10px rgba(193,155,44,0.5);
+    text-shadow: 0 0 10px rgba(201,168,76,0.5);
     text-align: center;
     margin: 0;
     line-height: 1.1;
@@ -837,8 +837,8 @@ header {
     width: 100%;
     background: #06090F;
     color: var(--gold);
-    border-top: 1px solid rgba(242,100,25,0.3);
-    border-bottom: 1px solid rgba(242,100,25,0.3);
+    border-top: 1px solid rgba(201,168,76,0.3);
+    border-bottom: 1px solid rgba(201,168,76,0.3);
     padding: 8px 0;
     overflow: hidden;
     font-family: 'Playfair Display', serif;
@@ -877,15 +877,15 @@ header {
     padding: 4px 12px;
     border-radius: 20px;
     z-index: 10;
-    box-shadow: 0 4px 15px rgba(242,100,25,0.4);
+    box-shadow: 0 4px 15px rgba(201,168,76,0.4);
     animation: gold-pulse 3s infinite ease-in-out;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 @keyframes gold-pulse {
-    0%   { transform: scale(1);    box-shadow: 0 2px 10px rgba(242,100,25,0.2); }
-    50%  { transform: scale(1.03); box-shadow: 0 6px 20px rgba(242,100,25,0.6); }
-    100% { transform: scale(1);    box-shadow: 0 2px 10px rgba(242,100,25,0.2); }
+    0%   { transform: scale(1);    box-shadow: 0 2px 10px rgba(201,168,76,0.2); }
+    50%  { transform: scale(1.03); box-shadow: 0 6px 20px rgba(201,168,76,0.6); }
+    100% { transform: scale(1);    box-shadow: 0 2px 10px rgba(201,168,76,0.2); }
 }
 
 /* =========================================
@@ -895,7 +895,7 @@ footer {
     margin-top: 60px;
     padding: 30px 15px;
     background: #06090F;
-    border-top: 1px solid rgba(242,100,25,0.2);
+    border-top: 1px solid rgba(201,168,76,0.2);
     color: var(--muted);
     font-size: 0.85rem;
     text-align: center;
