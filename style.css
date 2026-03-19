@@ -62,7 +62,7 @@ a { text-decoration: none; color: inherit; }
    HEADER
 ========================================= */
 header {
-    height: 200px;
+    height: 240px;
     position: relative;
     background-image: url("images/header-bg.jpg");
     background-size: cover;
@@ -85,7 +85,7 @@ header {
     justify-content: center;
     align-items: center;
     height: 100%;
-    padding: 0 100px;
+    padding: 0 120px;
 }
 
 /* =========================================
@@ -93,13 +93,13 @@ header {
    !! PAS DE border-radius: 50% ICI !!
 ========================================= */
 .logo-big {
-    width: 80px !important;
-    height: 80px !important;
+    width: 110px !important;
+    height: 110px !important;
     object-fit: contain !important;
-    border-radius: 18px !important;   /* ← carré arrondi, jamais 50% */
+    border-radius: 22px !important;
     background: rgba(10,9,6,0.65);
     border: 1px solid rgba(201,168,76,0.32);
-    padding: 8px;
+    padding: 10px;
     box-shadow:
         0 8px 28px rgba(0,0,0,0.35),
         0 0 0 1px rgba(201,168,76,0.08);
@@ -114,7 +114,7 @@ header {
 }
 .logo-big:hover {
     border-color: rgba(201,168,76,0.55);
-    box-shadow: 0 10px 32px rgba(201,168,76,0.14);
+    box-shadow: 0 12px 36px rgba(201,168,76,0.16);
     transform: translateY(-2px);
 }
 
@@ -942,23 +942,23 @@ footer a:hover { opacity: 0.8; }
 @media (max-width: 480px) {
     body { font-size: 14px; padding: 0; }
 
-    header { height: auto; min-height: 180px; background-position: center 55%; }
+    header { height: auto; min-height: 200px; background-position: center 55%; }
 
     .header-center {
         flex-direction: column;
         justify-content: center;
         align-items: center;
         gap: 14px;
-        padding: 70px 14px 18px;
+        padding: 74px 14px 20px;
         height: auto;
     }
 
     /* ── LOGO mobile : carré arrondi, jamais cercle ── */
     .logo-big {
-        width: 72px !important;
-        height: 72px !important;
-        border-radius: 16px !important;  /* ← toujours carré, jamais 50% */
-        padding: 7px;
+        width: 90px !important;
+        height: 90px !important;
+        border-radius: 20px !important;
+        padding: 9px;
     }
 
     /* Shortcut icons : rangée centrée sous le logo */
@@ -1024,5 +1024,5 @@ footer a:hover { opacity: 0.8; }
     .sc-btn { width: 46px; height: 50px; }
     .sc-btn svg { width: 15px; height: 15px; }
     .sc-btn .sc-label { font-size: 5.5px; }
-    .logo-big { width: 64px !important; height: 64px !important; border-radius: 14px !important; }
+    .logo-big { width: 80px !important; height: 80px !important; border-radius: 16px !important; }
 }
