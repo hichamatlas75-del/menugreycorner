@@ -740,21 +740,84 @@ header {
 .lang-button:hover { border-color: var(--gold); }
 
 /* =========================================
-   GOOGLE REVIEW FAB
+   GOOGLE REVIEW — PILL PREMIUM
 ========================================= */
 .google-review-fab {
     position: fixed;
     bottom: 20px;
-    left: 20px;
-    background: var(--gold);
-    padding: 10px;
-    border-radius: 18px;
-    box-shadow: var(--shadow);
+    left: 14px;
     z-index: 9999;
-    transition: transform 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 999px;
+    overflow: hidden;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+        border-color 0.28s ease,
+        box-shadow   0.28s ease,
+        transform    0.28s cubic-bezier(.22,1,.36,1);
 }
-.google-review-fab:hover { transform: scale(1.05); }
-.google-review-fab img { width: 45px; height: 45px; }
+.google-review-fab:hover {
+    border-color: rgba(201,168,76,0.52);
+    box-shadow: 0 8px 28px rgba(201,168,76,0.15);
+    transform: translateY(-2px);
+}
+.google-review-fab:active {
+    transform: scale(0.96);
+}
+
+.gr-left {
+    background: rgba(201,168,76,0.1);
+    padding: 10px 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid rgba(201,168,76,0.18);
+    flex-shrink: 0;
+}
+.gr-left svg { width: 18px; height: 18px; display: block; }
+
+.gr-right {
+    background: rgba(10,9,6,0.75);
+    padding: 9px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.gr-label {
+    font-family: 'DM Sans', 'Poppins', sans-serif;
+    font-size: 8px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(201,168,76,0.58);
+    line-height: 1;
+}
+.gr-stars {
+    display: flex;
+    gap: 1.5px;
+    align-items: center;
+}
+.gr-stars span {
+    font-size: 11px;
+    color: #C9A84C;
+    line-height: 1;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .google-review-fab { bottom: 16px; left: 10px; }
+    .gr-left { padding: 9px 11px; }
+    .gr-left svg { width: 16px; height: 16px; }
+    .gr-right { padding: 8px 13px; }
+    .gr-label { font-size: 7px; }
+    .gr-stars span { font-size: 10px; }
+}
 
 /* =========================================
    BANDE ÉVÉNEMENT
