@@ -62,7 +62,7 @@ a { text-decoration: none; color: inherit; }
    HEADER
 ========================================= */
 header {
-    height: 240px;
+    height: 270px;
     position: relative;
     background-image: url("images/header-bg.jpg");
     background-size: cover;
@@ -85,7 +85,7 @@ header {
     justify-content: center;
     align-items: center;
     height: 100%;
-    padding: 0 120px;
+    padding: 0 140px;
 }
 
 /* =========================================
@@ -93,8 +93,8 @@ header {
    !! PAS DE border-radius: 50% ICI !!
 ========================================= */
 .logo-big {
-    width: 110px !important;
-    height: 110px !important;
+    width: 140px !important;
+    height: 140px !important;
     object-fit: contain !important;
     border-radius: 22px !important;
     background: rgba(10,9,6,0.65);
@@ -942,21 +942,21 @@ footer a:hover { opacity: 0.8; }
 @media (max-width: 480px) {
     body { font-size: 14px; padding: 0; }
 
-    header { height: auto; min-height: 200px; background-position: center 55%; }
+    header { height: auto; min-height: 230px; background-position: center 55%; }
 
     .header-center {
         flex-direction: column;
         justify-content: center;
         align-items: center;
         gap: 14px;
-        padding: 74px 14px 20px;
+        padding: 78px 14px 22px;
         height: auto;
     }
 
     /* ── LOGO mobile : carré arrondi, jamais cercle ── */
     .logo-big {
-        width: 90px !important;
-        height: 90px !important;
+        width: 115px !important;
+        height: 115px !important;
         border-radius: 20px !important;
         padding: 9px;
     }
