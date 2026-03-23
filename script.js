@@ -260,7 +260,7 @@ isNew: true
           de: "Frischer Lachs, geräucherter Lachs, Avocado, Tartarsauce."
         },
         price: "88",
-        image: "images/entree-tartare.jpg",
+        image: "images/entree-tartare.png",
 isNew: true
       },
       {
