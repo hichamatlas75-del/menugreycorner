@@ -750,7 +750,7 @@ isNew: true
           de: "Panierter Hähnchen, Cheddar, Tomate, Salat, Sauce."
         },
         price: "58",
-        image: "images/wrap-poulet.jpg",
+        image: "images/Wrap-poulet.jpg",
 isNew: true
       },
  {
