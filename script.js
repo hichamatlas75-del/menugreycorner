@@ -761,7 +761,7 @@ isNew: true
           de: "Hackfleisch, Cheddar, Tomate, Salat, Sauce."
         },
         price: "62",
-        image: "images/Wap-viande-hachee.jpg",
+        image: "images/Wrap-viande-hachee.jpg",
 isNew: true
       },
  {
