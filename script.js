@@ -130,9 +130,9 @@ isNew: true
       {
         name: { fr: "COMPAGNAD", en: "COPAGNARD", de: "COMPAGNAR" },
         description: {
-          fr: "3 Œuf brouillé ,3 charcuterie, 2 pain cake chocolat ,pain seigle, huile d’olive , olive , mesclun salade, jus d'orange, boisson chaude au choix, dessert et eau minérale.",
-          en: "3 scrambled eggs, 3 cold cuts, 2 slices of chocolate cake, rye bread, olive oil, olive , mesclun salad, orange juice, hot drink of your choice, dessert, and mineral water.",
-          de: "3 Rühreier, 3 Sorten Aufschnitt, 2 Stücke Schokoladenkuchen, Roggenbrot, Olivenöl, schwarze Oliven , Mesclun-Salat, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser."
+          fr: "3 Œuf brouillé ,3 charcuterie, 2 pain cake chocolat ,fromage rapé ,pain seigle, huile d’olive , olive , mesclun salade, jus d'orange, boisson chaude au choix, dessert et eau minérale.",
+          en: "3 scrambled eggs, 3 cold cuts,grated cheese, 2 slices of chocolate cake, rye bread, olive oil, olive , mesclun salad, orange juice, hot drink of your choice, dessert, and mineral water.",
+          de: "3 Rühreier, 3 Sorten Aufschnitt,geriebener käse, 2 Stücke Schokoladenkuchen, Roggenbrot, Olivenöl, schwarze Oliven , Mesclun-Salat, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser."
         },
         price: "52",
         image: "images/petit-dej-compagnard.jpg",
