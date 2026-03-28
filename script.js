@@ -761,7 +761,7 @@ isNew: true
           de: "Hackfleisch, Cheddar, Tomate, Salat, Sauce."
         },
         price: "62",
-        image: "images/wrap-viande-hachee.jpg",
+        image: "images/Wap-viande-hachee.jpg",
 isNew: true
       },
  {
@@ -772,7 +772,7 @@ isNew: true
           de: "Panierter Hähnchen, Wurstwaren, Cheddar, Tomate, Salat, Sauce."
         },
         price: "64",
-        image: "images/wrap-gourmand.jpg",
+        image: "images/Wrap-gourmand.jpg",
 isNew: true
       }
 
