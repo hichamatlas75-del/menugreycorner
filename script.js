@@ -130,9 +130,9 @@ isNew: true
       {
         name: { fr: "COMPAGNAD", en: "COPAGNARD", de: "COMPAGNAR" },
         description: {
-          fr: "3 Œuf brouillé ,3 charcuterie, 2 pain cake chocolat ,fromage rapé ,pain seigle, huile d’olive , olive , mesclun salade, jus d'orange, boisson chaude au choix, dessert et eau minérale.",
-          en: "3 scrambled eggs, 3 cold cuts,grated cheese, 2 slices of chocolate cake, rye bread, olive oil, olive , mesclun salad, orange juice, hot drink of your choice, dessert, and mineral water.",
-          de: "3 Rühreier, 3 Sorten Aufschnitt,geriebener käse, 2 Stücke Schokoladenkuchen, Roggenbrot, Olivenöl, schwarze Oliven , Mesclun-Salat, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser."
+          fr: "3 Œuf brouillé ,3 charcuterie, 2 pain cake chocolat ,pain seigle, huile d’olive , olive , mesclun salade, jus d'orange, boisson chaude au choix, dessert et eau minérale.",
+          en: "3 scrambled eggs, 3 cold cuts, 2 slices of chocolate cake, rye bread, olive oil, olive , mesclun salad, orange juice, hot drink of your choice, dessert, and mineral water.",
+          de: "3 Rühreier, 3 Sorten Aufschnitt, 2 Stücke Schokoladenkuchen, Roggenbrot, Olivenöl, schwarze Oliven , Mesclun-Salat, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser."
         },
         price: "52",
         image: "images/petit-dej-compagnard.jpg",
@@ -260,7 +260,7 @@ isNew: true
           de: "Frischer Lachs, geräucherter Lachs, Avocado, Tartarsauce."
         },
         price: "88",
-        image: "images/entree-tartare.png",
+        image: "images/entree-tartare.jpg",
 isNew: true
       },
       {
@@ -496,7 +496,7 @@ isNew: true
           de: "Traditionelles Gericht, das freitags serviert wird."
         },
         price: "64",
-        image: "images/Couscous-poulet.jpg"
+        image: "images/couscous-viande.jpg"
       },
       {
         name: { fr: "Couscous poulet avec petit lait", en: "Chicken couscous with buttermilk", de: "Hähnchen-Couscous mit Buttermilch" },
@@ -506,7 +506,7 @@ isNew: true
           de: "Traditionelles Gericht, das freitags serviert wird."
         },
         price: "54",
-        image: "images/Couscous-poulet.jpg"
+        image: "images/couscous-poulet.jpg"
       }
     ]
   },
@@ -750,7 +750,7 @@ isNew: true
           de: "Panierter Hähnchen, Cheddar, Tomate, Salat, Sauce."
         },
         price: "58",
-        image: "images/Wrap-poulet.jpg",
+        image: "images/wrap-poulet.jpg",
 isNew: true
       },
  {
@@ -761,7 +761,7 @@ isNew: true
           de: "Hackfleisch, Cheddar, Tomate, Salat, Sauce."
         },
         price: "62",
-        image: "images/Wrap-viande-hachee.jpg",
+        image: "images/wrap-viande-hachee.jpg",
 isNew: true
       },
  {
@@ -772,7 +772,7 @@ isNew: true
           de: "Panierter Hähnchen, Wurstwaren, Cheddar, Tomate, Salat, Sauce."
         },
         price: "64",
-        image: "images/Wrap-gourmand.jpg",
+        image: "images/wrap-gourmand.jpg",
 isNew: true
       }
 
@@ -2382,6 +2382,7 @@ function renderMenu() {
         const itemsContainer = section.querySelector(".items");
 
         category.items.forEach(item => {
+            item.categoryId = category.id || "";
             const card = document.createElement("article");
             card.className = "menu-item";
 
@@ -2408,8 +2409,18 @@ function renderMenu() {
                         <span class="item-price">${item.price}</span>
                     </div>
                     <p class="item-desc">${item.description[currentLang]}</p>
+                    <button class="add-to-cart-btn" aria-label="Ajouter au panier">+</button>
                 </div>
             `;
+
+            // Bind Stop-Propagated Plus Button
+            const addBtn = card.querySelector(".add-to-cart-btn");
+            if (addBtn) {
+                addBtn.addEventListener("click", (e) => {
+                    e.stopPropagation(); // Prevents secure lightbox from launching!
+                    addToCart(item);
+                });
+            }
 
             itemsContainer.appendChild(card);
         });
@@ -2766,3 +2777,740 @@ setTimeout(activateSearch, 50);
 
 // Activer la bannière événement
 activateEventBanner();
+
+// ============================================================================
+// GREY CORNER — CLIENT CONNECTED SERVICE LOGIC (REAL-TIME & CART ENGINE)
+// ============================================================================
+
+let clientCart = [];
+let clientTable = null;
+
+// Initialize Client Cart from LocalStorage
+function initClientCart() {
+    try {
+        clientCart = JSON.parse(localStorage.getItem("grey_cart") || "[]");
+    } catch (e) {
+        clientCart = [];
+    }
+    updateCartUI();
+}
+
+// Save Cart to LocalStorage
+function saveClientCart() {
+    localStorage.setItem("grey_cart", JSON.stringify(clientCart));
+    updateCartUI();
+}
+
+// Global state for drink selection modal
+let selectedMenuItem = null;
+
+const HOT_DRINKS_OPTIONS = [
+    { fr: "Café Espresso", en: "Espresso Coffee", de: "Espresso Kaffee" },
+    { fr: "Café au Lait", en: "Coffee with Milk", de: "Milchkaffee" },
+    { fr: "Café Noir (Americano)", en: "Black Coffee", de: "Schwarzer Kaffee" },
+    { fr: "Thé à la Menthe", en: "Mint Tea", de: "Minztee" },
+    { fr: "Chocolat Chaud", en: "Hot Chocolate", de: "Heiße Schokolade" },
+    { fr: "Cappuccino", en: "Cappuccino", de: "Cappuccino" },
+    { fr: "Latte Macchiato", en: "Latte Macchiato", de: "Latte Macchiato" },
+    { fr: "Infusion Verveine", en: "Verbena Infusion", de: "Eisenkraut Tee" }
+];
+
+// Add Item to Cart
+function addToCart(menuItem) {
+    // Check if it belongs to BREAKFAST (PETIT DÉJEUNER) category and is not Kids Menu
+    if (menuItem.categoryId === "petit-dejeuner" && menuItem.name.fr !== "MENU ENFANT") {
+        openHotDrinkSelectorModal(menuItem);
+        return;
+    }
+    
+    executeAddToCartWithChoices(menuItem, null);
+}
+
+function openHotDrinkSelectorModal(menuItem) {
+    selectedMenuItem = menuItem;
+    const modal = document.getElementById("hotDrinkModalOverlay");
+    if (!modal) return;
+    
+    modal.style.display = "flex";
+    
+    // Determine required drinks
+    const isBrunchDuo = (menuItem.name.fr === "BRUNCH DUO");
+    const limit = isBrunchDuo ? 2 : 1;
+    
+    // Update labels and subtitle based on language
+    const titleEl = document.getElementById("hotDrinkModalTitle");
+    const subtitleEl = document.getElementById("hotDrinkModalSubtitle");
+    
+    const titles = {
+        fr: isBrunchDuo ? "Sélectionnez 2 Boissons Chaudes" : "Choisissez votre Boisson Chaude",
+        en: isBrunchDuo ? "Select 2 Hot Beverages" : "Choose Your Hot Beverage",
+        de: isBrunchDuo ? "Wählen Sie 2 Heißgetränke" : "Wählen Sie Ihr Heißgetränk"
+    };
+    
+    const subtitles = {
+        fr: `Votre menu "${menuItem.name[currentLang]}" comprend ${limit} boisson(s) chaude(s) au choix.`,
+        en: `Your "${menuItem.name[currentLang]}" menu includes ${limit} choice(s) of hot beverage.`,
+        de: `Ihr Menü "${menuItem.name[currentLang]}" beinhaltet ${limit} Heißgetränk(e) nach Wahl.`
+    };
+    
+    if (titleEl) titleEl.textContent = titles[currentLang] || titles.fr;
+    if (subtitleEl) subtitleEl.textContent = subtitles[currentLang] || subtitles.fr;
+    
+    // Setup close listeners once
+    const closeBtn = document.getElementById("hotDrinkCloseBtn");
+    if (closeBtn) {
+        closeBtn.onclick = () => {
+            modal.style.display = "none";
+        };
+    }
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            modal.style.display = "none";
+        }
+    };
+    
+    renderHotDrinksList(limit);
+}
+
+function renderHotDrinksList(limit) {
+    const listContainer = document.getElementById("hotDrinksList");
+    if (!listContainer) return;
+    listContainer.innerHTML = "";
+    
+    const counts = {};
+    HOT_DRINKS_OPTIONS.forEach((d, idx) => {
+        counts[idx] = 0;
+    });
+    
+    function updateListUI() {
+        const totalSelected = Object.values(counts).reduce((a, b) => a + b, 0);
+        
+        const counterEl = document.getElementById("hotDrinkCounter");
+        const counterTexts = {
+            fr: `Sélection : ${totalSelected} / ${limit}`,
+            en: `Selection: ${totalSelected} / ${limit}`,
+            de: `Auswahl: ${totalSelected} / ${limit}`
+        };
+        if (counterEl) {
+            counterEl.textContent = counterTexts[currentLang] || counterTexts.fr;
+        }
+        
+        const confirmBtn = document.getElementById("hotDrinkConfirmBtn");
+        if (confirmBtn) {
+            confirmBtn.disabled = (totalSelected !== limit);
+        }
+        
+        HOT_DRINKS_OPTIONS.forEach((drink, idx) => {
+            const row = listContainer.querySelector(`[data-index="${idx}"]`);
+            if (row) {
+                const countVal = counts[idx];
+                const countDisplay = row.querySelector(".hdo-qty");
+                const decBtn = row.querySelector(".hdo-dec");
+                const incBtn = row.querySelector(".hdo-inc");
+                
+                if (countDisplay) countDisplay.textContent = countVal;
+                
+                if (countVal > 0) {
+                    row.classList.add("selected");
+                } else {
+                    row.classList.remove("selected");
+                }
+                
+                if (decBtn) decBtn.disabled = (countVal === 0);
+                if (incBtn) incBtn.disabled = (totalSelected >= limit);
+            }
+        });
+    }
+    
+    HOT_DRINKS_OPTIONS.forEach((drink, idx) => {
+        const item = document.createElement("div");
+        item.className = "hdo-item";
+        item.dataset.index = idx;
+        
+        item.innerHTML = `
+            <div class="hdo-name">${drink[currentLang] || drink.fr}</div>
+            <div style="display: flex; align-items: center; gap: 12px; z-index: 10;">
+                <button class="tgs-btn hdo-dec" style="width: 28px; height: 28px; border-radius: 6px; font-size: 1rem; line-height: 1; aspect-ratio: auto; font-weight: bold; background: rgba(255,255,255,0.03);" disabled>-</button>
+                <span class="hdo-qty" style="font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; color: #FFFFFF; min-width: 14px; text-align: center;">0</span>
+                <button class="tgs-btn hdo-inc" style="width: 28px; height: 28px; border-radius: 6px; font-size: 1rem; line-height: 1; aspect-ratio: auto; font-weight: bold; background: rgba(255,255,255,0.03);">+</button>
+            </div>
+        `;
+        
+        const decBtn = item.querySelector(".hdo-dec");
+        const incBtn = item.querySelector(".hdo-inc");
+        
+        decBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (counts[idx] > 0) {
+                counts[idx]--;
+                updateListUI();
+            }
+        });
+        
+        incBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const total = Object.values(counts).reduce((a, b) => a + b, 0);
+            if (total < limit) {
+                counts[idx]++;
+                updateListUI();
+            }
+        });
+        
+        item.addEventListener("click", () => {
+            const total = Object.values(counts).reduce((a, b) => a + b, 0);
+            if (total < limit) {
+                counts[idx]++;
+                updateListUI();
+            } else if (counts[idx] > 0 && limit === 1) {
+                counts[idx] = 0;
+                updateListUI();
+            } else if (limit === 1) {
+                HOT_DRINKS_OPTIONS.forEach((_, i) => counts[i] = 0);
+                counts[idx] = 1;
+                updateListUI();
+            }
+        });
+        
+        listContainer.appendChild(item);
+    });
+    
+    updateListUI();
+    
+    const confirmBtn = document.getElementById("hotDrinkConfirmBtn");
+    confirmBtn.onclick = () => {
+        const finalChoices = [];
+        HOT_DRINKS_OPTIONS.forEach((drink, idx) => {
+            const qty = counts[idx];
+            for (let k = 0; k < qty; k++) {
+                finalChoices.push(drink[currentLang] || drink.fr);
+            }
+        });
+        
+        const modal = document.getElementById("hotDrinkModalOverlay");
+        if (modal) modal.style.display = "none";
+        
+        executeAddToCartWithChoices(selectedMenuItem, finalChoices);
+    };
+}
+
+function executeAddToCartWithChoices(menuItem, drinkChoices) {
+    let cartItemId = menuItem.name.fr;
+    if (drinkChoices && drinkChoices.length > 0) {
+        cartItemId += `_${drinkChoices.join('_')}`;
+    }
+
+    const existingIndex = clientCart.findIndex(item => item.id === cartItemId);
+    if (existingIndex !== -1) {
+        clientCart[existingIndex].qty += 1;
+    } else {
+        clientCart.push({
+            id: cartItemId,
+            name: menuItem.name,
+            price: parseFloat(menuItem.price) || 0,
+            image: menuItem.image,
+            qty: 1,
+            note: "",
+            drinkChoices: drinkChoices
+        });
+    }
+    saveClientCart();
+    
+    const toastMsgs = {
+        fr: "Ajouté au panier !",
+        en: "Added to basket !",
+        de: "In den Korb gelegt !"
+    };
+    showToast(`${menuItem.name[currentLang]} — ${toastMsgs[currentLang] || toastMsgs.fr}`);
+}
+
+// Update Cart Badge, Totals, and Items List
+function updateCartUI() {
+    const badge = document.getElementById("cabCartBadge");
+    const totalItems = clientCart.reduce((sum, item) => sum + item.qty, 0);
+    
+    if (badge) {
+        if (totalItems > 0) {
+            badge.textContent = totalItems;
+            badge.style.display = "flex";
+        } else {
+            badge.style.display = "none";
+        }
+    }
+
+    // Update Drawer Elements if open
+    const cdItemsList = document.getElementById("cdItemsList");
+    const cdEmptyState = document.getElementById("cdEmptyState");
+    const cdNotesSection = document.getElementById("cdNotesSection");
+    const cdFooter = document.getElementById("cdFooter");
+    const cdTotalPrice = document.getElementById("cdTotalPrice");
+
+    if (cdItemsList) {
+        if (clientCart.length === 0) {
+            cdItemsList.innerHTML = "";
+            if (cdEmptyState) cdEmptyState.style.display = "flex";
+            if (cdNotesSection) cdNotesSection.style.display = "none";
+            if (cdFooter) cdFooter.style.display = "none";
+        } else {
+            if (cdEmptyState) cdEmptyState.style.display = "none";
+            if (cdNotesSection) cdNotesSection.style.display = "flex";
+            if (cdFooter) cdFooter.style.display = "block";
+            
+            cdItemsList.innerHTML = "";
+            clientCart.forEach(item => {
+                const itemDiv = document.createElement("div");
+                itemDiv.className = "cd-item";
+                itemDiv.innerHTML = `
+                    <div class="cd-item-img" style="background-image: url('${item.image}')"></div>
+                    <div class="cd-item-details">
+                        <h4 class="cd-item-name">${item.name[currentLang]}</h4>
+                        ${item.drinkChoices && item.drinkChoices.length > 0 
+                            ? `<div style="font-size: 0.75rem; color: var(--sc-gold-light); font-style: italic; margin-top: 2px;">☕ ${item.drinkChoices.join(', ')}</div>` 
+                            : ''}
+                        <span class="cd-item-price">${item.price} MAD</span>
+                    </div>
+                    <div class="cd-item-actions">
+                        <div class="cd-qty-wrap">
+                            <button class="cd-qty-btn decrease-btn" data-id="${item.id}">-</button>
+                            <span class="cd-qty-num">${item.qty}</span>
+                            <button class="cd-qty-btn increase-btn" data-id="${item.id}">+</button>
+                        </div>
+                        <button class="cd-remove-btn" data-id="${item.id}" aria-label="Supprimer">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+
+                // Qty decrease
+                itemDiv.querySelector(".decrease-btn").addEventListener("click", () => {
+                    const idx = clientCart.findIndex(c => c.id === item.id);
+                    if (idx !== -1) {
+                        if (clientCart[idx].qty > 1) {
+                            clientCart[idx].qty -= 1;
+                        } else {
+                            clientCart.splice(idx, 1);
+                        }
+                        saveClientCart();
+                    }
+                });
+
+                // Qty increase
+                itemDiv.querySelector(".increase-btn").addEventListener("click", () => {
+                    const idx = clientCart.findIndex(c => c.id === item.id);
+                    if (idx !== -1) {
+                        clientCart[idx].qty += 1;
+                        saveClientCart();
+                    }
+                });
+
+                // Remove item
+                itemDiv.querySelector(".cd-remove-btn").addEventListener("click", () => {
+                    const idx = clientCart.findIndex(c => c.id === item.id);
+                    if (idx !== -1) {
+                        clientCart.splice(idx, 1);
+                        saveClientCart();
+                    }
+                });
+
+                cdItemsList.appendChild(itemDiv);
+            });
+
+            // Compute total
+            const totalPrice = clientCart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            if (cdTotalPrice) cdTotalPrice.textContent = `${totalPrice} MAD`;
+        }
+    }
+}
+
+// Open/Close Cart Drawer
+function openCartDrawer() {
+    const overlay = document.getElementById("cartDrawerOverlay");
+    const drawer = document.getElementById("cartDrawer");
+    
+    updateCartUI();
+    if (overlay && drawer) {
+        overlay.classList.add("active");
+        drawer.classList.add("active");
+        document.body.classList.add("no-scroll");
+    }
+}
+
+function closeCartDrawer() {
+    const overlay = document.getElementById("cartDrawerOverlay");
+    const drawer = document.getElementById("cartDrawer");
+    if (overlay && drawer) {
+        overlay.classList.remove("active");
+        drawer.classList.remove("active");
+        document.body.classList.remove("no-scroll");
+    }
+}
+
+// Helper to validate physical tables in Fès layout
+function isValidTableNumber(num) {
+    const table = parseInt(num);
+    if (isNaN(table)) return false;
+    if (table >= 101 && table <= 115) return true; // Salon
+    if (table >= 201 && table <= 223) return true; // Loge
+    if (table >= 301 && table <= 324) return true; // Terrasse
+    return false;
+}
+
+// Helper to get Table Zone Name based on physical layout
+function getTableZoneName(tableNum) {
+    const num = parseInt(tableNum);
+    if (num >= 101 && num <= 115) return "Salon";
+    if (num >= 201 && num <= 223) return "Loge";
+    if (num >= 301 && num <= 324) return "Terrasse";
+    return "Table";
+}
+
+// Parse Table Number
+function detectTableNumber() {
+    const urlParams = new URLSearchParams(window.location.search);
+    let table = urlParams.get("table");
+    
+    if (table) {
+        table = parseInt(table);
+        if (isValidTableNumber(table)) {
+            setTable(table);
+            return;
+        }
+    }
+
+    // Try reading last used table from LocalStorage
+    const storedTable = localStorage.getItem("grey_table");
+    if (storedTable) {
+        const tableInt = parseInt(storedTable);
+        if (isValidTableNumber(tableInt)) {
+            setTable(tableInt);
+            return;
+        }
+    }
+
+    // Show fallback modal selection if table not detected
+    showTableSelectorModal();
+}
+
+function setTable(num) {
+    clientTable = num;
+    localStorage.setItem("grey_table", num);
+    
+    // Update Badge text
+    const badge = document.getElementById("cdTableBadge");
+    if (badge) {
+        badge.textContent = `${getTableZoneName(num)} — ${num}`;
+    }
+
+    // Update URL query string smoothly without refreshing
+    const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?table=${num}`;
+    window.history.pushState({ path: newUrl }, '', newUrl);
+
+    // Hide fallback selector and display quick action bar
+    const modal = document.getElementById("tableModalOverlay");
+    if (modal) modal.style.display = "none";
+    
+    const actionBar = document.getElementById("clientActionBar");
+    if (actionBar) actionBar.style.display = "block";
+
+    // Begin listening for waiter actions
+    subscribeToActiveWaiterEvents();
+}
+
+function showTableSelectorModal() {
+    const modal = document.getElementById("tableModalOverlay");
+    const grid = document.getElementById("tableGridSelect");
+    
+    if (modal && grid) {
+        modal.style.display = "flex";
+        grid.innerHTML = "";
+        
+        const zones = [
+            { name: "Salon", start: 101, end: 115 },
+            { name: "Loge", start: 201, end: 223 },
+            { name: "Terrasse", start: 301, end: 324 }
+        ];
+        
+        zones.forEach(zone => {
+            const wrapper = document.createElement("div");
+            wrapper.style.display = "flex";
+            wrapper.style.flexDirection = "column";
+            wrapper.style.gap = "8px";
+            wrapper.style.width = "100%";
+            
+            const title = document.createElement("div");
+            title.style.fontFamily = "'DM Sans', sans-serif";
+            title.style.fontSize = "0.75rem";
+            title.style.fontWeight = "700";
+            title.style.letterSpacing = "0.08em";
+            title.style.color = "var(--sc-gold-light)";
+            title.style.textTransform = "uppercase";
+            title.style.textAlign = "left";
+            title.style.borderBottom = "1px solid rgba(255, 255, 255, 0.06)";
+            title.style.paddingBottom = "4px";
+            title.style.marginBottom = "4px";
+            title.textContent = zone.name;
+            
+            const btnGrid = document.createElement("div");
+            btnGrid.style.display = "grid";
+            btnGrid.style.gridTemplateColumns = "repeat(4, 1fr)";
+            btnGrid.style.gap = "6px";
+            
+            for (let i = zone.start; i <= zone.end; i++) {
+                const btn = document.createElement("button");
+                btn.className = "tgs-btn";
+                btn.textContent = i;
+                btn.addEventListener("click", () => setTable(i));
+                btnGrid.appendChild(btn);
+            }
+            
+            wrapper.appendChild(title);
+            wrapper.appendChild(btnGrid);
+            grid.appendChild(wrapper);
+        });
+    }
+}
+
+// Anonymous Auth for Firebase if active
+function initClientFirebaseSession() {
+    if (dbService.isCloud()) {
+        firebase.auth().signInAnonymously()
+        .then(() => {
+            console.log("🔒 Client anonymously authenticated securely.");
+        })
+        .catch(e => {
+            console.warn("🔒 Offline/Security anonymous session stub active.", e.message);
+        });
+    }
+}
+
+// Cooldown Abuse limits (seconds)
+const COOLDOWN_SECONDS = 90;
+
+function checkCallCooldown(type) {
+    const key = `cooldown_${type}`;
+    const lastCall = localStorage.getItem(key);
+    if (lastCall) {
+        const elapsed = (Date.now() - parseInt(lastCall)) / 1000;
+        if (elapsed < COOLDOWN_SECONDS) {
+            return Math.ceil(COOLDOWN_SECONDS - elapsed);
+        }
+    }
+    return 0;
+}
+
+function setCallCooldown(type) {
+    localStorage.setItem(`cooldown_${type}`, Date.now().toString());
+}
+
+// Trigger calling server
+function triggerQuickServiceCall(type) {
+    if (!clientTable) {
+        showTableSelectorModal();
+        return;
+    }
+
+    const waitRemaining = checkCallCooldown(type);
+    if (waitRemaining > 0) {
+        const errorMsgs = {
+            fr: `Veuillez attendre ${waitRemaining}s avant de renouveler cet appel.`,
+            en: `Please wait ${waitRemaining}s before repeating this request.`,
+            de: `Bitte warten Sie ${waitRemaining}s, bevor Sie diese Anfrage wiederholen.`
+        };
+        showToast(errorMsgs[currentLang] || errorMsgs.fr);
+        return;
+    }
+
+    // Set interactive loader state on button
+    const btnId = type === "waiter" ? "cabCallWaiter" : (type === "water" ? "cabRequestWater" : "cabRequestBill");
+    const btn = document.getElementById(btnId);
+    if (btn) btn.classList.add("active");
+
+    dbService.sendCall(clientTable, type, (success, callId) => {
+        if (btn) btn.classList.remove("active");
+
+        if (success) {
+            setCallCooldown(type);
+            
+            // Custom Toast feedback
+            const okMsgs = {
+                fr: "Appel envoyé ! Votre serveur a été alerté.",
+                en: "Call sent! Your waiter has been alerted.",
+                de: "Anruf gesendet! Ihr Kellner wurde benachrichtigt."
+            };
+            showToast(okMsgs[currentLang] || okMsgs.fr);
+            
+            // Store call ID locally to track state
+            localStorage.setItem(`last_call_${type}`, callId);
+        } else {
+            showToast("Erreur de connexion. Veuillez réessayer.");
+        }
+    });
+}
+
+// Send Pre-Order
+function submitPreOrder() {
+    if (clientCart.length === 0 || !clientTable) return;
+
+    const btn = document.getElementById("cdSubmitBtn");
+    const spinner = document.getElementById("cdSubmitSpinner");
+    
+    if (btn) btn.disabled = true;
+    if (spinner) spinner.style.display = "block";
+
+    const note = document.getElementById("cdSpecialNote") ? document.getElementById("cdSpecialNote").value : "";
+    const totalPrice = clientCart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+    // Format items list for database
+    const itemsList = clientCart.map(c => {
+        let nameFr = c.name.fr;
+        let nameLang = c.name[currentLang] || c.name.fr;
+        if (c.drinkChoices && c.drinkChoices.length > 0) {
+            const choicesStr = ` (${c.drinkChoices.join(', ')})`;
+            nameFr += choicesStr;
+            nameLang += choicesStr;
+        }
+        return {
+            name: nameFr,
+            name_lang: nameLang,
+            price: c.price.toString(),
+            qty: c.qty,
+            note: c.note || ""
+        };
+    });
+
+    dbService.sendPreOrder(clientTable, itemsList, note, totalPrice, (success, orderId) => {
+        if (btn) btn.disabled = false;
+        if (spinner) spinner.style.display = "none";
+
+        if (success) {
+            // Success Chime (Luxury sound)
+            try {
+                const chime = new Audio("https://assets.mixkit.co/active_storage/sfx/911/911-200.wav");
+                chime.volume = 0.4;
+                chime.play();
+            } catch (e) {}
+
+            // Success feedback toast
+            const okMsgs = {
+                fr: "Précommande envoyée ! Le serveur arrive la confirmer.",
+                en: "Pre-order sent! The waiter is coming to confirm.",
+                de: "Vorbestellung gesendet! Der Kellner kommt zur Bestätigung."
+            };
+            showToast(okMsgs[currentLang] || okMsgs.fr);
+            
+            // Clear Cart
+            clientCart = [];
+            saveClientCart();
+            if (document.getElementById("cdSpecialNote")) {
+                document.getElementById("cdSpecialNote").value = "";
+            }
+            
+            closeCartDrawer();
+            
+            // Save last order ID
+            localStorage.setItem("last_pre_order_id", orderId);
+        } else {
+            showToast("Erreur de connexion. Veuillez réessayer.");
+        }
+    });
+}
+
+// Subscribe to Active Waiter Events for Real-Time feedback toast (e.g. Karim has accepted the call)
+let unsubscribersList = [];
+
+function subscribeToActiveWaiterEvents() {
+    // Clear any previous subscriptions
+    unsubscribersList.forEach(unsub => unsub());
+    unsubscribersList = [];
+
+    if (!clientTable) return;
+
+    // Listen to Waiter Calls
+    const unsubCalls = dbService.onCallsChange((calls) => {
+        const waiterTypes = ["waiter", "water", "bill"];
+        waiterTypes.forEach(type => {
+            const lastCallId = localStorage.getItem(`last_call_${type}`);
+            if (lastCallId) {
+                const matchingCall = calls.find(c => c.id === lastCallId);
+                if (matchingCall && matchingCall.status === "accepted" && !matchingCall.notifiedClient) {
+                    // Mark as notified in memory/localStorage to avoid repeating toast
+                    matchingCall.notifiedClient = true;
+                    localStorage.removeItem(`last_call_${type}`);
+                    
+                    // Fetch waiter profile name
+                    dbService.getWaiters((waiters) => {
+                        const waiter = waiters.find(w => w.id === matchingCall.assignedTo);
+                        const waiterName = waiter ? waiter.name : "Votre serveur";
+                        
+                        const acceptedMsgs = {
+                            fr: `🔔 ${waiterName} a accepté votre appel et arrive !`,
+                            en: `🔔 ${waiterName} accepted your call and is coming!`,
+                            de: `🔔 ${waiterName} hat Ihren Anruf angenommen und kommt!`
+                        };
+                        
+                        showToast(acceptedMsgs[currentLang] || acceptedMsgs.fr);
+                    });
+                }
+            }
+        });
+    });
+    unsubscribersList.push(unsubCalls);
+
+    // Listen to Pre-orders
+    const unsubOrders = dbService.onPreOrdersChange((orders) => {
+        const lastOrderId = localStorage.getItem("last_pre_order_id");
+        if (lastOrderId) {
+            const matchingOrder = orders.find(o => o.id === lastOrderId);
+            if (matchingOrder && matchingOrder.status === "accepted") {
+                localStorage.removeItem("last_pre_order_id");
+                
+                dbService.getWaiters((waiters) => {
+                    const waiter = waiters.find(w => w.id === matchingOrder.assignedTo);
+                    const waiterName = waiter ? waiter.name : "Votre serveur";
+                    
+                    const acceptedMsgs = {
+                        fr: `👨‍🍳 ${waiterName} a validé votre précommande !`,
+                        en: `👨‍🍳 ${waiterName} confirmed your pre-order!`,
+                        de: `👨‍🍳 ${waiterName} hat Ihre Vorbestellung bestätigt!`
+                    };
+                    showToast(acceptedMsgs[currentLang] || acceptedMsgs.fr);
+                });
+            }
+        }
+    });
+    unsubscribersList.push(unsubOrders);
+}
+
+// --- Wire up HTML Events ---
+document.addEventListener("DOMContentLoaded", () => {
+    // Initialize Cart
+    initClientCart();
+    
+    // Parse URL / Detect Table
+    detectTableNumber();
+    
+    // Initialize Firebase Session if needed
+    initClientFirebaseSession();
+
+    // Bottom Bar Call Buttons
+    const btnCall = document.getElementById("cabCallWaiter");
+    const btnWater = document.getElementById("cabRequestWater");
+    const btnBill = document.getElementById("cabRequestBill");
+    const btnOpenCart = document.getElementById("cabOpenCart");
+    const btnCloseCart = document.getElementById("cdCloseBtn");
+    const overlayCart = document.getElementById("cartDrawerOverlay");
+    const btnSubmitOrder = document.getElementById("cdSubmitBtn");
+
+    if (btnCall) btnCall.addEventListener("click", () => triggerQuickServiceCall("waiter"));
+    if (btnWater) btnWater.addEventListener("click", () => triggerQuickServiceCall("water"));
+    if (btnBill) btnBill.addEventListener("click", () => triggerQuickServiceCall("bill"));
+    
+    if (btnOpenCart) btnOpenCart.addEventListener("click", openCartDrawer);
+    if (btnCloseCart) btnCloseCart.addEventListener("click", closeCartDrawer);
+    if (overlayCart) overlayCart.addEventListener("click", closeCartDrawer);
+    
+    if (btnSubmitOrder) btnSubmitOrder.addEventListener("click", submitPreOrder);
+});
+
