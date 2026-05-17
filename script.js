@@ -3645,6 +3645,7 @@ function subscribeToActiveWaiterEvents() {
         }
     });
     unsubscribersList.push(unsubOrders);
+}
 // ============================================================================
 // NOTIFICATION SYSTEM HISTORY & DRAWER (ROLEX THEME IMPLEMENTATION)
 // ============================================================================
