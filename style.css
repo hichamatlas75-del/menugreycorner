@@ -1072,13 +1072,14 @@ body {
     width: 100%;
     max-width: 600px;
     height: 74px;
-    background: rgba(10, 15, 26, 0.86);
+    /* High-end Rolex-inspired Emerald/Malachite Green Glassmorphism to grab attention */
+    background: linear-gradient(135deg, rgba(8, 48, 30, 0.94) 0%, rgba(4, 30, 18, 0.98) 100%);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-top: 1px solid rgba(201, 168, 76, 0.22);
+    border-top: 1.5px solid rgba(46, 204, 113, 0.4); /* Glowing emerald green top border */
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.5), 0 0 1px 1px rgba(201, 168, 76, 0.05);
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(46, 204, 113, 0.22); /* Emerald aura glow */
     z-index: 9999;
     padding: 6px 12px 14px;
     box-sizing: border-box;
