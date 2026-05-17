@@ -2816,14 +2816,169 @@ const HOT_DRINKS_OPTIONS = [
 ];
 
 // Add Item to Cart
+const SIDES_OPTIONS = [
+    { fr: "Légumes sautés", en: "Sautéed vegetables", de: "Sautiertes Gemüse" },
+    { fr: "Riz", en: "Rice", de: "Reis" },
+    { fr: "Frites", en: "French Fries", de: "Pommes Frites" },
+    { fr: "Purée pomme de terre", en: "Mashed potatoes", de: "Kartoffelpüree" },
+    { fr: "Potatos", en: "Potato Wedges", de: "Spaltenkartoffeln" }
+];
+
 function addToCart(menuItem) {
     // Check if it belongs to BREAKFAST (PETIT DÉJEUNER) category and is not Kids Menu
     if (menuItem.categoryId === "petit-dejeuner" && menuItem.name.fr !== "MENU ENFANT") {
         openHotDrinkSelectorModal(menuItem);
         return;
     }
+
+    // Check if it belongs to PLATS category OR is the ACCOMPAGNEMENTS item
+    if (menuItem.categoryId === "plats" || menuItem.name.fr.toUpperCase().includes("ACCOMPAGN")) {
+        openSidesSelectorModal(menuItem);
+        return;
+    }
     
     executeAddToCartWithChoices(menuItem, null);
+}
+
+function openSidesSelectorModal(menuItem) {
+    selectedMenuItem = menuItem;
+    const modal = document.getElementById("sidesModalOverlay");
+    if (!modal) return;
+    
+    modal.style.display = "flex";
+    
+    const limit = 2; // Always 2 sides!
+    
+    // Wire close button
+    const closeBtn = document.getElementById("sidesCloseBtn");
+    if (closeBtn) {
+        closeBtn.onclick = () => {
+            modal.style.display = "none";
+        };
+    }
+    
+    renderSidesList(limit);
+}
+
+function renderSidesList(limit) {
+    const listContainer = document.getElementById("sidesList");
+    if (!listContainer) return;
+    listContainer.innerHTML = "";
+    
+    const counts = {};
+    SIDES_OPTIONS.forEach((d, idx) => {
+        counts[idx] = 0;
+    });
+    
+    function updateListUI() {
+        const totalSelected = Object.values(counts).reduce((a, b) => a + b, 0);
+        
+        const counterEl = document.getElementById("sidesCounter");
+        const counterTexts = {
+            fr: `Sélection : ${totalSelected} / ${limit}`,
+            en: `Selection: ${totalSelected} / ${limit}`,
+            de: `Auswahl: ${totalSelected} / ${limit}`
+        };
+        if (counterEl) {
+            counterEl.textContent = counterTexts[currentLang] || counterTexts.fr;
+        }
+        
+        const confirmBtn = document.getElementById("sidesConfirmBtn");
+        if (confirmBtn) {
+            confirmBtn.disabled = (totalSelected !== limit);
+        }
+        
+        SIDES_OPTIONS.forEach((side, idx) => {
+            const row = listContainer.querySelector(`[data-index="${idx}"]`);
+            if (row) {
+                const countVal = counts[idx];
+                const countDisplay = row.querySelector(".hdo-qty");
+                const decBtn = row.querySelector(".hdo-dec");
+                const incBtn = row.querySelector(".hdo-inc");
+                
+                if (countDisplay) countDisplay.textContent = countVal;
+                
+                if (countVal > 0) {
+                    row.classList.add("selected");
+                } else {
+                    row.classList.remove("selected");
+                }
+                
+                if (decBtn) decBtn.disabled = (countVal === 0);
+                if (incBtn) incBtn.disabled = (totalSelected >= limit);
+            }
+        });
+    }
+    
+    SIDES_OPTIONS.forEach((side, idx) => {
+        const item = document.createElement("div");
+        item.className = "hdo-item";
+        item.dataset.index = idx;
+        
+        item.innerHTML = `
+            <div class="hdo-name">${side[currentLang] || side.fr}</div>
+            <div style="display: flex; align-items: center; gap: 12px; z-index: 10;">
+                <button class="tgs-btn hdo-dec" style="width: 28px; height: 28px; border-radius: 6px; font-size: 1rem; line-height: 1; aspect-ratio: auto; font-weight: bold; background: rgba(255,255,255,0.03);" disabled>-</button>
+                <span class="hdo-qty" style="font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; color: #FFFFFF; min-width: 14px; text-align: center;">0</span>
+                <button class="tgs-btn hdo-inc" style="width: 28px; height: 28px; border-radius: 6px; font-size: 1rem; line-height: 1; aspect-ratio: auto; font-weight: bold; background: rgba(255,255,255,0.03);">+</button>
+            </div>
+        `;
+        
+        const decBtn = item.querySelector(".hdo-dec");
+        const incBtn = item.querySelector(".hdo-inc");
+        
+        decBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (counts[idx] > 0) {
+                counts[idx]--;
+                updateListUI();
+            }
+        });
+        
+        incBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const total = Object.values(counts).reduce((a, b) => a + b, 0);
+            if (total < limit) {
+                counts[idx]++;
+                updateListUI();
+            }
+        });
+        
+        item.addEventListener("click", () => {
+            const total = Object.values(counts).reduce((a, b) => a + b, 0);
+            if (total < limit) {
+                counts[idx]++;
+                updateListUI();
+            } else if (counts[idx] > 0 && limit === 1) {
+                counts[idx] = 0;
+                updateListUI();
+            } else if (limit === 1) {
+                SIDES_OPTIONS.forEach((_, i) => counts[i] = 0);
+                counts[idx] = 1;
+                updateListUI();
+            }
+        });
+        
+        listContainer.appendChild(item);
+    });
+    
+    updateListUI();
+    
+    const confirmBtn = document.getElementById("sidesConfirmBtn");
+    confirmBtn.onclick = () => {
+        const finalChoices = [];
+        SIDES_OPTIONS.forEach((side, idx) => {
+            const qty = counts[idx];
+            for (let k = 0; k < qty; k++) {
+                finalChoices.push(side[currentLang] || side.fr);
+            }
+        });
+        
+        const modal = document.getElementById("sidesModalOverlay");
+        if (modal) modal.style.display = "none";
+        
+        executeAddToCartWithChoices(selectedMenuItem, finalChoices);
+    };
 }
 
 function openHotDrinkSelectorModal(menuItem) {
@@ -3063,9 +3218,23 @@ function updateCartUI() {
                     <div class="cd-item-img" style="background-image: url('${item.image}')"></div>
                     <div class="cd-item-details">
                         <h4 class="cd-item-name">${item.name[currentLang]}</h4>
-                        ${item.drinkChoices && item.drinkChoices.length > 0 
-                            ? `<div style="font-size: 0.75rem; color: var(--sc-gold-light); font-style: italic; margin-top: 2px;">☕ ${item.drinkChoices.join(', ')}</div>` 
-                            : ''}
+                        ${(() => {
+                            if (!item.drinkChoices || item.drinkChoices.length === 0) return '';
+                            const isSide = item.drinkChoices[0].includes("fr") || 
+                                           item.drinkChoices[0].includes("Frit") || 
+                                           item.drinkChoices[0].includes("Riz") || 
+                                           item.drinkChoices[0].includes("Rice") || 
+                                           item.drinkChoices[0].includes("Reis") || 
+                                           item.drinkChoices[0].includes("Légum") || 
+                                           item.drinkChoices[0].includes("vege") || 
+                                           item.drinkChoices[0].includes("Gemü") || 
+                                           item.drinkChoices[0].includes("Potato") || 
+                                           item.drinkChoices[0].includes("Puré") || 
+                                           item.drinkChoices[0].includes("Mash") || 
+                                           item.drinkChoices[0].includes("Karto") || 
+                                           item.drinkChoices[0].includes("Spalten");
+                            return `<div style="font-size: 0.75rem; color: var(--sc-gold-light); font-style: italic; margin-top: 2px;">${isSide ? '🥗' : '☕'} ${item.drinkChoices.join(', ')}</div>`;
+                        })()}
                         <span class="cd-item-price">${item.price} MAD</span>
                     </div>
                     <div class="cd-item-actions">
@@ -3205,6 +3374,15 @@ function setTable(num) {
     
     const actionBar = document.getElementById("clientActionBar");
     if (actionBar) actionBar.style.display = "block";
+
+    // Show premium floating notification bell button
+    const bellBtn = document.getElementById("notificationBellBtn");
+    if (bellBtn) bellBtn.style.display = "flex";
+
+    const ndTableBadge = document.getElementById("ndTableBadge");
+    if (ndTableBadge) {
+        ndTableBadge.textContent = `${getTableZoneName(num)} — ${num}`;
+    }
 
     // Begin listening for waiter actions
     subscribeToActiveWaiterEvents();
@@ -3438,7 +3616,9 @@ function subscribeToActiveWaiterEvents() {
                         en: "🔔 Your waiter accepted your call and is coming!",
                         de: "🔔 Ihr Kellner hat Ihren Anruf angenommen und kommt!"
                     };
-                    showToast(acceptedMsgs[currentLang] || acceptedMsgs.fr);
+                    const msg = acceptedMsgs[currentLang] || acceptedMsgs.fr;
+                    showToast(msg);
+                    addNotificationToHistory(msg);
                 }
             }
         });
@@ -3458,11 +3638,72 @@ function subscribeToActiveWaiterEvents() {
                     en: "👨‍🍳 The waiter confirmed your pre-order!",
                     de: "👨‍🍳 Der Kellner hat Ihre Vorbestellung bestätigt!"
                 };
-                showToast(acceptedMsgs[currentLang] || acceptedMsgs.fr);
+                const msg = acceptedMsgs[currentLang] || acceptedMsgs.fr;
+                showToast(msg);
+                addNotificationToHistory(msg);
             }
         }
     });
     unsubscribersList.push(unsubOrders);
+// ============================================================================
+// NOTIFICATION SYSTEM HISTORY & DRAWER (ROLEX THEME IMPLEMENTATION)
+// ============================================================================
+function addNotificationToHistory(message) {
+    const notifications = JSON.parse(localStorage.getItem("grey_notifications") || "[]");
+    
+    const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    notifications.push({
+        id: Math.random().toString(36).substr(2, 9),
+        time: timeStr,
+        message: message
+    });
+    
+    // Keep last 25 alerts to save space
+    if (notifications.length > 25) {
+        notifications.shift();
+    }
+    
+    localStorage.setItem("grey_notifications", JSON.stringify(notifications));
+    
+    // Show green badge dot
+    const bellBadge = document.getElementById("bellBadge");
+    if (bellBadge) {
+        bellBadge.style.display = "block";
+    }
+}
+
+function renderNotificationHistory() {
+    const ndContentFeed = document.getElementById("ndContentFeed");
+    if (!ndContentFeed) return;
+
+    const notifications = JSON.parse(localStorage.getItem("grey_notifications") || "[]");
+    
+    if (notifications.length === 0) {
+        ndContentFeed.innerHTML = `
+            <div class="nd-empty-state">
+                Aucune notification pour le moment.
+            </div>
+        `;
+        return;
+    }
+
+    ndContentFeed.innerHTML = "";
+    // Show newest first
+    notifications.slice().reverse().forEach(notif => {
+        const card = document.createElement("div");
+        card.className = "nd-card";
+        
+        card.innerHTML = `
+            <div class="nd-card-top">
+                <span class="nd-card-time">${notif.time}</span>
+                <span class="nd-card-status nd-status-accepted">Confirmé</span>
+            </div>
+            <div class="nd-card-body">
+                ${notif.message}
+            </div>
+        `;
+        ndContentFeed.appendChild(card);
+    });
 }
 
 // --- Wire up HTML Events ---
@@ -3493,5 +3734,39 @@ document.addEventListener("DOMContentLoaded", () => {
     if (overlayCart) overlayCart.addEventListener("click", closeCartDrawer);
     
     if (btnSubmitOrder) btnSubmitOrder.addEventListener("click", submitPreOrder);
+
+    // Notification Drawer Events
+    const bellBtn = document.getElementById("notificationBellBtn");
+    const ndOverlay = document.getElementById("notificationDrawerOverlay");
+    const ndCloseBtn = document.getElementById("ndCloseBtn");
+    const bellBadge = document.getElementById("bellBadge");
+
+    if (bellBtn) {
+        bellBtn.addEventListener("click", () => {
+            if (bellBadge) bellBadge.style.display = "none";
+            if (ndOverlay) ndOverlay.classList.add("active");
+            renderNotificationHistory();
+        });
+    }
+
+    if (ndCloseBtn) {
+        ndCloseBtn.addEventListener("click", () => {
+            if (ndOverlay) ndOverlay.classList.remove("active");
+        });
+    }
+
+    if (ndOverlay) {
+        ndOverlay.addEventListener("click", (e) => {
+            if (e.target === ndOverlay) {
+                ndOverlay.classList.remove("active");
+            }
+        });
+    }
+
+    // Check if there are past notifications to display the unread badge
+    const notifications = JSON.parse(localStorage.getItem("grey_notifications") || "[]");
+    if (notifications.length > 0 && bellBadge && clientTable) {
+        bellBadge.style.display = "block";
+    }
 });
 
