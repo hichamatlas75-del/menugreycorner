@@ -3168,6 +3168,9 @@ function getTableZoneName(tableNum) {
 
 // Parse Table Number
 function detectTableNumber() {
+    // Clear any potential legacy stored tables to avoid conflicts
+    localStorage.removeItem("grey_table");
+
     const urlParams = new URLSearchParams(window.location.search);
     let table = urlParams.get("table");
     
@@ -3179,23 +3182,12 @@ function detectTableNumber() {
         }
     }
 
-    // Try reading last used table from LocalStorage
-    const storedTable = localStorage.getItem("grey_table");
-    if (storedTable) {
-        const tableInt = parseInt(storedTable);
-        if (isValidTableNumber(tableInt)) {
-            setTable(tableInt);
-            return;
-        }
-    }
-
     // Show fallback modal selection if table not detected
     showTableSelectorModal();
 }
 
 function setTable(num) {
     clientTable = num;
-    localStorage.setItem("grey_table", num);
     
     // Update Badge text
     const badge = document.getElementById("cdTableBadge");
@@ -3438,24 +3430,15 @@ function subscribeToActiveWaiterEvents() {
             const lastCallId = localStorage.getItem(`last_call_${type}`);
             if (lastCallId) {
                 const matchingCall = calls.find(c => c.id === lastCallId);
-                if (matchingCall && matchingCall.status === "accepted" && !matchingCall.notifiedClient) {
-                    // Mark as notified in memory/localStorage to avoid repeating toast
-                    matchingCall.notifiedClient = true;
+                if (matchingCall && matchingCall.status === "accepted") {
                     localStorage.removeItem(`last_call_${type}`);
                     
-                    // Fetch waiter profile name
-                    dbService.getWaiters((waiters) => {
-                        const waiter = waiters.find(w => w.id === matchingCall.assignedTo);
-                        const waiterName = waiter ? waiter.name : "Votre serveur";
-                        
-                        const acceptedMsgs = {
-                            fr: `🔔 ${waiterName} a accepté votre appel et arrive !`,
-                            en: `🔔 ${waiterName} accepted your call and is coming!`,
-                            de: `🔔 ${waiterName} hat Ihren Anruf angenommen und kommt!`
-                        };
-                        
-                        showToast(acceptedMsgs[currentLang] || acceptedMsgs.fr);
-                    });
+                    const acceptedMsgs = {
+                        fr: "🔔 Votre serveur a accepté votre appel et arrive !",
+                        en: "🔔 Your waiter accepted your call and is coming!",
+                        de: "🔔 Ihr Kellner hat Ihren Anruf angenommen und kommt!"
+                    };
+                    showToast(acceptedMsgs[currentLang] || acceptedMsgs.fr);
                 }
             }
         });
@@ -3470,17 +3453,12 @@ function subscribeToActiveWaiterEvents() {
             if (matchingOrder && matchingOrder.status === "accepted") {
                 localStorage.removeItem("last_pre_order_id");
                 
-                dbService.getWaiters((waiters) => {
-                    const waiter = waiters.find(w => w.id === matchingOrder.assignedTo);
-                    const waiterName = waiter ? waiter.name : "Votre serveur";
-                    
-                    const acceptedMsgs = {
-                        fr: `👨‍🍳 ${waiterName} a validé votre précommande !`,
-                        en: `👨‍🍳 ${waiterName} confirmed your pre-order!`,
-                        de: `👨‍🍳 ${waiterName} hat Ihre Vorbestellung bestätigt!`
-                    };
-                    showToast(acceptedMsgs[currentLang] || acceptedMsgs.fr);
-                });
+                const acceptedMsgs = {
+                    fr: "👨‍🍳 Le serveur a validé votre précommande !",
+                    en: "👨‍🍳 The waiter confirmed your pre-order!",
+                    de: "👨‍🍳 Der Kellner hat Ihre Vorbestellung bestätigt!"
+                };
+                showToast(acceptedMsgs[currentLang] || acceptedMsgs.fr);
             }
         }
     });
