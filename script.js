@@ -3273,15 +3273,19 @@ function showTableSelectorModal() {
 }
 
 // Anonymous Auth for Firebase if active
-function initClientFirebaseSession() {
+function initClientFirebaseSession(callback) {
     if (dbService.isCloud()) {
         firebase.auth().signInAnonymously()
         .then(() => {
             console.log("🔒 Client anonymously authenticated securely.");
+            if (callback) callback();
         })
         .catch(e => {
             console.warn("🔒 Offline/Security anonymous session stub active.", e.message);
+            if (callback) callback();
         });
+    } else {
+        if (callback) callback();
     }
 }
 
@@ -3488,11 +3492,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Initialize Cart
     initClientCart();
     
-    // Parse URL / Detect Table
-    detectTableNumber();
-    
-    // Initialize Firebase Session if needed
-    initClientFirebaseSession();
+    // First initialize Firebase Session, then parse URL / Detect Table to ensure active listener compliance!
+    initClientFirebaseSession(() => {
+        detectTableNumber();
+    });
 
     // Bottom Bar Call Buttons
     const btnCall = document.getElementById("cabCallWaiter");
