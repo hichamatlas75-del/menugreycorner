@@ -268,6 +268,8 @@ const dbService = {
                     });
 
                     callback(waiters);
+                }, err => {
+                    console.error("❌ Servers stream error:", err);
                 });
 
         } else {
@@ -309,6 +311,8 @@ const dbService = {
                     });
 
                     callback(tables);
+                }, err => {
+                    console.error("❌ Tables stream error:", err);
                 });
 
         } else {
@@ -491,6 +495,8 @@ const dbService = {
                     });
 
                     callback(calls);
+                }, err => {
+                    console.error("❌ Calls stream error:", err);
                 });
 
         } else {
@@ -716,6 +722,8 @@ const dbService = {
                     });
 
                     callback(orders);
+                }, err => {
+                    console.error("❌ PreOrders stream error:", err);
                 });
 
         } else {
@@ -831,6 +839,8 @@ const dbService = {
                         doc.data().frozen === true;
 
                     callback(frozen);
+                }, err => {
+                    console.error("❌ SystemFreeze stream error:", err);
                 });
 
         } else {
