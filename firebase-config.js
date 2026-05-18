@@ -888,7 +888,7 @@ const dbService = {
                         e
                     );
 
-                    if (callback) callback(false);
+                    if (callback) callback(false, e.message || String(e));
                 });
 
         } else {
