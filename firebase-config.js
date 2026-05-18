@@ -2,16 +2,10 @@
  * ============================================================================
  * GREY CORNER — FIREBASE CONFIGURATION & DUAL-MODE SERVICE LAYER
  * ============================================================================
- * This file provides a unified database service layer (`dbService`).
- * It automatically detects if real Firebase keys are configured.
- * - If keys are configured, it initializes Firebase and Firestore.
- * - If keys are left as placeholders, it falls back to Simulation Mode (using
- *   BroadcastChannel and LocalStorage) so you can test all tabs in real-time
- *   instantly without setting up a backend!
+ * COMPLETE FIXED VERSION
+ * ============================================================================
  */
 
-// --- 1. FIREBASE CONFIGURATION KEYS ---
-// Replace placeholders with your real Firebase web app credentials to connect to Cloud.
 const firebaseConfig = {
     apiKey: "AIzaSyAoINLpUCCic9Xz9_PnM3al9Iu69q1FQpY",
     authDomain: "grey-corner-restaurant.firebaseapp.com",
@@ -21,354 +15,515 @@ const firebaseConfig = {
     appId: "1:251703175568:web:8d693adc297eb869d12b15",
     measurementId: "G-3HVHB0EELC"
 };
-// --- 2. INITIALIZATION & DUAL-MODE DETECTION ---
+
+// ============================================================================
+// FIREBASE INIT
+// ============================================================================
+
 let isFirebaseActive = false;
 let db = null;
 
-// Helper to check if credentials are valid
 function hasValidFirebaseKeys() {
-    return firebaseConfig.apiKey && firebaseConfig.apiKey.trim() !== "" &&
-        firebaseConfig.projectId && firebaseConfig.projectId.trim() !== "";
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if (urlParams.get("sim") === "true") {
+        console.log("ℹ️ Simulation Mode forced");
+        return false;
+    }
+
+    return firebaseConfig.apiKey &&
+        firebaseConfig.projectId;
 }
 
 if (hasValidFirebaseKeys()) {
+
     try {
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
         db = firebase.firestore();
-        // Enable offline persistence for low internet conditions
-        db.enablePersistence().catch(err => {
-            console.warn("⚠️ Firestore offline persistence not enabled:", err.code);
-        });
+
+        db.enablePersistence()
+            .catch(err => {
+                console.warn("⚠️ Persistence disabled:", err.code);
+            });
+
         isFirebaseActive = true;
-        console.log("🔥 Firebase Cloud Mode Active (Firestore Connected)");
+
+        console.log("🔥 Firebase Connected");
+
     } catch (e) {
-        console.error("❌ Failed to initialize real Firebase. Falling back to Simulation Mode:", e);
+
+        console.error("❌ Firebase Init Error:", e);
+
+        isFirebaseActive = false;
     }
+
 } else {
-    console.log("ℹ️ No Firebase keys detected. Running in Local Simulation Mode.");
+
+    console.log("ℹ️ Simulation Mode Active");
 }
 
-// --- 3. LOCAL SIMULATION EMULATION (BroadcastChannel / LocalStorage) ---
-const SIM_CHANNEL = "grey_corner_restaurant_channel";
-const simBroadcast = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel(SIM_CHANNEL) : null;
+// ============================================================================
+// LOCAL SIMULATION
+// ============================================================================
 
-// Initialize mock collections in LocalStorage if empty
+const SIM_CHANNEL = "grey_corner_restaurant_channel";
+
+const simBroadcast =
+    typeof BroadcastChannel !== "undefined"
+        ? new BroadcastChannel(SIM_CHANNEL)
+        : null;
+
+// ============================================================================
+// DEFAULT DATA
+// ============================================================================
+
 const DEFAULT_WAITERS = [
-    { id: "karim", name: "Karim", email: "karim@greycorner.com", active: true },
-    { id: "yassine", name: "Yassine", email: "yassine@greycorner.com", active: true }
+    {
+        id: "karim",
+        name: "Karim",
+        email: "karim@greycorner.com",
+        active: true
+    },
+    {
+        id: "yassine",
+        name: "Yassine",
+        email: "yassine@greycorner.com",
+        active: true
+    }
 ];
 
 const DEFAULT_TABLES = {};
+
 for (let i = 1; i <= 24; i++) {
+
     DEFAULT_TABLES[i] = {
         tableNumber: i,
-        assignedTo: i <= 8 ? "karim" : (i <= 16 ? "yassine" : ""), // default: Karim gets 1-8, Yassine gets 9-16, others unassigned
+        assignedTo:
+            i <= 8
+                ? "karim"
+                : i <= 16
+                    ? "yassine"
+                    : "",
         active: true
     };
 }
 
+// ============================================================================
+// LOCAL STORAGE HELPERS
+// ============================================================================
+
 function getLocalCollection(name, defaultVal = []) {
+
     const val = localStorage.getItem(`sim_${name}`);
+
     if (!val) {
-        localStorage.setItem(`sim_${name}`, JSON.stringify(defaultVal));
+
+        localStorage.setItem(
+            `sim_${name}`,
+            JSON.stringify(defaultVal)
+        );
+
         return defaultVal;
     }
-    return JSON.parse(val);
+
+    try {
+
+        return JSON.parse(val);
+
+    } catch (e) {
+
+        console.error("❌ JSON Parse Error:", name);
+
+        return defaultVal;
+    }
 }
 
 function setLocalCollection(name, data) {
-    localStorage.setItem(`sim_${name}`, JSON.stringify(data));
-    // Broadcast changes to other browser tabs
+
+    localStorage.setItem(
+        `sim_${name}`,
+        JSON.stringify(data)
+    );
+
     if (simBroadcast) {
-        simBroadcast.postMessage({ type: "SYNC", collection: name, data: data });
+
+        simBroadcast.postMessage({
+            type: "SYNC",
+            collection: name,
+            data: data
+        });
     }
-    // Also trigger local simulation listeners for instant same-tab rendering
-    if (typeof dbService !== "undefined" && dbService._simListeners) {
+
+    if (typeof dbService !== "undefined") {
+
         dbService._simListeners.forEach(listener => {
+
             try {
+
                 listener(name, data);
-            } catch (e) {}
+
+            } catch (e) {
+
+                console.error(e);
+            }
         });
     }
 }
 
-// Ensure default data is initialized for simulation
+// ============================================================================
+// INIT LOCAL STORAGE
+// ============================================================================
+
 if (!isFirebaseActive) {
+
     getLocalCollection("servers", DEFAULT_WAITERS);
+
     getLocalCollection("tables", DEFAULT_TABLES);
+
     getLocalCollection("calls", []);
+
     getLocalCollection("pre_orders", []);
+
+    getLocalCollection("system_config", {
+        frozen: false
+    });
 }
 
-// --- 4. UNIFIED UNIFIED DATABASE SERVICE LAYER (dbService) ---
-const dbService = {
-    // Check mode
-    isCloud() { return isFirebaseActive; },
+// ============================================================================
+// DATABASE SERVICE
+// ============================================================================
 
-    // Listeners registry for local simulation
+const dbService = {
+
+    // =========================================================================
+    // MODE
+    // =========================================================================
+
+    isCloud() {
+        return isFirebaseActive;
+    },
+
+    // =========================================================================
+    // LISTENERS
+    // =========================================================================
+
     _simListeners: [],
+
     registerSimListener(callback) {
         this._simListeners.push(callback);
     },
 
-    // Initialize local listener
     initSimBroadcastListener() {
-        if (simBroadcast) {
-            simBroadcast.onmessage = (event) => {
-                if (event.data && event.data.type === "SYNC") {
-                    localStorage.setItem(`sim_${event.data.collection}`, JSON.stringify(event.data.data));
-                    // Trigger registered listeners
-                    this._simListeners.forEach(listener => listener(event.data.collection, event.data.data));
-                }
-            };
-        }
-    },
 
-    // ==========================================
-    // SERVERS (WAITERS) API
-    // ==========================================
-    getWaiters(callback) {
-        if (isFirebaseActive) {
-            return db.collection("servers").where("active", "==", true).onSnapshot(snapshot => {
-                const waiters = [];
-                snapshot.forEach(doc => waiters.push({ id: doc.id, ...doc.data() }));
-                callback(waiters);
-            });
-        } else {
-            const waiters = getLocalCollection("servers");
-            callback(waiters);
-            // Register for updates
-            this.registerSimListener((collection, data) => {
-                if (collection === "servers") callback(data);
-            });
-            return () => { }; // return unsubscriber stub
-        }
-    },
+        if (!simBroadcast) return;
 
-    // ==========================================
-    // TABLES API
-    // ==========================================
-    getTables(callback) {
-        if (isFirebaseActive) {
-            return db.collection("tables").onSnapshot(snapshot => {
-                const tables = {};
-                snapshot.forEach(doc => {
-                    tables[doc.id] = { tableNumber: parseInt(doc.id), ...doc.data() };
+        simBroadcast.onmessage = (event) => {
+
+            if (
+                event.data &&
+                event.data.type === "SYNC"
+            ) {
+
+                localStorage.setItem(
+                    `sim_${event.data.collection}`,
+                    JSON.stringify(event.data.data)
+                );
+
+                this._simListeners.forEach(listener => {
+
+                    listener(
+                        event.data.collection,
+                        event.data.data
+                    );
                 });
-                callback(tables);
-            });
+            }
+        };
+    },
+
+    // =========================================================================
+    // WAITERS
+    // =========================================================================
+
+    getWaiters(callback) {
+
+        if (isFirebaseActive) {
+
+            return db.collection("servers")
+                .where("active", "==", true)
+                .onSnapshot(snapshot => {
+
+                    const waiters = [];
+
+                    snapshot.forEach(doc => {
+
+                        waiters.push({
+                            id: doc.id,
+                            ...doc.data()
+                        });
+                    });
+
+                    callback(waiters);
+                });
+
         } else {
-            const tables = getLocalCollection("tables");
-            callback(tables);
+
+            callback(
+                getLocalCollection("servers")
+            );
+
             this.registerSimListener((collection, data) => {
-                if (collection === "tables") callback(data);
+
+                if (collection === "servers") {
+                    callback(data);
+                }
             });
+
+            return () => { };
+        }
+    },
+
+    // =========================================================================
+    // TABLES
+    // =========================================================================
+
+    getTables(callback) {
+
+        if (isFirebaseActive) {
+
+            return db.collection("tables")
+                .onSnapshot(snapshot => {
+
+                    const tables = {};
+
+                    snapshot.forEach(doc => {
+
+                        tables[doc.id] = {
+                            tableNumber: parseInt(doc.id),
+                            ...doc.data()
+                        };
+                    });
+
+                    callback(tables);
+                });
+
+        } else {
+
+            callback(
+                getLocalCollection("tables")
+            );
+
+            this.registerSimListener((collection, data) => {
+
+                if (collection === "tables") {
+                    callback(data);
+                }
+            });
+
             return () => { };
         }
     },
 
     assignTable(tableId, waiterId, callback) {
+
+        const data = {
+            tableNumber: parseInt(tableId),
+            assignedTo: waiterId,
+            active: true,
+            lastUpdated: isFirebaseActive
+                ? firebase.firestore.FieldValue.serverTimestamp()
+                : new Date().toISOString()
+        };
+
         if (isFirebaseActive) {
-            db.collection("tables").doc(String(tableId)).set({
-                assignedTo: waiterId,
-                active: true,
-                lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-            }, { merge: true })
-                .then(() => { if (callback) callback(true); })
-                .catch(e => { console.error(e); if (callback) callback(false); });
+
+            db.collection("tables")
+                .doc(String(tableId))
+                .set(data, { merge: true })
+
+                .then(() => {
+
+                    if (callback) callback(true);
+
+                })
+
+                .catch(e => {
+
+                    console.error(e);
+
+                    if (callback) callback(false);
+                });
+
         } else {
-            const tables = getLocalCollection("tables");
-            tables[tableId] = {
-                tableNumber: parseInt(tableId),
-                assignedTo: waiterId,
-                active: true,
-                lastUpdated: new Date().toISOString()
-            };
+
+            const tables =
+                getLocalCollection("tables");
+
+            tables[tableId] = data;
+
             setLocalCollection("tables", tables);
+
             if (callback) callback(true);
         }
     },
 
-    // ==========================================
-    // WAITER CALLS API
-    // ==========================================
+    // =========================================================================
+    // CALLS
+    // =========================================================================
+
     sendCall(tableId, type, callback) {
-        // First determine assigned waiter
-        const getAssigneeAndSend = (waiterId) => {
-            const callData = {
+
+        const execute = (waiterId) => {
+
+            const data = {
                 table: parseInt(tableId),
                 assignedTo: waiterId || "",
-                type: type, // 'waiter' | 'bill' | 'water' | 'assistance'
+                type: type,
                 status: "pending",
-                createdAt: isFirebaseActive ? firebase.firestore.FieldValue.serverTimestamp() : new Date().toISOString(),
+                createdAt: isFirebaseActive
+                    ? firebase.firestore.FieldValue.serverTimestamp()
+                    : new Date().toISOString(),
                 acceptedAt: null,
                 completedAt: null
             };
 
             if (isFirebaseActive) {
-                db.collection("waiter_calls").add(callData)
-                    .then((docRef) => { if (callback) callback(true, docRef.id); })
-                    .catch(e => { console.error(e); if (callback) callback(false); });
+
+                db.collection("waiter_calls")
+                    .add(data)
+
+                    .then(docRef => {
+
+                        if (callback) {
+                            callback(true, docRef.id);
+                        }
+                    })
+
+                    .catch(e => {
+
+                        console.error(e);
+
+                        if (callback) callback(false);
+                    });
+
             } else {
-                const calls = getLocalCollection("calls");
-                const callId = "call_" + Math.random().toString(36).substring(2, 9);
-                const localCall = { id: callId, ...callData };
-                calls.push(localCall);
+
+                const calls =
+                    getLocalCollection("calls");
+
+                const id =
+                    "call_" +
+                    Math.random()
+                        .toString(36)
+                        .substring(2, 9);
+
+                calls.push({
+                    id,
+                    ...data
+                });
+
                 setLocalCollection("calls", calls);
-                if (callback) callback(true, callId);
+
+                if (callback) callback(true, id);
             }
         };
 
-        // Fetch assigned waiter for this table
         if (isFirebaseActive) {
-            db.collection("tables").doc(String(tableId)).get()
+
+            db.collection("tables")
+                .doc(String(tableId))
+                .get()
+
                 .then(doc => {
-                    const waiterId = (doc.exists && doc.data()) ? doc.data().assignedTo : "";
-                    getAssigneeAndSend(waiterId);
+
+                    const waiterId =
+                        doc.exists
+                            ? doc.data().assignedTo
+                            : "";
+
+                    execute(waiterId);
                 })
-                .catch(() => getAssigneeAndSend(""));
+
+                .catch(() => execute(""));
+
         } else {
-            const tables = getLocalCollection("tables");
-            const waiterId = tables[tableId] ? tables[tableId].assignedTo : "";
-            getAssigneeAndSend(waiterId);
+
+            const tables =
+                getLocalCollection("tables");
+
+            execute(
+                tables[tableId]
+                    ? tables[tableId].assignedTo
+                    : ""
+            );
         }
     },
 
     onCallsChange(callback) {
+
         if (isFirebaseActive) {
+
             return db.collection("waiter_calls")
                 .orderBy("createdAt", "desc")
                 .onSnapshot(snapshot => {
+
                     const calls = [];
+
                     snapshot.forEach(doc => {
+
                         const data = doc.data();
-                        // Format Firestore Timestamp to string
-                        const createdAt = data.createdAt ? (data.createdAt.toDate ? data.createdAt.toDate().toISOString() : data.createdAt) : new Date().toISOString();
-                        calls.push({ id: doc.id, ...data, createdAt });
+
+                        calls.push({
+                            id: doc.id,
+                            ...data,
+                            createdAt:
+                                data.createdAt &&
+                                    data.createdAt.toDate
+                                    ? data.createdAt
+                                        .toDate()
+                                        .toISOString()
+                                    : data.createdAt
+                        });
                     });
+
                     callback(calls);
                 });
+
         } else {
+
             const trigger = () => {
-                const calls = getLocalCollection("calls");
-                // Sort desc
-                calls.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                const calls =
+                    getLocalCollection("calls");
+
+                calls.sort(
+                    (a, b) =>
+                        new Date(b.createdAt) -
+                        new Date(a.createdAt)
+                );
+
                 callback(calls);
             };
+
             trigger();
-            this.registerSimListener((collection) => {
-                if (collection === "calls") trigger();
+
+            this.registerSimListener(collection => {
+
+                if (collection === "calls") {
+                    trigger();
+                }
             });
+
             return () => { };
         }
     },
 
     updateCallStatus(callId, status, waiterId, callback) {
-        if (typeof waiterId === "function") {
-            callback = waiterId;
-            waiterId = null;
-        }
 
-        const updateData = {
-            status: status, // 'pending' | 'accepted' | 'completed' | 'ignored'
-            acceptedAt: status === "accepted" ? (isFirebaseActive ? firebase.firestore.FieldValue.serverTimestamp() : new Date().toISOString()) : null,
-            completedAt: status === "completed" ? (isFirebaseActive ? firebase.firestore.FieldValue.serverTimestamp() : new Date().toISOString()) : null
-        };
-
-        if (waiterId) {
-            updateData.assignedTo = waiterId;
-        }
-
-        if (isFirebaseActive) {
-            db.collection("waiter_calls").doc(callId).update(updateData)
-                .then(() => { if (callback) callback(true); })
-                .catch(e => { console.error(e); if (callback) callback(false); });
-        } else {
-            const calls = getLocalCollection("calls");
-            const idx = calls.findIndex(c => c.id === callId);
-            if (idx !== -1) {
-                calls[idx] = { ...calls[idx], ...updateData };
-                setLocalCollection("calls", calls);
-                if (callback) callback(true);
-            } else {
-                if (callback) callback(false);
-            }
-        }
-    },
-
-    // ==========================================
-    // PRE-ORDERS API
-    // ==========================================
-    sendPreOrder(tableId, items, note, totalPrice, callback) {
-        const getAssigneeAndSend = (waiterId) => {
-            const orderData = {
-                table: parseInt(tableId),
-                assignedTo: waiterId || "",
-                items: items,
-                note: note || "",
-                totalPrice: parseFloat(totalPrice),
-                status: "pending", // 'pending' | 'accepted' | 'completed' | 'cancelled'
-                createdAt: isFirebaseActive ? firebase.firestore.FieldValue.serverTimestamp() : new Date().toISOString(),
-                acceptedAt: null
-            };
-
-            if (isFirebaseActive) {
-                db.collection("pre_orders").add(orderData)
-                    .then((docRef) => { if (callback) callback(true, docRef.id); })
-                    .catch(e => { console.error(e); if (callback) callback(false); });
-            } else {
-                const orders = getLocalCollection("pre_orders");
-                const orderId = "order_" + Math.random().toString(36).substring(2, 9);
-                const localOrder = { id: orderId, ...orderData };
-                orders.push(localOrder);
-                setLocalCollection("pre_orders", orders);
-                if (callback) callback(true, orderId);
-            }
-        };
-
-        if (isFirebaseActive) {
-            db.collection("tables").doc(String(tableId)).get()
-                .then(doc => {
-                    const waiterId = (doc.exists && doc.data()) ? doc.data().assignedTo : "";
-                    getAssigneeAndSend(waiterId);
-                })
-                .catch(() => getAssigneeAndSend(""));
-        } else {
-            const tables = getLocalCollection("tables");
-            const waiterId = tables[tableId] ? tables[tableId].assignedTo : "";
-            getAssigneeAndSend(waiterId);
-        }
-    },
-
-    onPreOrdersChange(callback) {
-        if (isFirebaseActive) {
-            return db.collection("pre_orders")
-                .orderBy("createdAt", "desc")
-                .onSnapshot(snapshot => {
-                    const orders = [];
-                    snapshot.forEach(doc => {
-                        const data = doc.data();
-                        const createdAt = data.createdAt ? (data.createdAt.toDate ? data.createdAt.toDate().toISOString() : data.createdAt) : new Date().toISOString();
-                        orders.push({ id: doc.id, ...data, createdAt });
-                    });
-                    callback(orders);
-                });
-        } else {
-            const trigger = () => {
-                const orders = getLocalCollection("pre_orders");
-                orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-                callback(orders);
-            };
-            trigger();
-            this.registerSimListener((collection) => {
-                if (collection === "pre_orders") trigger();
-            });
-            return () => { };
-        }
-    },
-
-    updatePreOrderStatus(orderId, status, waiterId, callback) {
         if (typeof waiterId === "function") {
             callback = waiterId;
             waiterId = null;
@@ -376,7 +531,19 @@ const dbService = {
 
         const updateData = {
             status: status,
-            acceptedAt: status === "accepted" ? (isFirebaseActive ? firebase.firestore.FieldValue.serverTimestamp() : new Date().toISOString()) : null
+            acceptedAt:
+                status === "accepted"
+                    ? isFirebaseActive
+                        ? firebase.firestore.FieldValue.serverTimestamp()
+                        : new Date().toISOString()
+                    : null,
+
+            completedAt:
+                status === "completed"
+                    ? isFirebaseActive
+                        ? firebase.firestore.FieldValue.serverTimestamp()
+                        : new Date().toISOString()
+                    : null
         };
 
         if (waiterId) {
@@ -384,66 +551,458 @@ const dbService = {
         }
 
         if (isFirebaseActive) {
-            db.collection("pre_orders").doc(orderId).update(updateData)
-                .then(() => { if (callback) callback(true); })
-                .catch(e => { console.error(e); if (callback) callback(false); });
+
+            db.collection("waiter_calls")
+                .doc(callId)
+                .update(updateData)
+
+                .then(() => {
+
+                    if (callback) callback(true);
+
+                })
+
+                .catch(e => {
+
+                    console.error(e);
+
+                    if (callback) callback(false);
+                });
+
         } else {
-            const orders = getLocalCollection("pre_orders");
-            const idx = orders.findIndex(o => o.id === orderId);
+
+            const calls =
+                getLocalCollection("calls");
+
+            const idx =
+                calls.findIndex(c => c.id === callId);
+
             if (idx !== -1) {
-                orders[idx] = { ...orders[idx], ...updateData };
-                setLocalCollection("pre_orders", orders);
+
+                calls[idx] = {
+                    ...calls[idx],
+                    ...updateData
+                };
+
+                setLocalCollection("calls", calls);
+
                 if (callback) callback(true);
+
             } else {
+
                 if (callback) callback(false);
             }
         }
     },
 
-    // ==========================================
-    // MAINTENANCE / DATA CLEANUP
-    // ==========================================
-    cleanupOldData(callback) {
-        const cutoffTime = new Date(Date.now() - 24 * 60 * 60 * 1000); // 24 hours ago
+    // =========================================================================
+    // PRE-ORDERS
+    // =========================================================================
+
+    sendPreOrder(tableId, items, note, totalPrice, callback) {
+
+        const execute = (waiterId) => {
+
+            const data = {
+                table: parseInt(tableId),
+                assignedTo: waiterId || "",
+                items: items,
+                note: note || "",
+                totalPrice: parseFloat(totalPrice),
+                status: "pending",
+                createdAt: isFirebaseActive
+                    ? firebase.firestore.FieldValue.serverTimestamp()
+                    : new Date().toISOString(),
+                acceptedAt: null
+            };
+
+            if (isFirebaseActive) {
+
+                db.collection("pre_orders")
+                    .add(data)
+
+                    .then(docRef => {
+
+                        if (callback) {
+                            callback(true, docRef.id);
+                        }
+                    })
+
+                    .catch(e => {
+
+                        console.error(e);
+
+                        if (callback) callback(false);
+                    });
+
+            } else {
+
+                const orders =
+                    getLocalCollection("pre_orders");
+
+                const id =
+                    "order_" +
+                    Math.random()
+                        .toString(36)
+                        .substring(2, 9);
+
+                orders.push({
+                    id,
+                    ...data
+                });
+
+                setLocalCollection("pre_orders", orders);
+
+                if (callback) callback(true, id);
+            }
+        };
 
         if (isFirebaseActive) {
-            // In production, we clean up completed or older entries to keep Firestore inside Spark's Free Tier
-            let operations = [];
 
-            // Delete old calls
-            db.collection("waiter_calls").where("createdAt", "<", cutoffTime).get()
-                .then(snapshot => {
-                    let batch = db.batch();
-                    snapshot.forEach(doc => batch.delete(doc.ref));
-                    return batch.commit();
+            db.collection("tables")
+                .doc(String(tableId))
+                .get()
+
+                .then(doc => {
+
+                    const waiterId =
+                        doc.exists
+                            ? doc.data().assignedTo
+                            : "";
+
+                    execute(waiterId);
                 })
-                .then(() => {
-                    // Delete old pre_orders
-                    return db.collection("pre_orders").where("createdAt", "<", cutoffTime).get();
-                })
-                .then(snapshot => {
-                    let batch = db.batch();
-                    snapshot.forEach(doc => batch.delete(doc.ref));
-                    return batch.commit();
-                })
-                .then(() => { if (callback) callback(true); })
-                .catch(e => { console.error(e); if (callback) callback(false); });
+
+                .catch(() => execute(""));
+
         } else {
-            // Local cleanup
-            const calls = getLocalCollection("calls");
-            const newCalls = calls.filter(c => new Date(c.createdAt) >= cutoffTime);
-            setLocalCollection("calls", newCalls);
 
-            const orders = getLocalCollection("pre_orders");
-            const newOrders = orders.filter(o => new Date(o.createdAt) >= cutoffTime);
-            setLocalCollection("pre_orders", newOrders);
+            const tables =
+                getLocalCollection("tables");
+
+            execute(
+                tables[tableId]
+                    ? tables[tableId].assignedTo
+                    : ""
+            );
+        }
+    },
+
+    onPreOrdersChange(callback) {
+
+        if (isFirebaseActive) {
+
+            return db.collection("pre_orders")
+                .orderBy("createdAt", "desc")
+                .onSnapshot(snapshot => {
+
+                    const orders = [];
+
+                    snapshot.forEach(doc => {
+
+                        const data = doc.data();
+
+                        orders.push({
+                            id: doc.id,
+                            ...data,
+                            createdAt:
+                                data.createdAt &&
+                                    data.createdAt.toDate
+                                    ? data.createdAt
+                                        .toDate()
+                                        .toISOString()
+                                    : data.createdAt
+                        });
+                    });
+
+                    callback(orders);
+                });
+
+        } else {
+
+            const trigger = () => {
+
+                const orders =
+                    getLocalCollection("pre_orders");
+
+                orders.sort(
+                    (a, b) =>
+                        new Date(b.createdAt) -
+                        new Date(a.createdAt)
+                );
+
+                callback(orders);
+            };
+
+            trigger();
+
+            this.registerSimListener(collection => {
+
+                if (collection === "pre_orders") {
+                    trigger();
+                }
+            });
+
+            return () => { };
+        }
+    },
+
+    updatePreOrderStatus(orderId, status, waiterId, callback) {
+
+        if (typeof waiterId === "function") {
+            callback = waiterId;
+            waiterId = null;
+        }
+
+        const updateData = {
+            status: status,
+            acceptedAt:
+                status === "accepted"
+                    ? isFirebaseActive
+                        ? firebase.firestore.FieldValue.serverTimestamp()
+                        : new Date().toISOString()
+                    : null
+        };
+
+        if (waiterId) {
+            updateData.assignedTo = waiterId;
+        }
+
+        if (isFirebaseActive) {
+
+            db.collection("pre_orders")
+                .doc(orderId)
+                .update(updateData)
+
+                .then(() => {
+
+                    if (callback) callback(true);
+
+                })
+
+                .catch(e => {
+
+                    console.error(e);
+
+                    if (callback) callback(false);
+                });
+
+        } else {
+
+            const orders =
+                getLocalCollection("pre_orders");
+
+            const idx =
+                orders.findIndex(o => o.id === orderId);
+
+            if (idx !== -1) {
+
+                orders[idx] = {
+                    ...orders[idx],
+                    ...updateData
+                };
+
+                setLocalCollection("pre_orders", orders);
+
+                if (callback) callback(true);
+
+            } else {
+
+                if (callback) callback(false);
+            }
+        }
+    },
+
+    // =========================================================================
+    // FREEZE SYSTEM
+    // =========================================================================
+
+    onSystemFreezeChange(callback) {
+
+        if (isFirebaseActive) {
+
+            return db.collection("system")
+                .doc("config")
+                .onSnapshot(doc => {
+
+                    const frozen =
+                        doc.exists &&
+                        doc.data() &&
+                        doc.data().frozen === true;
+
+                    callback(frozen);
+                });
+
+        } else {
+
+            const trigger = () => {
+
+                const config =
+                    getLocalCollection(
+                        "system_config",
+                        { frozen: false }
+                    );
+
+                callback(config.frozen === true);
+            };
+
+            trigger();
+
+            this.registerSimListener(collection => {
+
+                if (collection === "system_config") {
+                    trigger();
+                }
+            });
+
+            return () => { };
+        }
+    },
+
+    setSystemFreeze(frozen, callback) {
+
+        console.log("🧊 Freeze State:", frozen);
+
+        if (isFirebaseActive) {
+
+            db.collection("system")
+                .doc("config")
+                .set({
+                    frozen: frozen,
+                    updatedAt:
+                        firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true })
+
+                .then(() => {
+
+                    console.log("✅ Freeze Updated");
+
+                    if (callback) callback(true);
+
+                })
+
+                .catch(e => {
+
+                    console.error(
+                        "❌ Freeze Error:",
+                        e
+                    );
+
+                    if (callback) callback(false);
+                });
+
+        } else {
+
+            setLocalCollection(
+                "system_config",
+                {
+                    frozen: frozen,
+                    updatedAt:
+                        new Date().toISOString()
+                }
+            );
+
+            console.log("✅ Local Freeze Updated");
+
+            if (callback) callback(true);
+        }
+    },
+
+    // =========================================================================
+    // CLEANUP
+    // =========================================================================
+
+    cleanupOldData(callback) {
+
+        const cutoff =
+            new Date(
+                Date.now() -
+                24 * 60 * 60 * 1000
+            );
+
+        if (isFirebaseActive) {
+
+            db.collection("waiter_calls")
+                .where("createdAt", "<", cutoff)
+                .get()
+
+                .then(snapshot => {
+
+                    const batch = db.batch();
+
+                    snapshot.forEach(doc => {
+                        batch.delete(doc.ref);
+                    });
+
+                    return batch.commit();
+                })
+
+                .then(() => {
+
+                    return db.collection("pre_orders")
+                        .where("createdAt", "<", cutoff)
+                        .get();
+                })
+
+                .then(snapshot => {
+
+                    const batch = db.batch();
+
+                    snapshot.forEach(doc => {
+                        batch.delete(doc.ref);
+                    });
+
+                    return batch.commit();
+                })
+
+                .then(() => {
+
+                    if (callback) callback(true);
+
+                })
+
+                .catch(e => {
+
+                    console.error(e);
+
+                    if (callback) callback(false);
+                });
+
+        } else {
+
+            const calls =
+                getLocalCollection("calls")
+                    .filter(
+                        c =>
+                            new Date(c.createdAt) >= cutoff
+                    );
+
+            setLocalCollection("calls", calls);
+
+            const orders =
+                getLocalCollection("pre_orders")
+                    .filter(
+                        o =>
+                            new Date(o.createdAt) >= cutoff
+                    );
+
+            setLocalCollection("pre_orders", orders);
 
             if (callback) callback(true);
         }
     }
 };
 
-// Initialize the simulation Broadcast Channel Listener
+// ============================================================================
+// INIT SIMULATION LISTENER
+// ============================================================================
+
 if (!isFirebaseActive) {
     dbService.initSimBroadcastListener();
 }
+
+console.log(
+    isFirebaseActive
+        ? "🔥 CLOUD MODE"
+        : "🧪 SIMULATION MODE"
+);
