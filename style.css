@@ -33,8 +33,6 @@
 html.no-scroll,
 body.no-scroll {
     overflow: hidden !important;
-    position: fixed;
-    width: 100%;
 }
 
 body {
