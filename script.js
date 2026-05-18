@@ -3335,11 +3335,10 @@ function getTableZoneName(tableNum) {
     return "Table";
 }
 
+let pendingActionAfterTableSelect = null;
+
 // Parse Table Number
 function detectTableNumber() {
-    // Clear any potential legacy stored tables to avoid conflicts
-    localStorage.removeItem("grey_table");
-
     const urlParams = new URLSearchParams(window.location.search);
     let table = urlParams.get("table");
     
@@ -3351,12 +3350,22 @@ function detectTableNumber() {
         }
     }
 
-    // Show fallback modal selection if table not detected
-    showTableSelectorModal();
+    // Try restoring from localStorage
+    let storedTable = localStorage.getItem("grey_table");
+    if (storedTable) {
+        storedTable = parseInt(storedTable);
+        if (isValidTableNumber(storedTable)) {
+            setTable(storedTable);
+            return;
+        }
+    }
+
+    // DO NOT show modal on startup. Just let the user browse.
 }
 
 function setTable(num) {
     clientTable = num;
+    localStorage.setItem("grey_table", num);
     
     // Update Badge text
     const badge = document.getElementById("cdTableBadge");
@@ -3368,7 +3377,7 @@ function setTable(num) {
     const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?table=${num}`;
     window.history.pushState({ path: newUrl }, '', newUrl);
 
-    // Hide fallback selector and display quick action bar
+    // Hide fallback selector
     const modal = document.getElementById("tableModalOverlay");
     if (modal) modal.style.display = "none";
     
@@ -3386,6 +3395,13 @@ function setTable(num) {
 
     // Begin listening for waiter actions
     subscribeToActiveWaiterEvents();
+
+    // Execute pending action if any
+    if (typeof pendingActionAfterTableSelect === "function") {
+        const action = pendingActionAfterTableSelect;
+        pendingActionAfterTableSelect = null;
+        setTimeout(action, 200);
+    }
 }
 
 function showTableSelectorModal() {
@@ -3478,116 +3494,174 @@ function setCallCooldown(type) {
     localStorage.setItem(`cooldown_${type}`, Date.now().toString());
 }
 
+// GPS / Location Security action wrapper
+function verifyLocationAndProceed(action) {
+    if (GPSService.isSuspicious) {
+        const suspectMsgs = {
+            fr: "Position GPS invalide détectée.",
+            en: "Suspicious GPS location detected.",
+            de: "Verdächtige GPS-Position erkannt."
+        };
+        showToast(suspectMsgs[currentLang] || suspectMsgs.fr);
+        return;
+    }
+
+    if (!GPSService.isInside) {
+        const outMsgs = {
+            fr: "Vous devez être présent chez Grey Corner pour utiliser les services de commande.",
+            en: "You must be present at Grey Corner to use ordering services.",
+            de: "Sie müssen im Grey Corner anwesend sein, um die Bestelldienste zu nutzen."
+        };
+        showToast(outMsgs[currentLang] || outMsgs.fr);
+        return;
+    }
+
+    // Instant verification callback
+    GPSService.checkLocation(false, (isInside) => {
+        if (GPSService.isSuspicious) {
+            const suspectMsgs = {
+                fr: "Position GPS invalide détectée.",
+                en: "Suspicious GPS location detected.",
+                de: "Verdächtige GPS-Position erkannt."
+            };
+            showToast(suspectMsgs[currentLang] || suspectMsgs.fr);
+            return;
+        }
+
+        if (isInside) {
+            action();
+        } else {
+            const outMsgs = {
+                fr: "Vous devez être présent chez Grey Corner pour utiliser les services de commande.",
+                en: "You must be present at Grey Corner to use ordering services.",
+                de: "Sie müssen im Grey Corner anwesend sein, um die Bestelldienste zu nutzen."
+            };
+            showToast(outMsgs[currentLang] || outMsgs.fr);
+        }
+    });
+}
+
 // Trigger calling server
 function triggerQuickServiceCall(type) {
-    if (!clientTable) {
-        showTableSelectorModal();
-        return;
-    }
-
-    const waitRemaining = checkCallCooldown(type);
-    if (waitRemaining > 0) {
-        const errorMsgs = {
-            fr: `Veuillez attendre ${waitRemaining}s avant de renouveler cet appel.`,
-            en: `Please wait ${waitRemaining}s before repeating this request.`,
-            de: `Bitte warten Sie ${waitRemaining}s, bevor Sie diese Anfrage wiederholen.`
-        };
-        showToast(errorMsgs[currentLang] || errorMsgs.fr);
-        return;
-    }
-
-    // Set interactive loader state on button
-    const btnId = type === "waiter" ? "cabCallWaiter" : (type === "water" ? "cabRequestWater" : "cabRequestBill");
-    const btn = document.getElementById(btnId);
-    if (btn) btn.classList.add("active");
-
-    dbService.sendCall(clientTable, type, (success, callId) => {
-        if (btn) btn.classList.remove("active");
-
-        if (success) {
-            setCallCooldown(type);
-            
-            // Custom Toast feedback
-            const okMsgs = {
-                fr: "Appel envoyé ! Votre serveur a été alerté.",
-                en: "Call sent! Your waiter has been alerted.",
-                de: "Anruf gesendet! Ihr Kellner wurde benachrichtigt."
-            };
-            showToast(okMsgs[currentLang] || okMsgs.fr);
-            
-            // Store call ID locally to track state
-            localStorage.setItem(`last_call_${type}`, callId);
-        } else {
-            showToast("Erreur de connexion. Veuillez réessayer.");
+    verifyLocationAndProceed(() => {
+        if (!clientTable) {
+            pendingActionAfterTableSelect = () => triggerQuickServiceCall(type);
+            showTableSelectorModal();
+            return;
         }
+
+        const waitRemaining = checkCallCooldown(type);
+        if (waitRemaining > 0) {
+            const errorMsgs = {
+                fr: `Veuillez attendre ${waitRemaining}s avant de renouveler cet appel.`,
+                en: `Please wait ${waitRemaining}s before repeating this request.`,
+                de: `Bitte warten Sie ${waitRemaining}s, bevor Sie diese Anfrage wiederholen.`
+            };
+            showToast(errorMsgs[currentLang] || errorMsgs.fr);
+            return;
+        }
+
+        // Set interactive loader state on button
+        const btnId = type === "waiter" ? "cabCallWaiter" : (type === "water" ? "cabRequestWater" : "cabRequestBill");
+        const btn = document.getElementById(btnId);
+        if (btn) btn.classList.add("active");
+
+        dbService.sendCall(clientTable, type, (success, callId) => {
+            if (btn) btn.classList.remove("active");
+
+            if (success) {
+                setCallCooldown(type);
+                
+                // Custom Toast feedback
+                const okMsgs = {
+                    fr: "Appel envoyé ! Votre serveur a été alerté.",
+                    en: "Call sent! Your waiter has been alerted.",
+                    de: "Anruf gesendet! Ihr Kellner wurde benachrichtigt."
+                };
+                showToast(okMsgs[currentLang] || okMsgs.fr);
+                
+                // Store call ID locally to track state
+                localStorage.setItem(`last_call_${type}`, callId);
+            } else {
+                showToast("Erreur de connexion. Veuillez réessayer.");
+            }
+        });
     });
 }
 
 // Send Pre-Order
 function submitPreOrder() {
-    if (clientCart.length === 0 || !clientTable) return;
+    if (clientCart.length === 0) return;
 
-    const btn = document.getElementById("cdSubmitBtn");
-    const spinner = document.getElementById("cdSubmitSpinner");
-    
-    if (btn) btn.disabled = true;
-    if (spinner) spinner.style.display = "block";
-
-    const note = document.getElementById("cdSpecialNote") ? document.getElementById("cdSpecialNote").value : "";
-    const totalPrice = clientCart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-
-    // Format items list for database
-    const itemsList = clientCart.map(c => {
-        let nameFr = c.name.fr;
-        let nameLang = c.name[currentLang] || c.name.fr;
-        if (c.drinkChoices && c.drinkChoices.length > 0) {
-            const choicesStr = ` (${c.drinkChoices.join(', ')})`;
-            nameFr += choicesStr;
-            nameLang += choicesStr;
+    verifyLocationAndProceed(() => {
+        if (!clientTable) {
+            pendingActionAfterTableSelect = () => submitPreOrder();
+            showTableSelectorModal();
+            return;
         }
-        return {
-            name: nameFr,
-            name_lang: nameLang,
-            price: c.price.toString(),
-            qty: c.qty,
-            note: c.note || ""
-        };
-    });
 
-    dbService.sendPreOrder(clientTable, itemsList, note, totalPrice, (success, orderId) => {
-        if (btn) btn.disabled = false;
-        if (spinner) spinner.style.display = "none";
+        const btn = document.getElementById("cdSubmitBtn");
+        const spinner = document.getElementById("cdSubmitSpinner");
+        
+        if (btn) btn.disabled = true;
+        if (spinner) spinner.style.display = "block";
 
-        if (success) {
-            // Success Chime (Luxury sound)
-            try {
-                const chime = new Audio("https://assets.mixkit.co/active_storage/sfx/911/911-200.wav");
-                chime.volume = 0.4;
-                chime.play();
-            } catch (e) {}
+        const note = document.getElementById("cdSpecialNote") ? document.getElementById("cdSpecialNote").value : "";
+        const totalPrice = clientCart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
-            // Success feedback toast
-            const okMsgs = {
-                fr: "Précommande envoyée ! Le serveur arrive la confirmer.",
-                en: "Pre-order sent! The waiter is coming to confirm.",
-                de: "Vorbestellung gesendet! Der Kellner kommt zur Bestätigung."
-            };
-            showToast(okMsgs[currentLang] || okMsgs.fr);
-            
-            // Clear Cart
-            clientCart = [];
-            saveClientCart();
-            if (document.getElementById("cdSpecialNote")) {
-                document.getElementById("cdSpecialNote").value = "";
+        // Format items list for database
+        const itemsList = clientCart.map(c => {
+            let nameFr = c.name.fr;
+            let nameLang = c.name[currentLang] || c.name.fr;
+            if (c.drinkChoices && c.drinkChoices.length > 0) {
+                const choicesStr = ` (${c.drinkChoices.join(', ')})`;
+                nameFr += choicesStr;
+                nameLang += choicesStr;
             }
-            
-            closeCartDrawer();
-            
-            // Save last order ID
-            localStorage.setItem("last_pre_order_id", orderId);
-        } else {
-            showToast("Erreur de connexion. Veuillez réessayer.");
-        }
+            return {
+                name: nameFr,
+                name_lang: nameLang,
+                price: c.price.toString(),
+                qty: c.qty,
+                note: c.note || ""
+            };
+        });
+
+        dbService.sendPreOrder(clientTable, itemsList, note, totalPrice, (success, orderId) => {
+            if (btn) btn.disabled = false;
+            if (spinner) spinner.style.display = "none";
+
+            if (success) {
+                // Success Chime (Luxury sound)
+                try {
+                    const chime = new Audio("https://assets.mixkit.co/active_storage/sfx/911/911-200.wav");
+                    chime.volume = 0.4;
+                    chime.play();
+                } catch (e) {}
+
+                // Success feedback toast
+                const okMsgs = {
+                    fr: "Précommande envoyée ! Le serveur arrive la confirmer.",
+                    en: "Pre-order sent! The waiter is coming to confirm.",
+                    de: "Vorbestellung gesendet! Der Kellner kommt zur Bestätigung."
+                };
+                showToast(okMsgs[currentLang] || okMsgs.fr);
+                
+                // Clear Cart
+                clientCart = [];
+                saveClientCart();
+                if (document.getElementById("cdSpecialNote")) {
+                    document.getElementById("cdSpecialNote").value = "";
+                }
+                
+                closeCartDrawer();
+                
+                // Save last order ID
+                localStorage.setItem("last_pre_order_id", orderId);
+            } else {
+                showToast("Erreur de connexion. Veuillez réessayer.");
+            }
+        });
     });
 }
 
@@ -3709,6 +3783,224 @@ function renderNotificationHistory() {
     });
 }
 
+// ============================================================================
+// GREY CORNER — INTELLIGENT GPS GEOFENCING & SECURITY SYSTEM
+// ============================================================================
+const GeoFenceManager = {
+    CENTER_LAT: 34.0344054,
+    CENTER_LNG: -5.0154828,
+    ALLOWED_RADIUS: 80, // meters
+
+    calculateDistance: function(lat1, lon1, lat2, lon2) {
+        const R = 6371000; // Earth radius in meters
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = 
+            Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+            Math.sin(dLon/2) * Math.sin(dLon/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
+    },
+
+    isWithinGeofence: function(lat, lng) {
+        const dist = this.calculateDistance(this.CENTER_LAT, this.CENTER_LNG, lat, lng);
+        console.log(`📏 Distance to Grey Corner center: ${dist.toFixed(1)} meters.`);
+        return dist <= this.ALLOWED_RADIUS;
+    }
+};
+
+const LocationSecurityManager = {
+    lastCoords: null,
+    lastTimestamp: null,
+
+    isMockLocation: function(coords) {
+        // 1. Accuracy check (exactly 0 indicates synthetic GPS mock)
+        if (coords.accuracy === 0) {
+            console.warn("⚠️ GPS Security Warning: Accuracy of exactly 0 is suspicious (Mocked GPS).");
+            return true;
+        }
+
+        // 2. Velocity anomaly (Teleportation check)
+        if (this.lastCoords && this.lastTimestamp) {
+            const timeDiff = (Date.now() - this.lastTimestamp) / 1000;
+            if (timeDiff > 0) {
+                const distanceMoved = GeoFenceManager.calculateDistance(
+                    this.lastCoords.latitude, this.lastCoords.longitude,
+                    coords.latitude, coords.longitude
+                );
+                const speedKmh = (distanceMoved / timeDiff) * 3.6;
+                // If they moved > 150m at a speed greater than 300 km/h
+                if (distanceMoved > 150 && speedKmh > 300) {
+                    console.warn(`⚠️ GPS Security Warning: Teleportation detected at ${speedKmh.toFixed(1)} km/h.`);
+                    return true;
+                }
+            }
+        }
+
+        this.lastCoords = { latitude: coords.latitude, longitude: coords.longitude };
+        this.lastTimestamp = Date.now();
+        return false;
+    }
+};
+
+const GPSService = {
+    isInside: false,
+    isSuspicious: false,
+    permissionState: 'prompt', // prompt, granted, denied
+    timer: null,
+
+    init: function() {
+        console.log("🛰️ Initializing GPSService...");
+        this.checkLocation(true);
+        
+        // 30 seconds background interval checks
+        this.timer = setInterval(() => {
+            if (document.visibilityState === 'visible') {
+                this.checkLocation(false);
+            }
+        }, 30000);
+    },
+
+    checkLocation: function(isStartup = false, callback = null) {
+        if (!navigator.geolocation) {
+            this.handleError("Not compatible");
+            if (callback) callback(false);
+            return;
+        }
+
+        const options = {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+        };
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const coords = position.coords;
+                this.permissionState = 'granted';
+
+                if (LocationSecurityManager.isMockLocation(coords)) {
+                    this.isSuspicious = true;
+                    this.isInside = false;
+                    this.updateUI('suspect');
+                    if (callback) callback(false);
+                    return;
+                }
+
+                this.isSuspicious = false;
+                const inside = GeoFenceManager.isWithinGeofence(coords.latitude, coords.longitude);
+                this.isInside = inside;
+
+                if (inside) {
+                    this.updateUI('inside');
+                    if (callback) callback(true);
+                } else {
+                    this.updateUI('outside');
+                    if (callback) callback(false);
+                }
+            },
+            (error) => {
+                console.warn("⚠️ GPS Location query failed:", error.message);
+                if (error.code === error.PERMISSION_DENIED) {
+                    this.permissionState = 'denied';
+                }
+                this.handleError(error.message);
+                if (callback) callback(false);
+            },
+            options
+        );
+    },
+
+    handleError: function(msg) {
+        this.isInside = false;
+        if (this.permissionState === 'denied') {
+            this.updateUI('denied');
+        } else {
+            this.updateUI('error');
+        }
+    },
+
+    updateUI: function(state) {
+        const badge = document.getElementById("gpsStatusBadge");
+        const text = document.getElementById("gpsStatusText");
+        if (!badge || !text) return;
+
+        badge.className = "gps-status-badge";
+
+        const textMap = {
+            fr: {
+                inside: "Chez Grey Corner Fès",
+                outside: "Mode consultation uniquement",
+                suspect: "Position GPS suspecte !",
+                denied: "Autoriser le GPS pour commander",
+                error: "Erreur GPS. Vérifiez vos réglages"
+            },
+            en: {
+                inside: "At Grey Corner Fès",
+                outside: "Read-only Menu",
+                suspect: "Invalid GPS position !",
+                denied: "Allow GPS to interact",
+                error: "GPS Error. Check settings"
+            },
+            de: {
+                inside: "Bei Grey Corner Fès",
+                outside: "Nur Lese-Menü",
+                suspect: "Ungültige GPS-Position !",
+                denied: "GPS erlauben zum Bestellen",
+                error: "GPS-Fehler. Einstellungen prüfen"
+            }
+        };
+
+        const currentLangTexts = textMap[currentLang] || textMap.fr;
+
+        if (state === 'inside') {
+            badge.classList.add("gps-inside");
+            text.textContent = currentLangTexts.inside;
+            this.toggleInteractiveControls(true);
+        } else if (state === 'outside') {
+            badge.classList.add("gps-outside");
+            text.textContent = currentLangTexts.outside;
+            this.toggleInteractiveControls(false);
+        } else if (state === 'suspect') {
+            badge.classList.add("gps-suspect");
+            text.textContent = currentLangTexts.suspect;
+            this.toggleInteractiveControls(false);
+        } else if (state === 'denied') {
+            badge.classList.add("gps-denied");
+            text.textContent = currentLangTexts.denied;
+            this.toggleInteractiveControls(false);
+        } else {
+            badge.classList.add("gps-error");
+            text.textContent = currentLangTexts.error;
+            this.toggleInteractiveControls(false);
+        }
+    },
+
+    toggleInteractiveControls: function(enable) {
+        const cabCall = document.getElementById("cabCallWaiter");
+        const cabWater = document.getElementById("cabRequestWater");
+        const cabBill = document.getElementById("cabRequestBill");
+        const cdSubmit = document.getElementById("cdSubmitBtn");
+
+        const buttons = [cabCall, cabWater, cabBill, cdSubmit];
+        buttons.forEach(btn => {
+            if (!btn) return;
+            if (enable) {
+                btn.classList.remove("disabled-gps");
+            } else {
+                btn.classList.add("disabled-gps");
+            }
+        });
+
+        // Ensure the quick action bar is displayed at all times
+        const actionBar = document.getElementById("clientActionBar");
+        if (actionBar) {
+            actionBar.style.display = "block";
+        }
+    }
+};
+
 // --- Wire up HTML Events ---
 document.addEventListener("DOMContentLoaded", () => {
     // Initialize Cart
@@ -3718,6 +4010,9 @@ document.addEventListener("DOMContentLoaded", () => {
     initClientFirebaseSession(() => {
         detectTableNumber();
     });
+
+    // Initialize GPS Geofencing Service
+    GPSService.init();
 
     // Bottom Bar Call Buttons
     const btnCall = document.getElementById("cabCallWaiter");
