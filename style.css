@@ -1,43 +1,138 @@
-< !DOCTYPE html><html lang="fr"><head>< !-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-XD33HHNDHX"></script><script>window.dataLayer=window.dataLayer || [];
+/* =========================================
+   GOOGLE FONTS
+========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
 
-function gtag() {
-    dataLayer.push(arguments);
-}
-
-gtag('js', new Date());
-gtag('config', 'G-XD33HHNDHX');
-</script><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Grey Corner Café — Menu | Fès,
-Maroc</title><meta name="description"
-content="Découvrez le menu complet du Grey Corner Café à Fès : petits-déjeuners, plats, pizzas, burgers, pâtes, boissons et desserts. Menu trilingue FR/EN/DE." /><meta name="keywords" content="Grey Corner, café, restaurant, Fès, Maroc, menu, brunch, pizza, burger, pasta" /><meta name="author" content="Grey Corner Café" /><meta name="robots" content="index, follow" /><link rel="canonical" href="https://menugreycorner.pages.dev/" /><meta property="og:type" content="website" /><meta property="og:title" content="Grey Corner Café — Menu | Fès" /><meta property="og:description"
-content="Menu complet du Grey Corner Café à Fès. Petits-déjeuners, plats du jour, pizzas, burgers, boissons et desserts." /><meta property="og:image" content="https://menugreycorner.pages.dev/images/og-preview.jpg" /><meta property="og:image:width" content="1200" /><meta property="og:image:height" content="630" /><meta property="og:image:type" content="image/jpeg" /><meta property="og:url" content="https://menugreycorner.pages.dev/" /><meta property="og:locale" content="fr_MA" /><meta property="og:site_name" content="Grey Corner Café" /><meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content="Grey Corner Café — Menu | Fès" /><meta name="twitter:description" content="Menu complet du Grey Corner Café à Fès." /><meta name="twitter:image" content="https://menugreycorner.pages.dev/images/og-preview.jpg" /><link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png" /><link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png" /><link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png" /><link rel="shortcut icon" href="images/favicon.ico" /><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"
-rel="stylesheet"><link rel="stylesheet" href="style.css"><style>
-/* ================================================
-       SHORTCUT ICONS — DARK LUXURY (Grey Corner)
-       Remplace entièrement les règles .shortcut-icons
-       dans style.css
-    ================================================ */
-
-/* Palette luxe cohérente avec l'accueil */
+/* =========================================
+   VARIABLES
+========================================= */
 :root {
-    --sc-gold: #C9A84C;
+    --bg:           #0A0F1A;
+    --card:         #121A2A;
+    --text:         #F8F9FA;
+    --muted:        #A0ABC0;
+    --gold:         #C9A84C;       /* ← gold logo */
+    --gold-dark:    #A8873C;       /* ← gold foncé */
+    --radius:       20px;
+    --shadow:       0 12px 35px rgba(0,0,0,0.4);
+    --shadow-hover: 0 16px 45px rgba(201,168,76,0.15);
+
+    /* Palette luxe — icons & logo */
+    --sc-gold:       #C9A84C;
     --sc-gold-light: #E2C97E;
-    --sc-border: rgba(201, 168, 76, 0.28);
-    --sc-bg: rgba(10, 9, 6, 0.58);
-    --sc-bg-hover: rgba(201, 168, 76, 0.1);
+    --sc-border:     rgba(201,168,76,0.28);
+    --sc-bg:         rgba(10,9,6,0.58);
+    --sc-bg-hover:   rgba(201,168,76,0.1);
 }
 
-/* ── Conteneur ── */
-.shortcut-icons {
+/* =========================================
+   GLOBAL
+========================================= */
+*, *::before, *::after { box-sizing: border-box; }
+
+html.no-scroll,
+body.no-scroll {
+    overflow: hidden !important;
+    position: fixed;
+    width: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Poppins", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden !important;
+}
+
+img { max-width: 100%; display: block; }
+
+.container {
+    padding: 0 15px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* =========================================
+   HEADER
+========================================= */
+header {
+    height: 270px;
+    position: relative;
+    background-image: url("images/header-bg.jpg");
+    background-size: cover;
+    background-position: center 40%;
+    overflow: hidden;
+}
+
+.header-overlay {
     position: absolute;
-    top: 14px;
-    right: 16px;
+    inset: 0;
+    background: rgba(0,0,0,0.48);
+    backdrop-filter: blur(2px);
+    z-index: 1;
+}
+
+.header-center {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding: 16px 14px 16px;
+}
+
+/* =========================================
+   LOGO — CARRÉ ARRONDI DARK LUXURY
+   !! PAS DE border-radius: 50% ICI !!
+========================================= */
+.logo-big {
+    width: 140px !important;
+    height: 140px !important;
+    object-fit: contain !important;
+    border-radius: 22px !important;
+    background: rgba(10,9,6,0.65);
+    border: 1px solid rgba(201,168,76,0.32);
+    padding: 10px;
+    box-shadow:
+        0 8px 28px rgba(0,0,0,0.35),
+        0 0 0 1px rgba(201,168,76,0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition:
+        border-color 0.28s ease,
+        box-shadow   0.28s ease,
+        transform    0.28s cubic-bezier(.22,1,.36,1);
+    display: block;
+    flex-shrink: 0;
+}
+.logo-big:hover {
+    border-color: rgba(201,168,76,0.55);
+    box-shadow: 0 12px 36px rgba(201,168,76,0.16);
+    transform: translateY(-2px);
+}
+
+/* =========================================
+   SHORTCUT ICONS — DARK LUXURY
+========================================= */
+.shortcut-icons {
+    position: static;
+    transform: none;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 7px;
     z-index: 10;
+    width: 100%;
 }
 
-/* ── Chaque bouton/lien ── */
 .sc-btn {
     position: relative;
     display: flex;
@@ -50,21 +145,21 @@ rel="stylesheet"><link rel="stylesheet" href="style.css"><style>
     background: var(--sc-bg);
     border: 1px solid var(--sc-border);
     border-radius: 12px;
-    color: rgba(240, 234, 216, 0.52);
+    color: rgba(240,234,216,0.52);
     cursor: pointer;
     text-decoration: none;
     font-family: 'DM Sans', 'Poppins', sans-serif;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     transition:
-        color 0.28s ease,
+        color        0.28s ease,
         border-color 0.28s ease,
-        background 0.28s ease,
-        transform 0.28s cubic-bezier(.22, 1, .36, 1),
-        box-shadow 0.28s ease;
+        background   0.28s ease,
+        transform    0.28s cubic-bezier(.22,1,.36,1),
+        box-shadow   0.28s ease,
+        height       0.28s ease;
     -webkit-tap-highlight-color: transparent;
     outline: none;
-    /* reset button */
     appearance: none;
     -webkit-appearance: none;
     padding: 0;
@@ -74,11 +169,15 @@ rel="stylesheet"><link rel="stylesheet" href="style.css"><style>
     width: 18px;
     height: 18px;
     flex-shrink: 0;
-    transition: transform 0.28s cubic-bezier(.22, 1, .36, 1);
+    transition: transform 0.28s cubic-bezier(.22,1,.36,1);
     pointer-events: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
-/* Label sous l'icône */
 .sc-label {
     font-size: 7px;
     font-weight: 500;
@@ -95,58 +194,50 @@ rel="stylesheet"><link rel="stylesheet" href="style.css"><style>
 }
 
 /* Séparateur vertical entre icônes */
-.sc-btn+.sc-btn::before {
+.sc-btn + .sc-btn::before {
     content: '';
     position: absolute;
     left: -5px;
     top: 22%;
     height: 56%;
     width: 1px;
-    background: rgba(201, 168, 76, 0.13);
+    background: rgba(201,168,76,0.13);
     pointer-events: none;
 }
 
-/* ── Hover desktop ── */
+/* Hover desktop */
 @media (hover: hover) {
     .sc-btn:hover {
         color: var(--sc-gold-light);
         border-color: var(--sc-gold);
         background: var(--sc-bg-hover);
         transform: translateY(-3px);
-        box-shadow: 0 8px 24px rgba(201, 168, 76, 0.2);
+        box-shadow: 0 8px 24px rgba(201,168,76,0.2);
+        height: 56px;
     }
-
     .sc-btn:hover .sc-label {
         opacity: 1;
         transform: translateY(0);
     }
-
-    .sc-btn:hover svg {
-        transform: scale(1.1);
-    }
-
-    /* Taille élargie au hover pour faire apparaître le label */
-    .sc-btn:hover {
-        height: 54px;
-    }
+    .sc-btn:hover svg { transform: scale(1.1); }
 }
 
-/* ── Tap mobile ── */
+/* Tap mobile */
 .sc-btn:active {
     transform: scale(0.93);
-    background: rgba(201, 168, 76, 0.14);
+    background: rgba(201,168,76,0.14);
     border-color: var(--sc-gold);
     color: var(--sc-gold-light);
 }
 
-/* ── Toast ── */
+/* Toast confirmation partage */
 .sc-toast {
     position: fixed;
     bottom: 86px;
     left: 50%;
     transform: translateX(-50%) translateY(8px);
-    background: rgba(10, 9, 6, 0.94);
-    border: 1px solid rgba(201, 168, 76, 0.32);
+    background: rgba(10,9,6,0.94);
+    border: 1px solid rgba(201,168,76,0.32);
     color: #E2C97E;
     font-family: 'DM Sans', 'Poppins', sans-serif;
     font-size: 11px;
@@ -163,142 +254,759 @@ rel="stylesheet"><link rel="stylesheet" href="style.css"><style>
     -webkit-backdrop-filter: blur(14px);
     z-index: 999999;
 }
-
 .sc-toast.show {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
 }
 
-/* ── Mobile ≤ 480px ── */
+/* =========================================
+   BURGER BUTTON — DARK LUXURY
+========================================= */
+.burger-btn {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    transform: none;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 54px;
+    height: 54px;
+    background: rgba(10,9,6,0.58);
+    border: 1px solid rgba(201,168,76,0.28);
+    border-radius: 14px;
+    cursor: pointer;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    padding: 0;
+    transition:
+        background   0.28s ease,
+        border-color 0.28s ease,
+        transform    0.28s cubic-bezier(.22,1,.36,1),
+        box-shadow   0.28s ease;
+}
+
+.burger-label {
+    font-family: 'DM Sans', 'Poppins', sans-serif;
+    font-size: 7px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(240,234,216,0.52);
+    line-height: 1;
+    transition: color 0.28s ease;
+    pointer-events: none;
+    display: block;
+}
+
+.burger-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    pointer-events: none;
+}
+
+.bl {
+    display: block;
+    height: 1.5px;
+    background: rgba(240,234,216,0.52);
+    border-radius: 2px;
+    transform-origin: center;
+    transition:
+        width     0.32s cubic-bezier(.22,1,.36,1),
+        transform 0.32s cubic-bezier(.22,1,.36,1),
+        opacity   0.22s ease,
+        background 0.28s ease;
+}
+.bl1 { width: 20px; }
+.bl2 { width: 14px; }
+.bl3 { width: 20px; }
+
+@media (hover: hover) {
+    .burger-btn:hover {
+        background: rgba(201,168,76,0.1);
+        border-color: rgba(201,168,76,0.55);
+        box-shadow: 0 8px 24px rgba(201,168,76,0.18);
+        transform: translateY(-2px);
+    }
+    .burger-btn:hover .bl { background: #E2C97E; width: 20px; }
+    .burger-btn:hover .burger-label { color: #E2C97E; }
+}
+
+.burger-btn:active {
+    transform: scale(0.93);
+    background: rgba(201,168,76,0.14);
+    border-color: rgba(201,168,76,0.6);
+}
+
+/* État OUVERT — croix animée */
+.burger-btn.active {
+    background: rgba(201,168,76,0.12);
+    border-color: rgba(201,168,76,0.55);
+    box-shadow: 0 6px 20px rgba(201,168,76,0.15);
+}
+.burger-btn.active .bl1 {
+    width: 20px;
+    transform: translateY(5.5px) rotate(45deg);
+    background: #E2C97E;
+}
+.burger-btn.active .bl2 { width: 0; opacity: 0; }
+.burger-btn.active .bl3 {
+    width: 20px;
+    transform: translateY(-5.5px) rotate(-45deg);
+    background: #E2C97E;
+}
+.burger-btn.active .burger-label { color: #E2C97E; letter-spacing: 0.2em; }
+
+/* =========================================
+   BURGER OVERLAY
+========================================= */
+.burger-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(2px);
+    z-index: 9997;
+}
+.burger-overlay.active { display: block; }
+
+/* =========================================
+   BURGER NAV LATÉRAL
+========================================= */
+.burger-nav-hidden {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 70%;
+    height: 100%;
+    background: var(--card);
+    padding: 80px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    transition: left 0.3s ease;
+    z-index: 9998;
+    overflow-y: auto;
+    border-right: 1px solid rgba(201,168,76,0.15);
+    box-shadow: 4px 0 30px rgba(0,0,0,0.5);
+}
+.burger-nav-hidden a {
+    padding: 12px;
+    font-size: 1rem;
+    color: var(--text);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: color 0.2s, padding-left 0.2s;
+}
+.burger-nav-hidden a:hover { color: var(--gold); padding-left: 18px; }
+.burger-nav-hidden.active { left: 0; }
+
+/* =========================================
+   CATEGORIES HORIZONTALES
+========================================= */
+.categories-horizontal {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    padding: 12px 16px;
+    white-space: nowrap;
+    scrollbar-width: none;
+    margin-bottom: 10px;
+}
+.categories-horizontal::-webkit-scrollbar { display: none; }
+
+.categories-horizontal a {
+    background: var(--card);
+    border: 1px solid rgba(201,168,76,0.3);
+    padding: 8px 18px;
+    border-radius: 999px;
+    color: var(--text);
+    font-weight: 500;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.4s cubic-bezier(0.25,1,0.5,1);
+}
+.categories-horizontal a:hover,
+.categories-horizontal a:active {
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: #F8F9FA;
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(201,168,76,0.4);
+}
+
+/* =========================================
+   BARRE DE RECHERCHE
+========================================= */
+.search-wrapper {
+    padding: 8px 16px 0;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 12px 18px;
+    background: var(--card);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 999px;
+    color: var(--text);
+    font-family: "Poppins", sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    display: block;
+    appearance: none;
+    -webkit-appearance: none;
+}
+#searchInput::placeholder { color: var(--muted); font-size: 0.9rem; }
+#searchInput:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
+}
+
+/* =========================================
+   TEXTE PRIX EN DIRHAMS
+========================================= */
+.prix-info {
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-style: italic;
+    letter-spacing: 0.5px;
+    margin: 6px 0 10px;
+    opacity: 0.75;
+}
+
+/* =========================================
+   MENU GRID / ITEMS
+========================================= */
+#menu-grid { padding: 14px; }
+
+.items {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+}
+@media (min-width: 680px)  { .items { grid-template-columns: repeat(2,1fr); } }
+@media (min-width: 1100px) { .items { grid-template-columns: repeat(3,1fr); } }
+
+.menu-item {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255,255,255,0.05);
+    overflow: hidden;
+    cursor: pointer;
+    transition:
+        transform   0.4s cubic-bezier(0.25,1,0.5,1),
+        box-shadow  0.4s cubic-bezier(0.25,1,0.5,1);
+}
+.menu-item:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: var(--shadow-hover);
+}
+
+.item-img-wrapper {
+    width: 100%;
+    height: 180px;
+    background-size: cover !important;
+    background-position: center !important;
+    background-color: #000;
+    pointer-events: none;
+    user-select: none;
+    position: relative;
+    transition: transform 0.6s cubic-bezier(0.25,1,0.5,1), filter 0.4s ease;
+}
+.menu-item:hover .item-img-wrapper {
+    transform: scale(1.05);
+    filter: brightness(1.05) contrast(1.05);
+}
+
+.item-info { padding: 14px; }
+
+.item-name {
+    display: inline-block;
+    flex-grow: 1;
+    min-width: 0;
+    white-space: normal;
+    word-break: break-word;
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 0.5px;
+    color: var(--gold);
+    padding-right: 15px;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.item-price-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
+    margin-bottom: 4px;
+}
+
+.item-price {
+    flex-shrink: 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+}
+
+.item-desc {
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* =========================================
+   LIGHTBOX PROTÉGÉE
+========================================= */
+.secure-lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.88);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999999;
+    backdrop-filter: blur(4px);
+}
+.secure-lightbox.active { display: flex; }
+
+.secure-lightbox-content {
+    width: 96%;
+    max-width: 700px;
+    height: 85vh;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    pointer-events: none;
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: -44px;
+    right: 0;
+    background: var(--gold);
+    border: none;
+    color: #fff;
+    font-size: 1.6rem;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    transition: transform 0.2s, background 0.2s;
+    line-height: 1;
+    padding: 0;
+}
+.close-btn:hover { transform: scale(1.1); background: var(--gold-dark); }
+
+.secure-lightbox-caption {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    font-size: 0.9rem;
+    background: rgba(0,0,0,0.5);
+    padding: 6px 16px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 80%;
+    pointer-events: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* =========================================
+   BACK TO TOP
+========================================= */
+.back-to-top {
+    position: fixed;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 55px;
+    height: 55px;
+    background: var(--gold);
+    border-radius: 50%;
+    font-size: 28px;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s, transform 0.2s;
+    z-index: 9999;
+}
+.back-to-top.show { opacity: 1; pointer-events: auto; }
+
+/* =========================================
+   LANG SWITCH
+========================================= */
+.lang-switch {
+    position: fixed;
+    bottom: 90px;
+    right: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 9998;
+}
+
+.lang-button {
+    background: var(--card);
+    border: 1px solid rgba(201,168,76,0.3);
+    padding: 6px 8px;
+    color: var(--text);
+    border-radius: 10px;
+    font-size: 18px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.lang-button.active { background: var(--gold); color: #000; border: none; transform: scale(1.06); }
+.lang-button:hover { border-color: var(--gold); }
+
+/* =========================================
+   GOOGLE REVIEW — PILL PREMIUM
+========================================= */
+.google-review-fab {
+    position: fixed;
+    bottom: 20px;
+    left: 14px;
+    z-index: 9999;
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 999px;
+    overflow: hidden;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+        border-color 0.28s ease,
+        box-shadow   0.28s ease,
+        transform    0.28s cubic-bezier(.22,1,.36,1);
+}
+.google-review-fab:hover {
+    border-color: rgba(201,168,76,0.52);
+    box-shadow: 0 8px 28px rgba(201,168,76,0.15);
+    transform: translateY(-2px);
+}
+.google-review-fab:active { transform: scale(0.96); }
+
+.gr-left {
+    background: rgba(201,168,76,0.1);
+    padding: 10px 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid rgba(201,168,76,0.18);
+    flex-shrink: 0;
+}
+.gr-left svg { width: 18px; height: 18px; display: block; }
+
+.gr-right {
+    background: rgba(10,9,6,0.75);
+    padding: 9px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.gr-label {
+    font-family: 'DM Sans', 'Poppins', sans-serif;
+    font-size: 8px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(201,168,76,0.58);
+    line-height: 1;
+}
+.gr-stars { display: flex; gap: 1.5px; align-items: center; }
+.gr-stars span { font-size: 11px; color: #C9A84C; line-height: 1; }
+
+/* =========================================
+   BANDE ÉVÉNEMENT
+========================================= */
+.event-banner {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 5px;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    transition: transform 0.2s;
+    overflow: hidden;
+}
+.event-banner:hover { transform: scale(1.01); }
+
+.event-text-wrapper {
+    display: flex;
+    width: max-content;
+    animation: continuousScroll 25s linear infinite;
+}
+.event-banner .event-text { white-space: nowrap; display: block; padding-right: 50px; }
+
+@keyframes continuousScroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* =========================================
+   NOM RESTAURANT
+========================================= */
+.logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(201,168,76,0.5);
+    text-align: center;
+    margin: 0;
+    line-height: 1.1;
+}
+@media (min-width: 768px) { .logo-text { font-size: 3rem; } }
+
+/* =========================================
+   TITRES DE CATÉGORIES
+========================================= */
+.section-title,
+#menu-grid h2:not(.item-name),
+#menu-grid h3:not(.item-name) {
+    font-family: 'Playfair Display', serif;
+    color: var(--text) !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 40px 0 20px;
+    padding-bottom: 10px;
+    text-align: center;
+    position: relative;
+    border: none;
+}
+.section-title::after,
+#menu-grid h2:not(.item-name)::after,
+#menu-grid h3:not(.item-name)::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 2px;
+    background: var(--gold);
+    margin: 12px auto 0;
+    border-radius: 2px;
+}
+
+/* =========================================
+   TICKER CAISSE
+========================================= */
+.ticker-cashier {
+    width: 100%;
+    background: #06090F;
+    color: var(--gold);
+    border-top: 1px solid rgba(201,168,76,0.3);
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+    padding: 8px 0;
+    overflow: hidden;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+    margin-bottom: 15px;
+}
+.ticker-cashier-wrapper {
+    display: flex;
+    width: max-content;
+    animation: scrollTicker 20s linear infinite;
+}
+.ticker-cashier-wrapper span { padding-right: 80px; white-space: nowrap; }
+
+@keyframes scrollTicker {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-33.33%); }
+}
+
+/* =========================================
+   BADGE NOUVEAU
+========================================= */
+.menu-item.nouveau-flash { position: relative; }
+.menu-item.nouveau-flash::after {
+    content: attr(data-badge);
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: #FFFFFF;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(201,168,76,0.4);
+    animation: gold-pulse 3s infinite ease-in-out;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+@keyframes gold-pulse {
+    0%   { transform: scale(1);    box-shadow: 0 2px 10px rgba(201,168,76,0.2); }
+    50%  { transform: scale(1.03); box-shadow: 0 6px 20px rgba(201,168,76,0.6); }
+    100% { transform: scale(1);    box-shadow: 0 2px 10px rgba(201,168,76,0.2); }
+}
+
+/* =========================================
+   FOOTER
+========================================= */
+footer {
+    margin-top: 60px;
+    padding: 30px 15px;
+    background: #06090F;
+    border-top: 1px solid rgba(201,168,76,0.2);
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-align: center;
+    line-height: 1.8;
+}
+footer a { color: var(--gold); font-weight: 600; transition: opacity 0.2s; }
+footer a:hover { opacity: 0.8; }
+
+/* =========================================
+   FIX LAYOUT MOBILE
+========================================= */
+#menu-grid, .menu-item, .items {
+    margin: 0 auto !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+.items {
+    display: grid !important;
+    justify-content: center !important;
+    align-items: start !important;
+}
+
+/* =========================================
+   RESPONSIVE ≤ 680px
+========================================= */
+@media (max-width: 680px) {
+    .items {
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+        padding: 0 10px;
+    }
+    .menu-item { width: 100% !important; max-width: 540px; margin: 0 auto; border-radius: 12px; }
+    .item-img-wrapper {
+        width: 100%; height: auto; aspect-ratio: 4 / 3;
+        border-top-left-radius: 12px; border-top-right-radius: 12px;
+    }
+    .item-info  { padding: 10px !important; }
+    .item-name  { font-size: 1.05rem !important; }
+    .item-price { font-size: 1.05rem !important; }
+}
+
+/* =========================================
+   RESPONSIVE ≤ 480px
+========================================= */
 @media (max-width: 480px) {
-    .shortcut-icons {
-        position: relative;
-        top: auto;
-        right: auto;
-        justify-content: center;
-        width: 100%;
-        gap: 10px;
-        padding: 8px 0 4px;
-        flex-wrap: nowrap;
+    body { font-size: 14px; padding: 0; }
+
+    header { height: auto; min-height: 230px; background-position: center 55%; }
+
+    .header-center {
+        padding: 16px 14px 16px;
+    }
+
+    /* ── LOGO mobile : carré arrondi, jamais cercle ── */
+    .logo-big {
+        width: 115px !important;
+        height: 115px !important;
+        border-radius: 20px !important;
+        padding: 9px;
     }
 
     .sc-btn {
         width: 54px;
         height: 54px;
         border-radius: 14px;
-        /* Labels toujours visibles sur mobile */
-        color: rgba(240, 234, 216, 0.6);
+        color: rgba(240,234,216,0.62);
     }
+    .sc-btn .sc-label { opacity: 1; transform: translateY(0); font-size: 6.5px; }
+    .sc-btn + .sc-btn::before { display: none; }
 
-    .sc-btn .sc-label {
-        opacity: 1;
-        transform: translateY(0);
-        font-size: 6.5px;
-    }
+    /* Burger */
+    .burger-btn { top: 12px; left: 12px; width: 50px; height: 50px; border-radius: 13px; }
+    .bl1, .bl3 { width: 18px; }
+    .bl2        { width: 12px; }
+    .burger-btn.active .bl1,
+    .burger-btn.active .bl3 { width: 18px; }
 
-    .sc-btn+.sc-btn::before {
-        display: none;
-    }
+    .categories-horizontal { gap: 8px; padding: 8px 10px; }
+    .categories-horizontal a { padding: 6px 12px; font-size: 0.8rem; border-radius: 40px; }
+
+    .section-title,
+    #menu-grid h2:not(.item-name),
+    #menu-grid h3:not(.item-name) { font-size: 1.2rem; margin: 20px 0 8px; padding-bottom: 4px; }
+
+    .menu-item { border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+    .item-desc { font-size: 0.8rem; line-height: 1.2; }
+
+    .back-to-top { width: 45px; height: 45px; bottom: 18px; font-size: 22px; }
+
+    .event-banner { padding: 6px 8px; font-size: 0.9rem; margin-top: 10px; }
+    .event-text-wrapper { animation-duration: 20s; }
+    .ticker-cashier { font-size: 0.75rem; padding: 5px 0; }
+    #searchInput { padding: 10px 12px; font-size: 14px; }
+    .close-btn { top: -38px; width: 32px; height: 32px; font-size: 1.3rem; }
+    footer { font-size: 0.78rem; padding: 20px 10px; margin-top: 40px; }
+
+    /* Google Review pill */
+    .google-review-fab { bottom: 16px; left: 10px; }
+    .gr-left { padding: 9px 11px; }
+    .gr-left svg { width: 16px; height: 16px; }
+    .gr-right { padding: 8px 13px; }
+    .gr-label { font-size: 7px; }
+    .gr-stars span { font-size: 10px; }
 }
 
+/* =========================================
+   RESPONSIVE ≤ 360px
+========================================= */
 @media (max-width: 360px) {
-    .sc-btn {
-        width: 46px;
-        height: 50px;
-    }
-
-    .sc-btn svg {
-        width: 16px;
-        height: 16px;
-    }
-
-    .sc-btn .sc-label {
-        font-size: 5.5px;
-    }
+    .sc-btn { width: 46px; height: 50px; }
+    .sc-btn svg { width: 15px; height: 15px; }
+    .sc-btn .sc-label { font-size: 5.5px; }
+    .logo-big { width: 80px !important; height: 80px !important; border-radius: 16px !important; }
 }
-
-</style></head><body><div id="backToTop" class="back-to-top">⬆</div>< !-- Burger button --><button id="burger" class="burger-btn" aria-label="Menu" aria-expanded="false"><span class="burger-lines"><span class="bl bl1"></span><span class="bl bl2"></span><span class="bl bl3"></span></span><span class="burger-label">Menu</span></button>< !-- Notification Bell Button (Rolex Premium Style) --><button id="notificationBellBtn" class="bell-btn" aria-label="Notifications" style="display: none;"><svg viewBox="0 0 24 24" width="22" height="22" stroke="#E2C97E" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg><span class="bell-badge" id="bellBadge" style="display: none;"></span></button>< !-- Floating GPS Status Badge --><div class="gps-status-badge gps-locating" id="gpsStatusBadge"><span class="gps-dot"></span><span class="gps-text" id="gpsStatusText">Géolocalisation...</span></div>< !-- Nav latéral --><nav id="burgerNav" class="burger-nav-hidden"><a href="#petit-dejeuner" data-i18n data-fr="Petit Déj" data-en="Breakfast" data-de="Frühstück">Petit Déj</a><a href="#entrees" data-i18n data-fr="Entrées" data-en="Starters" data-de="Vorspeisen">Entrées</a><a href="#plats" data-i18n data-fr="Plats" data-en="Main Dishes" data-de="Hauptgerichte">Plats</a><a href="#sandwichs" data-i18n data-fr="Sandwichs" data-en="Sandwiches" data-de="Sandwiches">Sandwichs</a><a href="#burgers" data-i18n data-fr="Burgers" data-en="Burgers" data-de="Burger">Burgers</a><a href="#panini" data-i18n data-fr="Panini" data-en="Panini" data-de="Panini">Panini</a><a href="#pizza" data-i18n data-fr="Pizza" data-en="Pizza" data-de="Pizza">Pizza</a><a href="#pasta" data-i18n data-fr="Pasta" data-en="Pasta" data-de="Pasta">Pasta</a><a href="#crepes" data-i18n data-fr="Crêpes" data-en="Crepes" data-de="Pfannkuchen">Crêpes</a><a href="#gateaux" data-i18n data-fr="Gâteaux" data-en="Cakes" data-de="Kuchen">Gâteaux</a><a href="#boissons" data-i18n data-fr="Boissons" data-en="Drinks" data-de="Getränke">Boissons</a><a href="#glace" data-i18n data-fr="Glace" data-en="Ice Cream" data-de="Eis">Glace</a></nav><div id="burgerOverlay" class="burger-overlay"></div>< !--================================HEADER=================================--><header><div class="header-overlay"></div><div class="container header-center"><img src="images/logo-gold.png" class="logo-big" alt="Grey Corner Café">< !-- SHORTCUT ICONS — SVG INLINE PREMIUM --><div class="shortcut-icons">< !-- Téléphone --><a href="tel:+212535940168" class="sc-btn" aria-label="Appeler Grey Corner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-stroke-linejoin="round"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C6.61 21 2 16.39 2 11c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" /></svg><span class="sc-label" data-i18n data-fr="Appeler" data-en="Call" data-de="Anrufen">Appeler</span></a>< !-- Instagram --><a href="https://www.instagram.com/greycornerfes/" target="_blank" rel="noopener" class="sc-btn"
-aria-label="Instagram Grey Corner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="0.7" fill="currentColor" stroke="none" /></svg><span class="sc-label">Instagram</span></a>< !-- Google Maps --><a href="https://maps.app.goo.gl/8CH1GGAvo2no6zp27" target="_blank" rel="noopener" class="sc-btn"
-aria-label="Nous trouver sur Maps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-stroke-linejoin="round"><path d="M12 2C8.686 2 6 4.686 6 8c0 5.25 6 14 6 14s6-8.75 6-14c0-3.314-2.686-6-6-6z" /><circle cx="12" cy="8" r="2.2" /></svg><span class="sc-label" data-i18n data-fr="Maps" data-en="Maps" data-de="Karte">Maps</span></a>< !-- Partager --><button class="sc-btn" id="shareMenu" aria-label="Partager le menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-stroke-linejoin="round"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" /></svg><span class="sc-label" data-i18n data-fr="Partager" data-en="Share" data-de="Teilen">Partager</span></button></div>< !-- /SHORTCUT ICONS --></div></header>< !-- Toast partage --><div class="sc-toast" id="scToast">Lien copié ✓</div>< !-- Barre catégories horizontale --><nav class="categories-horizontal"><a href="#petit-dejeuner" data-i18n data-fr="Petit Déj" data-en="Breakfast" data-de="Frühstück">Petit Déj</a><a href="#entrees" data-i18n data-fr="Entrées" data-en="Starters" data-de="Vorspeisen">Entrées</a><a href="#plats" data-i18n data-fr="Plats" data-en="Main Dishes" data-de="Hauptgerichte">Plats</a><a href="#sandwichs" data-i18n data-fr="Sandwichs" data-en="Sandwiches" data-de="Sandwiches">Sandwichs</a><a href="#burgers" data-i18n data-fr="Burgers" data-en="Burgers" data-de="Burger">Burgers</a><a href="#panini" data-i18n data-fr="Panini" data-en="Panini" data-de="Panini">Panini</a><a href="#pizza" data-i18n data-fr="Pizza" data-en="Pizza" data-de="Pizza">Pizza</a><a href="#pasta" data-i18n data-fr="Pasta" data-en="Pasta" data-de="Pasta">Pasta</a><a href="#crepes" data-i18n data-fr="Crêpes" data-en="Crepes" data-de="Pfannkuchen">Crêpes</a><a href="#gateaux" data-i18n data-fr="Gâteaux" data-en="Cakes" data-de="Kuchen">Gâteaux</a><a href="#boissons" data-i18n data-fr="Boissons" data-en="Drinks" data-de="Getränke">Boissons</a><a href="#glace" data-i18n data-fr="Glace" data-en="Ice Cream" data-de="Eis">Glace</a></nav>< !-- Recherche --><div class="search-wrapper"><input id="searchInput" type="search" placeholder="Rechercher un plat..." /><p id="prixInfo" class="prix-info">★ Tous les prix sont en dirhams marocains (MAD)</p></div>< !-- Grille menu --><main id="menu-grid"></main>< !-- Lightbox protégée --><div id="secureLightbox" class="secure-lightbox"><div class="secure-lightbox-content"><button class="close-btn">×</button></div><div id="secureLightboxCaption" class="secure-lightbox-caption"></div></div>< !-- Footer --><footer><div class="container">© 2025 Grey Corner Café — Menu trilingue. <br>📞 <a href="tel:+212535940168">+212 535 940 168</a></div></footer>< !-- Sélecteur de langue --><div class="lang-switch"><button class="lang-button active" data-lang="fr">🇫🇷</button><button class="lang-button" data-lang="en">🇬🇧</button><button class="lang-button" data-lang="de">🇩🇪</button></div>< !-- Google Review Pill --><a href="https://g.page/r/CXF0QNm04m-ZEAE/review" class="google-review-fab" target="_blank" rel="noopener"
-aria-label="Laisser un avis Google"><div class="gr-left"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-fill="#4285F4" /><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-fill="#34A853" /><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"
-fill="#FBBC05" /><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-fill="#EA4335" /></svg></div><div class="gr-right"><span class="gr-label">Laisser un avis</span><div class="gr-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div></div></a>< !-- Firebase SDK (Compat Mode for smooth global script tag inclusion) --><script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script><script src="firebase-config.js"></script>< !--======================================================================CLIENT INTERACTIVE QUICK ACTION BAR=======================================================================--><div class="client-action-bar" id="clientActionBar" style="display: none;"><div class="cab-container">< !-- Call Waiter --><button class="cab-btn" id="cabCallWaiter"><div class="cab-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></div><span class="cab-label" data-i18n data-fr="Appeler" data-en="Call Waiter" data-de="Rufen">Appeler</span></button>< !-- Request Water --><button class="cab-btn" id="cabRequestWater"><div class="cab-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg></div><span class="cab-label" data-i18n data-fr="Eau" data-en="Water" data-de="Wasser">Eau</span></button>< !-- Request Bill --><button class="cab-btn" id="cabRequestBill"><div class="cab-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="12" y1="4" x2="12" y2="20"></line><line x1="2" y1="12" x2="22" y2="12"></line></svg></div><span class="cab-label" data-i18n data-fr="Addition" data-en="Bill" data-de="Rechnung">Addition</span></button>< !-- View Cart --><button class="cab-btn" id="cabOpenCart"><div class="cab-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg><span class="cab-cart-badge" id="cabCartBadge" style="display: none;">0</span></div><span class="cab-label" data-i18n data-fr="Panier" data-en="Basket" data-de="Korb">Panier</span></button></div></div>< !-- Notification History Drawer Overlay & Container --><div id="notificationDrawerOverlay" class="nd-overlay"><div class="nd-container"><div class="nd-header"><div class="nd-title-wrap"><h3 class="nd-title" data-i18n data-fr="Notifications" data-en="Notifications" data-de="Benachrichtigungen">Notifications</h3><span class="nd-table-badge" id="ndTableBadge">Table</span></div><button class="nd-close-btn" id="ndCloseBtn">&times;
-</button></div><div class="nd-content" id="ndContentFeed">< !-- Dynamically populated via script.js --></div></div></div>< !--======================================================================PRE-ORDER CART DRAWER (SLIDE-UP)=======================================================================--><div class="cart-drawer-overlay" id="cartDrawerOverlay"></div><div class="cart-drawer" id="cartDrawer"><div class="cd-header"><div class="cd-title-wrap"><h3 class="cd-title" data-i18n data-fr="Mon Panier" data-en="My Cart" data-de="Mein Korb">Mon Panier</h3><span class="cd-table-badge" id="cdTableBadge">Table</span></div><button class="cd-close-btn" id="cdCloseBtn">&times;
-</button></div><div class="cd-body">< !-- Cart Items List --><div class="cd-items" id="cdItemsList">< !-- Dynamic Cart Items injected here --></div>< !-- Empty State --><div class="cd-empty-state" id="cdEmptyState"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg><p data-i18n data-fr="Votre panier est vide." data-en="Your basket is empty." data-de="Ihr Korb ist leer.">Votre panier est vide.</p></div>< !-- Pre-order Note / Allergy Field --><div class="cd-notes-section" id="cdNotesSection" style="display: none;"><label for="cdSpecialNote" data-i18n data-fr="Notes ou Allergies :" data-en="Notes or Allergies:" data-de="Notizen oder Allergien:">Notes ou Allergies :</label><textarea id="cdSpecialNote" placeholder="Ex: Pas d'oignon, sauce à part..."></textarea></div></div><div class="cd-footer" id="cdFooter" style="display: none;"><div class="cd-total-line"><span data-i18n data-fr="Total :" data-en="Total:" data-de="Gesamt:">Total :</span><span class="cd-total-price" id="cdTotalPrice">0 MAD</span></div><button class="cd-submit-btn" id="cdSubmitBtn"><span data-i18n data-fr="Envoyer la Précommande" data-en="Send Pre-Order" data-de="Vorbestellung Senden">Envoyer la Précommande</span><div class="cd-loading-spinner" id="cdSubmitSpinner" style="display: none;"></div></button><p class="cd-warning-text" data-i18n data-fr="* Le serveur confirmera cette précommande à votre table avant de l'envoyer en cuisine."
-data-en="* The waiter will confirm this pre-order at your table before sending it to the kitchen."
-data-de="* Der Kellner wird diese Vorbestellung an Ihrem Tisch bestätigen, bevor er sie in die Küche schickt.">* Le serveur confirmera cette précommande à votre table avant de l'envoyer en cuisine.
- </p></div></div>< !--======================================================================TABLE SELECTOR FALLBACK MODAL (FOR TESTING & NO-QR ENTRY)=======================================================================--><div class="table-modal-overlay" id="tableModalOverlay" style="display: none;"><div class="table-modal"><h3 data-i18n data-fr="Sélectionnez votre Table" data-en="Select Your Table" data-de="Wählen Sie Ihren Tisch">Sélectionnez votre Table</h3><p data-i18n data-fr="Pour activer le service digital, veuillez choisir votre numéro de table :" data-en="To activate the digital service, please select your table number:" data-de="Um den digitalen Service zu aktivieren, wählen Sie bitte Ihre Tischnummer:">Pour activer le service digital,
-veuillez choisir votre numéro de table :</p><div class="table-grid-select" id="tableGridSelect">< !-- Generated tables 1 to 24 --></div></div></div>< !--======================================================================HOT DRINK SELECTOR MODAL (FOR BREAKFAST ITEMS)=======================================================================--><div class="table-modal-overlay" id="hotDrinkModalOverlay" style="display: none; z-index: 10003;"><div class="table-modal" style="max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; padding: 20px;"><div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;"><h3 id="hotDrinkModalTitle" style="margin: 0; text-align: left; font-size: 1.25rem; font-family: 'Playfair Display', serif; color: var(--gold);">Choisissez votre Boisson</h3><button id="hotDrinkCloseBtn" style="background: none; border: none; color: var(--muted); font-size: 24px; cursor: pointer; outline: none; line-height: 1;">&times;
-</button></div><p id="hotDrinkModalSubtitle" style="text-align: left; margin: 0 0 16px; font-size: 0.82rem; color: var(--muted); font-family: 'Poppins', sans-serif;">Veuillez sélectionner votre boisson chaude incluse. </p><div class="hot-drink-counter" id="hotDrinkCounter" style="font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: var(--sc-gold-light); text-transform: uppercase; text-align: left; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 4px;">Sélection : 0 / 1 </div><div id="hotDrinksList" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px; max-height: 280px; margin-bottom: 16px;">< !-- Dynamic scrolling list of drinks --></div><button class="cd-submit-btn" id="hotDrinkConfirmBtn" disabled style="margin-top: auto;">Confirmer </button></div></div>< !--======================================================================SIDES / ACCOMPANIMENTS SELECTOR MODAL (FOR DISHES)=======================================================================--><div class="table-modal-overlay" id="sidesModalOverlay" style="display: none; z-index: 10004;"><div class="table-modal" style="max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; padding: 20px;"><div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;"><h3 id="sidesModalTitle" style="margin: 0; text-align: left; font-size: 1.25rem; font-family: 'Playfair Display', serif; color: var(--gold);" data-i18n data-fr="Accompagnements" data-en="Accompaniments" data-de="Beilagen">Accompagnements</h3><button id="sidesCloseBtn" style="background: none; border: none; color: var(--muted); font-size: 24px; cursor: pointer; outline: none; line-height: 1;">&times;
-</button></div><p id="sidesModalSubtitle" style="text-align: left; margin: 0 0 16px; font-size: 0.82rem; color: var(--muted); font-family: 'Poppins', sans-serif;" data-i18n data-fr="Veuillez sélectionner 2 accompagnements de votre choix (Inclus)." data-en="Please select 2 accompaniments of your choice (Included)." data-de="Bitte wählen Sie 2 Beilagen Ihrer Wahl (Inklusive).">Veuillez sélectionner 2 accompagnements de votre choix (Inclus). </p><div class="hot-drink-counter" id="sidesCounter" style="font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: var(--sc-gold-light); text-transform: uppercase; text-align: left; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 4px;">Sélection : 0 / 2 </div><div id="sidesList" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px; max-height: 280px; margin-bottom: 16px;">< !-- Dynamic scrolling list of accompaniments --></div><button class="cd-submit-btn" id="sidesConfirmBtn" disabled style="margin-top: auto;" data-i18n data-fr="Confirmer" data-en="Confirm" data-de="Bestätigen">Confirmer </button></div></div>< !-- Scripts --><script src="script.js" defer></script><script> // ── PARTAGER ──
-
-document.getElementById('shareMenu').addEventListener('click', async function () {
-        const url=window.location.href;
-        const lang=localStorage.getItem('lang') || 'fr';
-
-        const texts= {
-            fr: {
-                title: 'Grey Corner — Menu', text: '🍽️ Découvrez le menu Grey Corner Café à Fès !'
-            }
-
-            ,
-            en: {
-                title: 'Grey Corner — Menu', text: '🍽️ Discover the Grey Corner Café menu in Fès!'
-            }
-
-            ,
-            de: {
-                title: 'Grey Corner — Menü', text: '🍽️ Entdecken Sie das Menü des Grey Corner Café in Fès!'
-            }
-        }
-
-        ;
-        const t=texts[lang] || texts.fr;
-
-        // Web Share API (mobile natif — WhatsApp, SMS, etc.)
-        if (navigator.share) {
-            try {
-                await navigator.share({
-                    title: t.title, text: t.text, url
-                });
-            return;
-        }
-
-        catch (e) {
-            return;
-        }
-    }
-
-    // Fallback desktop : copier dans le presse-papier
-    try {
-        await navigator.clipboard.writeText(url);
-    }
-
-    catch {
-        const ta=document.createElement('textarea');
-        ta.value=url;
-        ta.style.cssText='position:fixed;opacity:0;top:0;left:0;';
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-    }
-
-    // Toast multilingue
-    const toastMsg= {
-        fr: 'Lien copié ✓', en: 'Link copied ✓', de: 'Link kopiert ✓'
-    }
-
-    ;
-    const toast=document.getElementById('scToast');
-    toast.textContent=toastMsg[lang] || toastMsg.fr;
-    toast.classList.add('show');
-    setTimeout(()=> toast.classList.remove('show'), 2400);
-});
-</script></body></html>
