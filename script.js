@@ -3342,6 +3342,9 @@ let pendingActionAfterTableSelect = null;
 
 // Parse Table Number
 function detectTableNumber() {
+    // Clear any residual table numbers from old versions to ensure zero browser memory persistence
+    localStorage.removeItem("grey_table");
+
     const urlParams = new URLSearchParams(window.location.search);
     let table = urlParams.get("table");
     
@@ -3353,22 +3356,11 @@ function detectTableNumber() {
         }
     }
 
-    // Try restoring from localStorage
-    let storedTable = localStorage.getItem("grey_table");
-    if (storedTable) {
-        storedTable = parseInt(storedTable);
-        if (isValidTableNumber(storedTable)) {
-            setTable(storedTable);
-            return;
-        }
-    }
-
     // DO NOT show modal on startup. Just let the user browse.
 }
 
 function setTable(num) {
     clientTable = num;
-    localStorage.setItem("grey_table", num);
     
     // Update Badge text
     const badge = document.getElementById("cdTableBadge");
