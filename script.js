@@ -3656,7 +3656,8 @@ function addNotificationToHistory(message) {
     notifications.push({
         id: Math.random().toString(36).substr(2, 9),
         time: timeStr,
-        message: message
+        message: message,
+        table: clientTable
     });
     
     // Keep last 25 alerts to save space
@@ -3678,8 +3679,9 @@ function renderNotificationHistory() {
     if (!ndContentFeed) return;
 
     const notifications = JSON.parse(localStorage.getItem("grey_notifications") || "[]");
+    const tableNotifications = notifications.filter(n => n.table === clientTable);
     
-    if (notifications.length === 0) {
+    if (tableNotifications.length === 0) {
         ndContentFeed.innerHTML = `
             <div class="nd-empty-state">
                 Aucune notification pour le moment.
@@ -3690,7 +3692,7 @@ function renderNotificationHistory() {
 
     ndContentFeed.innerHTML = "";
     // Show newest first
-    notifications.slice().reverse().forEach(notif => {
+    tableNotifications.slice().reverse().forEach(notif => {
         const card = document.createElement("div");
         card.className = "nd-card";
         
@@ -3766,7 +3768,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Check if there are past notifications to display the unread badge
     const notifications = JSON.parse(localStorage.getItem("grey_notifications") || "[]");
-    if (notifications.length > 0 && bellBadge && clientTable) {
+    const tableNotifications = notifications.filter(n => n.table === clientTable);
+    if (tableNotifications.length > 0 && bellBadge && clientTable) {
         bellBadge.style.display = "block";
     }
 });
