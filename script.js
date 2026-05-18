@@ -2339,6 +2339,9 @@ const secureLightboxContent = document.querySelector(".secure-lightbox-content")
 // Langue actuelle
 let currentLang = localStorage.getItem("lang") || "fr";
 
+// System Freeze state
+let systemFrozen = false;
+
 // Flag pour éviter d'attacher plusieurs fois les listeners de protection
 let imagesProtected = false;
 
@@ -3543,6 +3546,15 @@ function verifyLocationAndProceed(action) {
 
 // Trigger calling server
 function triggerQuickServiceCall(type) {
+    if (systemFrozen) {
+        const frozenToast = {
+            fr: "Le service est temporairement suspendu en raison d'une forte affluence ❄️",
+            en: "Service is temporarily suspended due to high demand ❄️",
+            de: "Der Dienst ist wegen hoher Nachfrage vorübergehend eingestellt ❄️"
+        };
+        showToast(frozenToast[currentLang] || frozenToast.fr);
+        return;
+    }
     verifyLocationAndProceed(() => {
         if (!clientTable) {
             pendingActionAfterTableSelect = () => triggerQuickServiceCall(type);
@@ -3591,6 +3603,15 @@ function triggerQuickServiceCall(type) {
 
 // Send Pre-Order
 function submitPreOrder() {
+    if (systemFrozen) {
+        const frozenToast = {
+            fr: "Le service est temporairement suspendu en raison d'une forte affluence ❄️",
+            en: "Service is temporarily suspended due to high demand ❄️",
+            de: "Der Dienst ist wegen hoher Nachfrage vorübergehend eingestellt ❄️"
+        };
+        showToast(frozenToast[currentLang] || frozenToast.fr);
+        return;
+    }
     if (clientCart.length === 0) return;
 
     verifyLocationAndProceed(() => {
@@ -3677,6 +3698,7 @@ function subscribeToActiveWaiterEvents() {
 
     // Listen to Waiter Calls
     const unsubCalls = dbService.onCallsChange((calls) => {
+        if (systemFrozen) return;
         const waiterTypes = ["waiter", "water", "bill"];
         waiterTypes.forEach(type => {
             const lastCallId = localStorage.getItem(`last_call_${type}`);
@@ -3701,6 +3723,7 @@ function subscribeToActiveWaiterEvents() {
 
     // Listen to Pre-orders
     const unsubOrders = dbService.onPreOrdersChange((orders) => {
+        if (systemFrozen) return;
         const lastOrderId = localStorage.getItem("last_pre_order_id");
         if (lastOrderId) {
             const matchingOrder = orders.find(o => o.id === lastOrderId);
@@ -4009,6 +4032,36 @@ document.addEventListener("DOMContentLoaded", () => {
     // First initialize Firebase Session, then parse URL / Detect Table to ensure active listener compliance!
     initClientFirebaseSession(() => {
         detectTableNumber();
+    });
+
+    // ❄️ System Freeze Listener
+    dbService.onSystemFreezeChange((frozen) => {
+        systemFrozen = frozen;
+        
+        // Target call buttons and pre-order submit button
+        const cabCall = document.getElementById("cabCallWaiter");
+        const cabWater = document.getElementById("cabRequestWater");
+        const cabBill = document.getElementById("cabRequestBill");
+        const cdSubmit = document.getElementById("cdSubmitBtn");
+        
+        const targets = [cabCall, cabWater, cabBill, cdSubmit];
+        targets.forEach(btn => {
+            if (!btn) return;
+            if (frozen) {
+                btn.classList.add("frozen-disabled");
+                btn.setAttribute("disabled", "true");
+            } else {
+                btn.classList.remove("frozen-disabled");
+                btn.removeAttribute("disabled");
+            }
+        });
+        
+        if (frozen) {
+            const tableModal = document.getElementById("tableModalOverlay");
+            if (tableModal) tableModal.style.display = "none";
+            const ndOverlay = document.getElementById("notificationDrawerOverlay");
+            if (ndOverlay) ndOverlay.classList.remove("active");
+        }
     });
 
     // Initialize GPS Geofencing Service
