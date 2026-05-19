@@ -762,7 +762,7 @@ const menuData = [
           de: "Hackfleisch, Cheddar, Tomate, Salat, Sauce."
         },
         price: "62",
-        image: "images/wrap-viande-hachee.jpg",
+        image: "images/Wrap-viande-hachee.jpg",
         isNew: true
       },
       {
