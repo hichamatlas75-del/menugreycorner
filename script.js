@@ -750,7 +750,7 @@ const menuData = [
           de: "Panierter Hähnchen, Cheddar, Tomate, Salat, Sauce."
         },
         price: "58",
-        image: "images/Wrap-poulet.jpg",
+        image: "images/Wrap-poulet.jpg"
 ",
         isNew: true
       },
@@ -762,7 +762,7 @@ const menuData = [
           de: "Hackfleisch, Cheddar, Tomate, Salat, Sauce."
         },
         price: "62",
-        image: "images/Wrap-viande-hachee.jpg",
+        image: "images/Wrap-viande-hachee.jpg"
         isNew: true
       },
       {
