@@ -496,7 +496,7 @@ const menuData = [
           de: "Traditionelles Gericht, das freitags serviert wird."
         },
         price: "64",
-        image: "images/Couscous-poulet.jpg"
+        image: "images/couscous-viande.jpg"
       },
       {
         name: { fr: "Couscous poulet avec petit lait", en: "Chicken couscous with buttermilk", de: "Hähnchen-Couscous mit Buttermilch" },
@@ -506,7 +506,7 @@ const menuData = [
           de: "Traditionelles Gericht, das freitags serviert wird."
         },
         price: "54",
-        image: "images/Couscous-poulet.jpg"
+        image: "images/couscous-poulet.jpg"
       }
     ]
   },
@@ -750,7 +750,7 @@ const menuData = [
           de: "Panierter Hähnchen, Cheddar, Tomate, Salat, Sauce."
         },
         price: "58",
-        image: "images/Wrap-poulet.jpg"
+        image: "images/wrap-poulet.jpg",
         isNew: true
       },
       {
@@ -761,7 +761,7 @@ const menuData = [
           de: "Hackfleisch, Cheddar, Tomate, Salat, Sauce."
         },
         price: "62",
-        image: "images/Wrap-viande-hachee.jpg"
+        image: "images/wrap-viande-hachee.jpg",
         isNew: true
       },
       {
@@ -772,7 +772,7 @@ const menuData = [
           de: "Panierter Hähnchen, Wurstwaren, Cheddar, Tomate, Salat, Sauce."
         },
         price: "64",
-        image: "images/Wrap-gourmand.jpg"
+        image: "images/wrap-gourmand.jpg",
         isNew: true
       }
 
