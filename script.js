@@ -506,7 +506,7 @@ const menuData = [
           de: "Traditionelles Gericht, das freitags serviert wird."
         },
         price: "54",
-        image: "images/couscous-poulet.jpg"
+        image: "images/Couscous-poulet.jpg"
       }
     ]
   },
