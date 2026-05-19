@@ -751,7 +751,6 @@ const menuData = [
         },
         price: "58",
         image: "images/Wrap-poulet.jpg"
-",
         isNew: true
       },
       {
