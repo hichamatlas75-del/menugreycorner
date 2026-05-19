@@ -772,7 +772,7 @@ const menuData = [
           de: "Panierter Hähnchen, Wurstwaren, Cheddar, Tomate, Salat, Sauce."
         },
         price: "64",
-        image: "images/wrap-gourmand.jpg",
+        image: "images/Wrap-gourmand.jpg",
         isNew: true
       }
 
