@@ -496,7 +496,7 @@ const menuData = [
           de: "Traditionelles Gericht, das freitags serviert wird."
         },
         price: "64",
-        image: "images/couscous-viande.jpg"
+        image: "images/Couscous-poulet.jpg"
       },
       {
         name: { fr: "Couscous poulet avec petit lait", en: "Chicken couscous with buttermilk", de: "Hähnchen-Couscous mit Buttermilch" },
