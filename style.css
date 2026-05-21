@@ -7,22 +7,24 @@
    VARIABLES
 ========================================= */
 :root {
-    --bg:           #0A0F1A;
-    --card:         #121A2A;
-    --text:         #F8F9FA;
-    --muted:        #A0ABC0;
-    --gold:         #C9A84C;       /* ← gold logo */
-    --gold-dark:    #A8873C;       /* ← gold foncé */
+    --bg:           #FCFAF6;       /* Fond crème doux */
+    --card:         #FFFFFF;       /* Cartes blanc pur */
+    --text:         #2D2321;       /* Texte charbon chaud */
+    --muted:        #8E827B;       /* Texte secondaire gris-brun doux */
+    --gold:         #E09200;       /* Jaune d'or/ambre chaleureux */
+    --gold-dark:    #C67E00;       /* Jaune d'or foncé */
+    --primary:      #BD1E2D;       /* Rouge cramoisi principal */
+    --primary-dark: #9A1622;       /* Rouge cramoisi foncé */
     --radius:       20px;
-    --shadow:       0 12px 35px rgba(0,0,0,0.4);
-    --shadow-hover: 0 16px 45px rgba(201,168,76,0.15);
+    --shadow:       0 12px 35px rgba(45, 35, 33, 0.05);
+    --shadow-hover: 0 16px 45px rgba(189, 30, 45, 0.12);
 
     /* Palette luxe — icons & logo */
-    --sc-gold:       #C9A84C;
-    --sc-gold-light: #E2C97E;
-    --sc-border:     rgba(201,168,76,0.28);
-    --sc-bg:         rgba(10,9,6,0.58);
-    --sc-bg-hover:   rgba(201,168,76,0.1);
+    --sc-gold:       var(--primary);
+    --sc-gold-light: var(--gold);
+    --sc-border:     rgba(189, 30, 45, 0.15);
+    --sc-bg:         rgba(255, 255, 255, 0.9);
+    --sc-bg-hover:   rgba(189, 30, 45, 0.05);
 }
 
 /* =========================================
@@ -96,12 +98,12 @@ header {
     height: 140px !important;
     object-fit: contain !important;
     border-radius: 22px !important;
-    background: rgba(10,9,6,0.65);
-    border: 1px solid rgba(201,168,76,0.32);
+    background: var(--bg);
+    border: 1px solid var(--sc-border);
     padding: 10px;
     box-shadow:
-        0 8px 28px rgba(0,0,0,0.35),
-        0 0 0 1px rgba(201,168,76,0.08);
+        0 8px 28px rgba(45, 35, 33, 0.08),
+        0 0 0 1px rgba(189, 30, 45, 0.05);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     transition:
@@ -112,8 +114,8 @@ header {
     flex-shrink: 0;
 }
 .logo-big:hover {
-    border-color: rgba(201,168,76,0.55);
-    box-shadow: 0 12px 36px rgba(201,168,76,0.16);
+    border-color: rgba(189, 30, 45, 0.4);
+    box-shadow: 0 12px 36px rgba(189, 30, 45, 0.12);
     transform: translateY(-2px);
 }
 
@@ -143,7 +145,7 @@ header {
     background: var(--sc-bg);
     border: 1px solid var(--sc-border);
     border-radius: 12px;
-    color: rgba(240,234,216,0.52);
+    color: var(--primary);
     cursor: pointer;
     text-decoration: none;
     font-family: 'DM Sans', 'Poppins', sans-serif;
@@ -199,18 +201,18 @@ header {
     top: 22%;
     height: 56%;
     width: 1px;
-    background: rgba(201,168,76,0.13);
+    background: rgba(189, 30, 45, 0.13);
     pointer-events: none;
 }
 
 /* Hover desktop */
 @media (hover: hover) {
     .sc-btn:hover {
-        color: var(--sc-gold-light);
-        border-color: var(--sc-gold);
+        color: var(--primary-dark);
+        border-color: var(--primary);
         background: var(--sc-bg-hover);
         transform: translateY(-3px);
-        box-shadow: 0 8px 24px rgba(201,168,76,0.2);
+        box-shadow: 0 8px 24px rgba(189, 30, 45, 0.15);
         height: 56px;
     }
     .sc-btn:hover .sc-label {
@@ -223,9 +225,9 @@ header {
 /* Tap mobile */
 .sc-btn:active {
     transform: scale(0.93);
-    background: rgba(201,168,76,0.14);
-    border-color: var(--sc-gold);
-    color: var(--sc-gold-light);
+    background: rgba(189, 30, 45, 0.14);
+    border-color: var(--primary);
+    color: var(--primary-dark);
 }
 
 /* Toast confirmation partage */
@@ -234,12 +236,12 @@ header {
     bottom: 86px;
     left: 50%;
     transform: translateX(-50%) translateY(8px);
-    background: rgba(10,9,6,0.94);
-    border: 1px solid rgba(201,168,76,0.32);
-    color: #E2C97E;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(189, 30, 45, 0.2);
+    color: var(--primary);
     font-family: 'DM Sans', 'Poppins', sans-serif;
     font-size: 11px;
-    font-weight: 400;
+    font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     padding: 10px 22px;
@@ -394,14 +396,14 @@ header {
     transition: left 0.3s ease;
     z-index: 9998;
     overflow-y: auto;
-    border-right: 1px solid rgba(201,168,76,0.15);
-    box-shadow: 4px 0 30px rgba(0,0,0,0.5);
+    border-right: 1px solid rgba(189, 30, 45, 0.15);
+    box-shadow: 4px 0 30px rgba(45, 35, 33, 0.06);
 }
 .burger-nav-hidden a {
     padding: 12px;
     font-size: 1rem;
     color: var(--text);
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid var(--sc-border);
     transition: color 0.2s, padding-left 0.2s;
 }
 .burger-nav-hidden a:hover { color: var(--gold); padding-left: 18px; }
@@ -423,13 +425,13 @@ header {
 
 .categories-horizontal a {
     background: var(--card);
-    border: 1px solid rgba(201,168,76,0.3);
+    border: 1px solid rgba(189, 30, 45, 0.15);
     padding: 8px 18px;
     border-radius: 999px;
     color: var(--text);
     font-weight: 500;
     font-size: 0.9rem;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 10px rgba(45, 35, 33, 0.05);
     transition: all 0.4s cubic-bezier(0.25,1,0.5,1);
 }
 .categories-horizontal a:hover,
@@ -438,7 +440,7 @@ header {
     color: #F8F9FA;
     border-color: transparent;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(201,168,76,0.4);
+    box-shadow: 0 8px 20px rgba(224, 146, 0, 0.3);
 }
 
 /* =========================================
@@ -454,22 +456,22 @@ header {
     width: 100%;
     padding: 12px 18px;
     background: var(--card);
-    border: 1px solid rgba(201,168,76,0.3);
+    border: 1px solid rgba(189, 30, 45, 0.2);
     border-radius: 999px;
     color: var(--text);
     font-family: "Poppins", sans-serif;
     font-size: 0.95rem;
     outline: none;
     transition: border-color 0.3s, box-shadow 0.3s;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 15px rgba(45, 35, 33, 0.05);
     display: block;
     appearance: none;
     -webkit-appearance: none;
 }
 #searchInput::placeholder { color: var(--muted); font-size: 0.9rem; }
 #searchInput:focus {
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(189, 30, 45, 0.15);
 }
 
 /* =========================================
@@ -1031,9 +1033,9 @@ footer a:hover { opacity: 0.8; }
     width: auto;
     padding: 0 14px;
     border-radius: 20px;
-    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
     border: none;
-    color: #0A0F1A;
+    color: #FFFFFF;
     font-family: 'Poppins', sans-serif;
     font-size: 11px;
     font-weight: 700;
@@ -1043,7 +1045,7 @@ footer a:hover { opacity: 0.8; }
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(201, 168, 76, 0.25);
+    box-shadow: 0 4px 10px rgba(189, 30, 45, 0.2);
     transition: transform 0.25s cubic-bezier(.22, 1, .36, 1), box-shadow 0.25s ease, filter 0.2s;
     z-index: 5;
     outline: none;
@@ -1051,7 +1053,7 @@ footer a:hover { opacity: 0.8; }
 
 .add-to-cart-btn:hover {
     transform: scale(1.12);
-    box-shadow: 0 6px 14px rgba(201, 168, 76, 0.4);
+    box-shadow: 0 6px 14px rgba(189, 30, 45, 0.35);
     filter: brightness(1.1);
 }
 
@@ -1073,13 +1075,13 @@ body {
     width: 100%;
     max-width: 600px;
     height: 74px;
-    background: linear-gradient(135deg, rgba(8, 48, 30, 0.94) 0%, rgba(4, 30, 18, 0.98) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(252, 250, 246, 0.98) 100%);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-top: 1.5px solid rgba(46, 204, 113, 0.4);
+    border-top: 1.5px solid rgba(189, 30, 45, 0.3);
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(46, 204, 113, 0.22);
+    box-shadow: 0 -8px 32px rgba(45, 35, 33, 0.08), 0 0 20px rgba(189, 30, 45, 0.05);
     z-index: 9999;
     padding: 6px 12px 14px;
     box-sizing: border-box;
@@ -1101,7 +1103,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 3px;
-    color: rgba(248, 249, 250, 0.52);
+    color: rgba(45, 35, 33, 0.55);
     cursor: pointer;
     transition: color 0.24s ease, transform 0.2s;
     outline: none;
@@ -1111,7 +1113,7 @@ body {
 }
 
 .cab-btn:hover {
-    color: var(--sc-gold-light);
+    color: var(--primary);
 }
 
 .cab-btn:active {
@@ -1119,7 +1121,7 @@ body {
 }
 
 .cab-btn.active {
-    color: var(--gold);
+    color: var(--primary);
 }
 
 .cab-icon-wrap {
@@ -1486,15 +1488,15 @@ body {
 .cd-submit-btn {
     width: 100%;
     height: 48px;
-    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-    color: #0A0F1A;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #FFFFFF;
     font-family: 'Poppins', sans-serif;
     font-size: 0.95rem;
     font-weight: 600;
     border: none;
     border-radius: 12px;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(201, 168, 76, 0.3);
+    box-shadow: 0 4px 15px rgba(189, 30, 45, 0.25);
     transition: filter 0.2s, transform 0.2s, box-shadow 0.2s;
     display: flex;
     align-items: center;
@@ -1596,9 +1598,9 @@ body {
 
 .tgs-btn {
     aspect-ratio: 1;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.06);
-    color: #FFFFFF;
+    background: var(--bg);
+    border: 1px solid var(--sc-border);
+    color: var(--text);
     font-family: 'Poppins', sans-serif;
     font-size: 0.95rem;
     font-weight: 600;
@@ -1632,8 +1634,8 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 12px 16px;
-    background: rgba(255, 255, 255, 0.015);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: var(--bg);
+    border: 1px solid var(--sc-border);
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -1655,7 +1657,7 @@ body {
     font-family: 'Poppins', sans-serif;
     font-size: 0.9rem;
     font-weight: 500;
-    color: #FFFFFF;
+    color: var(--text);
 }
 
 .hdo-item.selected .hdo-name {
@@ -1667,7 +1669,7 @@ body {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    border: 1.5px solid var(--sc-border);
     display: flex;
     align-items: center;
     justify-content: center;
