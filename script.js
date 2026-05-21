@@ -2372,22 +2372,55 @@ function renderMenu() {
 
   menuGrid.innerHTML = "";
 
-  menuData.forEach(category => {
-    const section = document.createElement("section");
-    section.className = "menu-section";
-    if (category.id) section.id = category.id;
+  menuData.forEach((category, catIndex) => {
+    // Generate clean ID if missing
+    const categoryId = category.id || category.category.fr.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    
+    // Choose banner image: use first item's image, or a fallback if none
+    const bannerImg = (category.items && category.items.length > 0) 
+        ? category.items[0].image 
+        : "images/logo-gold.png";
 
-    section.innerHTML = `
-            <h2 class="section-title">${category.category[currentLang]}</h2>
-            <div class="items"></div>
-        `;
+    const drawer = document.createElement("div");
+    drawer.className = "category-drawer";
+    drawer.id = categoryId;
 
-    const itemsContainer = section.querySelector(".items");
+    // First drawer open by default
+    if (catIndex === 0) {
+      drawer.classList.add("open");
+    }
 
-    category.items.forEach(item => {
-      item.categoryId = category.id || "";
+    drawer.innerHTML = `
+      <div class="category-drawer-header">
+        <div class="category-drawer-header-bg" style="background-image: url('${bannerImg}')"></div>
+        <div class="category-drawer-header-overlay"></div>
+        <div class="category-drawer-header-content">
+          <h2 class="category-drawer-title">${category.category[currentLang]}</h2>
+          <span class="category-drawer-chevron">
+            <svg viewBox="0 0 24 24">
+              <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+      <div class="category-drawer-body">
+        <div class="category-drawer-grid items"></div>
+      </div>
+    `;
+
+    // Bind toggle click
+    const header = drawer.querySelector(".category-drawer-header");
+    header.addEventListener("click", () => {
+      toggleCategoryDrawer(drawer);
+    });
+
+    const itemsContainer = drawer.querySelector(".items");
+
+    category.items.forEach((item, itemIndex) => {
+      item.categoryId = categoryId;
       const card = document.createElement("article");
       card.className = "menu-item";
+      card.style.setProperty("--item-index", itemIndex);
 
       // Badge NEW / NOUVEAU / NEU
       if (item.isNew === true) {
@@ -2432,11 +2465,128 @@ function renderMenu() {
       itemsContainer.appendChild(card);
     });
 
-    menuGrid.appendChild(section);
+    menuGrid.appendChild(drawer);
+
+    // Initial max-height style for the open one
+    if (catIndex === 0) {
+      const body = drawer.querySelector(".category-drawer-body");
+      if (body) {
+        setTimeout(() => {
+          if (drawer.classList.contains("open")) {
+            body.style.maxHeight = "none";
+          }
+        }, 50);
+      }
+    }
   });
 
   enableSecureLightbox();
   protectImages();
+}
+
+// ==========================================
+// ============ DRAWER HELPER FUNCTIONS =====
+// ==========================================
+
+function toggleCategoryDrawer(drawerIdOrElement) {
+  const drawer = typeof drawerIdOrElement === "string"
+    ? document.getElementById(drawerIdOrElement)
+    : drawerIdOrElement;
+  if (!drawer) return;
+
+  const isOpen = drawer.classList.contains("open");
+
+  if (!isOpen) {
+    // Accordion: close other drawers
+    document.querySelectorAll(".category-drawer.open").forEach(other => {
+      if (other !== drawer) {
+        closeDrawer(other);
+      }
+    });
+    openDrawer(drawer);
+  } else {
+    closeDrawer(drawer);
+  }
+}
+
+function openDrawer(drawer) {
+  const body = drawer.querySelector(".category-drawer-body");
+  if (!body) return;
+
+  drawer.classList.add("open");
+  body.style.maxHeight = body.scrollHeight + "px";
+
+  const onTransitionEnd = () => {
+    if (drawer.classList.contains("open")) {
+      body.style.maxHeight = "none";
+    }
+    body.removeEventListener("transitionend", onTransitionEnd);
+  };
+  body.addEventListener("transitionend", onTransitionEnd);
+}
+
+function closeDrawer(drawer) {
+  const body = drawer.querySelector(".category-drawer-body");
+  if (!body) return;
+
+  body.style.maxHeight = body.scrollHeight + "px";
+  body.offsetHeight; // force reflow
+
+  drawer.classList.remove("open");
+  body.style.maxHeight = "0";
+}
+
+function handleHashNavigation() {
+  const hash = window.location.hash;
+  if (!hash) return;
+
+  const targetId = hash.substring(1);
+  const targetDrawer = document.getElementById(targetId);
+  if (targetDrawer && targetDrawer.classList.contains("category-drawer")) {
+    // Accordion: close other drawers
+    document.querySelectorAll(".category-drawer.open").forEach(other => {
+      if (other !== targetDrawer) {
+        closeDrawer(other);
+      }
+    });
+
+    openDrawer(targetDrawer);
+
+    // Scroll smoothly to the drawer
+    setTimeout(() => {
+      targetDrawer.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 150);
+  }
+}
+
+function setupNavigationListeners() {
+  window.addEventListener("hashchange", handleHashNavigation);
+
+  // Handle click on category nav links (both horizontal and burger)
+  const navLinks = document.querySelectorAll(".categories-horizontal a, #burgerNav a");
+  navLinks.forEach(link => {
+    link.addEventListener("click", (e) => {
+      const href = link.getAttribute("href");
+      if (href && href.startsWith("#")) {
+        const targetId = href.substring(1);
+        const targetDrawer = document.getElementById(targetId);
+        if (targetDrawer && targetDrawer.classList.contains("category-drawer")) {
+          // If already has this hash, hashchange won't fire. Manually trigger.
+          if (window.location.hash === href) {
+            e.preventDefault(); // prevent default to avoid jump
+            // Accordion: close other drawers
+            document.querySelectorAll(".category-drawer.open").forEach(other => {
+              if (other !== targetDrawer) {
+                closeDrawer(other);
+              }
+            });
+            openDrawer(targetDrawer);
+            targetDrawer.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }
+      }
+    });
+  });
 }
 
 // ==========================================
@@ -2645,10 +2795,33 @@ function applySearchFilter() {
     card.style.display = match ? "" : "none";
   });
 
-  // Masquer les sections vides
-  document.querySelectorAll(".menu-section").forEach(section => {
-    const visibles = section.querySelectorAll(".menu-item:not([style*='display: none'])");
-    section.style.display = visibles.length === 0 ? "none" : "";
+  // Gérer la visibilité et l'ouverture des tiroirs selon la recherche
+  const drawers = document.querySelectorAll(".category-drawer");
+  drawers.forEach((drawer, idx) => {
+    const body = drawer.querySelector(".category-drawer-body");
+    const visibles = drawer.querySelectorAll(".menu-item:not([style*='display: none'])");
+    
+    if (term) {
+      if (visibles.length > 0) {
+        drawer.style.display = "";
+        drawer.classList.add("open");
+        if (body) body.style.maxHeight = "none";
+      } else {
+        drawer.style.display = "none";
+        drawer.classList.remove("open");
+        if (body) body.style.maxHeight = "0";
+      }
+    } else {
+      // Si la recherche est vide, on affiche tout et on revient à l'état par défaut (premier tiroir ouvert, les autres fermés)
+      drawer.style.display = "";
+      if (idx === 0) {
+        drawer.classList.add("open");
+        if (body) body.style.maxHeight = "none";
+      } else {
+        drawer.classList.remove("open");
+        if (body) body.style.maxHeight = "0";
+      }
+    }
   });
 }
 
@@ -2778,6 +2951,10 @@ updatePrixInfo();
 
 // Rendre le menu
 renderMenu();
+
+// Setup accordion navigation and handle initial hash if present
+setupNavigationListeners();
+setTimeout(handleHashNavigation, 100);
 
 // Activer la recherche après render
 setTimeout(activateSearch, 50);
@@ -4149,164 +4326,4 @@ const GPSService = {
         error: "Erreur GPS. Vérifiez vos réglages"
       },
       en: {
-        inside: "At Grey Corner Fès",
-        outside: "Read-only Menu",
-        suspect: "Invalid GPS position !",
-        denied: "Allow GPS to interact",
-        error: "GPS Error. Check settings"
-      },
-      de: {
-        inside: "Bei Grey Corner Fès",
-        outside: "Nur Lese-Menü",
-        suspect: "Ungültige GPS-Position !",
-        denied: "GPS erlauben zum Bestellen",
-        error: "GPS-Fehler. Einstellungen prüfen"
-      }
-    };
-
-    const currentLangTexts = textMap[currentLang] || textMap.fr;
-
-    if (state === 'inside') {
-      badge.classList.add("gps-inside");
-      text.textContent = currentLangTexts.inside;
-      this.toggleInteractiveControls(true);
-    } else if (state === 'outside') {
-      badge.classList.add("gps-outside");
-      text.textContent = currentLangTexts.outside;
-      this.toggleInteractiveControls(false);
-    } else if (state === 'suspect') {
-      badge.classList.add("gps-suspect");
-      text.textContent = currentLangTexts.suspect;
-      this.toggleInteractiveControls(false);
-    } else if (state === 'denied') {
-      badge.classList.add("gps-denied");
-      text.textContent = currentLangTexts.denied;
-      this.toggleInteractiveControls(false);
-    } else {
-      badge.classList.add("gps-error");
-      text.textContent = currentLangTexts.error;
-      this.toggleInteractiveControls(false);
-    }
-  },
-
-  toggleInteractiveControls: function (enable) {
-    const cabCall = document.getElementById("cabCallWaiter");
-    const cabWater = document.getElementById("cabRequestWater");
-    const cabBill = document.getElementById("cabRequestBill");
-    const cdSubmit = document.getElementById("cdSubmitBtn");
-
-    const buttons = [cabCall, cabWater, cabBill, cdSubmit];
-    buttons.forEach(btn => {
-      if (!btn) return;
-      if (enable) {
-        btn.classList.remove("disabled-gps");
-      } else {
-        btn.classList.add("disabled-gps");
-      }
-    });
-
-    // Ensure the quick action bar is displayed at all times
-    const actionBar = document.getElementById("clientActionBar");
-    if (actionBar) {
-      actionBar.style.display = "block";
-    }
-  }
-};
-
-// --- Wire up HTML Events ---
-document.addEventListener("DOMContentLoaded", () => {
-  // Initialize Cart
-  initClientCart();
-
-  // First initialize Firebase Session, then parse URL / Detect Table to ensure active listener compliance!
-  initClientFirebaseSession(() => {
-    detectTableNumber();
-  });
-
-  // ❄️ System Freeze Listener
-  dbService.onSystemFreezeChange((frozen) => {
-    systemFrozen = frozen;
-
-    // Target call buttons and pre-order submit button
-    const cabCall = document.getElementById("cabCallWaiter");
-    const cabWater = document.getElementById("cabRequestWater");
-    const cabBill = document.getElementById("cabRequestBill");
-    const cdSubmit = document.getElementById("cdSubmitBtn");
-
-    const targets = [cabCall, cabWater, cabBill, cdSubmit];
-    targets.forEach(btn => {
-      if (!btn) return;
-      if (frozen) {
-        btn.classList.add("frozen-disabled");
-        btn.setAttribute("disabled", "true");
-      } else {
-        btn.classList.remove("frozen-disabled");
-        btn.removeAttribute("disabled");
-      }
-    });
-
-    if (frozen) {
-      const tableModal = document.getElementById("tableModalOverlay");
-      if (tableModal) tableModal.style.display = "none";
-      const ndOverlay = document.getElementById("notificationDrawerOverlay");
-      if (ndOverlay) ndOverlay.classList.remove("active");
-    }
-  });
-
-  // Initialize GPS Geofencing Service
-  GPSService.init();
-
-  // Bottom Bar Call Buttons
-  const btnCall = document.getElementById("cabCallWaiter");
-  const btnWater = document.getElementById("cabRequestWater");
-  const btnBill = document.getElementById("cabRequestBill");
-  const btnOpenCart = document.getElementById("cabOpenCart");
-  const btnCloseCart = document.getElementById("cdCloseBtn");
-  const overlayCart = document.getElementById("cartDrawerOverlay");
-  const btnSubmitOrder = document.getElementById("cdSubmitBtn");
-
-  if (btnCall) btnCall.addEventListener("click", () => triggerQuickServiceCall("waiter"));
-  if (btnWater) btnWater.addEventListener("click", () => triggerQuickServiceCall("water"));
-  if (btnBill) btnBill.addEventListener("click", () => triggerQuickServiceCall("bill"));
-
-  if (btnOpenCart) btnOpenCart.addEventListener("click", openCartDrawer);
-  if (btnCloseCart) btnCloseCart.addEventListener("click", closeCartDrawer);
-  if (overlayCart) overlayCart.addEventListener("click", closeCartDrawer);
-
-  if (btnSubmitOrder) btnSubmitOrder.addEventListener("click", submitPreOrder);
-
-  // Notification Drawer Events
-  const bellBtn = document.getElementById("notificationBellBtn");
-  const ndOverlay = document.getElementById("notificationDrawerOverlay");
-  const ndCloseBtn = document.getElementById("ndCloseBtn");
-  const bellBadge = document.getElementById("bellBadge");
-
-  if (bellBtn) {
-    bellBtn.addEventListener("click", () => {
-      if (bellBadge) bellBadge.style.display = "none";
-      if (ndOverlay) ndOverlay.classList.add("active");
-      renderNotificationHistory();
-    });
-  }
-
-  if (ndCloseBtn) {
-    ndCloseBtn.addEventListener("click", () => {
-      if (ndOverlay) ndOverlay.classList.remove("active");
-    });
-  }
-
-  if (ndOverlay) {
-    ndOverlay.addEventListener("click", (e) => {
-      if (e.target === ndOverlay) {
-        ndOverlay.classList.remove("active");
-      }
-    });
-  }
-
-  // Check if there are past notifications to display the unread badge
-  const notifications = JSON.parse(localStorage.getItem("grey_notifications") || "[]");
-  const tableNotifications = notifications.filter(n => n.table === clientTable);
-  if (tableNotifications.length > 0 && bellBadge && clientTable) {
-    bellBadge.style.display = "block";
-  }
-});
+        inside: "At Gre
