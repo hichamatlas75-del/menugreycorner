@@ -1946,9 +1946,8 @@ body {
 /* --- Floating GPS Status Badge --- */
 .gps-status-badge {
     position: fixed;
-    top: 86px;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 90px;
+    left: 18px;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -2057,7 +2056,8 @@ body {
 /* Mobile adjustments to keep the GPS status floating badge elegant and compact */
 @media (max-width: 480px) {
     .gps-status-badge {
-        top: 76px;
+        bottom: 84px;
+        left: 12px;
         padding: 6px 12px;
         font-size: 9.5px;
     }
