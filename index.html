@@ -275,7 +275,7 @@
 
     <!-- Notification Bell Button (Rolex Premium Style) -->
     <button id="notificationBellBtn" class="bell-btn" aria-label="Notifications" style="display: none;">
-        <svg viewBox="0 0 24 24" width="22" height="22" stroke="#E2C97E" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
             <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
         </svg>
@@ -596,14 +596,14 @@
     <div class="table-modal-overlay" id="hotDrinkModalOverlay" style="display: none; z-index: 10003;">
         <div class="table-modal" style="max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; padding: 20px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <h3 id="hotDrinkModalTitle" style="margin: 0; text-align: left; font-size: 1.25rem; font-family: 'Playfair Display', serif; color: var(--gold);">Choisissez votre Boisson</h3>
+                <h3 id="hotDrinkModalTitle" style="margin: 0; text-align: left; font-size: 1.25rem; font-family: 'Playfair Display', serif; color: var(--primary);">Choisissez votre Boisson</h3>
                 <button id="hotDrinkCloseBtn" style="background: none; border: none; color: var(--muted); font-size: 24px; cursor: pointer; outline: none; line-height: 1;">&times;</button>
             </div>
             <p id="hotDrinkModalSubtitle" style="text-align: left; margin: 0 0 16px; font-size: 0.82rem; color: var(--muted); font-family: 'Poppins', sans-serif;">
                 Veuillez sélectionner votre boisson chaude incluse.
             </p>
             
-            <div class="hot-drink-counter" id="hotDrinkCounter" style="font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: var(--sc-gold-light); text-transform: uppercase; text-align: left; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 4px;">
+            <div class="hot-drink-counter" id="hotDrinkCounter" style="font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: var(--primary); text-transform: uppercase; text-align: left; margin-bottom: 8px; border-bottom: 1px solid rgba(45,35,33,0.08); padding-bottom: 4px;">
                 Sélection : 0 / 1
             </div>
             
@@ -623,14 +623,14 @@
     <div class="table-modal-overlay" id="sidesModalOverlay" style="display: none; z-index: 10004;">
         <div class="table-modal" style="max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; padding: 20px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <h3 id="sidesModalTitle" style="margin: 0; text-align: left; font-size: 1.25rem; font-family: 'Playfair Display', serif; color: var(--gold);" data-i18n data-fr="Accompagnements" data-en="Accompaniments" data-de="Beilagen">Accompagnements</h3>
+                <h3 id="sidesModalTitle" style="margin: 0; text-align: left; font-size: 1.25rem; font-family: 'Playfair Display', serif; color: var(--primary);" data-i18n data-fr="Accompagnements" data-en="Accompaniments" data-de="Beilagen">Accompagnements</h3>
                 <button id="sidesCloseBtn" style="background: none; border: none; color: var(--muted); font-size: 24px; cursor: pointer; outline: none; line-height: 1;">&times;</button>
             </div>
             <p id="sidesModalSubtitle" style="text-align: left; margin: 0 0 16px; font-size: 0.82rem; color: var(--muted); font-family: 'Poppins', sans-serif;" data-i18n data-fr="Veuillez sélectionner 2 accompagnements de votre choix (Inclus)." data-en="Please select 2 accompaniments of your choice (Included)." data-de="Bitte wählen Sie 2 Beilagen Ihrer Wahl (Inklusive).">
                 Veuillez sélectionner 2 accompagnements de votre choix (Inclus).
             </p>
             
-            <div class="hot-drink-counter" id="sidesCounter" style="font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: var(--sc-gold-light); text-transform: uppercase; text-align: left; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 4px;">
+            <div class="hot-drink-counter" id="sidesCounter" style="font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: var(--primary); text-transform: uppercase; text-align: left; margin-bottom: 8px; border-bottom: 1px solid rgba(45,35,33,0.08); padding-bottom: 4px;">
                 Sélection : 0 / 2
             </div>
             
@@ -639,6 +639,33 @@
             </div>
             
             <button class="cd-submit-btn" id="sidesConfirmBtn" disabled style="margin-top: auto;" data-i18n data-fr="Confirmer" data-en="Confirm" data-de="Bestätigen">
+                Confirmer
+            </button>
+        </div>
+    </div>
+
+    <!-- ======================================================================
+         PASTA TYPE SELECTOR MODAL (FOR PASTA ITEMS EXCLUDING LASAGNES)
+    ======================================================================= -->
+    <div class="table-modal-overlay" id="pastaModalOverlay" style="display: none; z-index: 10005;">
+        <div class="table-modal" style="max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; padding: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 id="pastaModalTitle" style="margin: 0; text-align: left; font-size: 1.25rem; font-family: 'Playfair Display', serif; color: var(--primary);" data-i18n data-fr="Choix des Pâtes" data-en="Choice of Pasta" data-de="Nudelauswahl">Choix des Pâtes</h3>
+                <button id="pastaCloseBtn" style="background: none; border: none; color: var(--muted); font-size: 24px; cursor: pointer; outline: none; line-height: 1;">&times;</button>
+            </div>
+            <p id="pastaModalSubtitle" style="text-align: left; margin: 0 0 16px; font-size: 0.82rem; color: var(--muted); font-family: 'Poppins', sans-serif;" data-i18n data-fr="Veuillez sélectionner le type de pâtes de votre choix :" data-en="Please select the pasta type of your choice:" data-de="Bitte wählen Sie die Nudelsorte Ihrer Wahl:">
+                Veuillez sélectionner le type de pâtes de votre choix :
+            </p>
+            
+            <div class="hot-drink-counter" id="pastaCounter" style="font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: var(--primary); text-transform: uppercase; text-align: left; margin-bottom: 8px; border-bottom: 1px solid rgba(45,35,33,0.08); padding-bottom: 4px;">
+                Sélection : 0 / 1
+            </div>
+            
+            <div id="pastaList" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px; max-height: 280px; margin-bottom: 16px;">
+                <!-- Dynamic scrolling list of pasta types -->
+            </div>
+            
+            <button class="cd-submit-btn" id="pastaConfirmBtn" disabled style="margin-top: auto;" data-i18n data-fr="Confirmer" data-en="Confirm" data-de="Bestätigen">
                 Confirmer
             </button>
         </div>
