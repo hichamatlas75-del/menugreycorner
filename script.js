@@ -2385,11 +2385,6 @@ function renderMenu() {
     drawer.className = "category-drawer";
     drawer.id = categoryId;
 
-    // First drawer open by default
-    if (catIndex === 0) {
-      drawer.classList.add("open");
-    }
-
     drawer.innerHTML = `
       <div class="category-drawer-header">
         <div class="category-drawer-header-bg" style="background-image: url('${bannerImg}')"></div>
@@ -2467,17 +2462,6 @@ function renderMenu() {
 
     menuGrid.appendChild(drawer);
 
-    // Initial max-height style for the open one
-    if (catIndex === 0) {
-      const body = drawer.querySelector(".category-drawer-body");
-      if (body) {
-        setTimeout(() => {
-          if (drawer.classList.contains("open")) {
-            body.style.maxHeight = "none";
-          }
-        }, 50);
-      }
-    }
   });
 
   enableSecureLightbox();
@@ -2812,15 +2796,10 @@ function applySearchFilter() {
         if (body) body.style.maxHeight = "0";
       }
     } else {
-      // Si la recherche est vide, on affiche tout et on revient à l'état par défaut (premier tiroir ouvert, les autres fermés)
+      // Si la recherche est vide, on affiche tout et on ferme tous les tiroirs
       drawer.style.display = "";
-      if (idx === 0) {
-        drawer.classList.add("open");
-        if (body) body.style.maxHeight = "none";
-      } else {
-        drawer.classList.remove("open");
-        if (body) body.style.maxHeight = "0";
-      }
+      drawer.classList.remove("open");
+      if (body) body.style.maxHeight = "0";
     }
   });
 }
