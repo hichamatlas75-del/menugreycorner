@@ -805,7 +805,7 @@ header {
    TITRES DE CATÉGORIES
 ========================================= */
 .section-title,
-#menu-grid h2:not(.item-name),
+#menu-grid h2:not(.item-name):not(.category-drawer-title),
 #menu-grid h3:not(.item-name) {
     font-family: 'Playfair Display', serif;
     color: var(--text) !important;
@@ -819,7 +819,7 @@ header {
     border: none;
 }
 .section-title::after,
-#menu-grid h2:not(.item-name)::after,
+#menu-grid h2:not(.item-name):not(.category-drawer-title)::after,
 #menu-grid h3:not(.item-name)::after {
     content: "";
     display: block;
@@ -977,7 +977,7 @@ footer a:hover { opacity: 0.8; }
     .categories-horizontal a { padding: 6px 12px; font-size: 0.8rem; border-radius: 40px; }
 
     .section-title,
-    #menu-grid h2:not(.item-name),
+    #menu-grid h2:not(.item-name):not(.category-drawer-title),
     #menu-grid h3:not(.item-name) { font-size: 1.2rem; margin: 20px 0 8px; padding-bottom: 4px; }
 
     .menu-item { border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
@@ -2128,7 +2128,7 @@ body {
     inset: 0;
     background-size: cover;
     background-position: center;
-    filter: brightness(0.65) contrast(1.05);
+    filter: brightness(0.4) contrast(1.05);
     transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
@@ -2139,7 +2139,7 @@ body {
 .category-drawer-header-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(45, 35, 33, 0.75) 0%, rgba(45, 35, 33, 0.35) 100%);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.68) 0%, rgba(0, 0, 0, 0.4) 100%);
     z-index: 1;
 }
 
@@ -2156,10 +2156,15 @@ body {
     font-family: 'Playfair Display', serif;
     font-size: 1.6rem;
     font-weight: 700;
-    letter-spacing: 0.8px;
-    color: #FCFAF6;
-    margin: 0;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1.5px;
+    color: #FCFAF6 !important;
+    text-transform: uppercase;
+    margin: 0 !important;
+    padding-bottom: 0 !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    position: relative;
+    border: none;
+    text-align: left;
 }
 
 .category-drawer-chevron {
