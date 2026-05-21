@@ -2128,7 +2128,7 @@ body {
     inset: 0;
     background-size: cover;
     background-position: center;
-    filter: brightness(0.4) contrast(1.05);
+    filter: brightness(0.85) contrast(1.02);
     transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
@@ -2139,7 +2139,7 @@ body {
 .category-drawer-header-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.68) 0%, rgba(0, 0, 0, 0.4) 100%);
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.45) 45%, rgba(0, 0, 0, 0.0) 90%);
     z-index: 1;
 }
 
@@ -2161,7 +2161,7 @@ body {
     text-transform: uppercase;
     margin: 0 !important;
     padding-bottom: 0 !important;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.95), 0 4px 15px rgba(0, 0, 0, 0.9);
     position: relative;
     border: none;
     text-align: left;
@@ -2171,12 +2171,15 @@ body {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: rgba(252, 250, 246, 0.12);
+    background: rgba(18, 18, 18, 0.45);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     border: 1px solid rgba(252, 250, 246, 0.25);
     display: flex;
     justify-content: center;
     align-items: center;
     color: var(--gold);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s, border-color 0.3s;
 }
 
@@ -2188,7 +2191,7 @@ body {
 }
 
 .category-drawer-header:hover .category-drawer-chevron {
-    background: rgba(252, 250, 246, 0.2);
+    background: rgba(18, 18, 18, 0.7);
     border-color: rgba(252, 250, 246, 0.4);
     color: #FCFAF6;
 }
