@@ -2812,14 +2812,22 @@ function saveClientCart() {
 let selectedMenuItem = null;
 
 const HOT_DRINKS_OPTIONS = [
-  { fr: "Café Espresso", en: "Espresso Coffee", de: "Espresso Kaffee" },
+  { fr: "Café Séparé", en: "Separated Coffee", de: "Getrennter Kaffee" },
+  { fr: "Lait Froid", en: "Cold Milk", de: "Kalte Milch" },
+  { fr: "Lait Chaud", en: "Hot Milk", de: "Warme Milch" },
+  { fr: "Café Noir", en: "Black Coffee", de: "Schwarzer Kaffee" },
+  { fr: "Cappuccino Italien", en: "Italian Cappuccino", de: "Italienischer Cappuccino" },
+  { fr: "Café Cassé", en: "Café Cassé", de: "Café Cassé" },
+  { fr: "Jus d'Orange", en: "Orange Juice", de: "Orangensaft" },
+  { fr: "Lait Cassé", en: "Lait Cassé", de: "Lait Cassé" },
+  { fr: "Café Moitié", en: "Half Coffee", de: "Halber Kaffee" },
+  { fr: "Chocolat au Lait", en: "Milk Chocolate", de: "Milchschokolade" },
+  { fr: "Café Américain", en: "Americano Coffee", de: "Kaffee Americano" },
   { fr: "Café au Lait", en: "Coffee with Milk", de: "Milchkaffee" },
-  { fr: "Café Noir (Americano)", en: "Black Coffee", de: "Schwarzer Kaffee" },
   { fr: "Thé à la Menthe", en: "Mint Tea", de: "Minztee" },
-  { fr: "Chocolat Chaud", en: "Hot Chocolate", de: "Heiße Schokolade" },
-  { fr: "Cappuccino", en: "Cappuccino", de: "Cappuccino" },
-  { fr: "Latte Macchiato", en: "Latte Macchiato", de: "Latte Macchiato" },
-  { fr: "Infusion Verveine", en: "Verbena Infusion", de: "Eisenkraut Tee" }
+  { fr: "Thé Noir", en: "Black Tea", de: "Schwarzer Tee" },
+  { fr: "Thé Noir au Lait", en: "Black Tea with Milk", de: "Schwarzer Tee mit Milch" },
+  { fr: "Verveine", en: "Verbena Infusion", de: "Eisenkraut Tee" }
 ];
 
 // Add Item to Cart
@@ -2831,10 +2839,23 @@ const SIDES_OPTIONS = [
   { fr: "Potatos", en: "Potato Wedges", de: "Spaltenkartoffeln" }
 ];
 
+const PASTA_OPTIONS = [
+  { fr: "Rigatoni", en: "Rigatoni", de: "Rigatoni" },
+  { fr: "Tagliatelles", en: "Tagliatelle", de: "Tagliatelle" },
+  { fr: "Spaghettis", en: "Spaghetti", de: "Spaghetti" },
+  { fr: "Linguines", en: "Linguine", de: "Linguine" }
+];
+
 function addToCart(menuItem) {
   // Check if it belongs to BREAKFAST (PETIT DÉJEUNER) category and is not Kids Menu
   if (menuItem.categoryId === "petit-dejeuner" && menuItem.name.fr !== "MENU ENFANT") {
     openHotDrinkSelectorModal(menuItem);
+    return;
+  }
+
+  // Check if it is a pasta dish (excluding lasagnas and black spaghetti)
+  if (menuItem.categoryId === "pasta" && !menuItem.name.fr.toUpperCase().includes("LASAGNE") && !menuItem.name.fr.toUpperCase().includes("SPAGHETTIS NOIRS")) {
+    openPastaSelectorModal(menuItem);
     return;
   }
 
@@ -2925,9 +2946,9 @@ function renderSidesList(limit) {
     item.innerHTML = `
             <div class="hdo-name">${side[currentLang] || side.fr}</div>
             <div style="display: flex; align-items: center; gap: 12px; z-index: 10;">
-                <button class="tgs-btn hdo-dec" style="width: 28px; height: 28px; border-radius: 6px; font-size: 1rem; line-height: 1; aspect-ratio: auto; font-weight: bold; background: rgba(255,255,255,0.03);" disabled>-</button>
-                <span class="hdo-qty" style="font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; color: #FFFFFF; min-width: 14px; text-align: center;">0</span>
-                <button class="tgs-btn hdo-inc" style="width: 28px; height: 28px; border-radius: 6px; font-size: 1rem; line-height: 1; aspect-ratio: auto; font-weight: bold; background: rgba(255,255,255,0.03);">+</button>
+                <button class="tgs-btn hdo-dec" style="width: 28px; height: 28px; border-radius: 6px; font-size: 1rem; line-height: 1; aspect-ratio: auto; font-weight: bold; background: var(--bg);" disabled>-</button>
+                <span class="hdo-qty" style="font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--text); min-width: 14px; text-align: center;">0</span>
+                <button class="tgs-btn hdo-inc" style="width: 28px; height: 28px; border-radius: 6px; font-size: 1rem; line-height: 1; aspect-ratio: auto; font-weight: bold; background: var(--bg);">+</button>
             </div>
         `;
 
@@ -2982,6 +3003,171 @@ function renderSidesList(limit) {
     });
 
     const modal = document.getElementById("sidesModalOverlay");
+    if (modal) modal.style.display = "none";
+
+    executeAddToCartWithChoices(selectedMenuItem, finalChoices);
+  };
+}
+
+function openPastaSelectorModal(menuItem) {
+  selectedMenuItem = menuItem;
+  const modal = document.getElementById("pastaModalOverlay");
+  if (!modal) return;
+
+  modal.style.display = "flex";
+
+  const limit = 1;
+
+  // Update labels and subtitle based on language
+  const titleEl = document.getElementById("pastaModalTitle");
+  const subtitleEl = document.getElementById("pastaModalSubtitle");
+
+  const titles = {
+    fr: "Choisissez votre type de pâtes",
+    en: "Choose your type of pasta",
+    de: "Wählen Sie Ihre Nudelsorte"
+  };
+
+  const subtitles = {
+    fr: `Veuillez sélectionner le type de pâtes pour votre plat "${menuItem.name[currentLang]}".`,
+    en: `Please select the pasta type for your "${menuItem.name[currentLang]}" dish.`,
+    de: `Bitte wählen Sie die Nudelsorte für Ihr Gericht "${menuItem.name[currentLang]}".`
+  };
+
+  if (titleEl) titleEl.textContent = titles[currentLang] || titles.fr;
+  if (subtitleEl) subtitleEl.textContent = subtitles[currentLang] || subtitles.fr;
+
+  // Setup close listeners once
+  const closeBtn = document.getElementById("pastaCloseBtn");
+  if (closeBtn) {
+    closeBtn.onclick = () => {
+      modal.style.display = "none";
+    };
+  }
+  modal.onclick = (e) => {
+    if (e.target === modal) {
+      modal.style.display = "none";
+    }
+  };
+
+  renderPastaList(limit);
+}
+
+function renderPastaList(limit) {
+  const listContainer = document.getElementById("pastaList");
+  if (!listContainer) return;
+  listContainer.innerHTML = "";
+
+  const counts = {};
+  PASTA_OPTIONS.forEach((d, idx) => {
+    counts[idx] = 0;
+  });
+
+  function updateListUI() {
+    const totalSelected = Object.values(counts).reduce((a, b) => a + b, 0);
+
+    const counterEl = document.getElementById("pastaCounter");
+    const counterTexts = {
+      fr: `Sélection : ${totalSelected} / ${limit}`,
+      en: `Selection: ${totalSelected} / ${limit}`,
+      de: `Auswahl: ${totalSelected} / ${limit}`
+    };
+    if (counterEl) {
+      counterEl.textContent = counterTexts[currentLang] || counterTexts.fr;
+    }
+
+    const confirmBtn = document.getElementById("pastaConfirmBtn");
+    if (confirmBtn) {
+      confirmBtn.disabled = (totalSelected !== limit);
+    }
+
+    PASTA_OPTIONS.forEach((pasta, idx) => {
+      const row = listContainer.querySelector(`[data-index="${idx}"]`);
+      if (row) {
+        const countVal = counts[idx];
+        const countDisplay = row.querySelector(".hdo-qty");
+        const decBtn = row.querySelector(".hdo-dec");
+        const incBtn = row.querySelector(".hdo-inc");
+
+        if (countDisplay) countDisplay.textContent = countVal;
+
+        if (countVal > 0) {
+          row.classList.add("selected");
+        } else {
+          row.classList.remove("selected");
+        }
+
+        if (decBtn) decBtn.disabled = (countVal === 0);
+        if (incBtn) incBtn.disabled = (totalSelected >= limit);
+      }
+    });
+  }
+
+  PASTA_OPTIONS.forEach((pasta, idx) => {
+    const item = document.createElement("div");
+    item.className = "hdo-item";
+    item.dataset.index = idx;
+
+    item.innerHTML = `
+            <div class="hdo-name">${pasta[currentLang] || pasta.fr}</div>
+            <div style="display: flex; align-items: center; gap: 12px; z-index: 10;">
+                <button class="tgs-btn hdo-dec" style="width: 28px; height: 28px; border-radius: 6px; font-size: 1rem; line-height: 1; aspect-ratio: auto; font-weight: bold; background: var(--bg);" disabled>-</button>
+                <span class="hdo-qty" style="font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--text); min-width: 14px; text-align: center;">0</span>
+                <button class="tgs-btn hdo-inc" style="width: 28px; height: 28px; border-radius: 6px; font-size: 1rem; line-height: 1; aspect-ratio: auto; font-weight: bold; background: var(--bg);">+</button>
+            </div>
+        `;
+
+    const decBtn = item.querySelector(".hdo-dec");
+    const incBtn = item.querySelector(".hdo-inc");
+
+    decBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (counts[idx] > 0) {
+        counts[idx]--;
+        updateListUI();
+      }
+    });
+
+    incBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const total = Object.values(counts).reduce((a, b) => a + b, 0);
+      if (total < limit) {
+        counts[idx]++;
+        updateListUI();
+      }
+    });
+
+    item.addEventListener("click", () => {
+      const total = Object.values(counts).reduce((a, b) => a + b, 0);
+      if (total < limit) {
+        counts[idx]++;
+        updateListUI();
+      } else if (counts[idx] > 0 && limit === 1) {
+        counts[idx] = 0;
+        updateListUI();
+      } else if (limit === 1) {
+        PASTA_OPTIONS.forEach((_, i) => counts[i] = 0);
+        counts[idx] = 1;
+        updateListUI();
+      }
+    });
+
+    listContainer.appendChild(item);
+  });
+
+  updateListUI();
+
+  const confirmBtn = document.getElementById("pastaConfirmBtn");
+  confirmBtn.onclick = () => {
+    const finalChoices = [];
+    PASTA_OPTIONS.forEach((pasta, idx) => {
+      const qty = counts[idx];
+      for (let k = 0; k < qty; k++) {
+        finalChoices.push(pasta[currentLang] || pasta.fr);
+      }
+    });
+
+    const modal = document.getElementById("pastaModalOverlay");
     if (modal) modal.style.display = "none";
 
     executeAddToCartWithChoices(selectedMenuItem, finalChoices);
@@ -3092,9 +3278,9 @@ function renderHotDrinksList(limit) {
     item.innerHTML = `
             <div class="hdo-name">${drink[currentLang] || drink.fr}</div>
             <div style="display: flex; align-items: center; gap: 12px; z-index: 10;">
-                <button class="tgs-btn hdo-dec" style="width: 28px; height: 28px; border-radius: 6px; font-size: 1rem; line-height: 1; aspect-ratio: auto; font-weight: bold; background: rgba(255,255,255,0.03);" disabled>-</button>
-                <span class="hdo-qty" style="font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; color: #FFFFFF; min-width: 14px; text-align: center;">0</span>
-                <button class="tgs-btn hdo-inc" style="width: 28px; height: 28px; border-radius: 6px; font-size: 1rem; line-height: 1; aspect-ratio: auto; font-weight: bold; background: rgba(255,255,255,0.03);">+</button>
+                <button class="tgs-btn hdo-dec" style="width: 28px; height: 28px; border-radius: 6px; font-size: 1rem; line-height: 1; aspect-ratio: auto; font-weight: bold; background: var(--bg);" disabled>-</button>
+                <span class="hdo-qty" style="font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--text); min-width: 14px; text-align: center;">0</span>
+                <button class="tgs-btn hdo-inc" style="width: 28px; height: 28px; border-radius: 6px; font-size: 1rem; line-height: 1; aspect-ratio: auto; font-weight: bold; background: var(--bg);">+</button>
             </div>
         `;
 
@@ -3240,7 +3426,14 @@ function updateCartUI() {
               item.drinkChoices[0].includes("Mash") ||
               item.drinkChoices[0].includes("Karto") ||
               item.drinkChoices[0].includes("Spalten");
-            return `<div style="font-size: 0.75rem; color: var(--sc-gold-light); font-style: italic; margin-top: 2px;">${isSide ? '🥗' : '☕'} ${item.drinkChoices.join(', ')}</div>`;
+            
+            const isPasta = item.drinkChoices[0].includes("Rigatoni") ||
+              item.drinkChoices[0].includes("Tagliatelle") ||
+              item.drinkChoices[0].includes("Spaghetti") ||
+              item.drinkChoices[0].includes("Linguine");
+
+            const emoji = isSide ? '🥗' : (isPasta ? '🍝' : '☕');
+            return `<div style="font-size: 0.75rem; color: var(--sc-gold-light); font-style: italic; margin-top: 2px;">${emoji} ${item.drinkChoices.join(', ')}</div>`;
           })()}
                         <span class="cd-item-price">${item.price} MAD</span>
                     </div>
@@ -3432,7 +3625,7 @@ function showTableSelectorModal() {
       title.style.color = "var(--sc-gold-light)";
       title.style.textTransform = "uppercase";
       title.style.textAlign = "left";
-      title.style.borderBottom = "1px solid rgba(255, 255, 255, 0.06)";
+      title.style.borderBottom = "1px solid var(--sc-border)";
       title.style.paddingBottom = "4px";
       title.style.marginBottom = "4px";
       title.textContent = zone.name;
@@ -4117,4 +4310,3 @@ document.addEventListener("DOMContentLoaded", () => {
     bellBadge.style.display = "block";
   }
 });
-
