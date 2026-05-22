@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XD33HHNDHX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-XD33HHNDHX');
+    </script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Grey Corner Café — Menu | Fès, Maroc</title>
+    <meta name="description"
+        content="Découvrez le menu complet du Grey Corner Café à Fès : petits-déjeuners, plats, pizzas, burgers, pâtes, boissons et desserts. Menu trilingue FR/EN/DE." />
+    <meta name="keywords" content="Grey Corner, café, restaurant, Fès, Maroc, menu, brunch, pizza, burger, pasta" />
+    <meta name="author" content="Grey Corner Café" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://menugreycorner.pages.dev/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Grey Corner Café — Menu | Fès" />
+    <meta property="og:description"
+        content="Menu complet du Grey Corner Café à Fès. Petits-déjeuners, plats du jour, pizzas, burgers, boissons et desserts." />
+    <meta property="og:image" content="https://menugreycorner.pages.dev/images/og-preview.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:url" content="https://menugreycorner.pages.dev/" />
+    <meta property="og:locale" content="fr_MA" />
+    <meta property="og:site_name" content="Grey Corner Café" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Grey Corner Café — Menu | Fès" />
+    <meta name="twitter:description" content="Menu complet du Grey Corner Café à Fès." />
+    <meta name="twitter:image" content="https://menugreycorner.pages.dev/images/og-preview.jpg" />
+
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png" />
+    <link rel="shortcut icon" href="images/favicon.ico" />
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* ================================================
+       SHORTCUT ICONS — DARK LUXURY (Grey Corner)
+       Remplace entièrement les règles .shortcut-icons
+       dans style.css
+    ================================================ */
+
+        /* Palette luxe cohérente avec l'accueil */
+        :root {
+            --sc-gold: #C9A84C;
+            --sc-gold-light: #E2C97E;
+            --sc-border: rgba(201, 168, 76, 0.28);
+            --sc-bg: rgba(10, 9, 6, 0.58);
+            --sc-bg-hover: rgba(201, 168, 76, 0.1);
+        }
+
+        /* ── Conteneur ── */
+        .shortcut-icons {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            z-index: 10;
+        }
+
+        /* ── Chaque bouton/lien ── */
+        .sc-btn {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            width: 48px;
+            height: 48px;
+            background: var(--sc-bg);
+            border: 1px solid var(--sc-border);
+            border-radius: 12px;
+            color: rgba(240, 234, 216, 0.52);
+            cursor: pointer;
+            text-decoration: none;
+            font-family: 'DM Sans', 'Poppins', sans-serif;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition:
+                color 0.28s ease,
+                border-color 0.28s ease,
+                background 0.28s ease,
+                transform 0.28s cubic-bezier(.22, 1, .36, 1),
+                box-shadow 0.28s ease;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+            /* reset button */
+            appearance: none;
+            -webkit-appearance: none;
+            padding: 0;
+        }
+
+        .sc-btn svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            transition: transform 0.28s cubic-bezier(.22, 1, .36, 1);
+            pointer-events: none;
+        }
+
+        /* Label sous l'icône */
+        .sc-label {
+            font-size: 7px;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: inherit;
+            line-height: 1;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateY(4px);
+            transition: opacity 0.22s ease, transform 0.22s ease;
+            pointer-events: none;
+            display: block;
+        }
+
+        /* Séparateur vertical entre icônes */
+        .sc-btn+.sc-btn::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 22%;
+            height: 56%;
+            width: 1px;
+            background: rgba(201, 168, 76, 0.13);
+            pointer-events: none;
+        }
+
+        /* ── Hover desktop ── */
+        @media (hover: hover) {
+            .sc-btn:hover {
+                color: var(--sc-gold-light);
+                border-color: var(--sc-gold);
+                background: var(--sc-bg-hover);
+                transform: translateY(-3px);
+                box-shadow: 0 8px 24px rgba(201, 168, 76, 0.2);
+            }
+
+            .sc-btn:hover .sc-label {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .sc-btn:hover svg {
+                transform: scale(1.1);
+            }
+
+            /* Taille élargie au hover pour faire apparaître le label */
+            .sc-btn:hover {
+                height: 54px;
+            }
+        }
+
+        /* ── Tap mobile ── */
+        .sc-btn:active {
+            transform: scale(0.93);
+            background: rgba(201, 168, 76, 0.14);
+            border-color: var(--sc-gold);
+            color: var(--sc-gold-light);
+        }
+
+        /* ── Toast ── */
+        .sc-toast {
+            position: fixed;
+            bottom: 86px;
+            left: 50%;
+            transform: translateX(-50%) translateY(8px);
+            background: rgba(10, 9, 6, 0.94);
+            border: 1px solid rgba(201, 168, 76, 0.32);
+            color: #E2C97E;
+            font-family: 'DM Sans', 'Poppins', sans-serif;
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            padding: 10px 22px;
+            border-radius: 4px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            z-index: 999999;
+        }
+
+        .sc-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ── Mobile ≤ 480px ── */
+        @media (max-width: 480px) {
+            .shortcut-icons {
+                position: relative;
+                top: auto;
+                right: auto;
+                justify-content: center;
+                width: 100%;
+                gap: 10px;
+                padding: 8px 0 4px;
+                flex-wrap: nowrap;
+            }
+
+            .sc-btn {
+                width: 54px;
+                height: 54px;
+                border-radius: 14px;
+                /* Labels toujours visibles sur mobile */
+                color: rgba(240, 234, 216, 0.6);
+            }
+
+            .sc-btn .sc-label {
+                opacity: 1;
+                transform: translateY(0);
+                font-size: 6.5px;
+            }
+
+            .sc-btn+.sc-btn::before {
+                display: none;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .sc-btn {
+                width: 46px;
+                height: 50px;
+            }
+
+            .sc-btn svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            .sc-btn .sc-label {
+                font-size: 5.5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div id="backToTop" class="back-to-top">⬆</div>
+
+    <!-- Burger button -->
+    <button id="burger" class="burger-btn" aria-label="Menu" aria-expanded="false">
+        <span class="burger-lines">
+            <span class="bl bl1"></span>
+            <span class="bl bl2"></span>
+            <span class="bl bl3"></span>
+        </span>
+        <span class="burger-label">Menu</span>
+    </button>
+
+    <!-- Notification Bell Button (Rolex Premium Style) -->
+    <button id="notificationBellBtn" class="bell-btn" aria-label="Notifications" style="display: none;">
+        <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+        </svg>
+        <span class="bell-badge" id="bellBadge" style="display: none;"></span>
+    </button>
+
+    <!-- Floating GPS Status Badge -->
+    <div class="gps-status-badge gps-locating" id="gpsStatusBadge">
+        <span class="gps-dot"></span>
+        <span class="gps-text" id="gpsStatusText">Géolocalisation...</span>
+    </div>
+
+    <!-- Nav latéral -->
+    <nav id="burgerNav" class="burger-nav-hidden">
+        <a href="#petit-dejeuner" data-i18n data-fr="Petit Déj" data-en="Breakfast" data-de="Frühstück">Petit Déj</a>
+        <a href="#entrees" data-i18n data-fr="Entrées" data-en="Starters" data-de="Vorspeisen">Entrées</a>
+        <a href="#plats" data-i18n data-fr="Plats" data-en="Main Dishes" data-de="Hauptgerichte">Plats</a>
+        <a href="#sandwichs" data-i18n data-fr="Sandwichs" data-en="Sandwiches" data-de="Sandwiches">Sandwichs</a>
+        <a href="#burgers" data-i18n data-fr="Burgers" data-en="Burgers" data-de="Burger">Burgers</a>
+        <a href="#panini" data-i18n data-fr="Panini" data-en="Panini" data-de="Panini">Panini</a>
+        <a href="#pizza" data-i18n data-fr="Pizza" data-en="Pizza" data-de="Pizza">Pizza</a>
+        <a href="#pasta" data-i18n data-fr="Pasta" data-en="Pasta" data-de="Pasta">Pasta</a>
+        <a href="#crepes" data-i18n data-fr="Crêpes" data-en="Crepes" data-de="Pfannkuchen">Crêpes</a>
+        <a href="#gateaux" data-i18n data-fr="Gâteaux" data-en="Cakes" data-de="Kuchen">Gâteaux</a>
+        <a href="#boissons" data-i18n data-fr="Boissons" data-en="Drinks" data-de="Getränke">Boissons</a>
+        <a href="#glace" data-i18n data-fr="Glace" data-en="Ice Cream" data-de="Eis">Glace</a>
+    </nav>
+
+    <div id="burgerOverlay" class="burger-overlay"></div>
+
+    <!-- ================================
+         HEADER
+    ================================= -->
+    <header>
+        <div class="header-overlay"></div>
+        <div class="container header-center">
+            <img src="images/logo-gold.png" class="logo-big" alt="Grey Corner Café">
+
+            <!-- SHORTCUT ICONS — SVG INLINE PREMIUM -->
+            <div class="shortcut-icons">
+
+                <!-- Téléphone -->
+                <a href="tel:+212535940168" class="sc-btn" aria-label="Appeler Grey Corner">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path
+                            d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C6.61 21 2 16.39 2 11c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
+                    </svg>
+                    <span class="sc-label" data-i18n data-fr="Appeler" data-en="Call" data-de="Anrufen">Appeler</span>
+                </a>
+
+                <!-- Instagram -->
+                <a href="https://www.instagram.com/greycornerfes/" target="_blank" rel="noopener" class="sc-btn"
+                    aria-label="Instagram Grey Corner">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                        <circle cx="12" cy="12" r="4" />
+                        <circle cx="17.5" cy="6.5" r="0.7" fill="currentColor" stroke="none" />
+                    </svg>
+                    <span class="sc-label">Instagram</span>
+                </a>
+
+                <!-- Google Maps -->
+                <a href="https://maps.app.goo.gl/8CH1GGAvo2no6zp27" target="_blank" rel="noopener" class="sc-btn"
+                    aria-label="Nous trouver sur Maps">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M12 2C8.686 2 6 4.686 6 8c0 5.25 6 14 6 14s6-8.75 6-14c0-3.314-2.686-6-6-6z" />
+                        <circle cx="12" cy="8" r="2.2" />
+                    </svg>
+                    <span class="sc-label" data-i18n data-fr="Maps" data-en="Maps" data-de="Karte">Maps</span>
+                </a>
+
+                <!-- Partager -->
+                <button class="sc-btn" id="shareMenu" aria-label="Partager le menu">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="18" cy="5" r="3" />
+                        <circle cx="6" cy="12" r="3" />
+                        <circle cx="18" cy="19" r="3" />
+                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                    </svg>
+                    <span class="sc-label" data-i18n data-fr="Partager" data-en="Share" data-de="Teilen">Partager</span>
+                </button>
+
+            </div>
+            <!-- /SHORTCUT ICONS -->
+
+        </div>
+    </header>
+
+    <!-- Toast partage -->
+    <div class="sc-toast" id="scToast">Lien copié ✓</div>
+
+    <!-- Barre catégories horizontale -->
+    <nav class="categories-horizontal">
+        <a href="#petit-dejeuner" data-i18n data-fr="Petit Déj" data-en="Breakfast" data-de="Frühstück">Petit Déj</a>
+        <a href="#entrees" data-i18n data-fr="Entrées" data-en="Starters" data-de="Vorspeisen">Entrées</a>
+        <a href="#plats" data-i18n data-fr="Plats" data-en="Main Dishes" data-de="Hauptgerichte">Plats</a>
+        <a href="#sandwichs" data-i18n data-fr="Sandwichs" data-en="Sandwiches" data-de="Sandwiches">Sandwichs</a>
+        <a href="#burgers" data-i18n data-fr="Burgers" data-en="Burgers" data-de="Burger">Burgers</a>
+        <a href="#panini" data-i18n data-fr="Panini" data-en="Panini" data-de="Panini">Panini</a>
+        <a href="#pizza" data-i18n data-fr="Pizza" data-en="Pizza" data-de="Pizza">Pizza</a>
+        <a href="#pasta" data-i18n data-fr="Pasta" data-en="Pasta" data-de="Pasta">Pasta</a>
+        <a href="#crepes" data-i18n data-fr="Crêpes" data-en="Crepes" data-de="Pfannkuchen">Crêpes</a>
+        <a href="#gateaux" data-i18n data-fr="Gâteaux" data-en="Cakes" data-de="Kuchen">Gâteaux</a>
+        <a href="#boissons" data-i18n data-fr="Boissons" data-en="Drinks" data-de="Getränke">Boissons</a>
+        <a href="#glace" data-i18n data-fr="Glace" data-en="Ice Cream" data-de="Eis">Glace</a>
+    </nav>
+
+    <!-- Carrousel Nouveautés -->
+    <div class="new-items-carousel" id="newItemsCarousel"></div>
+
+    <!-- Recherche -->
+    <div class="search-wrapper">
+        <input id="searchInput" type="search" placeholder="Rechercher un plat..." />
+        <p id="prixInfo" class="prix-info">★ Tous les prix sont en dirhams marocains (MAD)</p>
+    </div>
+
+    <!-- Grille menu -->
+    <main id="menu-grid"></main>
+
+    <!-- Lightbox protégée -->
+    <div id="secureLightbox" class="secure-lightbox">
+        <div class="secure-lightbox-content">
+            <button class="close-btn">×</button>
+        </div>
+        <div id="secureLightboxCaption" class="secure-lightbox-caption"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            © 2025 Grey Corner Café — Menu trilingue.
+            <br>
+            📞 <a href="tel:+212535940168">+212 535 940 168</a>
+        </div>
+    </footer>
+
+    <!-- Sélecteur de langue -->
+    <div class="lang-switch">
+        <button class="lang-button active" data-lang="fr">🇫🇷</button>
+        <button class="lang-button" data-lang="en">🇬🇧</button>
+        <button class="lang-button" data-lang="de">🇩🇪</button>
+    </div>
+
+    <!-- Google Review Pill -->
+    <a href="https://g.page/r/CXF0QNm04m-ZEAE/review" class="google-review-fab" target="_blank" rel="noopener"
+        aria-label="Laisser un avis Google">
+        <div class="gr-left">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                    fill="#4285F4" />
+                <path
+                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                    fill="#34A853" />
+                <path
+                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"
+                    fill="#FBBC05" />
+                <path
+                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                    fill="#EA4335" />
+            </svg>
+        </div>
+        <div class="gr-right">
+            <span class="gr-label">Laisser un avis</span>
+            <div class="gr-stars">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+            </div>
+        </div>
+    </a>
+
+    <!-- Firebase SDK (Compat Mode for smooth global script tag inclusion) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js?v=1.1"></script>
+
+    <!-- ======================================================================
+         CLIENT INTERACTIVE QUICK ACTION BAR
+    ======================================================================= -->
+    <div class="client-action-bar" id="clientActionBar" style="display: none;">
+        <div class="cab-container">
+            <!-- Call Waiter -->
+            <button class="cab-btn" id="cabCallWaiter">
+                <div class="cab-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                </div>
+                <span class="cab-label" data-i18n data-fr="Appeler" data-en="Call Waiter" data-de="Rufen">Appeler</span>
+            </button>
+            
+            <!-- Request Water -->
+            <button class="cab-btn" id="cabRequestWater">
+                <div class="cab-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                    </svg>
+                </div>
+                <span class="cab-label" data-i18n data-fr="Eau" data-en="Water" data-de="Wasser">Eau</span>
+            </button>
+
+            <!-- Request Bill -->
+            <button class="cab-btn" id="cabRequestBill">
+                <div class="cab-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                        <line x1="12" y1="4" x2="12" y2="20"></line>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                    </svg>
+                </div>
+                <span class="cab-label" data-i18n data-fr="Addition" data-en="Bill" data-de="Rechnung">Addition</span>
+            </button>
+
+            <!-- View Cart -->
+            <button class="cab-btn" id="cabOpenCart">
+                <div class="cab-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="cab-cart-badge" id="cabCartBadge" style="display: none;">0</span>
+                </div>
+                <span class="cab-label" data-i18n data-fr="Panier" data-en="Basket" data-de="Korb">Panier</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Notification History Drawer Overlay & Container -->
+    <div id="notificationDrawerOverlay" class="nd-overlay">
+        <div class="nd-container">
+            <div class="nd-header">
+                <div class="nd-title-wrap">
+                    <h3 class="nd-title" data-i18n data-fr="Notifications" data-en="Notifications" data-de="Benachrichtigungen">Notifications</h3>
+                    <span class="nd-table-badge" id="ndTableBadge">Table</span>
+                </div>
+                <button class="nd-close-btn" id="ndCloseBtn">&times;</button>
+            </div>
+            <div class="nd-content" id="ndContentFeed">
+                <!-- Dynamically populated via script.js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================
+         PRE-ORDER CART DRAWER (SLIDE-UP)
+    ======================================================================= -->
+    <div class="cart-drawer-overlay" id="cartDrawerOverlay"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cd-header">
+            <div class="cd-title-wrap">
+                <h3 class="cd-title" data-i18n data-fr="Mon Panier" data-en="My Cart" data-de="Mein Korb">Mon Panier</h3>
+                <span class="cd-table-badge" id="cdTableBadge">Table</span>
+            </div>
+            <button class="cd-close-btn" id="cdCloseBtn">&times;</button>
+        </div>
+        
+        <div class="cd-body">
+            <!-- Cart Items List -->
+            <div class="cd-items" id="cdItemsList">
+                <!-- Dynamic Cart Items injected here -->
+            </div>
+            
+            <!-- Empty State -->
+            <div class="cd-empty-state" id="cdEmptyState">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <p data-i18n data-fr="Votre panier est vide." data-en="Your basket is empty." data-de="Ihr Korb ist leer.">Votre panier est vide.</p>
+            </div>
+            
+            <!-- Pre-order Note / Allergy Field -->
+            <div class="cd-notes-section" id="cdNotesSection" style="display: none;">
+                <label for="cdSpecialNote" data-i18n data-fr="Notes ou Allergies :" data-en="Notes or Allergies:" data-de="Notizen oder Allergien:">Notes ou Allergies :</label>
+                <textarea id="cdSpecialNote" placeholder="Ex: Pas d'oignon, sauce à part..."></textarea>
+            </div>
+        </div>
+
+        <div class="cd-footer" id="cdFooter" style="display: none;">
+            <div class="cd-total-line">
+                <span data-i18n data-fr="Total :" data-en="Total:" data-de="Gesamt:">Total :</span>
+                <span class="cd-total-price" id="cdTotalPrice">0 MAD</span>
+            </div>
+            <button class="cd-submit-btn" id="cdSubmitBtn">
+                <span data-i18n data-fr="Envoyer la Précommande" data-en="Send Pre-Order" data-de="Vorbestellung Senden">Envoyer la Précommande</span>
+                <div class="cd-loading-spinner" id="cdSubmitSpinner" style="display: none;"></div>
+            </button>
+            <p class="cd-warning-text" data-i18n 
+               data-fr="* Le serveur confirmera cette précommande à votre table avant de l'envoyer en cuisine." 
+               data-en="* The waiter will confirm this pre-order at your table before sending it to the kitchen." 
+               data-de="* Der Kellner wird diese Vorbestellung an Ihrem Tisch bestätigen, bevor er sie in die Küche schickt.">
+                * Le serveur confirmera cette précommande à votre table avant de l'envoyer en cuisine.
+            </p>
+        </div>
+    </div>
+
+    <!-- ======================================================================
+         TABLE SELECTOR FALLBACK MODAL (FOR TESTING & NO-QR ENTRY)
+    ======================================================================= -->
+    <div class="table-modal-overlay" id="tableModalOverlay" style="display: none;">
+        <div class="table-modal">
+            <h3 data-i18n data-fr="Sélectionnez votre Table" data-en="Select Your Table" data-de="Wählen Sie Ihren Tisch">Sélectionnez votre Table</h3>
+            <p data-i18n data-fr="Pour activer le service digital, veuillez choisir votre numéro de table :" data-en="To activate the digital service, please select your table number:" data-de="Um den digitalen Service zu aktivieren, wählen Sie bitte Ihre Tischnummer:">Pour activer le service digital, veuillez choisir votre numéro de table :</p>
+            <div class="table-grid-select" id="tableGridSelect">
+                <!-- Generated tables 1 to 24 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================
+         HOT DRINK SELECTOR MODAL (FOR BREAKFAST ITEMS)
+    ======================================================================= -->
+    <div class="table-modal-overlay" id="hotDrinkModalOverlay" style="display: none; z-index: 10003;">
+        <div class="table-modal" style="max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; padding: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 id="hotDrinkModalTitle" style="margin: 0; text-align: left; font-size: 1.25rem; font-family: 'Playfair Display', serif; color: var(--primary);">Choisissez votre Boisson</h3>
+                <button id="hotDrinkCloseBtn" style="background: none; border: none; color: var(--muted); font-size: 24px; cursor: pointer; outline: none; line-height: 1;">&times;</button>
+            </div>
+            <p id="hotDrinkModalSubtitle" style="text-align: left; margin: 0 0 16px; font-size: 0.82rem; color: var(--muted); font-family: 'Poppins', sans-serif;">
+                Veuillez sélectionner votre boisson chaude incluse.
+            </p>
+            
+            <div class="hot-drink-counter" id="hotDrinkCounter" style="font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: var(--primary); text-transform: uppercase; text-align: left; margin-bottom: 8px; border-bottom: 1px solid rgba(45,35,33,0.08); padding-bottom: 4px;">
+                Sélection : 0 / 1
+            </div>
+            
+            <div id="hotDrinksList" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px; max-height: 280px; margin-bottom: 16px;">
+                <!-- Dynamic scrolling list of drinks -->
+            </div>
+            
+            <button class="cd-submit-btn" id="hotDrinkConfirmBtn" disabled style="margin-top: auto;">
+                Confirmer
+            </button>
+        </div>
+    </div>
+
+    <!-- ======================================================================
+         SIDES / ACCOMPANIMENTS SELECTOR MODAL (FOR DISHES)
+    ======================================================================= -->
+    <div class="table-modal-overlay" id="sidesModalOverlay" style="display: none; z-index: 10004;">
+        <div class="table-modal" style="max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; padding: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 id="sidesModalTitle" style="margin: 0; text-align: left; font-size: 1.25rem; font-family: 'Playfair Display', serif; color: var(--primary);" data-i18n data-fr="Accompagnements" data-en="Accompaniments" data-de="Beilagen">Accompagnements</h3>
+                <button id="sidesCloseBtn" style="background: none; border: none; color: var(--muted); font-size: 24px; cursor: pointer; outline: none; line-height: 1;">&times;</button>
+            </div>
+            <p id="sidesModalSubtitle" style="text-align: left; margin: 0 0 16px; font-size: 0.82rem; color: var(--muted); font-family: 'Poppins', sans-serif;" data-i18n data-fr="Veuillez sélectionner 2 accompagnements de votre choix (Inclus)." data-en="Please select 2 accompaniments of your choice (Included)." data-de="Bitte wählen Sie 2 Beilagen Ihrer Wahl (Inklusive).">
+                Veuillez sélectionner 2 accompagnements de votre choix (Inclus).
+            </p>
+            
+            <div class="hot-drink-counter" id="sidesCounter" style="font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: var(--primary); text-transform: uppercase; text-align: left; margin-bottom: 8px; border-bottom: 1px solid rgba(45,35,33,0.08); padding-bottom: 4px;">
+                Sélection : 0 / 2
+            </div>
+            
+            <div id="sidesList" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px; max-height: 280px; margin-bottom: 16px;">
+                <!-- Dynamic scrolling list of accompaniments -->
+            </div>
+            
+            <button class="cd-submit-btn" id="sidesConfirmBtn" disabled style="margin-top: auto;" data-i18n data-fr="Confirmer" data-en="Confirm" data-de="Bestätigen">
+                Confirmer
+            </button>
+        </div>
+    </div>
+
+    <!-- ======================================================================
+         PASTA TYPE SELECTOR MODAL (FOR PASTA ITEMS EXCLUDING LASAGNES)
+    ======================================================================= -->
+    <div class="table-modal-overlay" id="pastaModalOverlay" style="display: none; z-index: 10005;">
+        <div class="table-modal" style="max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; padding: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 id="pastaModalTitle" style="margin: 0; text-align: left; font-size: 1.25rem; font-family: 'Playfair Display', serif; color: var(--primary);" data-i18n data-fr="Choix des Pâtes" data-en="Choice of Pasta" data-de="Nudelauswahl">Choix des Pâtes</h3>
+                <button id="pastaCloseBtn" style="background: none; border: none; color: var(--muted); font-size: 24px; cursor: pointer; outline: none; line-height: 1;">&times;</button>
+            </div>
+            <p id="pastaModalSubtitle" style="text-align: left; margin: 0 0 16px; font-size: 0.82rem; color: var(--muted); font-family: 'Poppins', sans-serif;" data-i18n data-fr="Veuillez sélectionner le type de pâtes de votre choix :" data-en="Please select the pasta type of your choice:" data-de="Bitte wählen Sie die Nudelsorte Ihrer Wahl:">
+                Veuillez sélectionner le type de pâtes de votre choix :
+            </p>
+            
+            <div class="hot-drink-counter" id="pastaCounter" style="font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: var(--primary); text-transform: uppercase; text-align: left; margin-bottom: 8px; border-bottom: 1px solid rgba(45,35,33,0.08); padding-bottom: 4px;">
+                Sélection : 0 / 1
+            </div>
+            
+            <div id="pastaList" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px; max-height: 280px; margin-bottom: 16px;">
+                <!-- Dynamic scrolling list of pasta types -->
+            </div>
+            
+            <button class="cd-submit-btn" id="pastaConfirmBtn" disabled style="margin-top: auto;" data-i18n data-fr="Confirmer" data-en="Confirm" data-de="Bestätigen">
+                Confirmer
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js?v=1.1" defer></script>
+
+    <script>
+        // ── PARTAGER ──
+        document.getElementById('shareMenu').addEventListener('click', async function () {
+            const url = window.location.href;
+            const lang = localStorage.getItem('lang') || 'fr';
+            const texts = {
+                fr: { title: 'Grey Corner — Menu', text: '🍽️ Découvrez le menu Grey Corner Café à Fès !' },
+                en: { title: 'Grey Corner — Menu', text: '🍽️ Discover the Grey Corner Café menu in Fès!' },
+                de: { title: 'Grey Corner — Menü', text: '🍽️ Entdecken Sie das Menü des Grey Corner Café in Fès!' }
+            };
+            const t = texts[lang] || texts.fr;
+
+            // Web Share API (mobile natif — WhatsApp, SMS, etc.)
+            if (navigator.share) {
+                try {
+                    await navigator.share({ title: t.title, text: t.text, url });
+                    return;
+                } catch (e) { return; }
+            }
+
+            // Fallback desktop : copier dans le presse-papier
+            try {
+                await navigator.clipboard.writeText(url);
+            } catch {
+                const ta = document.createElement('textarea');
+                ta.value = url;
+                ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0;';
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+            }
+
+            // Toast multilingue
+            const toastMsg = { fr: 'Lien copié ✓', en: 'Link copied ✓', de: 'Link kopiert ✓' };
+            const toast = document.getElementById('scToast');
+            toast.textContent = toastMsg[lang] || toastMsg.fr;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2400);
+        });
+    </script>
+</body>
+
+</html>
