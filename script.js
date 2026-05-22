@@ -3978,7 +3978,7 @@ function setCallCooldown(type) {
 }
 
 // GPS / Location Security action wrapper
-function verifyLocationAndProceed(action) {
+function verifyLocationAndProceed(action, onFailure) {
   if (GPSService.isSuspicious) {
     const suspectMsgs = {
       fr: "Position GPS invalide détectée.",
@@ -3986,6 +3986,7 @@ function verifyLocationAndProceed(action) {
       de: "Verdächtige GPS-Position erkannt."
     };
     showToast(suspectMsgs[currentLang] || suspectMsgs.fr);
+    if (typeof onFailure === "function") onFailure();
     return;
   }
 
@@ -3996,6 +3997,7 @@ function verifyLocationAndProceed(action) {
       de: "Sie müssen im Grey Corner anwesend sein, um die Bestelldienste zu nutzen."
     };
     showToast(outMsgs[currentLang] || outMsgs.fr);
+    if (typeof onFailure === "function") onFailure();
     return;
   }
 
@@ -4008,6 +4010,7 @@ function verifyLocationAndProceed(action) {
         de: "Verdächtige GPS-Position erkannt."
       };
       showToast(suspectMsgs[currentLang] || suspectMsgs.fr);
+      if (typeof onFailure === "function") onFailure();
       return;
     }
 
@@ -4020,6 +4023,7 @@ function verifyLocationAndProceed(action) {
         de: "Sie müssen im Grey Corner anwesend sein, um die Bestelldienste zu nutzen."
       };
       showToast(outMsgs[currentLang] || outMsgs.fr);
+      if (typeof onFailure === "function") onFailure();
     }
   });
 }
@@ -4094,18 +4098,27 @@ function submitPreOrder() {
   }
   if (clientCart.length === 0) return;
 
+  const btn = document.getElementById("cdSubmitBtn");
+  const spinner = document.getElementById("cdSubmitSpinner");
+
+  if (btn) {
+    if (btn.disabled) return;
+    btn.disabled = true;
+  }
+  if (spinner) spinner.style.display = "block";
+
+  const resetBtn = () => {
+    if (btn) btn.disabled = false;
+    if (spinner) spinner.style.display = "none";
+  };
+
   verifyLocationAndProceed(() => {
     if (!clientTable) {
+      resetBtn();
       pendingActionAfterTableSelect = () => submitPreOrder();
       showTableSelectorModal();
       return;
     }
-
-    const btn = document.getElementById("cdSubmitBtn");
-    const spinner = document.getElementById("cdSubmitSpinner");
-
-    if (btn) btn.disabled = true;
-    if (spinner) spinner.style.display = "block";
 
     const note = document.getElementById("cdSpecialNote") ? document.getElementById("cdSpecialNote").value : "";
     const totalPrice = clientCart.reduce((sum, item) => sum + (item.price * item.qty), 0);
@@ -4129,8 +4142,7 @@ function submitPreOrder() {
     });
 
     dbService.sendPreOrder(clientTable, itemsList, note, totalPrice, (success, orderId) => {
-      if (btn) btn.disabled = false;
-      if (spinner) spinner.style.display = "none";
+      resetBtn();
 
       if (success) {
         // Success Chime (Luxury sound)
@@ -4163,8 +4175,9 @@ function submitPreOrder() {
         showToast("Erreur de connexion. Veuillez réessayer.");
       }
     });
-  });
+  }, resetBtn);
 }
+
 
 // Subscribe to Active Waiter Events for Real-Time feedback toast (e.g. Karim has accepted the call)
 let unsubscribersList = [];
