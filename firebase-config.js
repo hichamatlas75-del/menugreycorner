@@ -195,6 +195,53 @@ if (!isFirebaseActive) {
 }
 
 // ============================================================================
+// FCM CONFIGURATION & HELPERS
+// ============================================================================
+
+const WORKER_URL    = "https://greycorner-fcm.hichamatlas75.workers.dev";
+const WORKER_SECRET = "greycorner_secure_2026";
+
+function getTableZoneName(tableNum) {
+    const num = parseInt(tableNum);
+    if (num >= 101 && num <= 115) return "Salon";
+    if (num >= 201 && num <= 223) return "Loge";
+    if (num >= 301 && num <= 324) return "Terrasse";
+    return "Table";
+}
+
+async function sendFcmToWaiters(type, title, body, table, docId) {
+    if (!WORKER_URL) {
+        console.warn("⚠️ FCM Worker : URL non configurée.");
+        return;
+    }
+    try {
+        const res = await fetch(WORKER_URL, {
+            method:  "POST",
+            headers: { 
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${WORKER_SECRET}`
+            },
+            body: JSON.stringify({
+                type,
+                title,
+                body,
+                table:  String(table || "?"),
+                docId:  docId || ""
+            })
+        });
+
+        const json = await res.json();
+        if (json.success) {
+            console.log("🚀 Push FCM expédié avec succès via le Worker →", type, "table", table);
+        } else {
+            console.error("❌ FCM Worker échec :", json);
+        }
+    } catch (e) {
+        console.warn("⚠️ FCM Worker fetch error:", e);
+    }
+}
+
+// ============================================================================
 // DATABASE SERVICE
 // ============================================================================
 
@@ -401,6 +448,12 @@ const dbService = {
                     .add(data)
 
                     .then(docRef => {
+                        const zoneName = getTableZoneName(tableId);
+                        const typeLabels = { waiter: "Appel Serveur", water: "Besoin d'Eau", bill: "L'Addition" };
+                        const typeLabel = typeLabels[type] || "Appel";
+                        const alertTitle = `🔔 Nouveau Appel : ${zoneName} ${tableId}`;
+                        const alertBody = `Demande : ${typeLabel}`;
+                        sendFcmToWaiters("WAITER_CALL", alertTitle, alertBody, tableId, docRef.id);
 
                         if (callback) {
                             callback(true, docRef.id);
@@ -627,6 +680,11 @@ const dbService = {
                     .add(data)
 
                     .then(docRef => {
+                        // Envoyer un push FCM unique aux serveurs depuis le client
+                        const zoneName = getTableZoneName(tableId);
+                        const alertTitle = `👨‍🍳 Nouvelle Précommande : ${zoneName} ${tableId}`;
+                        const alertBody = `Total : ${totalPrice} MAD`;
+                        sendFcmToWaiters("PRE_ORDER", alertTitle, alertBody, tableId, docRef.id);
 
                         if (callback) {
                             callback(true, docRef.id);
