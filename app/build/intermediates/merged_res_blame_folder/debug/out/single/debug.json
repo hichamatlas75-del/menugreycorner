@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "com.menugreycorner.app-merged_res-29:/layout_activity_main.xml.flat",
+        "source": "com.menugreycorner.app-main-31:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.menugreycorner.app-merged_res-29:/drawable_ic_launcher.png.flat",
+        "source": "com.menugreycorner.app-main-31:/drawable/ic_launcher.png"
+    }
+]

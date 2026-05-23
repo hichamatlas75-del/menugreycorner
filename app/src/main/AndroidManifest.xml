@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.menugreycorner">
+
+    <!-- ═══════════════════════════════════════════════════════════
+         PERMISSIONS
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- Réseau -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <!-- Notifications (Android 13+) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
+    <!-- Réveil CPU / Écran -->
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <!-- Notification plein écran (écran verrouillé) -->
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"/>
+
+    <!-- Service foreground -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
+
+    <!-- Démarrage au boot (persistance après reboot) -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
+    <!-- Exemption battery optimization -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         APPLICATION
+         ═══════════════════════════════════════════════════════════ -->
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="Grey Corner Serveurs"
+        android:roundIcon="@drawable/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.NoActionBar"
+        android:usesCleartextTraffic="false">
+
+        <!-- ─── Activité principale ─────────────────────────────── -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:showOnLockScreen="true"
+            android:turnScreenOn="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <!-- ─── ForegroundService de secours (fallback poller) ──── -->
+        <service
+            android:name=".WaiterForegroundService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="dataSync"
+            android:stopWithTask="false"/>
+
+        <!-- ─── Service FCM HIGH PRIORITY (système principal) ───── -->
+        <!--
+            Ce service reçoit les DATA MESSAGES FCM envoyés par la
+            Cloud Function. Il est déclenché par le système Android
+            même si l'application est tuée ou en arrière-plan.
+            android:exported="false" → seul le système Google peut l'appeler.
+        -->
+        <service
+            android:name=".WaiterFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <!-- ─── BootReceiver (redémarrage après reboot) ──────────── -->
+        <!--
+            Relance le ForegroundService et re-souscrit au topic FCM
+            automatiquement après un redémarrage du téléphone.
+            Compatible : BOOT_COMPLETED + Xiaomi QUICKBOOT_POWERON.
+        -->
+        <receiver
+            android:name=".BootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+                <action android:name="android.intent.action.REBOOT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>

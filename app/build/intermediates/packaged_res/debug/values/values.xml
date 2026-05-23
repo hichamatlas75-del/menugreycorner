@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gcm_defaultSenderId" translatable="false">251703175568</string>
+    <string name="google_api_key" translatable="false">AIzaSyBpp_ZjzQOcujTqI3h0oNhFTEP5o55pReo</string>
+    <string name="google_app_id" translatable="false">1:251703175568:android:55bc0fc0cc528919d12b15</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBpp_ZjzQOcujTqI3h0oNhFTEP5o55pReo</string>
+    <string name="google_storage_bucket" translatable="false">grey-corner-restaurant.firebasestorage.app</string>
+    <string name="project_id" translatable="false">grey-corner-restaurant</string>
+</resources>
