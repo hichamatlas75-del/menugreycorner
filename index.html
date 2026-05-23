@@ -772,10 +772,17 @@
             <!-- Lien "juste consulter" -->
             <p style="text-align:center;margin:14px 0 0;">
                 <button onclick="GC_dismissModal()" style="
-                    background:none;border:none;
-                    color:rgba(240,234,216,0.28);font-family:'DM Sans',sans-serif;
-                    font-size:0.75rem;cursor:pointer;text-decoration:underline;
-                    text-underline-offset:3px;-webkit-tap-highlight-color:transparent;">
+                    width:100%;padding:13px;border-radius:10px;
+                    background:rgba(201,168,76,0.12);
+                    border:1px solid rgba(201,168,76,0.35);
+                    color:#E2C97E;
+                    font-family:'DM Sans',sans-serif;font-size:0.84rem;font-weight:600;
+                    letter-spacing:0.06em;cursor:pointer;transition:all 0.3s;
+                    -webkit-tap-highlight-color:transparent;"
+                    onmouseover="this.style.background='rgba(201,168,76,0.2)'"
+                    onmouseout="this.style.background='rgba(201,168,76,0.12)'"
+                    onmousedown="this.style.transform='scale(0.98)'"
+                    onmouseup="this.style.transform='scale(1)'">
                     Juste consulter le menu
                 </button>
             </p>
@@ -790,7 +797,7 @@
     ======================================================================= -->
     <script>
     // ── CONFIG ──
-    const WHATSAPP_NUMBER = '212666265160'; // ← Remplacer par le vrai numéro du café
+    const WHATSAPP_NUMBER = '212600000000'; // ← Remplacer par le vrai numéro du café
 
     // ── ÉTAT ──
     window.GC_preorderMode  = null;  // 'pickup' | 'table'
