@@ -790,7 +790,7 @@
     ======================================================================= -->
     <script>
     // ── CONFIG ──
-    const WHATSAPP_NUMBER = '212666265160'; // ← Remplacer par le vrai numéro du café
+    const WHATSAPP_NUMBER = '212600000000'; // ← Remplacer par le vrai numéro du café
 
     // ── ÉTAT ──
     window.GC_preorderMode  = null;  // 'pickup' | 'table'
@@ -906,9 +906,31 @@
             fresh.style.background  = 'linear-gradient(135deg,#25D366,#128C7E)';
             fresh.style.borderColor = '#25D366';
             fresh.style.color       = '#fff';
+            fresh.style.opacity     = '1';
+            fresh.style.pointerEvents = 'auto';
             fresh.disabled = false;
+            fresh.removeAttribute('disabled');
+            fresh.classList.remove('disabled-gps', 'frozen-disabled');
             fresh.addEventListener('click', GC_sendWhatsApp);
             btn.parentNode.replaceChild(fresh, btn);
+
+            // Garde le bouton actif si script.js tente de le redésactiver
+            clearInterval(window._gcBtnGuard);
+            window._gcBtnGuard = setInterval(() => {
+                const b = document.getElementById('cdSubmitBtn');
+                if (!b) { clearInterval(window._gcBtnGuard); return; }
+                // Respecte le freeze système — ne réactive pas si frozen
+                if (typeof systemFrozen !== 'undefined' && systemFrozen) return;
+                if (b.classList.contains('disabled-gps')) {
+                    b.classList.remove('disabled-gps');
+                    b.disabled = false;
+                    b.removeAttribute('disabled');
+                    b.style.opacity = '1';
+                    b.style.pointerEvents = 'auto';
+                    b.style.background = 'linear-gradient(135deg,#25D366,#128C7E)';
+                    b.style.color = '#fff';
+                }
+            }, 300);
 
             // Cache le texte "Le serveur confirmera…"
             document.querySelectorAll('.cd-warning-text').forEach(el => el.style.display = 'none');
