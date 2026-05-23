@@ -4302,7 +4302,7 @@ function renderNotificationHistory() {
 const GeoFenceManager = {
   CENTER_LAT: 34.0344054,
   CENTER_LNG: -5.0154828,
-  ALLOWED_RADIUS: 80, // meters
+  ALLOWED_RADIUS: 50, // meters
 
   calculateDistance: function (lat1, lon1, lat2, lon2) {
     const R = 6371000; // Earth radius in meters
