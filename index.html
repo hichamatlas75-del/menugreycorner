@@ -701,6 +701,7 @@
                 <div>
                     <h3 style="font-family:'Playfair Display',serif;color:#f0ead8;font-size:1.1rem;margin:0 0 2px;font-weight:600;">Localisation bloquée</h3>
                     <p style="color:rgba(240,234,216,0.4);font-size:0.75rem;margin:0;">Activez-la pour commander depuis votre table</p>
+                    <p id="gpsBlockedHint" style="display:none;font-size:0.72rem;margin:4px 0 0;font-weight:500;">Accès refusé → suivez les étapes ci-dessous</p>
                 </div>
             </div>
             <div style="height:1px;background:rgba(255,255,255,0.06);margin:0 0 20px;"></div>
@@ -728,10 +729,14 @@
                     </div>
                 </div>
             </div>
-            <button onclick="location.reload()" style="width:100%;padding:13px;border-radius:10px;background:rgba(201,168,76,0.18);border:1px solid #C9A84C;color:#f0ead8;font-family:'DM Sans',sans-serif;font-size:0.84rem;font-weight:600;letter-spacing:0.06em;cursor:pointer;transition:all 0.2s;margin-bottom:10px;-webkit-tap-highlight-color:transparent;">
+            <!-- Bouton principal : redemande permission GPS -->
+            <button onclick="GC_requestGpsAgain()" style="width:100%;padding:14px;border-radius:10px;background:linear-gradient(135deg,#C9A84C,#a07c2a);border:none;color:#07060a;font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:700;letter-spacing:0.06em;cursor:pointer;margin-bottom:10px;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center;gap:8px;">
+                <span style="font-size:1.1rem;">📍</span> Activer la localisation
+            </button>
+            <button onclick="location.reload()" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(240,234,216,0.45);font-family:'DM Sans',sans-serif;font-size:0.78rem;cursor:pointer;margin-bottom:8px;-webkit-tap-highlight-color:transparent;">
                 ↩️ Recharger la page
             </button>
-            <button onclick="GC_dismissGpsBlocked()" style="width:100%;padding:13px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(240,234,216,0.35);font-family:'DM Sans',sans-serif;font-size:0.82rem;cursor:pointer;-webkit-tap-highlight-color:transparent;">
+            <button onclick="GC_dismissGpsBlocked()" style="width:100%;padding:12px;border-radius:10px;background:transparent;border:none;color:rgba(240,234,216,0.22);font-family:'DM Sans',sans-serif;font-size:0.76rem;cursor:pointer;-webkit-tap-highlight-color:transparent;">
                 Continuer en mode consultation
             </button>
         </div>
@@ -866,6 +871,37 @@
         sheet.style.transform = 'translateY(100%)';
         setTimeout(() => { overlay.style.display = 'none'; }, 380);
     }
+    window.GC_requestGpsAgain = function() {
+        if (!navigator.geolocation) { return; }
+        // Tente de redemander la permission — si l'user avait juste ignoré, la popup iOS réapparaît
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                // Permission accordée — on relance la détection via GPSService si dispo
+                GC_hideGpsBlocked();
+                if (typeof GPSService !== 'undefined' && typeof GPSService.checkLocation === 'function') {
+                    GPSService.checkLocation();
+                } else {
+                    // Fallback : recharge la page
+                    location.reload();
+                }
+            },
+            (err) => {
+                if (err.code === 1) {
+                    // PERMISSION_DENIED définitif → les réglages sont la seule option
+                    // On met à jour le texte du modal pour guider vers Réglages
+                    const hint = document.getElementById('gpsBlockedHint');
+                    if (hint) {
+                        hint.style.display = 'block';
+                        hint.style.color = '#e87c3e';
+                    }
+                } else {
+                    location.reload();
+                }
+            },
+            { timeout: 8000, enableHighAccuracy: true }
+        );
+    };
+
     window.GC_dismissGpsBlocked = function() {
         GC_hideGpsBlocked();
         GC_applyReadonlyUI();
