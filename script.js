@@ -4123,18 +4123,24 @@ function submitPreOrder() {
     const note = document.getElementById("cdSpecialNote") ? document.getElementById("cdSpecialNote").value : "";
     const totalPrice = clientCart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
-    // Format items list for database
+    // Format items list for database (always in French for the waiter and admin)
     const itemsList = clientCart.map(c => {
       let nameFr = c.name.fr;
-      let nameLang = c.name[currentLang] || c.name.fr;
       if (c.drinkChoices && c.drinkChoices.length > 0) {
-        const choicesStr = ` (${c.drinkChoices.join(', ')})`;
-        nameFr += choicesStr;
-        nameLang += choicesStr;
+        const frenchChoices = c.drinkChoices.map(choice => {
+          let found = HOT_DRINKS_OPTIONS.find(o => o.fr === choice || o.en === choice || o.de === choice);
+          if (found) return found.fr;
+          found = SIDES_OPTIONS.find(o => o.fr === choice || o.en === choice || o.de === choice);
+          if (found) return found.fr;
+          found = PASTA_OPTIONS.find(o => o.fr === choice || o.en === choice || o.de === choice);
+          if (found) return found.fr;
+          return choice;
+        });
+        nameFr += ` (${frenchChoices.join(', ')})`;
       }
       return {
         name: nameFr,
-        name_lang: nameLang,
+        name_lang: nameFr, // Set both to the French version so the waiter/admin displays show French
         price: c.price.toString(),
         qty: c.qty,
         note: c.note || ""
