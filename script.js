@@ -2708,6 +2708,18 @@ function enableSecureLightbox() {
 
   const lbAddBtn = document.getElementById("secureLightboxAddBtn");
   const lbCaption = document.getElementById("secureLightboxCaption");
+  let activeItem = null;
+
+  // Bind the Add to Cart button listener ONCE
+  if (lbAddBtn) {
+    lbAddBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (activeItem) {
+        closeLightbox();
+        addToCart(activeItem);
+      }
+    });
+  }
 
   document.querySelectorAll(".menu-item").forEach(card => {
     card.addEventListener("click", () => {
@@ -2715,6 +2727,7 @@ function enableSecureLightbox() {
       if (!url) return;
       
       const item = card._menuItem;
+      activeItem = item;
       secureLightboxContent.style.backgroundImage = `url("${url}")`;
       
       if (item && lbCaption) {
@@ -2729,16 +2742,6 @@ function enableSecureLightbox() {
           : currentLang === "de" ? "+ In den Warenkorb"
             : "+ Ajouter au panier";
         lbAddBtn.textContent = btnText;
-        
-        // Remove old click listeners using clone
-        const newAddBtn = lbAddBtn.cloneNode(true);
-        lbAddBtn.parentNode.replaceChild(newAddBtn, lbAddBtn);
-        
-        newAddBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          closeLightbox();
-          addToCart(item);
-        });
       } else if (lbAddBtn) {
         lbAddBtn.style.display = "none";
       }
