@@ -2419,6 +2419,7 @@ function renderMenu() {
       card.className = "menu-item";
       card.id = `item-${categoryId}-${itemIndex}`;
       card.style.setProperty("--item-index", itemIndex);
+      card._menuItem = item;
 
       // Badge NEW / NOUVEAU / NEU
       if (item.isNew === true) {
@@ -2705,11 +2706,43 @@ function setupNavigationListeners() {
 function enableSecureLightbox() {
   if (!secureLightbox || !secureLightboxContent) return;
 
+  const lbAddBtn = document.getElementById("secureLightboxAddBtn");
+  const lbCaption = document.getElementById("secureLightboxCaption");
+
   document.querySelectorAll(".menu-item").forEach(card => {
     card.addEventListener("click", () => {
       const url = card.dataset.img;
       if (!url) return;
+      
+      const item = card._menuItem;
       secureLightboxContent.style.backgroundImage = `url("${url}")`;
+      
+      if (item && lbCaption) {
+        lbCaption.textContent = `${item.name[currentLang]} — ${item.price}${item.price !== "Inclus" ? " MAD" : ""}`;
+      } else if (lbCaption) {
+        lbCaption.textContent = "";
+      }
+
+      if (item && lbAddBtn) {
+        lbAddBtn.style.display = "block";
+        const btnText = currentLang === "en" ? "+ Add to cart"
+          : currentLang === "de" ? "+ In den Warenkorb"
+            : "+ Ajouter au panier";
+        lbAddBtn.textContent = btnText;
+        
+        // Remove old click listeners using clone
+        const newAddBtn = lbAddBtn.cloneNode(true);
+        lbAddBtn.parentNode.replaceChild(newAddBtn, lbAddBtn);
+        
+        newAddBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          closeLightbox();
+          addToCart(item);
+        });
+      } else if (lbAddBtn) {
+        lbAddBtn.style.display = "none";
+      }
+
       secureLightbox.classList.add("active");
       document.body.classList.add("no-scroll");
       document.documentElement.classList.add("no-scroll");
@@ -2739,6 +2772,13 @@ function closeLightbox() {
   if (!secureLightbox) return;
   secureLightbox.classList.remove("active");
   if (secureLightboxContent) secureLightboxContent.style.backgroundImage = "";
+  
+  const lbAddBtn = document.getElementById("secureLightboxAddBtn");
+  if (lbAddBtn) lbAddBtn.style.display = "none";
+  
+  const lbCaption = document.getElementById("secureLightboxCaption");
+  if (lbCaption) lbCaption.textContent = "";
+
   document.body.classList.remove("no-scroll");
   document.documentElement.classList.remove("no-scroll");
 }
@@ -2980,6 +3020,11 @@ function activateEventBanner() {
       if (lbCaption) {
         const txt = eventBanner.querySelector(".event-text");
         lbCaption.textContent = txt ? txt.textContent : "Événement Spécial";
+      }
+
+      const lbAddBtn = document.getElementById("secureLightboxAddBtn");
+      if (lbAddBtn) {
+        lbAddBtn.style.display = "none";
       }
 
       lb.classList.add("active");

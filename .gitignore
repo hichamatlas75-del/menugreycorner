@@ -3,4 +3,11 @@
 build/  
 app/  
 gradle/  
-local.properties 
+local.properties
+build.gradle
+settings.gradle
+gradle.properties
+gradlew
+gradlew.bat
+.wrangler/
+
