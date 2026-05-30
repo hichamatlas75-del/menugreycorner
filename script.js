@@ -2414,6 +2414,7 @@ function renderMenu() {
 
     category.items.forEach((item, itemIndex) => {
       item.categoryId = categoryId;
+      item.categoryNameFr = category.category.fr;
       const card = document.createElement("article");
       card.className = "menu-item";
       card.id = `item-${categoryId}-${itemIndex}`;
@@ -2490,6 +2491,7 @@ function renderNewItemsCarousel() {
         newItems.push({
           ...item,
           categoryId,
+          categoryNameFr: category.category.fr,
           itemIndex,
           itemId: `item-${categoryId}-${itemIndex}`
         });
@@ -3645,6 +3647,7 @@ function executeAddToCartWithChoices(menuItem, drinkChoices) {
     clientCart.push({
       id: cartItemId,
       name: menuItem.name,
+      categoryNameFr: menuItem.categoryNameFr || "",
       price: parseFloat(menuItem.price) || 0,
       image: menuItem.image,
       qty: 1,
@@ -4141,6 +4144,7 @@ function submitPreOrder() {
       return {
         name: nameFr,
         name_lang: nameFr, // Set both to the French version so the waiter/admin displays show French
+        category: c.categoryNameFr || "",
         price: c.price.toString(),
         qty: c.qty,
         note: c.note || ""
