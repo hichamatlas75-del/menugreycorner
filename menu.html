@@ -680,8 +680,346 @@
         </div>
     </div>
 
+    <!-- ======================================================================
+         PREORDER MODE MODAL (hors café — non bloquant, slide-up)
+    ======================================================================= -->
+    <div id="preorderModeOverlay" style="
+        display:none; position:fixed; inset:0; z-index:99990;
+        background:rgba(7,6,10,0.82); backdrop-filter:blur(8px);
+        -webkit-backdrop-filter:blur(8px); align-items:flex-end; justify-content:center;">
+        <div id="preorderModeSheet" style="
+            width:100%; max-width:480px; margin:0 auto;
+            background:#0f0e13; border-top:1px solid rgba(201,168,76,0.2);
+            border-radius:20px 20px 0 0; padding:28px 24px 36px;
+            font-family:'DM Sans',sans-serif;
+            transform:translateY(100%); transition:transform 0.38s cubic-bezier(.22,1,.36,1);">
+
+            <!-- Drag handle -->
+            <div style="width:36px;height:3px;background:rgba(255,255,255,0.12);
+                border-radius:2px;margin:0 auto 22px;"></div>
+
+            <!-- Badge -->
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+                <div style="background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);
+                    border-radius:20px;padding:3px 12px;">
+                    <span style="color:#C9A84C;font-size:0.66rem;font-weight:600;
+                        letter-spacing:0.16em;text-transform:uppercase;">🛒 Précommande</span>
+                </div>
+            </div>
+
+            <h3 style="font-family:'Playfair Display',serif;color:#f0ead8;
+                font-size:1.25rem;margin:0 0 6px;font-weight:600;">
+                Vous êtes hors du café
+            </h3>
+            <p style="color:rgba(240,234,216,0.48);font-size:0.8rem;
+                margin:0 0 22px;line-height:1.65;">
+                Composez votre commande et envoyez-la via WhatsApp.<br>
+                Elle sera prête à votre arrivée.
+            </p>
+
+            <!-- Choix du mode -->
+            <p style="color:rgba(240,234,216,0.35);font-size:0.65rem;
+                letter-spacing:0.14em;text-transform:uppercase;margin:0 0 10px;">
+                Mode de réception
+            </p>
+            <div style="display:flex;gap:10px;margin-bottom:18px;">
+                <button id="pmPickup" onclick="GC_selectMode('pickup')" style="
+                    flex:1;padding:14px 8px;border-radius:12px;cursor:pointer;
+                    background:rgba(201,168,76,0.07);
+                    border:1px solid rgba(201,168,76,0.2);
+                    font-family:'DM Sans',sans-serif;
+                    display:flex;flex-direction:column;align-items:center;gap:7px;
+                    transition:all 0.2s;-webkit-tap-highlight-color:transparent;">
+                    <span style="font-size:1.5rem;">🥡</span>
+                    <span style="font-weight:600;color:#f0ead8;font-size:0.82rem;">À emporter</span>
+                    <span style="font-size:0.65rem;color:rgba(240,234,216,0.35);">Comptoir</span>
+                </button>
+                <button id="pmTable" onclick="GC_selectMode('table')" style="
+                    flex:1;padding:14px 8px;border-radius:12px;cursor:pointer;
+                    background:rgba(201,168,76,0.07);
+                    border:1px solid rgba(201,168,76,0.2);
+                    font-family:'DM Sans',sans-serif;
+                    display:flex;flex-direction:column;align-items:center;gap:7px;
+                    transition:all 0.2s;-webkit-tap-highlight-color:transparent;">
+                    <span style="font-size:1.5rem;">🪑</span>
+                    <span style="font-weight:600;color:#f0ead8;font-size:0.82rem;">À table</span>
+                    <span style="font-size:0.65rem;color:rgba(240,234,216,0.35);">À l'arrivée</span>
+                </button>
+            </div>
+
+            <!-- N° table optionnel -->
+            <div id="pmTableNumWrap" style="display:none;margin-bottom:16px;">
+                <input id="pmTableNumInput" type="number" placeholder="Numéro de table (optionnel)"
+                    style="width:100%;padding:11px 14px;box-sizing:border-box;
+                    background:rgba(255,255,255,0.04);
+                    border:1px solid rgba(201,168,76,0.18);border-radius:8px;
+                    color:#f0ead8;font-family:'DM Sans',sans-serif;font-size:0.88rem;
+                    outline:none;-webkit-appearance:none;">
+            </div>
+
+            <!-- Bouton confirmer -->
+            <button id="pmConfirm" onclick="GC_confirmMode()" disabled style="
+                width:100%;padding:13px;border-radius:10px;
+                background:rgba(201,168,76,0.06);
+                border:1px solid rgba(201,168,76,0.15);
+                color:rgba(240,234,216,0.25);
+                font-family:'DM Sans',sans-serif;font-size:0.84rem;font-weight:600;
+                letter-spacing:0.06em;cursor:not-allowed;transition:all 0.3s;
+                -webkit-tap-highlight-color:transparent;">
+                Continuer →
+            </button>
+
+            <!-- Lien "juste consulter" -->
+            <p style="text-align:center;margin:14px 0 0;">
+                <button onclick="GC_dismissModal()" style="
+                    width:100%;padding:13px;border-radius:10px;
+                    background:rgba(201,168,76,0.12);
+                    border:1px solid rgba(201,168,76,0.35);
+                    color:#E2C97E;
+                    font-family:'DM Sans',sans-serif;font-size:0.84rem;font-weight:600;
+                    letter-spacing:0.06em;cursor:pointer;transition:all 0.3s;
+                    -webkit-tap-highlight-color:transparent;"
+                    onmouseover="this.style.background='rgba(201,168,76,0.2)'"
+                    onmouseout="this.style.background='rgba(201,168,76,0.12)'"
+                    onmousedown="this.style.transform='scale(0.98)'"
+                    onmouseup="this.style.transform='scale(1)'">
+                    Juste consulter le menu
+                </button>
+            </p>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="script.js?v=1.1" defer></script>
+
+    <!-- ======================================================================
+         GPS ROUTING — PATCH sur GPSService (s'exécute après script.js)
+    ======================================================================= -->
+    <script>
+    // ── CONFIG ──
+    const WHATSAPP_NUMBER = '212600000000'; // ← Remplacer par le vrai numéro du café
+
+    // ── ÉTAT ──
+    window.GC_preorderMode  = null;  // 'pickup' | 'table'
+    window.GC_preorderTable = null;
+    window.GC_isPreorder    = false;
+
+    // ── MODAL ──
+    function GC_showPreorderModal() {
+        const overlay = document.getElementById('preorderModeOverlay');
+        const sheet   = document.getElementById('preorderModeSheet');
+        if (!overlay) return;
+        overlay.style.display = 'flex';
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => { sheet.style.transform = 'translateY(0)'; });
+        });
+    }
+
+    function GC_hidePreorderModal() {
+        const overlay = document.getElementById('preorderModeOverlay');
+        const sheet   = document.getElementById('preorderModeSheet');
+        if (!overlay) return;
+        sheet.style.transform = 'translateY(100%)';
+        setTimeout(() => { overlay.style.display = 'none'; }, 380);
+    }
+
+    window.GC_selectMode = function(mode) {
+        window.GC_preorderMode = mode;
+        const p = document.getElementById('pmPickup');
+        const t = document.getElementById('pmTable');
+        const w = document.getElementById('pmTableNumWrap');
+        const c = document.getElementById('pmConfirm');
+        const GOLD = 'rgba(201,168,76,0.18)';
+        const DIM  = 'rgba(201,168,76,0.07)';
+        p.style.background  = mode === 'pickup' ? GOLD : DIM;
+        p.style.borderColor = mode === 'pickup' ? '#C9A84C' : 'rgba(201,168,76,0.2)';
+        t.style.background  = mode === 'table'  ? GOLD : DIM;
+        t.style.borderColor = mode === 'table'  ? '#C9A84C' : 'rgba(201,168,76,0.2)';
+        w.style.display = mode === 'table' ? 'block' : 'none';
+        c.disabled = false;
+        c.style.background  = 'rgba(201,168,76,0.18)';
+        c.style.borderColor = '#C9A84C';
+        c.style.color       = '#f0ead8';
+        c.style.cursor      = 'pointer';
+    };
+
+    window.GC_confirmMode = function() {
+        if (!window.GC_preorderMode) return;
+        const inp = document.getElementById('pmTableNumInput');
+        window.GC_preorderTable = inp && inp.value.trim() ? inp.value.trim() : null;
+        window.GC_isPreorder    = true;
+        GC_hidePreorderModal();
+        GC_applyPreorderUI();
+    };
+
+    window.GC_dismissModal = function() {
+        GC_hidePreorderModal();
+        // Mode consultation simple : pas de panier
+        GC_applyReadonlyUI();
+    };
+
+    // ── UI PRÉCOMMANDE ──
+    function GC_applyPreorderUI() {
+        // Badge GPS
+        const badge = document.getElementById('gpsStatusBadge');
+        const text  = document.getElementById('gpsStatusText');
+        if (badge) { badge.className = 'gps-status-badge'; badge.style.background = 'rgba(201,168,76,0.15)'; badge.style.borderColor = 'rgba(201,168,76,0.4)'; }
+        if (text)  text.textContent = '🟡 Précommande';
+
+        // Badge dans le drawer panier
+        const cdBadge = document.getElementById('cdTableBadge');
+        if (cdBadge) {
+            cdBadge.textContent = window.GC_preorderMode === 'pickup'
+                ? 'À emporter'
+                : (window.GC_preorderTable ? 'Table ' + window.GC_preorderTable : 'À table');
+        }
+
+        // Cache appel/eau/addition, garde panier
+        ['cabCallWaiter','cabRequestWater','cabRequestBill'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = 'none';
+        });
+        const bar = document.getElementById('clientActionBar');
+        if (bar) { bar.style.display = 'block'; }
+
+        // Patch bouton de validation
+        GC_patchSubmitButton();
+    }
+
+    // ── UI CONSULTATION (readonly) ──
+    function GC_applyReadonlyUI() {
+        const bar = document.getElementById('clientActionBar');
+        if (bar) bar.style.display = 'none';
+        // Le badge GPS est déjà géré par GPSService.updateUI('outside')
+    }
+
+    // ── PATCH BOUTON PANIER → WHATSAPP ──
+    function GC_patchSubmitButton() {
+        const doIt = () => {
+            const btn = document.getElementById('cdSubmitBtn');
+            if (!btn) return false;
+
+            // Supprime anciens listeners via clone
+            const fresh = btn.cloneNode(false);
+            fresh.id = 'cdSubmitBtn';
+            fresh.className = btn.className;
+            fresh.innerHTML = `<span style="display:flex;align-items:center;justify-content:center;gap:8px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                  <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.522 5.85L0 24l6.335-1.502A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.814 9.814 0 01-5.007-1.373l-.36-.214-3.727.883.936-3.619-.234-.373A9.818 9.818 0 012.182 12C2.182 6.578 6.578 2.182 12 2.182S21.818 6.578 21.818 12 17.422 21.818 12 21.818z"/>
+                </svg>
+                Commander via WhatsApp
+            </span>`;
+            fresh.style.background  = 'linear-gradient(135deg,#25D366,#128C7E)';
+            fresh.style.borderColor = '#25D366';
+            fresh.style.color       = '#fff';
+            fresh.style.opacity     = '1';
+            fresh.style.pointerEvents = 'auto';
+            fresh.disabled = false;
+            fresh.removeAttribute('disabled');
+            fresh.classList.remove('disabled-gps', 'frozen-disabled');
+            fresh.addEventListener('click', GC_sendWhatsApp);
+            btn.parentNode.replaceChild(fresh, btn);
+
+            // Garde le bouton actif si script.js tente de le redésactiver
+            clearInterval(window._gcBtnGuard);
+            window._gcBtnGuard = setInterval(() => {
+                const b = document.getElementById('cdSubmitBtn');
+                if (!b) { clearInterval(window._gcBtnGuard); return; }
+                // Respecte le freeze système — ne réactive pas si frozen
+                if (typeof systemFrozen !== 'undefined' && systemFrozen) return;
+                if (b.classList.contains('disabled-gps')) {
+                    b.classList.remove('disabled-gps');
+                    b.disabled = false;
+                    b.removeAttribute('disabled');
+                    b.style.opacity = '1';
+                    b.style.pointerEvents = 'auto';
+                    b.style.background = 'linear-gradient(135deg,#25D366,#128C7E)';
+                    b.style.color = '#fff';
+                }
+            }, 300);
+
+            // Cache le texte "Le serveur confirmera…"
+            document.querySelectorAll('.cd-warning-text').forEach(el => el.style.display = 'none');
+            return true;
+        };
+
+        if (!doIt()) {
+            const obs = new MutationObserver(() => { if (doIt()) obs.disconnect(); });
+            obs.observe(document.body, { childList: true, subtree: true });
+        }
+    }
+
+    // ── ENVOI WHATSAPP ──
+    function GC_sendWhatsApp() {
+        if (typeof clientCart === 'undefined' || clientCart.length === 0) {
+            alert('Votre panier est vide.');
+            return;
+        }
+
+        const modeLabel = window.GC_preorderMode === 'pickup'
+            ? 'À emporter (comptoir)'
+            : ('À table' + (window.GC_preorderTable ? ' n°' + window.GC_preorderTable : " — numéro à préciser à l'arrivée"));
+
+        let lines = '';
+        let total = 0;
+        clientCart.forEach(item => {
+            const qty   = item.qty || 1;
+            const price = item.price || 0;
+            const sub   = price * qty;
+            total += sub;
+            const name = (item.name && item.name.fr) ? item.name.fr : (item.name || 'Article');
+            lines += `• ${name}${qty > 1 ? ' x' + qty : ''} — ${sub} MAD\n`;
+        });
+
+        const noteEl   = document.getElementById('cdSpecialNote');
+        const noteText = noteEl && noteEl.value.trim() ? '\n📝 Note : ' + noteEl.value.trim() : '';
+
+        const msg =
+`🛒 *Précommande Grey Corner*
+Mode : ${modeLabel}
+─────────────────────
+${lines}─────────────────────
+💰 Total : ${total} MAD${noteText}`;
+
+        window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg), '_blank');
+    }
+
+    // ── PATCH DE GPSService.updateUI ──
+    // On attend que script.js soit chargé (defer), puis on patch
+    document.addEventListener('DOMContentLoaded', function() {
+        // Attend que GPSService soit défini (script.js defer)
+        const waitForGPS = setInterval(() => {
+            if (typeof GPSService === 'undefined') return;
+            clearInterval(waitForGPS);
+
+            const _originalUpdateUI = GPSService.updateUI.bind(GPSService);
+
+            GPSService.updateUI = function(state) {
+                // Appelle l'original pour le badge GPS
+                _originalUpdateUI(state);
+
+                if (state === 'outside') {
+                    // Si le modal n'a pas encore été répondu, l'afficher
+                    if (!window.GC_isPreorder && !window._GC_modalShown) {
+                        window._GC_modalShown = true;
+                        GC_showPreorderModal();
+                    }
+                } else if (state === 'inside') {
+                    // Sur place : ferme le modal si ouvert, mode normal
+                    window._GC_modalShown = true; // empêche réouverture
+                    GC_hidePreorderModal();
+                    window.GC_isPreorder = false;
+                    // Restaure le bouton Firebase si jamais il avait été patché
+                    // (cas GPS revient inside après preorder)
+                }
+                // denied / error / suspect → mode consultation (readonly)
+                // GPSService.toggleInteractiveControls(false) déjà appelé
+            };
+
+        }, 50);
+    });
+    </script>
 
     <script>
         // ── PARTAGER ──

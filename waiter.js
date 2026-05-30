@@ -433,11 +433,12 @@ function processPreOrdersFeed(orders) {
 
         let itemsHtml = "";
         order.items.forEach(it => {
+            const catBadge = it.category ? ` <span style="font-size: 0.72rem; color: var(--gold); margin-left: 6px; font-weight: 500;">(${it.category})</span>` : "";
             itemsHtml += `
                 <div class="order-item-row">
                     <div>
                         <span class="item-qty-lbl">${it.qty}x</span>
-                        <span class="item-name-lbl">${it.name_lang}</span>
+                        <span class="item-name-lbl">${it.name_lang}${catBadge}</span>
                     </div>
                     <span class="item-price-lbl">${it.price} MAD</span>
                 </div>
@@ -545,11 +546,12 @@ function renderHistoryFeed() {
     sortedOrders.forEach(order => {
         let itemsHtml = "";
         order.items.forEach(it => {
+            const catBadge = it.category ? ` <span style="font-size: 0.72rem; color: var(--gold); margin-left: 6px; font-weight: 500;">(${it.category})</span>` : "";
             itemsHtml += `
                 <div class="order-item-row">
                     <div>
                         <span class="item-qty-lbl">${it.qty}x</span>
-                        <span class="item-name-lbl">${it.name_lang}</span>
+                        <span class="item-name-lbl">${it.name_lang}${catBadge}</span>
                     </div>
                     <span class="item-price-lbl">${it.price} MAD</span>
                 </div>

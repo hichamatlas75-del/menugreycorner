@@ -2414,6 +2414,7 @@ function renderMenu() {
 
     category.items.forEach((item, itemIndex) => {
       item.categoryId = categoryId;
+      item.categoryNameFr = category.category.fr;
       const card = document.createElement("article");
       card.className = "menu-item";
       card.id = `item-${categoryId}-${itemIndex}`;
@@ -2490,6 +2491,7 @@ function renderNewItemsCarousel() {
         newItems.push({
           ...item,
           categoryId,
+          categoryNameFr: category.category.fr,
           itemIndex,
           itemId: `item-${categoryId}-${itemIndex}`
         });
@@ -3645,6 +3647,7 @@ function executeAddToCartWithChoices(menuItem, drinkChoices) {
     clientCart.push({
       id: cartItemId,
       name: menuItem.name,
+      categoryNameFr: menuItem.categoryNameFr || "",
       price: parseFloat(menuItem.price) || 0,
       image: menuItem.image,
       qty: 1,
@@ -4123,18 +4126,25 @@ function submitPreOrder() {
     const note = document.getElementById("cdSpecialNote") ? document.getElementById("cdSpecialNote").value : "";
     const totalPrice = clientCart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
-    // Format items list for database
+    // Format items list for database (always in French for the waiter and admin)
     const itemsList = clientCart.map(c => {
       let nameFr = c.name.fr;
-      let nameLang = c.name[currentLang] || c.name.fr;
       if (c.drinkChoices && c.drinkChoices.length > 0) {
-        const choicesStr = ` (${c.drinkChoices.join(', ')})`;
-        nameFr += choicesStr;
-        nameLang += choicesStr;
+        const frenchChoices = c.drinkChoices.map(choice => {
+          let found = HOT_DRINKS_OPTIONS.find(o => o.fr === choice || o.en === choice || o.de === choice);
+          if (found) return found.fr;
+          found = SIDES_OPTIONS.find(o => o.fr === choice || o.en === choice || o.de === choice);
+          if (found) return found.fr;
+          found = PASTA_OPTIONS.find(o => o.fr === choice || o.en === choice || o.de === choice);
+          if (found) return found.fr;
+          return choice;
+        });
+        nameFr += ` (${frenchChoices.join(', ')})`;
       }
       return {
         name: nameFr,
-        name_lang: nameLang,
+        name_lang: nameFr, // Set both to the French version so the waiter/admin displays show French
+        category: c.categoryNameFr || "",
         price: c.price.toString(),
         qty: c.qty,
         note: c.note || ""
@@ -4302,7 +4312,7 @@ function renderNotificationHistory() {
 const GeoFenceManager = {
   CENTER_LAT: 34.0344054,
   CENTER_LNG: -5.0154828,
-  ALLOWED_RADIUS: 80, // meters
+  ALLOWED_RADIUS: 50, // meters
 
   calculateDistance: function (lat1, lon1, lat2, lon2) {
     const R = 6371000; // Earth radius in meters
