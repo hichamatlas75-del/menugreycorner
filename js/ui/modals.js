@@ -48,6 +48,7 @@ export function setTable(num) {
   closeTableModal();
 
   if (typeof window.subscribeToActiveWaiterEvents === "function") {
+    window._currentSubscribedTable = null;
     window.subscribeToActiveWaiterEvents(clientTable);
   }
 

@@ -12,8 +12,6 @@ const cooldowns = {};
 let unsubscribersList = [];
 const notifiedCallIds = new Set();
 const notifiedOrderIds = new Set();
-let isFirstCallsSnapshot = true;
-let isFirstOrdersSnapshot = true;
 
 export function checkCallCooldown(type) {
   const lastTime = cooldowns[type] || 0;
@@ -68,9 +66,11 @@ export function triggerQuickServiceCall(clientTable, type) {
         de: "Anruf gesendet! Ihr Kellner wurde benachrichtigt."
       };
       showToast(okMsgs[currentLang] || okMsgs.fr);
-      if (callId) localStorage.setItem(`last_call_${type}`, callId);
+      if (callId) {
+        localStorage.setItem(`last_call_${type}`, String(callId));
+      }
 
-      // Subscribe to real-time status changes
+      // Ensure listener is active for current table
       subscribeToActiveWaiterEvents(clientTable);
     } else {
       showToast("Erreur de connexion. Veuillez réessayer.");
@@ -102,39 +102,54 @@ export function playChimeSound() {
   try {
     const chime = new Audio("https://assets.mixkit.co/active_storage/sfx/911/911-200.wav");
     chime.volume = 0.5;
-    chime.play();
+    const promise = chime.play();
+    if (promise !== undefined) {
+      promise.catch(e => console.log("Audio autoplay prevented by browser", e));
+    }
   } catch (e) {}
 }
 
 export function subscribeToActiveWaiterEvents(clientTable) {
+  if (!clientTable) return;
+
+  // Don't re-subscribe if already actively listening for the same table
+  if (window._currentSubscribedTable === String(clientTable) && unsubscribersList.length > 0) {
+    return;
+  }
+  window._currentSubscribedTable = String(clientTable);
+
   unsubscribersList.forEach(unsub => {
     try { unsub(); } catch (e) {}
   });
   unsubscribersList = [];
 
-  if (!clientTable) return;
-
-  isFirstCallsSnapshot = true;
-  isFirstOrdersSnapshot = true;
-
   // 1. Listen to Calls (Appel serveur, besoin d'eau, addition)
   const unsubCalls = dbService.onCallsChange((calls) => {
     if (!Array.isArray(calls)) return;
 
-    if (isFirstCallsSnapshot) {
-      // Record already accepted calls on initial snapshot so old calls don't re-trigger
-      calls.forEach(c => {
-        if (String(c.table) === String(clientTable) && c.status === "accepted") {
-          notifiedCallIds.add(c.id);
-        }
-      });
-      isFirstCallsSnapshot = false;
-      return;
-    }
-
     calls.forEach(c => {
-      if (String(c.table) === String(clientTable) && c.status === "accepted" && !notifiedCallIds.has(c.id)) {
-        notifiedCallIds.add(c.id);
+      if (String(c.table) !== String(clientTable)) return;
+      if (c.status !== "accepted") return;
+      if (notifiedCallIds.has(String(c.id))) return;
+
+      const lastCallId = localStorage.getItem(`last_call_${c.type}`);
+      const isMyCall = lastCallId && String(lastCallId) === String(c.id);
+
+      let isRecent = false;
+      if (c.acceptedAt) {
+        const acceptedTime = new Date(c.acceptedAt).getTime();
+        if (!isNaN(acceptedTime) && (Date.now() - acceptedTime) < 300000) {
+          isRecent = true;
+        }
+      } else {
+        isRecent = true;
+      }
+
+      if (isMyCall || isRecent) {
+        notifiedCallIds.add(String(c.id));
+        if (isMyCall) {
+          localStorage.removeItem(`last_call_${c.type}`);
+        }
 
         const typeNames = {
           waiter: "Appel serveur",
@@ -148,6 +163,7 @@ export function subscribeToActiveWaiterEvents(clientTable) {
           de: `🔔 Ihr Kellner hat Ihre ${typeLabel} angenommen und kommt zu Ihrem Tisch!`
         };
         const msg = acceptedMsgs[currentLang] || acceptedMsgs.fr;
+
         showToast(msg);
         playChimeSound();
         addNotificationToHistory(msg, clientTable);
@@ -160,20 +176,29 @@ export function subscribeToActiveWaiterEvents(clientTable) {
   const unsubOrders = dbService.onPreOrdersChange((orders) => {
     if (!Array.isArray(orders)) return;
 
-    if (isFirstOrdersSnapshot) {
-      // Record already accepted orders on initial snapshot so old orders don't re-trigger
-      orders.forEach(o => {
-        if (String(o.table) === String(clientTable) && o.status === "accepted") {
-          notifiedOrderIds.add(o.id);
-        }
-      });
-      isFirstOrdersSnapshot = false;
-      return;
-    }
-
     orders.forEach(o => {
-      if (String(o.table) === String(clientTable) && o.status === "accepted" && !notifiedOrderIds.has(o.id)) {
-        notifiedOrderIds.add(o.id);
+      if (String(o.table) !== String(clientTable)) return;
+      if (o.status !== "accepted") return;
+      if (notifiedOrderIds.has(String(o.id))) return;
+
+      const lastOrderId = localStorage.getItem("last_pre_order_id");
+      const isMyOrder = lastOrderId && String(lastOrderId) === String(o.id);
+
+      let isRecent = false;
+      if (o.acceptedAt) {
+        const acceptedTime = new Date(o.acceptedAt).getTime();
+        if (!isNaN(acceptedTime) && (Date.now() - acceptedTime) < 300000) {
+          isRecent = true;
+        }
+      } else {
+        isRecent = true;
+      }
+
+      if (isMyOrder || isRecent) {
+        notifiedOrderIds.add(String(o.id));
+        if (isMyOrder) {
+          localStorage.removeItem("last_pre_order_id");
+        }
 
         const acceptedMsgs = {
           fr: "👨‍🍳 Le serveur a validé votre précommande !",
@@ -181,6 +206,7 @@ export function subscribeToActiveWaiterEvents(clientTable) {
           de: "👨‍🍳 Der Kellner hat Ihre Vorbestellung bestätigt!"
         };
         const msg = acceptedMsgs[currentLang] || acceptedMsgs.fr;
+
         showToast(msg);
         playChimeSound();
         addNotificationToHistory(msg, clientTable);
