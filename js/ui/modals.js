@@ -1,18 +1,28 @@
-/**
- * GREY CORNER — UI MODALS & DRAWERS (ES Module)
- */
+import { updateCartUI } from '../services/cart.js';
 
 export function openCartDrawer() {
   const overlay = document.getElementById("cartDrawerOverlay");
-  if (overlay) {
+  const drawer = document.getElementById("cartDrawer");
+
+  if (typeof updateCartUI === "function") {
+    updateCartUI();
+  }
+
+  if (overlay && drawer) {
     overlay.classList.add("active");
+    drawer.classList.add("active");
+    document.body.classList.add("no-scroll");
   }
 }
 
 export function closeCartDrawer() {
   const overlay = document.getElementById("cartDrawerOverlay");
-  if (overlay) {
+  const drawer = document.getElementById("cartDrawer");
+
+  if (overlay && drawer) {
     overlay.classList.remove("active");
+    drawer.classList.remove("active");
+    document.body.classList.remove("no-scroll");
   }
 }
 
