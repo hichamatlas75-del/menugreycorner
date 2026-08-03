@@ -78,39 +78,118 @@ export function triggerQuickServiceCall(clientTable, type) {
   });
 }
 
+export function triggerHapticVibrate() {
+  if (typeof navigator !== "undefined" && navigator.vibrate) {
+    try {
+      navigator.vibrate([200, 100, 200, 100, 300]);
+    } catch (e) {}
+  }
+}
+
 let chimeAudio = null;
+let audioCtx = null;
 
 function getChimeAudio() {
   if (!chimeAudio) {
     chimeAudio = new Audio("https://assets.mixkit.co/active_storage/sfx/911/911-200.wav");
-    chimeAudio.volume = 0.5;
+    chimeAudio.volume = 0.55;
   }
   return chimeAudio;
 }
 
+function getAudioContext() {
+  if (!audioCtx && typeof window !== "undefined") {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (AudioContextClass) {
+      audioCtx = new AudioContextClass();
+    }
+  }
+  if (audioCtx && audioCtx.state === "suspended") {
+    audioCtx.resume().catch(() => {});
+  }
+  return audioCtx;
+}
+
 if (typeof window !== "undefined") {
   const unlockAudio = () => {
-    const audio = getChimeAudio();
-    audio.play().then(() => {
-      audio.pause();
-      audio.currentTime = 0;
-    }).catch(() => {});
+    try {
+      const ctx = getAudioContext();
+      if (ctx) {
+        const buffer = ctx.createBuffer(1, 1, 22050);
+        const source = ctx.createBufferSource();
+        source.buffer = buffer;
+        source.connect(ctx.destination);
+        source.start(0);
+      }
+    } catch (e) {}
+
+    try {
+      const audio = getChimeAudio();
+      audio.play().then(() => {
+        audio.pause();
+        audio.currentTime = 0;
+      }).catch(() => {});
+    } catch (e) {}
+
     document.removeEventListener("touchstart", unlockAudio);
     document.removeEventListener("click", unlockAudio);
+    document.removeEventListener("pointerdown", unlockAudio);
   };
+
   document.addEventListener("touchstart", unlockAudio, { once: true });
   document.addEventListener("click", unlockAudio, { once: true });
+  document.addEventListener("pointerdown", unlockAudio, { once: true });
 }
 
 export function playChimeSound() {
+  let playedWebAudio = false;
+
   try {
-    const chime = getChimeAudio();
-    chime.currentTime = 0;
-    const promise = chime.play();
-    if (promise !== undefined) {
-      promise.catch(e => console.log("Audio autoplay prevented by browser", e));
+    const ctx = getAudioContext();
+    if (ctx) {
+      const now = ctx.currentTime;
+
+      // Note 1 (E5 - 659.25 Hz)
+      const osc1 = ctx.createOscillator();
+      const gain1 = ctx.createGain();
+      osc1.type = "sine";
+      osc1.frequency.setValueAtTime(659.25, now);
+      gain1.gain.setValueAtTime(0.4, now);
+      gain1.gain.exponentialRampToValueAtTime(0.0001, now + 0.8);
+      osc1.connect(gain1);
+      gain1.connect(ctx.destination);
+      osc1.start(now);
+      osc1.stop(now + 0.8);
+
+      // Note 2 (B5 - 987.77 Hz, 140ms delay)
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.type = "sine";
+      osc2.frequency.setValueAtTime(987.77, now + 0.14);
+      gain2.gain.setValueAtTime(0.5, now + 0.14);
+      gain2.gain.exponentialRampToValueAtTime(0.0001, now + 1.2);
+      osc2.connect(gain2);
+      gain2.connect(ctx.destination);
+      osc2.start(now + 0.14);
+      osc2.stop(now + 1.2);
+
+      playedWebAudio = true;
     }
-  } catch (e) {}
+  } catch (e) {
+    console.warn("⚠️ Web Audio chime error:", e);
+  }
+
+  // Fallback / secondary HTML5 Audio element
+  if (!playedWebAudio) {
+    try {
+      const chime = getChimeAudio();
+      chime.currentTime = 0;
+      const promise = chime.play();
+      if (promise !== undefined) {
+        promise.catch(e => console.log("🔊 Audio autoplay status:", e));
+      }
+    } catch (e) {}
+  }
 }
 
 export function addNotificationToHistory(message, tableId) {
@@ -195,6 +274,7 @@ export function subscribeToActiveWaiterEvents(clientTable) {
 
         showToast(msg);
         playChimeSound();
+        triggerHapticVibrate();
         addNotificationToHistory(msg, clientTable);
       }
     });
@@ -238,6 +318,7 @@ export function subscribeToActiveWaiterEvents(clientTable) {
 
         showToast(msg);
         playChimeSound();
+        triggerHapticVibrate();
         addNotificationToHistory(msg, clientTable);
       }
     });
@@ -308,3 +389,5 @@ export function setupNotificationDrawer(getClientTable) {
 window.triggerQuickServiceCall = triggerQuickServiceCall;
 window.renderNotificationHistory = renderNotificationHistory;
 window.subscribeToActiveWaiterEvents = subscribeToActiveWaiterEvents;
+window.playChimeSound = playChimeSound;
+window.triggerHapticVibrate = triggerHapticVibrate;
