@@ -47,6 +47,10 @@ export function setTable(num) {
 
   closeTableModal();
 
+  if (typeof window.subscribeToActiveWaiterEvents === "function") {
+    window.subscribeToActiveWaiterEvents(clientTable);
+  }
+
   if (typeof pendingActionAfterTableSelect === "function") {
     const action = pendingActionAfterTableSelect;
     pendingActionAfterTableSelect = null;

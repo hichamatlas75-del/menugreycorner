@@ -10,6 +10,10 @@ import { showTableSelectorModal, setPendingActionAfterTableSelect } from '../ui/
 export let memoryNotifications = [];
 const cooldowns = {};
 let unsubscribersList = [];
+const notifiedCallIds = new Set();
+const notifiedOrderIds = new Set();
+let isFirstCallsSnapshot = true;
+let isFirstOrdersSnapshot = true;
 
 export function checkCallCooldown(type) {
   const lastTime = cooldowns[type] || 0;
@@ -64,7 +68,7 @@ export function triggerQuickServiceCall(clientTable, type) {
         de: "Anruf gesendet! Ihr Kellner wurde benachrichtigt."
       };
       showToast(okMsgs[currentLang] || okMsgs.fr);
-      localStorage.setItem(`last_call_${type}`, callId);
+      if (callId) localStorage.setItem(`last_call_${type}`, callId);
 
       // Subscribe to real-time status changes
       subscribeToActiveWaiterEvents(clientTable);
@@ -110,45 +114,66 @@ export function subscribeToActiveWaiterEvents(clientTable) {
 
   if (!clientTable) return;
 
-  // Listen to Calls
+  isFirstCallsSnapshot = true;
+  isFirstOrdersSnapshot = true;
+
+  // 1. Listen to Calls (Appel serveur, besoin d'eau, addition)
   const unsubCalls = dbService.onCallsChange((calls) => {
     if (!Array.isArray(calls)) return;
-    const waiterTypes = ["waiter", "water", "bill"];
-    waiterTypes.forEach(type => {
-      const lastCallId = localStorage.getItem(`last_call_${type}`);
-      if (lastCallId) {
-        const matchingCall = calls.find(c => String(c.id) === String(lastCallId));
-        if (matchingCall && matchingCall.status === "accepted") {
-          localStorage.removeItem(`last_call_${type}`);
 
-          const typeNames = {
-            waiter: "Appel serveur",
-            water: "Demande d'eau",
-            bill: "Demande d'addition"
-          };
-          const acceptedMsgs = {
-            fr: `🔔 Le serveur a accepté votre ${typeNames[type] || 'demande'} et arrive à votre table !`,
-            en: `🔔 The waiter accepted your ${typeNames[type] || 'request'} and is coming to your table!`,
-            de: `🔔 Ihr Kellner hat Ihre Anfrage angenommen und kommt zu Ihrem Tisch!`
-          };
-          const msg = acceptedMsgs[currentLang] || acceptedMsgs.fr;
-          showToast(msg);
-          playChimeSound();
-          addNotificationToHistory(msg, clientTable);
+    if (isFirstCallsSnapshot) {
+      // Record already accepted calls on initial snapshot so old calls don't re-trigger
+      calls.forEach(c => {
+        if (String(c.table) === String(clientTable) && c.status === "accepted") {
+          notifiedCallIds.add(c.id);
         }
+      });
+      isFirstCallsSnapshot = false;
+      return;
+    }
+
+    calls.forEach(c => {
+      if (String(c.table) === String(clientTable) && c.status === "accepted" && !notifiedCallIds.has(c.id)) {
+        notifiedCallIds.add(c.id);
+
+        const typeNames = {
+          waiter: "Appel serveur",
+          water: "Demande d'eau",
+          bill: "Demande d'addition"
+        };
+        const typeLabel = typeNames[c.type] || "Demande";
+        const acceptedMsgs = {
+          fr: `🔔 Le serveur a accepté votre ${typeLabel} et arrive à votre table !`,
+          en: `🔔 The waiter accepted your ${typeLabel} and is coming to your table!`,
+          de: `🔔 Ihr Kellner hat Ihre ${typeLabel} angenommen und kommt zu Ihrem Tisch!`
+        };
+        const msg = acceptedMsgs[currentLang] || acceptedMsgs.fr;
+        showToast(msg);
+        playChimeSound();
+        addNotificationToHistory(msg, clientTable);
       }
     });
   });
   if (typeof unsubCalls === "function") unsubscribersList.push(unsubCalls);
 
-  // Listen to Pre-orders
+  // 2. Listen to Pre-orders (Validation de précommande)
   const unsubOrders = dbService.onPreOrdersChange((orders) => {
     if (!Array.isArray(orders)) return;
-    const lastOrderId = localStorage.getItem("last_pre_order_id");
-    if (lastOrderId) {
-      const matchingOrder = orders.find(o => String(o.id) === String(lastOrderId));
-      if (matchingOrder && matchingOrder.status === "accepted") {
-        localStorage.removeItem("last_pre_order_id");
+
+    if (isFirstOrdersSnapshot) {
+      // Record already accepted orders on initial snapshot so old orders don't re-trigger
+      orders.forEach(o => {
+        if (String(o.table) === String(clientTable) && o.status === "accepted") {
+          notifiedOrderIds.add(o.id);
+        }
+      });
+      isFirstOrdersSnapshot = false;
+      return;
+    }
+
+    orders.forEach(o => {
+      if (String(o.table) === String(clientTable) && o.status === "accepted" && !notifiedOrderIds.has(o.id)) {
+        notifiedOrderIds.add(o.id);
 
         const acceptedMsgs = {
           fr: "👨‍🍳 Le serveur a validé votre précommande !",
@@ -160,7 +185,7 @@ export function subscribeToActiveWaiterEvents(clientTable) {
         playChimeSound();
         addNotificationToHistory(msg, clientTable);
       }
-    }
+    });
   });
   if (typeof unsubOrders === "function") unsubscribersList.push(unsubOrders);
 }
