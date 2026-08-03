@@ -64,9 +64,9 @@ export function showTableSelectorModal() {
   grid.innerHTML = "";
 
   const zones = [
-    { name: "Salle (Tables 101 à 115)", start: 101, end: 115 },
-    { name: "Loge (Tables 201 à 219)", start: 201, end: 219 },
-    { name: "Terrasse (Tables 301 à 323)", start: 301, end: 323 }
+    { name: "Salle", start: 101, end: 115 },
+    { name: "Loge", start: 201, end: 219 },
+    { name: "Terrasse", start: 301, end: 323 }
   ];
 
   zones.forEach(zone => {
@@ -75,11 +75,10 @@ export function showTableSelectorModal() {
     wrapper.style.flexDirection = "column";
     wrapper.style.gap = "8px";
     wrapper.style.width = "100%";
-    wrapper.style.marginBottom = "14px";
 
     const title = document.createElement("div");
     title.style.fontFamily = "'DM Sans', sans-serif";
-    title.style.fontSize = "0.75rem";
+    title.style.fontSize = "0.78rem";
     title.style.fontWeight = "700";
     title.style.letterSpacing = "0.08em";
     title.style.color = "var(--sc-gold-light)";
@@ -87,7 +86,7 @@ export function showTableSelectorModal() {
     title.style.textAlign = "left";
     title.style.borderBottom = "1px solid var(--sc-border)";
     title.style.paddingBottom = "4px";
-    title.style.marginBottom = "6px";
+    title.style.marginBottom = "4px";
     title.textContent = zone.name;
 
     const btnGrid = document.createElement("div");
@@ -98,7 +97,7 @@ export function showTableSelectorModal() {
     for (let i = zone.start; i <= zone.end; i++) {
       const btn = document.createElement("button");
       btn.className = "tgs-btn";
-      btn.textContent = `T. ${i}`;
+      btn.textContent = i;
       if (String(clientTable) === String(i)) {
         btn.classList.add("active");
         btn.style.background = "var(--sc-gold-light)";
