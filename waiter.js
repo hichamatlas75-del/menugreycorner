@@ -111,6 +111,23 @@ let isReconnecting = false;
 const alertChime = new Audio("https://assets.mixkit.co/active_storage/sfx/911/911-200.wav");
 alertChime.volume = 0.55;
 
+let audioUnlocked = false;
+function unlockWaiterAudio() {
+    if (audioUnlocked) return;
+    alertChime.play().then(() => {
+        alertChime.pause();
+        alertChime.currentTime = 0;
+        audioUnlocked = true;
+    }).catch(() => {});
+    document.removeEventListener("touchstart", unlockWaiterAudio);
+    document.removeEventListener("click", unlockWaiterAudio);
+}
+
+if (typeof window !== "undefined") {
+    document.addEventListener("touchstart", unlockWaiterAudio, { once: true });
+    document.addEventListener("click", unlockWaiterAudio, { once: true });
+}
+
 function triggerHapticVibrate() {
     if (typeof navigator !== "undefined" && navigator.vibrate) {
         navigator.vibrate([200, 100, 200]);

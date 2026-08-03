@@ -78,6 +78,41 @@ export function triggerQuickServiceCall(clientTable, type) {
   });
 }
 
+let chimeAudio = null;
+
+function getChimeAudio() {
+  if (!chimeAudio) {
+    chimeAudio = new Audio("https://assets.mixkit.co/active_storage/sfx/911/911-200.wav");
+    chimeAudio.volume = 0.5;
+  }
+  return chimeAudio;
+}
+
+if (typeof window !== "undefined") {
+  const unlockAudio = () => {
+    const audio = getChimeAudio();
+    audio.play().then(() => {
+      audio.pause();
+      audio.currentTime = 0;
+    }).catch(() => {});
+    document.removeEventListener("touchstart", unlockAudio);
+    document.removeEventListener("click", unlockAudio);
+  };
+  document.addEventListener("touchstart", unlockAudio, { once: true });
+  document.addEventListener("click", unlockAudio, { once: true });
+}
+
+export function playChimeSound() {
+  try {
+    const chime = getChimeAudio();
+    chime.currentTime = 0;
+    const promise = chime.play();
+    if (promise !== undefined) {
+      promise.catch(e => console.log("Audio autoplay prevented by browser", e));
+    }
+  } catch (e) {}
+}
+
 export function addNotificationToHistory(message, tableId) {
   const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   memoryNotifications.push({
@@ -92,21 +127,15 @@ export function addNotificationToHistory(message, tableId) {
     memoryNotifications.shift();
   }
 
+  const bellBtn = document.getElementById("notificationBellBtn");
+  if (bellBtn) {
+    bellBtn.style.display = "flex";
+  }
+
   const bellBadge = document.getElementById("bellBadge");
   if (bellBadge) {
     bellBadge.style.display = "block";
   }
-}
-
-export function playChimeSound() {
-  try {
-    const chime = new Audio("https://assets.mixkit.co/active_storage/sfx/911/911-200.wav");
-    chime.volume = 0.5;
-    const promise = chime.play();
-    if (promise !== undefined) {
-      promise.catch(e => console.log("Audio autoplay prevented by browser", e));
-    }
-  } catch (e) {}
 }
 
 export function subscribeToActiveWaiterEvents(clientTable) {
@@ -232,7 +261,7 @@ export function renderNotificationHistory(clientTable) {
     return;
   }
 
-  tableNotifications.forEach(notif => {
+  tableNotifications.slice().reverse().forEach(notif => {
     const card = document.createElement("div");
     card.className = "nd-card";
     card.innerHTML = `

@@ -3,6 +3,7 @@
  */
 
 import { updateCartUI } from '../services/cart.js';
+import { getTableZoneName } from '../config/firebase.js';
 
 export let clientTable = null;
 export let pendingActionAfterTableSelect = null;
@@ -32,7 +33,11 @@ export function updateTableUI() {
   }
   const ndTableBadge = document.getElementById("ndTableBadge");
   if (ndTableBadge) {
-    ndTableBadge.textContent = clientTable ? `Table ${clientTable}` : "Table non définie";
+    ndTableBadge.textContent = clientTable ? getTableZoneName(clientTable) : "Table non définie";
+  }
+  const bellBtn = document.getElementById("notificationBellBtn");
+  if (bellBtn && clientTable) {
+    bellBtn.style.display = "flex";
   }
 }
 
