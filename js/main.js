@@ -8,7 +8,7 @@ import { currentLang, setLanguage, updatePrixInfo, t } from './services/i18n.js'
 import { GPSService } from './services/gps.js';
 import { initClientCart, saveClientCart, clearCart, addToCart, updateCartUI, showToast } from './services/cart.js';
 import { submitPreOrder } from './services/orders.js';
-import { triggerQuickServiceCall, renderNotificationHistory } from './services/notifications.js';
+import { triggerQuickServiceCall, renderNotificationHistory, subscribeToActiveWaiterEvents, setupNotificationDrawer } from './services/notifications.js';
 import {
   openCartDrawer, closeCartDrawer, openTableModal, closeTableModal,
   showTableSelectorModal, parseTableFromUrl, clientTable,
@@ -24,8 +24,13 @@ document.addEventListener("DOMContentLoaded", () => {
   renderMenu();
   setupBurgerMenu();
   setupFloatingButtons();
+  setupNotificationDrawer(() => clientTable);
   updatePrixInfo();
   GPSService.init();
+
+  if (table) {
+    subscribeToActiveWaiterEvents(table);
+  }
 
   // Allow clicking table badge in cart header to pick/change table
   const tableBadge = document.getElementById("cdTableBadge");

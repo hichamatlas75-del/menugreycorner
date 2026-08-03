@@ -6,6 +6,7 @@ import { currentLang } from './i18n.js';
 import { clientCart, saveClientCart, clearCart, showToast } from './cart.js';
 import { dbService } from '../config/firebase.js';
 import { showTableSelectorModal, setPendingActionAfterTableSelect } from '../ui/modals.js';
+import { subscribeToActiveWaiterEvents } from './notifications.js';
 
 export function submitPreOrder(clientTable, onComplete) {
   if (!clientCart || clientCart.length === 0) return;
@@ -85,6 +86,9 @@ export function submitPreOrder(clientTable, onComplete) {
       document.body.classList.remove("no-scroll");
 
       localStorage.setItem("last_pre_order_id", orderId);
+
+      // Subscribe to real-time status updates from waiter
+      subscribeToActiveWaiterEvents(clientTable);
     } else {
       showToast("Erreur de connexion. Veuillez réessayer.");
     }

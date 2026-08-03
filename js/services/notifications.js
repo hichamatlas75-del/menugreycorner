@@ -8,8 +8,8 @@ import { dbService } from '../config/firebase.js';
 import { showTableSelectorModal, setPendingActionAfterTableSelect } from '../ui/modals.js';
 
 export let memoryNotifications = [];
-
 const cooldowns = {};
+let unsubscribersList = [];
 
 export function checkCallCooldown(type) {
   const lastTime = cooldowns[type] || 0;
@@ -65,10 +65,104 @@ export function triggerQuickServiceCall(clientTable, type) {
       };
       showToast(okMsgs[currentLang] || okMsgs.fr);
       localStorage.setItem(`last_call_${type}`, callId);
+
+      // Subscribe to real-time status changes
+      subscribeToActiveWaiterEvents(clientTable);
     } else {
       showToast("Erreur de connexion. Veuillez réessayer.");
     }
   });
+}
+
+export function addNotificationToHistory(message, tableId) {
+  const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  memoryNotifications.push({
+    id: Math.random().toString(36).substr(2, 9),
+    time: timeStr,
+    title: "Service Grey Corner",
+    message: message,
+    table: tableId
+  });
+
+  if (memoryNotifications.length > 25) {
+    memoryNotifications.shift();
+  }
+
+  const bellBadge = document.getElementById("bellBadge");
+  if (bellBadge) {
+    bellBadge.style.display = "block";
+  }
+}
+
+export function playChimeSound() {
+  try {
+    const chime = new Audio("https://assets.mixkit.co/active_storage/sfx/911/911-200.wav");
+    chime.volume = 0.5;
+    chime.play();
+  } catch (e) {}
+}
+
+export function subscribeToActiveWaiterEvents(clientTable) {
+  unsubscribersList.forEach(unsub => {
+    try { unsub(); } catch (e) {}
+  });
+  unsubscribersList = [];
+
+  if (!clientTable) return;
+
+  // Listen to Calls
+  const unsubCalls = dbService.onCallsChange((calls) => {
+    if (!Array.isArray(calls)) return;
+    const waiterTypes = ["waiter", "water", "bill"];
+    waiterTypes.forEach(type => {
+      const lastCallId = localStorage.getItem(`last_call_${type}`);
+      if (lastCallId) {
+        const matchingCall = calls.find(c => String(c.id) === String(lastCallId));
+        if (matchingCall && matchingCall.status === "accepted") {
+          localStorage.removeItem(`last_call_${type}`);
+
+          const typeNames = {
+            waiter: "Appel serveur",
+            water: "Demande d'eau",
+            bill: "Demande d'addition"
+          };
+          const acceptedMsgs = {
+            fr: `🔔 Le serveur a accepté votre ${typeNames[type] || 'demande'} et arrive à votre table !`,
+            en: `🔔 The waiter accepted your ${typeNames[type] || 'request'} and is coming to your table!`,
+            de: `🔔 Ihr Kellner hat Ihre Anfrage angenommen und kommt zu Ihrem Tisch!`
+          };
+          const msg = acceptedMsgs[currentLang] || acceptedMsgs.fr;
+          showToast(msg);
+          playChimeSound();
+          addNotificationToHistory(msg, clientTable);
+        }
+      }
+    });
+  });
+  if (typeof unsubCalls === "function") unsubscribersList.push(unsubCalls);
+
+  // Listen to Pre-orders
+  const unsubOrders = dbService.onPreOrdersChange((orders) => {
+    if (!Array.isArray(orders)) return;
+    const lastOrderId = localStorage.getItem("last_pre_order_id");
+    if (lastOrderId) {
+      const matchingOrder = orders.find(o => String(o.id) === String(lastOrderId));
+      if (matchingOrder && matchingOrder.status === "accepted") {
+        localStorage.removeItem("last_pre_order_id");
+
+        const acceptedMsgs = {
+          fr: "👨‍🍳 Le serveur a validé votre précommande !",
+          en: "👨‍🍳 The waiter confirmed your pre-order!",
+          de: "👨‍🍳 Der Kellner hat Ihre Vorbestellung bestätigt!"
+        };
+        const msg = acceptedMsgs[currentLang] || acceptedMsgs.fr;
+        showToast(msg);
+        playChimeSound();
+        addNotificationToHistory(msg, clientTable);
+      }
+    }
+  });
+  if (typeof unsubOrders === "function") unsubscribersList.push(unsubOrders);
 }
 
 export function renderNotificationHistory(clientTable) {
@@ -76,12 +170,12 @@ export function renderNotificationHistory(clientTable) {
   if (!ndContentFeed) return;
   ndContentFeed.innerHTML = "";
 
-  const tableNotifications = memoryNotifications.filter(n => n.table === clientTable);
+  const tableNotifications = memoryNotifications.filter(n => String(n.table) === String(clientTable));
 
   if (tableNotifications.length === 0) {
     ndContentFeed.innerHTML = `
       <div style="text-align: center; color: rgba(240, 234, 216, 0.4); padding: 40px 20px; font-size: 0.85rem;">
-        Aucune notification recente
+        Aucune notification récente
       </div>
     `;
     return;
@@ -101,5 +195,36 @@ export function renderNotificationHistory(clientTable) {
   });
 }
 
+export function setupNotificationDrawer(getClientTable) {
+  const bellBtn = document.getElementById("notificationBellBtn");
+  const ndOverlay = document.getElementById("notificationDrawerOverlay");
+  const ndCloseBtn = document.getElementById("ndCloseBtn");
+  const bellBadge = document.getElementById("bellBadge");
+
+  if (bellBtn) {
+    bellBtn.onclick = () => {
+      if (bellBadge) bellBadge.style.display = "none";
+      if (ndOverlay) ndOverlay.classList.add("active");
+      const currentTable = typeof getClientTable === "function" ? getClientTable() : getClientTable;
+      renderNotificationHistory(currentTable);
+    };
+  }
+
+  if (ndCloseBtn) {
+    ndCloseBtn.onclick = () => {
+      if (ndOverlay) ndOverlay.classList.remove("active");
+    };
+  }
+
+  if (ndOverlay) {
+    ndOverlay.onclick = (e) => {
+      if (e.target === ndOverlay) {
+        ndOverlay.classList.remove("active");
+      }
+    };
+  }
+}
+
 window.triggerQuickServiceCall = triggerQuickServiceCall;
 window.renderNotificationHistory = renderNotificationHistory;
+window.subscribeToActiveWaiterEvents = subscribeToActiveWaiterEvents;
