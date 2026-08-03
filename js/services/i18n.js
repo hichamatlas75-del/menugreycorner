@@ -1,0 +1,50 @@
+/**
+ * GREY CORNER — TRILINGUAL I18N SERVICE (ES Module)
+ * (Français, English, Deutsch)
+ */
+
+export let currentLang = localStorage.getItem("lang") || "fr";
+
+export const PRIX_TEXTS = {
+  fr: "★ Tous les prix sont en dirhams marocains (MAD)",
+  en: "★ All prices are in Moroccan Dirhams (MAD)",
+  de: "★ Alle Preise sind in Marokkanischen Dirham (MAD)"
+};
+
+export function setLanguage(lang) {
+  if (["fr", "en", "de"].includes(lang)) {
+    currentLang = lang;
+    localStorage.setItem("lang", lang);
+    updatePrixInfo();
+    return true;
+  }
+  return false;
+}
+
+export function updatePrixInfo() {
+  const el = document.getElementById("prixInfo");
+  if (el) el.textContent = PRIX_TEXTS[currentLang] || PRIX_TEXTS.fr;
+}
+
+export function t(key) {
+  const dictionary = {
+    add: { fr: "+ Ajouter", en: "+ Add", de: "+ Hinzufügen" },
+    cart: { fr: "Mon Panier", en: "My Cart", de: "Mein Warenkorb" },
+    emptyCart: { fr: "Votre panier est vide", en: "Your cart is empty", de: "Ihr Warenkorb ist leer" },
+    total: { fr: "Total", en: "Total", de: "Gesamt" },
+    order: { fr: "Commander", en: "Order", de: "Bestellen" },
+    table: { fr: "Table", en: "Table", de: "Tisch" },
+    callWaiter: { fr: "Appeler serveur", en: "Call waiter", de: "Kellner rufen" },
+    requestWater: { fr: "Demander de l'eau", en: "Request water", de: "Wasser bestellen" },
+    requestBill: { fr: "Demander l'addition", en: "Request bill", de: "Rechnung anfordern" }
+  };
+  if (dictionary[key]) {
+    return dictionary[key][currentLang] || dictionary[key].fr;
+  }
+  return key;
+}
+
+// Bind to window for backwards compatibility
+window.currentLang = currentLang;
+window.setLanguage = setLanguage;
+window.updatePrixInfo = updatePrixInfo;
