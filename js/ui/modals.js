@@ -65,9 +65,9 @@ export function showTableSelectorModal() {
   grid.innerHTML = "";
 
   const zones = [
-    { name: "Terrasse (Tables 1 à 8)", start: 1, end: 8 },
-    { name: "Salle Principale (Tables 9 à 16)", start: 9, end: 16 },
-    { name: "Mezzanine (Tables 17 à 24)", start: 17, end: 24 }
+    { name: "Salle (Tables 101 à 115)", start: 101, end: 115 },
+    { name: "Loge (Tables 201 à 219)", start: 201, end: 219 },
+    { name: "Terrasse (Tables 301 à 323)", start: 301, end: 323 }
   ];
 
   zones.forEach(zone => {

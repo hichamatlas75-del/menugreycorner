@@ -76,13 +76,18 @@ const DEFAULT_WAITERS = [
 ];
 
 const DEFAULT_TABLES = {};
-for (let i = 1; i <= 24; i++) {
-    DEFAULT_TABLES[i] = {
-        tableNumber: i,
-        assignedTo: i <= 8 ? "karim" : i <= 16 ? "yassine" : "",
+const allTablesList = [
+    ...Array.from({ length: 15 }, (_, i) => 101 + i), // Salle 101-115
+    ...Array.from({ length: 19 }, (_, i) => 201 + i), // Loge 201-219
+    ...Array.from({ length: 23 }, (_, i) => 301 + i)  // Terrasse 301-323
+];
+allTablesList.forEach((num, idx) => {
+    DEFAULT_TABLES[num] = {
+        tableNumber: num,
+        assignedTo: idx % 2 === 0 ? "karim" : "yassine",
         active: true
     };
-}
+});
 
 export function getLocalCollection(name, defaultVal = []) {
     const val = localStorage.getItem(`sim_${name}`);
@@ -120,9 +125,9 @@ if (!isFirebaseActive) {
 export function getTableZoneName(tableNum) {
     const num = parseInt(tableNum, 10);
     if (isNaN(num)) return `Table ${tableNum}`;
-    if (num >= 1 && num <= 8) return `Terrasse (Table ${num})`;
-    if (num >= 9 && num <= 16) return `Salle Principale (Table ${num})`;
-    if (num >= 17 && num <= 24) return `Mezzanine (Table ${num})`;
+    if (num >= 101 && num <= 115) return `Salle (Table ${num})`;
+    if (num >= 201 && num <= 219) return `Loge (Table ${num})`;
+    if (num >= 301 && num <= 323) return `Terrasse (Table ${num})`;
     return `Table ${num}`;
 }
 

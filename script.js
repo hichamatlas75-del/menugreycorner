@@ -3871,9 +3871,9 @@ function isValidTableNumber(num) {
 // Helper to get Table Zone Name based on physical layout
 function getTableZoneName(tableNum) {
   const num = parseInt(tableNum);
-  if (num >= 101 && num <= 115) return "Salon";
-  if (num >= 201 && num <= 223) return "Loge";
-  if (num >= 301 && num <= 324) return "Terrasse";
+  if (num >= 101 && num <= 115) return "Salle";
+  if (num >= 201 && num <= 219) return "Loge";
+  if (num >= 301 && num <= 323) return "Terrasse";
   return "Table";
 }
 
