@@ -5,6 +5,7 @@
 import { currentLang } from './i18n.js';
 import { showToast } from './cart.js';
 import { dbService } from '../config/firebase.js';
+import { showTableSelectorModal, setPendingActionAfterTableSelect } from '../ui/modals.js';
 
 export let memoryNotifications = [];
 
@@ -24,7 +25,17 @@ export function setCallCooldown(type) {
 }
 
 export function triggerQuickServiceCall(clientTable, type) {
-  if (!clientTable) return;
+  if (!clientTable) {
+    const tableMsgs = {
+      fr: "Veuillez choisir votre numéro de table.",
+      en: "Please select your table number.",
+      de: "Bitte wählen Sie Ihre Tischnummer."
+    };
+    showToast(tableMsgs[currentLang] || tableMsgs.fr);
+    setPendingActionAfterTableSelect((selectedTable) => triggerQuickServiceCall(selectedTable, type));
+    showTableSelectorModal();
+    return;
+  }
 
   const waitRemaining = checkCallCooldown(type);
   if (waitRemaining > 0) {

@@ -5,6 +5,7 @@
 import { currentLang } from './i18n.js';
 import { clientCart, saveClientCart, clearCart, showToast } from './cart.js';
 import { dbService } from '../config/firebase.js';
+import { showTableSelectorModal, setPendingActionAfterTableSelect } from '../ui/modals.js';
 
 export function submitPreOrder(clientTable, onComplete) {
   if (!clientCart || clientCart.length === 0) return;
@@ -12,17 +13,31 @@ export function submitPreOrder(clientTable, onComplete) {
   const btn = document.getElementById("cdSubmitBtn");
   const spinner = document.getElementById("cdSubmitSpinner");
 
-  if (btn) {
-    if (btn.disabled) return;
-    btn.disabled = true;
-  }
-  if (spinner) spinner.style.display = "block";
-
   const resetBtn = () => {
     if (btn) btn.disabled = false;
     if (spinner) spinner.style.display = "none";
     if (onComplete) onComplete();
   };
+
+  // CHECK: If no table is chosen, prompt the user to pick their table first!
+  if (!clientTable) {
+    resetBtn();
+    const tableMsgs = {
+      fr: "Veuillez choisir votre numéro de table avant d'envoyer la commande.",
+      en: "Please select your table number before sending the order.",
+      de: "Bitte wählen Sie Ihre Tischnummer, bevor Sie die Bestellung senden."
+    };
+    showToast(tableMsgs[currentLang] || tableMsgs.fr);
+    setPendingActionAfterTableSelect((selectedTable) => submitPreOrder(selectedTable, onComplete));
+    showTableSelectorModal();
+    return;
+  }
+
+  if (btn) {
+    if (btn.disabled) return;
+    btn.disabled = true;
+  }
+  if (spinner) spinner.style.display = "block";
 
   const note = document.getElementById("cdSpecialNote") ? document.getElementById("cdSpecialNote").value : "";
   const totalPrice = clientCart.reduce((sum, item) => sum + (item.price * item.qty), 0);
@@ -64,7 +79,10 @@ export function submitPreOrder(clientTable, onComplete) {
       }
 
       const cdOverlay = document.getElementById("cartDrawerOverlay");
+      const cdDrawer = document.getElementById("cartDrawer");
       if (cdOverlay) cdOverlay.classList.remove("active");
+      if (cdDrawer) cdDrawer.classList.remove("active");
+      document.body.classList.remove("no-scroll");
 
       localStorage.setItem("last_pre_order_id", orderId);
     } else {

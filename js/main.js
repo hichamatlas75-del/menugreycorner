@@ -11,41 +11,27 @@ import { submitPreOrder } from './services/orders.js';
 import { triggerQuickServiceCall, renderNotificationHistory } from './services/notifications.js';
 import {
   openCartDrawer, closeCartDrawer, openTableModal, closeTableModal,
+  showTableSelectorModal, parseTableFromUrl, clientTable,
   setupBurgerMenu,
   GC_showGpsBlocked, GC_hideGpsBlocked, GC_switchGpsTab, GC_dismissGpsBlocked,
   GC_showPreorderModal, GC_hidePreorderModal
 } from './ui/modals.js';
 import { renderMenu, toggleCategoryDrawer, openDrawer, closeDrawer, updateFloatingButtons, setupFloatingButtons } from './ui/menu-render.js';
 
-let clientTable = null;
-
-function parseTableFromUrl() {
-  const params = new URLSearchParams(window.location.search);
-  const table = params.get("table") || params.get("t");
-  if (table) {
-    clientTable = table;
-    localStorage.setItem("grey_corner_table", table);
-  } else {
-    clientTable = localStorage.getItem("grey_corner_table");
-  }
-  updateTableUI();
-}
-
-function updateTableUI() {
-  const badge = document.getElementById("cdTableBadge");
-  if (badge) {
-    badge.textContent = clientTable ? `Table ${clientTable}` : "Sélectionner Table";
-  }
-}
-
 document.addEventListener("DOMContentLoaded", () => {
-  parseTableFromUrl();
+  const table = parseTableFromUrl();
   initClientCart();
   renderMenu();
   setupBurgerMenu();
   setupFloatingButtons();
   updatePrixInfo();
   GPSService.init();
+
+  // Allow clicking table badge in cart header to pick/change table
+  const tableBadge = document.getElementById("cdTableBadge");
+  if (tableBadge) {
+    tableBadge.addEventListener("click", showTableSelectorModal);
+  }
 
   // Language buttons
   document.querySelectorAll(".lang-button").forEach(btn => {
@@ -60,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Action Bar buttons
+  // Action Bar & Cart buttons
   const btnCall = document.getElementById("cabCallWaiter");
   const btnWater = document.getElementById("cabRequestWater");
   const btnBill = document.getElementById("cabRequestBill");
