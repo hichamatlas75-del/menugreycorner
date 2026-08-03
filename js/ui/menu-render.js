@@ -1,10 +1,11 @@
 /**
- * GREY CORNER — MENU RENDERING & DRAWER UI COMPONENT (ES Module)
+ * GREY CORNER — MENU RENDERING, NAVIGATION & DRAWER UI COMPONENT (ES Module)
  */
 
 import { menuData } from '../data/menu-data.js';
 import { currentLang } from '../services/i18n.js';
 import { addToCart } from '../services/cart.js';
+import { closeBurgerMenu } from './modals.js';
 
 let imagesProtected = false;
 
@@ -86,6 +87,133 @@ export function toggleCategoryDrawer(drawerIdOrElement) {
   } else {
     closeDrawer(drawer);
   }
+}
+
+export function handleHashNavigation() {
+  const hash = window.location.hash;
+  if (!hash) return;
+
+  const targetId = hash.substring(1);
+  const targetDrawer = document.getElementById(targetId);
+  if (targetDrawer && targetDrawer.classList.contains("category-drawer")) {
+    if (targetDrawer.classList.contains("open")) return;
+
+    document.querySelectorAll(".category-drawer.open").forEach(other => {
+      if (other !== targetDrawer) {
+        closeDrawer(other);
+      }
+    });
+
+    openDrawer(targetDrawer, true);
+  }
+}
+
+export function setupNavigationListeners() {
+  window.addEventListener("hashchange", handleHashNavigation);
+
+  // Bind category navigation links (both horizontal scrollbar & burger menu links)
+  const navLinks = document.querySelectorAll(".categories-horizontal a, #burgerNav a");
+  navLinks.forEach(link => {
+    link.addEventListener("click", (e) => {
+      const href = link.getAttribute("href");
+      if (href && href.startsWith("#")) {
+        const targetId = href.substring(1);
+        const targetDrawer = document.getElementById(targetId);
+        if (targetDrawer && targetDrawer.classList.contains("category-drawer")) {
+          e.preventDefault();
+
+          // Close burger menu if open
+          closeBurgerMenu();
+
+          // Accordion: close other drawers
+          document.querySelectorAll(".category-drawer.open").forEach(other => {
+            if (other !== targetDrawer) {
+              closeDrawer(other);
+            }
+          });
+
+          openDrawer(targetDrawer, true);
+
+          if (window.location.hash !== href) {
+            history.pushState(null, "", href);
+          }
+        }
+      }
+    });
+  });
+
+  if (window.location.hash) {
+    setTimeout(handleHashNavigation, 300);
+  }
+}
+
+export function setupFloatingButtons() {
+  window.addEventListener("scroll", updateFloatingButtons, { passive: true });
+
+  const backToTop = document.getElementById("backToTop");
+  if (backToTop) {
+    backToTop.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+
+  const floatingCloseCategory = document.getElementById("floatingCloseCategory");
+  if (floatingCloseCategory) {
+    floatingCloseCategory.addEventListener("click", () => {
+      const openDrawerElement = document.querySelector(".category-drawer.open");
+      if (openDrawerElement) {
+        closeDrawer(openDrawerElement);
+        setTimeout(() => {
+          openDrawerElement.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 50);
+      }
+    });
+  }
+}
+
+export function applySearchFilter() {
+  const input = document.getElementById("searchInput");
+  if (!input) return;
+
+  const term = (input.value || "").toLowerCase().trim();
+  const cards = document.querySelectorAll(".menu-item");
+
+  cards.forEach(card => {
+    const title = (card.querySelector(".item-name")?.textContent || "").toLowerCase();
+    const desc = (card.querySelector(".item-desc")?.textContent || "").toLowerCase();
+    const match = !term || title.includes(term) || desc.includes(term);
+    card.style.display = match ? "" : "none";
+  });
+
+  const drawers = document.querySelectorAll(".category-drawer");
+  drawers.forEach(drawer => {
+    const body = drawer.querySelector(".category-drawer-body");
+    const visibles = drawer.querySelectorAll(".menu-item:not([style*='display: none'])");
+
+    if (term) {
+      if (visibles.length > 0) {
+        drawer.style.display = "";
+        drawer.classList.add("open");
+        if (body) body.style.maxHeight = "none";
+      } else {
+        drawer.style.display = "none";
+        drawer.classList.remove("open");
+        if (body) body.style.maxHeight = "0";
+      }
+    } else {
+      drawer.style.display = "";
+      drawer.classList.remove("open");
+      if (body) body.style.maxHeight = "0";
+    }
+  });
+}
+
+export function activateSearch() {
+  const searchInput = document.getElementById("searchInput");
+  if (!searchInput) return;
+
+  searchInput.removeEventListener("input", applySearchFilter);
+  searchInput.addEventListener("input", applySearchFilter);
 }
 
 export function closeLightbox() {
@@ -279,6 +407,8 @@ export function renderMenu() {
     menuGrid.appendChild(drawer);
   });
 
+  setupNavigationListeners();
+  activateSearch();
   enableSecureLightbox();
   protectImages();
 }
@@ -291,3 +421,4 @@ window.closeDrawer = closeDrawer;
 window.updateFloatingButtons = updateFloatingButtons;
 window.enableSecureLightbox = enableSecureLightbox;
 window.closeLightbox = closeLightbox;
+window.setupNavigationListeners = setupNavigationListeners;

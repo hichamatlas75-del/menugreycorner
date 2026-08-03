@@ -1,3 +1,7 @@
+/**
+ * GREY CORNER — UI MODALS & DRAWERS (ES Module)
+ */
+
 import { updateCartUI } from '../services/cart.js';
 
 export function openCartDrawer() {
@@ -37,6 +41,62 @@ export function closeTableModal() {
   const overlay = document.getElementById("tableModalOverlay");
   if (overlay) {
     overlay.style.display = "none";
+  }
+}
+
+// ── BURGER MENU ──
+export function openBurgerMenu() {
+  const burger = document.getElementById("burger");
+  const burgerNav = document.getElementById("burgerNav");
+  const burgerOverlay = document.getElementById("burgerOverlay");
+
+  if (!burger || !burgerNav || !burgerOverlay) return;
+  burger.classList.add("active");
+  burger.setAttribute("aria-expanded", "true");
+  burgerNav.classList.add("active");
+  burgerOverlay.classList.add("active");
+  document.body.classList.add("no-scroll");
+  document.documentElement.classList.add("no-scroll");
+}
+
+export function closeBurgerMenu() {
+  const burger = document.getElementById("burger");
+  const burgerNav = document.getElementById("burgerNav");
+  const burgerOverlay = document.getElementById("burgerOverlay");
+
+  if (!burger || !burgerNav || !burgerOverlay) return;
+  burger.classList.remove("active");
+  burger.setAttribute("aria-expanded", "false");
+  burgerNav.classList.remove("active");
+  burgerOverlay.classList.remove("active");
+  document.body.classList.remove("no-scroll");
+  document.documentElement.classList.remove("no-scroll");
+}
+
+export function setupBurgerMenu() {
+  const burger = document.getElementById("burger");
+  const burgerNav = document.getElementById("burgerNav");
+  const burgerOverlay = document.getElementById("burgerOverlay");
+
+  if (burger && burgerNav && burgerOverlay) {
+    burger.onclick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const isOpen = burgerNav.classList.contains("active");
+      isOpen ? closeBurgerMenu() : openBurgerMenu();
+    };
+
+    burgerOverlay.onclick = () => closeBurgerMenu();
+
+    burgerNav.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => closeBurgerMenu());
+    });
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape" && burgerNav.classList.contains("active")) {
+        closeBurgerMenu();
+      }
+    });
   }
 }
 
@@ -131,6 +191,9 @@ window.openCartDrawer = openCartDrawer;
 window.closeCartDrawer = closeCartDrawer;
 window.openTableModal = openTableModal;
 window.closeTableModal = closeTableModal;
+window.openBurgerMenu = openBurgerMenu;
+window.closeBurgerMenu = closeBurgerMenu;
+window.setupBurgerMenu = setupBurgerMenu;
 window.GC_switchGpsTab = GC_switchGpsTab;
 window.GC_showGpsBlocked = GC_showGpsBlocked;
 window.GC_hideGpsBlocked = GC_hideGpsBlocked;

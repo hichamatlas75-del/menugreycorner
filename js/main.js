@@ -11,10 +11,11 @@ import { submitPreOrder } from './services/orders.js';
 import { triggerQuickServiceCall, renderNotificationHistory } from './services/notifications.js';
 import {
   openCartDrawer, closeCartDrawer, openTableModal, closeTableModal,
+  setupBurgerMenu,
   GC_showGpsBlocked, GC_hideGpsBlocked, GC_switchGpsTab, GC_dismissGpsBlocked,
   GC_showPreorderModal, GC_hidePreorderModal
 } from './ui/modals.js';
-import { renderMenu, toggleCategoryDrawer, openDrawer, closeDrawer, updateFloatingButtons } from './ui/menu-render.js';
+import { renderMenu, toggleCategoryDrawer, openDrawer, closeDrawer, updateFloatingButtons, setupFloatingButtons } from './ui/menu-render.js';
 
 let clientTable = null;
 
@@ -41,6 +42,8 @@ document.addEventListener("DOMContentLoaded", () => {
   parseTableFromUrl();
   initClientCart();
   renderMenu();
+  setupBurgerMenu();
+  setupFloatingButtons();
   updatePrixInfo();
   GPSService.init();
 
