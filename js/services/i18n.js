@@ -11,10 +11,30 @@ export const PRIX_TEXTS = {
   de: "★ Alle Preise sind in Marokkanischen Dirham (MAD)"
 };
 
+export function applyLanguageToStaticTexts() {
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const value = el.getAttribute(`data-${currentLang}`)
+      || el.getAttribute("data-fr");
+    if (value !== null) el.textContent = value;
+  });
+
+  const searchInput = document.getElementById("searchInput");
+  if (searchInput) {
+    const placeholders = {
+      fr: "Rechercher un plat...",
+      en: "Search a dish...",
+      de: "Gericht suchen..."
+    };
+    searchInput.placeholder = placeholders[currentLang] || placeholders.fr;
+  }
+}
+
 export function setLanguage(lang) {
   if (["fr", "en", "de"].includes(lang)) {
     currentLang = lang;
     localStorage.setItem("lang", lang);
+    document.documentElement.lang = lang;
+    applyLanguageToStaticTexts();
     updatePrixInfo();
     return true;
   }
@@ -48,3 +68,4 @@ export function t(key) {
 window.currentLang = currentLang;
 window.setLanguage = setLanguage;
 window.updatePrixInfo = updatePrixInfo;
+window.applyLanguageToStaticTexts = applyLanguageToStaticTexts;

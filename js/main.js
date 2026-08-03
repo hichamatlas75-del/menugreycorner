@@ -4,7 +4,7 @@
 
 import { isFirebaseActive, db, dbService, whenAuthReady } from './config/firebase.js';
 import { menuData } from './data/menu-data.js';
-import { currentLang, setLanguage, updatePrixInfo, t } from './services/i18n.js';
+import { currentLang, setLanguage, updatePrixInfo, applyLanguageToStaticTexts, t } from './services/i18n.js';
 import { GPSService } from './services/gps.js';
 import { initClientCart, saveClientCart, clearCart, addToCart, updateCartUI, showToast } from './services/cart.js';
 import { submitPreOrder } from './services/orders.js';
@@ -21,6 +21,7 @@ import { renderMenu, toggleCategoryDrawer, openDrawer, closeDrawer, updateFloati
 document.addEventListener("DOMContentLoaded", () => {
   const table = parseTableFromUrl();
   initClientCart();
+  applyLanguageToStaticTexts();
   renderMenu();
   setupBurgerMenu();
   setupFloatingButtons();
@@ -32,14 +33,9 @@ document.addEventListener("DOMContentLoaded", () => {
     subscribeToActiveWaiterEvents(table);
   }
 
-  // Allow clicking table badge in cart header to pick/change table
-  const tableBadge = document.getElementById("cdTableBadge");
-  if (tableBadge) {
-    tableBadge.addEventListener("click", showTableSelectorModal);
-  }
-
-  // Language buttons
+  // Active language button state on load
   document.querySelectorAll(".lang-button").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.lang === currentLang);
     btn.addEventListener("click", () => {
       const lang = btn.dataset.lang;
       if (setLanguage(lang)) {
@@ -50,6 +46,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+
+  // Allow clicking table badge in cart header to pick/change table
+  const tableBadge = document.getElementById("cdTableBadge");
+  if (tableBadge) {
+    tableBadge.addEventListener("click", showTableSelectorModal);
+  }
 
   // Action Bar & Cart buttons
   const btnCall = document.getElementById("cabCallWaiter");
