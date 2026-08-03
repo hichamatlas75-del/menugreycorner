@@ -156,6 +156,17 @@ export const dbService = {
                 }
             };
         }
+        window.addEventListener("storage", (e) => {
+            if (e.key && e.key.startsWith("sim_")) {
+                const colName = e.key.replace("sim_", "");
+                try {
+                    const data = JSON.parse(e.newValue || "[]");
+                    this._simListeners.forEach(cb => {
+                        try { cb(colName, data); } catch (err) { console.error(err); }
+                    });
+                } catch (err) {}
+            }
+        });
     },
     onWaitersChange(callback) {
         if (isFirebaseActive) {
@@ -372,7 +383,7 @@ export const dbService = {
             const idx = orders.findIndex(o => o.id === orderId);
             if (idx !== -1) {
                 orders[idx] = { ...orders[idx], ...updateData };
-                setLocalCollection("orders", orders);
+                setLocalCollection("pre_orders", orders);
                 if (callback) callback(true);
             } else { if (callback) callback(false); }
         }
