@@ -12,13 +12,13 @@ export function setPendingActionAfterTableSelect(action) {
 }
 
 export function parseTableFromUrl() {
+  localStorage.removeItem("grey_corner_table");
   const params = new URLSearchParams(window.location.search);
   const table = params.get("table") || params.get("t");
   if (table) {
     clientTable = table;
-    localStorage.setItem("grey_corner_table", table);
   } else {
-    clientTable = localStorage.getItem("grey_corner_table");
+    clientTable = null;
   }
   updateTableUI();
   return clientTable;
@@ -38,7 +38,6 @@ export function updateTableUI() {
 
 export function setTable(num) {
   clientTable = String(num);
-  localStorage.setItem("grey_corner_table", clientTable);
   updateTableUI();
 
   try {
