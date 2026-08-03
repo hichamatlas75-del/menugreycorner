@@ -97,22 +97,25 @@ export function updateCartUI() {
       cdItemsList.innerHTML = "";
       clientCart.forEach(item => {
         const itemDiv = document.createElement("div");
-        itemDiv.className = "cd-item-row";
+        itemDiv.className = "cd-item";
         const drinkChoicesStr = item.drinkChoices && item.drinkChoices.length > 0
-          ? `<div style="font-size:0.75rem; color:#C9A84C; margin-top:2px;">☕ ${item.drinkChoices.join(', ')}</div>`
+          ? `<div style="font-size:0.75rem; color:var(--sc-gold-light); margin-top:2px;">☕ ${item.drinkChoices.join(', ')}</div>`
           : '';
 
         itemDiv.innerHTML = `
-          <div class="cd-item-info">
-            <div class="cd-item-name">${item.name[currentLang] || item.name.fr}</div>
+          <div class="cd-item-img" style="background-image: url('${item.image}')"></div>
+          <div class="cd-item-details">
+            <h4 class="cd-item-name">${item.name[currentLang] || item.name.fr || item.name}</h4>
             ${drinkChoicesStr}
-            <div class="cd-item-price">${item.price * item.qty} MAD</div>
+            <span class="cd-item-price">${item.price * item.qty} MAD</span>
           </div>
-          <div class="cd-item-controls">
-            <button class="cd-qty-btn cd-dec" data-id="${item.id}">-</button>
-            <span class="cd-qty-val">${item.qty}</span>
-            <button class="cd-qty-btn cd-inc" data-id="${item.id}">+</button>
-            <button class="cd-del-btn" data-id="${item.id}">🗑️</button>
+          <div class="cd-item-actions">
+            <div class="cd-qty-wrap">
+              <button class="cd-qty-btn cd-dec" data-id="${item.id}">-</button>
+              <span class="cd-qty-num">${item.qty}</span>
+              <button class="cd-qty-btn cd-inc" data-id="${item.id}">+</button>
+            </div>
+            <button class="cd-remove-btn" data-id="${item.id}" title="Supprimer">🗑️</button>
           </div>
         `;
 
@@ -136,7 +139,7 @@ export function updateCartUI() {
           }
         });
 
-        itemDiv.querySelector(".cd-del-btn").addEventListener("click", () => {
+        itemDiv.querySelector(".cd-remove-btn").addEventListener("click", () => {
           const idx = clientCart.findIndex(c => c.id === item.id);
           if (idx !== -1) {
             clientCart.splice(idx, 1);

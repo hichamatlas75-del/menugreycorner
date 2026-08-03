@@ -6,6 +6,8 @@ import { menuData } from '../data/menu-data.js';
 import { currentLang } from '../services/i18n.js';
 import { addToCart } from '../services/cart.js';
 
+let imagesProtected = false;
+
 export function updateFloatingButtons() {
   const openDrawerElement = document.querySelector(".category-drawer.open");
   const floatingCloseCategory = document.getElementById("floatingCloseCategory");
@@ -84,6 +86,104 @@ export function toggleCategoryDrawer(drawerIdOrElement) {
   } else {
     closeDrawer(drawer);
   }
+}
+
+export function closeLightbox() {
+  const secureLightbox = document.getElementById("secureLightbox");
+  const secureLightboxContent = document.querySelector(".secure-lightbox-content");
+  if (!secureLightbox) return;
+
+  secureLightbox.classList.remove("active");
+  if (secureLightboxContent) secureLightboxContent.style.backgroundImage = "";
+
+  const lbAddBtn = document.getElementById("secureLightboxAddBtn");
+  if (lbAddBtn) lbAddBtn.style.display = "none";
+
+  const lbCaption = document.getElementById("secureLightboxCaption");
+  if (lbCaption) lbCaption.textContent = "";
+
+  document.body.classList.remove("no-scroll");
+  document.documentElement.classList.remove("no-scroll");
+}
+
+export function enableSecureLightbox() {
+  const secureLightbox = document.getElementById("secureLightbox");
+  const secureLightboxContent = document.querySelector(".secure-lightbox-content");
+  if (!secureLightbox || !secureLightboxContent) return;
+
+  const lbAddBtn = document.getElementById("secureLightboxAddBtn");
+  const lbCaption = document.getElementById("secureLightboxCaption");
+  let activeItem = null;
+
+  if (lbAddBtn && !lbAddBtn._hasClickListener) {
+    lbAddBtn._hasClickListener = true;
+    lbAddBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (activeItem) {
+        closeLightbox();
+        addToCart(activeItem);
+      }
+    });
+  }
+
+  document.querySelectorAll(".menu-item").forEach(card => {
+    card.addEventListener("click", () => {
+      const url = card.dataset.img;
+      if (!url) return;
+
+      const item = card._menuItem;
+      activeItem = item;
+      secureLightboxContent.style.backgroundImage = `url("${url}")`;
+
+      if (item && lbCaption) {
+        lbCaption.textContent = `${item.name[currentLang] || item.name.fr} — ${item.price}${item.price !== "Inclus" ? " MAD" : ""}`;
+      } else if (lbCaption) {
+        lbCaption.textContent = "";
+      }
+
+      if (item && lbAddBtn) {
+        lbAddBtn.style.display = "block";
+        const btnText = currentLang === "en" ? "+ Add to cart"
+          : currentLang === "de" ? "+ In den Warenkorb"
+            : "+ Ajouter au panier";
+        lbAddBtn.textContent = btnText;
+      } else if (lbAddBtn) {
+        lbAddBtn.style.display = "none";
+      }
+
+      secureLightbox.classList.add("active");
+      document.body.classList.add("no-scroll");
+      document.documentElement.classList.add("no-scroll");
+    });
+  });
+
+  if (!secureLightbox._hasCloseListeners) {
+    secureLightbox._hasCloseListeners = true;
+    secureLightbox.addEventListener("click", e => {
+      if (e.target === secureLightbox) closeLightbox();
+    });
+
+    const closeBtn = secureLightboxContent.querySelector(".close-btn");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", closeLightbox);
+    }
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape" && secureLightbox.classList.contains("active")) {
+        closeLightbox();
+      }
+    });
+  }
+}
+
+export function protectImages() {
+  if (imagesProtected) return;
+  imagesProtected = true;
+
+  document.addEventListener("contextmenu", e => e.preventDefault());
+  document.body.style.userSelect = "none";
+  document.body.style.webkitUserSelect = "none";
+  document.body.style.webkitTouchCallout = "none";
 }
 
 export function renderMenu() {
@@ -178,6 +278,9 @@ export function renderMenu() {
 
     menuGrid.appendChild(drawer);
   });
+
+  enableSecureLightbox();
+  protectImages();
 }
 
 // Bind to window for backwards compatibility
@@ -186,3 +289,5 @@ window.toggleCategoryDrawer = toggleCategoryDrawer;
 window.openDrawer = openDrawer;
 window.closeDrawer = closeDrawer;
 window.updateFloatingButtons = updateFloatingButtons;
+window.enableSecureLightbox = enableSecureLightbox;
+window.closeLightbox = closeLightbox;
