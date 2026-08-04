@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Active language button state on load
-  document.querySelectorAll(".lang-button").forEach(btn => {
+  document.querySelectorAll(".lang-button[data-lang]").forEach(btn => {
     btn.classList.toggle("active", btn.dataset.lang === currentLang);
     btn.addEventListener("click", () => {
       const lang = btn.dataset.lang;
@@ -46,6 +46,17 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+
+  const gtBtn = document.getElementById("googleTranslateBtn");
+  if (gtBtn) {
+    gtBtn.addEventListener("click", () => {
+      const gEl = document.getElementById("google_translate_element");
+      if (gEl) {
+        const isShown = gEl.style.display === "block";
+        gEl.style.display = isShown ? "none" : "block";
+      }
+    });
+  }
 
   // Allow clicking table badge in cart header to pick/change table
   const tableBadge = document.getElementById("cdTableBadge");

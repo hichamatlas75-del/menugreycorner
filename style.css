@@ -909,6 +909,38 @@ header {
 .lang-button.active { background: var(--gold); color: #000; border: none; transform: scale(1.06); }
 .lang-button:hover { border-color: var(--gold); }
 
+/* Google Translate Popup & Hide Top Banner */
+.goog-te-banner-frame.skiptranslate, .goog-te-banner-frame {
+    display: none !important;
+}
+body {
+    top: 0px !important;
+}
+#google_translate_element {
+    display: none;
+    position: fixed;
+    bottom: 90px;
+    right: 70px;
+    z-index: 99999;
+    background: #1A1412;
+    border: 1px solid rgba(201, 168, 76, 0.4);
+    border-radius: 12px;
+    padding: 10px 14px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+#google_translate_element .goog-te-gadget-simple {
+    background: transparent !important;
+    border: none !important;
+    font-family: 'DM Sans', 'Poppins', sans-serif !important;
+    font-size: 0.85rem !important;
+    padding: 0 !important;
+}
+#google_translate_element .goog-te-gadget-simple .goog-te-menu-value span {
+    color: #E2C97E !important;
+}
+
 /* =========================================
    GOOGLE REVIEW — PILL PREMIUM
 ========================================= */
