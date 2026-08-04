@@ -618,6 +618,8 @@ header {
     border: 1px solid rgba(255,255,255,0.05);
     overflow: hidden;
     cursor: pointer;
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 260px;
     transition:
         transform   0.4s cubic-bezier(0.25,1,0.5,1),
         box-shadow  0.4s cubic-bezier(0.25,1,0.5,1);
@@ -2467,5 +2469,182 @@ body {
         font-size: 10px;
         padding: 10px 20px;
         bottom: 88px;
+    }
+}
+
+/* ============================================================================
+   SHORTCUT ICONS & TOUCH UX OPTIMIZATIONS
+   ============================================================================ */
+button, .sc-btn, .add-to-cart-btn, .category-drawer-header, .tgs-btn {
+    touch-action: manipulation;
+}
+
+.shortcut-icons {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    z-index: 10;
+}
+
+.sc-btn {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 48px;
+    height: 48px;
+    min-height: 48px;
+    min-width: 48px;
+    background: var(--sc-bg);
+    border: 1px solid var(--sc-border);
+    border-radius: 12px;
+    color: rgba(240, 234, 216, 0.52);
+    cursor: pointer;
+    text-decoration: none;
+    font-family: 'DM Sans', 'Poppins', sans-serif;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: color 0.28s ease, border-color 0.28s ease, background 0.28s ease, transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    padding: 0;
+}
+
+.sc-btn svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+}
+
+.sc-label {
+    font-size: 7px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: inherit;
+    line-height: 1;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.22s ease, transform 0.22s ease;
+    pointer-events: none;
+    display: block;
+}
+
+.sc-btn+.sc-btn::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 22%;
+    height: 56%;
+    width: 1px;
+    background: rgba(201, 168, 76, 0.13);
+    pointer-events: none;
+}
+
+@media (hover: hover) {
+    .sc-btn:hover {
+        color: var(--sc-gold-light);
+        border-color: var(--sc-gold);
+        background: var(--sc-bg-hover);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(201, 168, 76, 0.2);
+    }
+    .sc-btn:hover .sc-label {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .sc-btn:hover svg {
+        transform: scale(1.1);
+    }
+    .sc-btn:hover {
+        height: 54px;
+    }
+}
+
+.sc-btn:active {
+    transform: scale(0.93);
+    background: rgba(201, 168, 76, 0.14);
+    border-color: var(--sc-gold);
+    color: var(--sc-gold-light);
+}
+
+.sc-toast {
+    position: fixed;
+    bottom: 86px;
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    background: rgba(10, 9, 6, 0.94);
+    border: 1px solid rgba(201, 168, 76, 0.32);
+    color: #E2C97E;
+    font-family: 'DM Sans', 'Poppins', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 10px 22px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    z-index: 999999;
+}
+
+.sc-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 480px) {
+    .shortcut-icons {
+        position: relative;
+        top: auto;
+        right: auto;
+        justify-content: center;
+        width: 100%;
+        gap: 10px;
+        padding: 8px 0 4px;
+        flex-wrap: nowrap;
+    }
+    .sc-btn {
+        width: 54px;
+        height: 54px;
+        border-radius: 14px;
+        color: rgba(240, 234, 216, 0.6);
+    }
+    .sc-btn .sc-label {
+        opacity: 1;
+        transform: translateY(0);
+        font-size: 6.5px;
+    }
+    .sc-btn+.sc-btn::before {
+        display: none;
+    }
+}
+
+@media (max-width: 360px) {
+    .sc-btn {
+        width: 46px;
+        height: 50px;
+        min-height: 48px;
+    }
+    .sc-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+    .sc-btn .sc-label {
+        font-size: 5.5px;
     }
 }

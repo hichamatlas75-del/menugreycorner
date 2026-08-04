@@ -234,56 +234,57 @@ export function closeLightbox() {
   document.documentElement.classList.remove("no-scroll");
 }
 
+let activeLightboxItem = null;
+
+export function openLightboxForItem(item, imgUrl) {
+  const secureLightbox = document.getElementById("secureLightbox");
+  const secureLightboxContent = document.querySelector(".secure-lightbox-content");
+  if (!secureLightbox || !secureLightboxContent || !imgUrl) return;
+
+  const lbAddBtn = document.getElementById("secureLightboxAddBtn");
+  const lbCaption = document.getElementById("secureLightboxCaption");
+  activeLightboxItem = item;
+
+  secureLightboxContent.style.backgroundImage = `url("${imgUrl}")`;
+
+  if (item && lbCaption) {
+    lbCaption.textContent = `${item.name[currentLang] || item.name.fr} — ${item.price}`;
+  } else if (lbCaption) {
+    lbCaption.textContent = "";
+  }
+
+  if (item && lbAddBtn) {
+    lbAddBtn.style.display = "block";
+    const btnText = currentLang === "en" ? "+ Add to cart"
+      : currentLang === "de" ? "+ In den Warenkorb"
+        : "+ Ajouter au panier";
+    lbAddBtn.textContent = btnText;
+  } else if (lbAddBtn) {
+    lbAddBtn.style.display = "none";
+  }
+
+  secureLightbox.classList.add("active");
+  document.body.classList.add("no-scroll");
+  document.documentElement.classList.add("no-scroll");
+}
+
 export function enableSecureLightbox() {
   const secureLightbox = document.getElementById("secureLightbox");
   const secureLightboxContent = document.querySelector(".secure-lightbox-content");
   if (!secureLightbox || !secureLightboxContent) return;
 
   const lbAddBtn = document.getElementById("secureLightboxAddBtn");
-  const lbCaption = document.getElementById("secureLightboxCaption");
-  let activeItem = null;
 
   if (lbAddBtn && !lbAddBtn._hasClickListener) {
     lbAddBtn._hasClickListener = true;
     lbAddBtn.addEventListener("click", (e) => {
       e.stopPropagation();
-      if (activeItem) {
+      if (activeLightboxItem) {
         closeLightbox();
-        addToCart(activeItem);
+        addToCart(activeLightboxItem);
       }
     });
   }
-
-  document.querySelectorAll(".menu-item").forEach(card => {
-    card.addEventListener("click", () => {
-      const url = card.dataset.img;
-      if (!url) return;
-
-      const item = card._menuItem;
-      activeItem = item;
-      secureLightboxContent.style.backgroundImage = `url("${url}")`;
-
-      if (item && lbCaption) {
-        lbCaption.textContent = `${item.name[currentLang] || item.name.fr} — ${item.price}${item.price !== "Inclus" ? " MAD" : ""}`;
-      } else if (lbCaption) {
-        lbCaption.textContent = "";
-      }
-
-      if (item && lbAddBtn) {
-        lbAddBtn.style.display = "block";
-        const btnText = currentLang === "en" ? "+ Add to cart"
-          : currentLang === "de" ? "+ In den Warenkorb"
-            : "+ Ajouter au panier";
-        lbAddBtn.textContent = btnText;
-      } else if (lbAddBtn) {
-        lbAddBtn.style.display = "none";
-      }
-
-      secureLightbox.classList.add("active");
-      document.body.classList.add("no-scroll");
-      document.documentElement.classList.add("no-scroll");
-    });
-  });
 
   if (!secureLightbox._hasCloseListeners) {
     secureLightbox._hasCloseListeners = true;
@@ -393,19 +394,30 @@ export function renderMenu() {
         </div>
       `;
 
-      const addBtn = card.querySelector(".add-to-cart-btn");
-      if (addBtn) {
-        addBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          addToCart(item);
-        });
-      }
-
       itemsContainer.appendChild(card);
     });
 
     menuGrid.appendChild(drawer);
   });
+
+  if (!menuGrid._hasDelegatedListener) {
+    menuGrid._hasDelegatedListener = true;
+    menuGrid.addEventListener("click", (e) => {
+      const addBtn = e.target.closest(".add-to-cart-btn");
+      if (addBtn) {
+        e.stopPropagation();
+        const card = addBtn.closest(".menu-item");
+        if (card && card._menuItem) {
+          addToCart(card._menuItem);
+        }
+        return;
+      }
+      const card = e.target.closest(".menu-item");
+      if (card && card._menuItem) {
+        openLightboxForItem(card._menuItem, card.dataset.img);
+      }
+    });
+  }
 
   setupNavigationListeners();
   activateSearch();
