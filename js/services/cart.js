@@ -7,10 +7,14 @@ import { currentLang } from './i18n.js';
 export let clientCart = [];
 
 export function initClientCart() {
+  clientCart.length = 0;
   try {
-    clientCart = JSON.parse(localStorage.getItem("grey_cart") || "[]");
+    const items = JSON.parse(localStorage.getItem("grey_cart") || "[]");
+    if (Array.isArray(items)) {
+      items.forEach(item => clientCart.push(item));
+    }
   } catch (e) {
-    clientCart = [];
+    clientCart.length = 0;
   }
   updateCartUI();
 }
@@ -21,7 +25,7 @@ export function saveClientCart() {
 }
 
 export function clearCart() {
-  clientCart = [];
+  clientCart.length = 0;
   saveClientCart();
 }
 

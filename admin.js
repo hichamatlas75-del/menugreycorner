@@ -7,6 +7,13 @@
 let globalWaiters = [];
 let activeCallsList = [];
 
+function parseSafeDate(input) {
+    if (!input) return new Date();
+    if (typeof input.toDate === "function") return input.toDate();
+    const d = new Date(input);
+    return isNaN(d.getTime()) ? new Date() : d;
+}
+
 function savePreOrdersCache(newOrders) {
     const todayStr = new Date().toDateString();
     let currentCache = [];
@@ -26,7 +33,7 @@ function savePreOrdersCache(newOrders) {
         if (!newO || !newO.id) return;
 
         // Éviter de stocker les commandes des jours précédents dans le cache quotidien
-        const orderDateStr = newO.createdAt ? new Date(newO.createdAt).toDateString() : todayStr;
+        const orderDateStr = newO.createdAt ? parseSafeDate(newO.createdAt).toDateString() : todayStr;
         if (orderDateStr !== todayStr) return;
 
         const existingIdx = currentCache.findIndex(o => o.id === newO.id);
@@ -184,7 +191,7 @@ function initAdminStreams() {
 
         const todayStr = new Date().toDateString();
         const todayCalls = calls.filter(c => {
-            const dateStr = c.createdAt ? new Date(c.createdAt).toDateString() : todayStr;
+            const dateStr = c.createdAt ? parseSafeDate(c.createdAt).toDateString() : todayStr;
             return dateStr === todayStr;
         });
 

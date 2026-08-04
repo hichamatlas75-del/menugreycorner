@@ -144,6 +144,9 @@ export function sendFcmToWaiters(type, title, body, tableId, docId) {
 }
 
 export const dbService = {
+    isCloud() { return isFirebaseActive; },
+    getWaiters(callback) { return this.onWaitersChange(callback); },
+    getTables(callback) { return this.onTablesChange(callback); },
     _simListeners: [],
     registerSimListener(cb) { this._simListeners.push(cb); },
     initSimBroadcastListener() {

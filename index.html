@@ -1082,6 +1082,7 @@
             alert('Votre panier est vide.');
             return;
         }
+        const lang = localStorage.getItem('lang') || 'fr';
         const modeLabel = window.GC_preorderMode === 'pickup'
             ? 'À emporter (comptoir)'
             : ('À table' + (window.GC_preorderTable ? ' n°' + window.GC_preorderTable : " — numéro à préciser à l'arrivée"));
@@ -1091,19 +1092,24 @@
             const price = item.price || 0;
             const sub   = price * qty;
             total += sub;
-            const name = (item.name && item.name.fr) ? item.name.fr : (item.name || 'Article');
-            lines += `• ${name}${qty > 1 ? ' x' + qty : ''} — ${sub} MAD\n`;
+            const name = (item.name && typeof item.name === 'object') ? (item.name[lang] || item.name.fr || Object.values(item.name)[0]) : (item.name || 'Article');
+            const drinkInfo = (item.drinkChoices && item.drinkChoices.length > 0) ? ' (' + item.drinkChoices.join(', ') + ')' : '';
+            lines += `• ${name}${drinkInfo}${qty > 1 ? ' x' + qty : ''} — ${sub} MAD\n`;
         });
         const noteEl   = document.getElementById('cdSpecialNote');
         const noteText = noteEl && noteEl.value.trim() ? '\n📝 Note : ' + noteEl.value.trim() : '';
         const msg = `🛒 *Précommande Grey Corner*\nMode : ${modeLabel}\n─────────────────────\n${lines}─────────────────────\n💰 Total : ${total} MAD${noteText}`;
         window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg), '_blank');
         setTimeout(() => {
-            clientCart.length = 0;
-            localStorage.removeItem('grey_cart');
+            if (typeof clearCart === 'function') {
+                clearCart();
+            } else {
+                clientCart.length = 0;
+                localStorage.removeItem('grey_cart');
+                if (typeof updateCartUI === 'function') updateCartUI();
+            }
             if (noteEl) noteEl.value = '';
             if (typeof renderCartDrawer === 'function') renderCartDrawer();
-            if (typeof updateCartUI     === 'function') updateCartUI();
             if (typeof updateCartBadge  === 'function') updateCartBadge();
             const ov = document.getElementById('cartDrawerOverlay');
             const dr = document.getElementById('cartDrawer');
