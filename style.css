@@ -19,12 +19,12 @@
     --shadow:       0 12px 35px rgba(45, 35, 33, 0.05);
     --shadow-hover: 0 16px 45px rgba(189, 30, 45, 0.12);
 
-    /* Palette luxe — icons & logo */
-    --sc-gold:       var(--primary);
-    --sc-gold-light: var(--gold);
-    --sc-border:     rgba(189, 30, 45, 0.15);
-    --sc-bg:         rgba(255, 255, 255, 0.9);
-    --sc-bg-hover:   rgba(189, 30, 45, 0.05);
+    /* Palette luxe — icons & logo (Dark luxury overlay) */
+    --sc-gold:       #C9A84C;
+    --sc-gold-light: #E2C97E;
+    --sc-border:     rgba(201, 168, 76, 0.35);
+    --sc-bg:         rgba(10, 9, 6, 0.65);
+    --sc-bg-hover:   rgba(201, 168, 76, 0.15);
 }
 
 /* =========================================
@@ -2503,7 +2503,7 @@ button, .sc-btn, .add-to-cart-btn, .category-drawer-header, .tgs-btn {
     background: var(--sc-bg);
     border: 1px solid var(--sc-border);
     border-radius: 12px;
-    color: rgba(240, 234, 216, 0.52);
+    color: var(--sc-gold-light);
     cursor: pointer;
     text-decoration: none;
     font-family: 'DM Sans', 'Poppins', sans-serif;
@@ -2553,7 +2553,7 @@ button, .sc-btn, .add-to-cart-btn, .category-drawer-header, .tgs-btn {
 
 @media (hover: hover) {
     .sc-btn:hover {
-        color: var(--sc-gold-light);
+        color: #ffffff;
         border-color: var(--sc-gold);
         background: var(--sc-bg-hover);
         transform: translateY(-3px);
@@ -2575,7 +2575,7 @@ button, .sc-btn, .add-to-cart-btn, .category-drawer-header, .tgs-btn {
     transform: scale(0.93);
     background: rgba(201, 168, 76, 0.14);
     border-color: var(--sc-gold);
-    color: var(--sc-gold-light);
+    color: #ffffff;
 }
 
 .sc-toast {
@@ -2622,7 +2622,7 @@ button, .sc-btn, .add-to-cart-btn, .category-drawer-header, .tgs-btn {
         width: 54px;
         height: 54px;
         border-radius: 14px;
-        color: rgba(240, 234, 216, 0.6);
+        color: var(--sc-gold-light);
     }
     .sc-btn .sc-label {
         opacity: 1;
