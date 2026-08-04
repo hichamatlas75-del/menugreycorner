@@ -5,7 +5,7 @@
 import { menuData } from '../data/menu-data.js';
 import { currentLang } from '../services/i18n.js';
 import { addToCart } from '../services/cart.js';
-import { closeBurgerMenu } from './modals.js';
+import { closeBurgerMenu, checkItemOptionsAndAdd } from './modals.js';
 
 let imagesProtected = false;
 
@@ -281,7 +281,7 @@ export function enableSecureLightbox() {
       e.stopPropagation();
       if (activeLightboxItem) {
         closeLightbox();
-        addToCart(activeLightboxItem);
+        checkItemOptionsAndAdd(activeLightboxItem);
       }
     });
   }
@@ -408,7 +408,7 @@ export function renderMenu() {
         e.stopPropagation();
         const card = addBtn.closest(".menu-item");
         if (card && card._menuItem) {
-          addToCart(card._menuItem);
+          checkItemOptionsAndAdd(card._menuItem);
         }
         return;
       }

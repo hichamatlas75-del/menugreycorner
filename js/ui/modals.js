@@ -1,12 +1,288 @@
-/**
- * GREY CORNER — UI MODALS & DRAWERS (ES Module)
- */
-
-import { updateCartUI } from '../services/cart.js';
+import { updateCartUI, addToCart } from '../services/cart.js';
 import { getTableZoneName } from '../config/firebase.js';
+import { currentLang } from '../services/i18n.js';
 
 export let clientTable = null;
 export let pendingActionAfterTableSelect = null;
+
+export const HOT_DRINKS_OPTIONS = [
+  { fr: "Café Séparé", en: "Separated Coffee", de: "Getrennter Kaffee" },
+  { fr: "Lait Froid", en: "Cold Milk", de: "Kalte Milch" },
+  { fr: "Lait Chaud", en: "Hot Milk", de: "Warme Milch" },
+  { fr: "Café Noir", en: "Black Coffee", de: "Schwarzer Kaffee" },
+  { fr: "Cappuccino Italien", en: "Italian Cappuccino", de: "Italienischer Cappuccino" },
+  { fr: "Café Cassé", en: "Café Cassé", de: "Café Cassé" },
+  { fr: "Jus d'Orange", en: "Orange Juice", de: "Orangensaft" },
+  { fr: "Lait Cassé", en: "Lait Cassé", de: "Lait Cassé" },
+  { fr: "Café Moitié", en: "Half Coffee", de: "Halber Kaffee" },
+  { fr: "Chocolat au Lait", en: "Milk Chocolate", de: "Milchschokolade" },
+  { fr: "Café Américain", en: "Americano Coffee", de: "Kaffee Americano" },
+  { fr: "Café au Lait", en: "Coffee with Milk", de: "Milchkaffee" },
+  { fr: "Thé à la Menthe", en: "Mint Tea", de: "Minztee" },
+  { fr: "Thé Noir", en: "Black Tea", de: "Schwarzer Tee" },
+  { fr: "Thé Noir au Lait", en: "Black Tea with Milk", de: "Schwarzer Tee mit Milch" },
+  { fr: "Verveine", en: "Verbena Infusion", de: "Eisenkraut Tee" }
+];
+
+export const SIDES_OPTIONS = [
+  { fr: "Légumes sautés", en: "Sautéed vegetables", de: "Sautiertes Gemüse" },
+  { fr: "Riz", en: "Rice", de: "Reis" },
+  { fr: "Frites", en: "French Fries", de: "Pommes Frites" },
+  { fr: "Purée pomme de terre", en: "Mashed potatoes", de: "Kartoffelpüree" },
+  { fr: "Potatos", en: "Potato Wedges", de: "Spaltenkartoffeln" }
+];
+
+export const PASTA_OPTIONS = [
+  { fr: "Rigatoni", en: "Rigatoni", de: "Rigatoni" },
+  { fr: "Tagliatelles", en: "Tagliatelle", de: "Tagliatelle" },
+  { fr: "Spaghettis", en: "Spaghetti", de: "Spaghetti" },
+  { fr: "Linguines", en: "Linguine", de: "Linguine" }
+];
+
+let selectedOptionMenuItem = null;
+
+function renderOptionList(listContainerId, counterId, confirmBtnId, optionsArray, limit, modalEl) {
+  const listContainer = document.getElementById(listContainerId);
+  if (!listContainer) return;
+  listContainer.innerHTML = "";
+
+  const counts = {};
+  optionsArray.forEach((_, idx) => { counts[idx] = 0; });
+
+  function updateListUI() {
+    const totalSelected = Object.values(counts).reduce((a, b) => a + b, 0);
+
+    const counterEl = document.getElementById(counterId);
+    const counterTexts = {
+      fr: `Sélection : ${totalSelected} / ${limit}`,
+      en: `Selection: ${totalSelected} / ${limit}`,
+      de: `Auswahl: ${totalSelected} / ${limit}`
+    };
+    if (counterEl) {
+      counterEl.textContent = counterTexts[currentLang] || counterTexts.fr;
+    }
+
+    const confirmBtn = document.getElementById(confirmBtnId);
+    if (confirmBtn) {
+      confirmBtn.disabled = (totalSelected !== limit);
+    }
+
+    optionsArray.forEach((opt, idx) => {
+      const row = listContainer.querySelector(`[data-index="${idx}"]`);
+      if (row) {
+        const countVal = counts[idx];
+        const countDisplay = row.querySelector(".hdo-qty");
+        const decBtn = row.querySelector(".hdo-dec");
+        const incBtn = row.querySelector(".hdo-inc");
+
+        if (countDisplay) countDisplay.textContent = countVal;
+        if (countVal > 0) {
+          row.classList.add("selected");
+        } else {
+          row.classList.remove("selected");
+        }
+
+        if (decBtn) decBtn.disabled = (countVal === 0);
+        if (incBtn) incBtn.disabled = (totalSelected >= limit);
+      }
+    });
+  }
+
+  optionsArray.forEach((opt, idx) => {
+    const item = document.createElement("div");
+    item.className = "hdo-item";
+    item.dataset.index = idx;
+
+    item.innerHTML = `
+      <div class="hdo-name">${opt[currentLang] || opt.fr}</div>
+      <div style="display: flex; align-items: center; gap: 12px; z-index: 10;">
+        <button class="tgs-btn hdo-dec" style="width: 28px; height: 28px; border-radius: 6px; font-size: 1rem; line-height: 1; aspect-ratio: auto; font-weight: bold; background: var(--bg);" disabled>-</button>
+        <span class="hdo-qty" style="font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--text); min-width: 14px; text-align: center;">0</span>
+        <button class="tgs-btn hdo-inc" style="width: 28px; height: 28px; border-radius: 6px; font-size: 1rem; line-height: 1; aspect-ratio: auto; font-weight: bold; background: var(--bg);">+</button>
+      </div>
+    `;
+
+    const decBtn = item.querySelector(".hdo-dec");
+    const incBtn = item.querySelector(".hdo-inc");
+
+    decBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (counts[idx] > 0) {
+        counts[idx]--;
+        updateListUI();
+      }
+    });
+
+    incBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const totalSelected = Object.values(counts).reduce((a, b) => a + b, 0);
+      if (totalSelected < limit) {
+        counts[idx]++;
+        updateListUI();
+      } else if (limit === 1) {
+        optionsArray.forEach((_, i) => { counts[i] = 0; });
+        counts[idx] = 1;
+        updateListUI();
+      }
+    });
+
+    listContainer.appendChild(item);
+  });
+
+  updateListUI();
+
+  const confirmBtn = document.getElementById(confirmBtnId);
+  if (confirmBtn) {
+    confirmBtn.onclick = () => {
+      const finalChoices = [];
+      optionsArray.forEach((opt, idx) => {
+        const qty = counts[idx];
+        for (let k = 0; k < qty; k++) {
+          finalChoices.push(opt[currentLang] || opt.fr);
+        }
+      });
+
+      if (modalEl) modalEl.style.display = "none";
+      if (selectedOptionMenuItem) {
+        addToCart(selectedOptionMenuItem, finalChoices);
+      }
+    };
+  }
+}
+
+export function openHotDrinkSelectorModal(menuItem) {
+  selectedOptionMenuItem = menuItem;
+  const modal = document.getElementById("hotDrinkModalOverlay");
+  if (!modal) return;
+
+  modal.style.display = "flex";
+
+  const isBrunchDuo = (menuItem.name && menuItem.name.fr === "BRUNCH DUO");
+  const limit = isBrunchDuo ? 2 : 1;
+
+  const titleEl = document.getElementById("hotDrinkModalTitle");
+  const subtitleEl = document.getElementById("hotDrinkModalSubtitle");
+
+  const titles = {
+    fr: isBrunchDuo ? "Sélectionnez 2 Boissons Chaudes" : "Choisissez votre Boisson Chaude",
+    en: isBrunchDuo ? "Select 2 Hot Beverages" : "Choose Your Hot Beverage",
+    de: isBrunchDuo ? "Wählen Sie 2 Heißgetränke" : "Wählen Sie Ihr Heißgetränk"
+  };
+
+  const subtitles = {
+    fr: `Votre menu "${menuItem.name[currentLang] || menuItem.name.fr}" comprend ${limit} boisson(s) chaude(s) au choix.`,
+    en: `Your "${menuItem.name[currentLang] || menuItem.name.fr}" menu includes ${limit} choice(s) of hot beverage.`,
+    de: `Ihr Menü "${menuItem.name[currentLang] || menuItem.name.fr}" beinhaltet ${limit} Heißgetränk(e) nach Wahl.`
+  };
+
+  if (titleEl) titleEl.textContent = titles[currentLang] || titles.fr;
+  if (subtitleEl) subtitleEl.textContent = subtitles[currentLang] || subtitles.fr;
+
+  const closeBtn = document.getElementById("hotDrinkCloseBtn");
+  if (closeBtn) {
+    closeBtn.onclick = () => { modal.style.display = "none"; };
+  }
+
+  renderOptionList("hotDrinksList", "hotDrinkCounter", "hotDrinkConfirmBtn", HOT_DRINKS_OPTIONS, limit, modal);
+}
+
+export function openSidesSelectorModal(menuItem) {
+  selectedOptionMenuItem = menuItem;
+  const modal = document.getElementById("sidesModalOverlay");
+  if (!modal) return;
+
+  modal.style.display = "flex";
+
+  const limit = 2;
+
+  const titleEl = document.getElementById("sidesModalTitle");
+  const subtitleEl = document.getElementById("sidesModalSubtitle");
+
+  const titles = {
+    fr: "Choisissez 2 Accompagnements",
+    en: "Choose 2 Accompaniments",
+    de: "Wählen Sie 2 Beilagen"
+  };
+
+  const subtitles = {
+    fr: `Veuillez sélectionner 2 accompagnements de votre choix pour "${menuItem.name[currentLang] || menuItem.name.fr}".`,
+    en: `Please select 2 accompaniments of your choice for "${menuItem.name[currentLang] || menuItem.name.fr}".`,
+    de: `Bitte wählen Sie 2 Beilagen Ihrer Wahl für "${menuItem.name[currentLang] || menuItem.name.fr}".`
+  };
+
+  if (titleEl) titleEl.textContent = titles[currentLang] || titles.fr;
+  if (subtitleEl) subtitleEl.textContent = subtitles[currentLang] || subtitles.fr;
+
+  const closeBtn = document.getElementById("sidesCloseBtn");
+  if (closeBtn) {
+    closeBtn.onclick = () => { modal.style.display = "none"; };
+  }
+
+  renderOptionList("sidesList", "sidesCounter", "sidesConfirmBtn", SIDES_OPTIONS, limit, modal);
+}
+
+export function openPastaSelectorModal(menuItem) {
+  selectedOptionMenuItem = menuItem;
+  const modal = document.getElementById("pastaModalOverlay");
+  if (!modal) return;
+
+  modal.style.display = "flex";
+
+  const limit = 1;
+
+  const titleEl = document.getElementById("pastaModalTitle");
+  const subtitleEl = document.getElementById("pastaModalSubtitle");
+
+  const titles = {
+    fr: "Choisissez votre type de pâtes",
+    en: "Choose your type of pasta",
+    de: "Wählen Sie Ihre Nudelsorte"
+  };
+
+  const subtitles = {
+    fr: `Veuillez sélectionner le type de pâtes pour votre plat "${menuItem.name[currentLang] || menuItem.name.fr}".`,
+    en: `Please select the pasta type for your "${menuItem.name[currentLang] || menuItem.name.fr}" dish.`,
+    de: `Bitte wählen Sie die Nudelsorte für Ihr Gericht "${menuItem.name[currentLang] || menuItem.name.fr}".`
+  };
+
+  if (titleEl) titleEl.textContent = titles[currentLang] || titles.fr;
+  if (subtitleEl) subtitleEl.textContent = subtitles[currentLang] || subtitles.fr;
+
+  const closeBtn = document.getElementById("pastaCloseBtn");
+  if (closeBtn) {
+    closeBtn.onclick = () => { modal.style.display = "none"; };
+  }
+
+  renderOptionList("pastaList", "pastaCounter", "pastaConfirmBtn", PASTA_OPTIONS, limit, modal);
+}
+
+export function checkItemOptionsAndAdd(menuItem) {
+  if (!menuItem) return;
+  const nameFr = menuItem.name && menuItem.name.fr ? menuItem.name.fr : String(menuItem.name || "");
+  const upperName = nameFr.toUpperCase();
+  const catId = menuItem.categoryId || "";
+
+  // 1. PETIT DÉJEUNER (Breakfast) -> Hot drink selection
+  if (catId === "petit-dejeuner" && upperName !== "MENU ENFANT") {
+    openHotDrinkSelectorModal(menuItem);
+    return;
+  }
+
+  // 2. PASTA -> Pasta type selection
+  if (catId === "pasta" && !upperName.includes("LASAGNE") && !upperName.includes("SPAGHETTIS NOIRS")) {
+    openPastaSelectorModal(menuItem);
+    return;
+  }
+
+  // 3. PLATS / ACCOMPAGNEMENTS -> 2 Sides selection
+  if (catId === "plats" || upperName.includes("ACCOMPAGN")) {
+    openSidesSelectorModal(menuItem);
+    return;
+  }
+
+  // Default: Direct add
+  addToCart(menuItem);
+}
 
 export function setPendingActionAfterTableSelect(action) {
   pendingActionAfterTableSelect = action;

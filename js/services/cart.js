@@ -44,19 +44,25 @@ export function showToast(message) {
   }, 2500);
 }
 
-export function addToCart(menuItem) {
-  const existingIndex = clientCart.findIndex(item => item.id === menuItem.name.fr);
+export function addToCart(menuItem, choices = null) {
+  let cartItemId = menuItem.name.fr;
+  if (choices && choices.length > 0) {
+    cartItemId += `_${choices.join('_')}`;
+  }
+
+  const existingIndex = clientCart.findIndex(item => item.id === cartItemId);
   if (existingIndex !== -1) {
     clientCart[existingIndex].qty += 1;
   } else {
     clientCart.push({
-      id: menuItem.name.fr,
+      id: cartItemId,
       name: menuItem.name,
       categoryNameFr: menuItem.categoryNameFr || "",
       price: parseFloat(menuItem.price) || 0,
       image: menuItem.image,
       qty: 1,
-      note: ""
+      note: "",
+      drinkChoices: choices
     });
   }
   saveClientCart();
@@ -65,7 +71,8 @@ export function addToCart(menuItem) {
     en: "Added to basket !",
     de: "In den Korb gelegt !"
   };
-  showToast(`${menuItem.name[currentLang] || menuItem.name.fr} — ${toastMsgs[currentLang] || toastMsgs.fr}`);
+  const choicesStr = (choices && choices.length > 0) ? ` (${choices.join(', ')})` : '';
+  showToast(`${menuItem.name[currentLang] || menuItem.name.fr}${choicesStr} — ${toastMsgs[currentLang] || toastMsgs.fr}`);
 }
 
 export function updateCartUI() {
