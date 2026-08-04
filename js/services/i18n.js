@@ -3,7 +3,18 @@
  * (Français, English, Deutsch)
  */
 
-export let currentLang = localStorage.getItem("lang") || "fr";
+export function detectPhoneLanguage() {
+  const userLangs = navigator.languages || [navigator.language || navigator.userLanguage || ""];
+  for (const l of userLangs) {
+    const code = (l || "").toLowerCase();
+    if (code.startsWith("en")) return "en";
+    if (code.startsWith("de")) return "de";
+    if (code.startsWith("fr")) return "fr";
+  }
+  return "fr";
+}
+
+export let currentLang = localStorage.getItem("lang") || detectPhoneLanguage();
 
 export const PRIX_TEXTS = {
   fr: "★ Tous les prix sont en dirhams marocains (MAD)",
