@@ -173,9 +173,14 @@ export function setupFloatingButtons() {
 
 export function applySearchFilter() {
   const input = document.getElementById("searchInput");
+  const clearBtn = document.getElementById("searchClearBtn");
   if (!input) return;
 
   const term = (input.value || "").toLowerCase().trim();
+  if (clearBtn) {
+    clearBtn.style.display = term ? "flex" : "none";
+  }
+
   const cards = document.querySelectorAll(".menu-item");
 
   cards.forEach(card => {
@@ -210,10 +215,20 @@ export function applySearchFilter() {
 
 export function activateSearch() {
   const searchInput = document.getElementById("searchInput");
+  const clearBtn = document.getElementById("searchClearBtn");
   if (!searchInput) return;
 
   searchInput.removeEventListener("input", applySearchFilter);
   searchInput.addEventListener("input", applySearchFilter);
+
+  if (clearBtn && !clearBtn._hasClickListener) {
+    clearBtn._hasClickListener = true;
+    clearBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      applySearchFilter();
+      searchInput.focus();
+    });
+  }
 }
 
 export function closeLightbox() {
