@@ -505,15 +505,15 @@
             <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
                 <div style="width:44px;height:44px;border-radius:12px;background:rgba(255,107,0,0.12);border:1px solid rgba(255,107,0,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.3rem;">📍</div>
                 <div>
-                    <h3 style="font-family:'Playfair Display',serif;color:#f0ead8;font-size:1.1rem;margin:0 0 2px;font-weight:600;">Localisation désactivée</h3>
-                    <p style="color:rgba(240,234,216,0.48);font-size:0.75rem;margin:0;">Activez-la pour commander directement depuis votre table</p>
+                    <h3 style="font-family:'Playfair Display',serif;color:#f0ead8;font-size:1.1rem;margin:0 0 2px;font-weight:600;" data-i18n data-fr="Localisation désactivée" data-en="Location disabled" data-de="Standort deaktiviert">Localisation désactivée</h3>
+                    <p style="color:rgba(240,234,216,0.48);font-size:0.75rem;margin:0;" data-i18n data-fr="Activez-la pour commander directement depuis votre table" data-en="Enable it to order directly from your table" data-de="Aktivieren Sie ihn, um direkt von Ihrem Tisch zu bestellen">Activez-la pour commander directement depuis votre table</p>
                     <p id="gpsBlockedHint" style="display:none;font-size:0.72rem;margin:4px 0 0;font-weight:500;">Accès refusé → suivez les étapes ci-dessous</p>
                 </div>
             </div>
             <div style="height:1px;background:rgba(255,255,255,0.06);margin:0 0 16px;"></div>
 
             <!-- Sélection du type de téléphone (Android vs iPhone) -->
-            <p style="color:rgba(240,234,216,0.4);font-size:0.64rem;letter-spacing:0.12em;text-transform:uppercase;margin:0 0 8px;">Comment activer sur votre mobile :</p>
+            <p style="color:rgba(240,234,216,0.4);font-size:0.64rem;letter-spacing:0.12em;text-transform:uppercase;margin:0 0 8px;" data-i18n data-fr="Comment activer sur votre mobile :" data-en="How to enable on your phone:" data-de="So aktivieren Sie es auf Ihrem Telefon:">Comment activer sur votre mobile :</p>
             <div style="display:flex; gap:8px; margin-bottom:16px; background:rgba(255,255,255,0.03); padding:4px; border-radius:10px; border:1px solid rgba(255,255,255,0.06);">
                 <button id="gpsTabAndroid" onclick="GC_switchGpsTab('android')" style="flex:1; padding:8px 10px; border-radius:8px; border:none; background:rgba(201,168,76,0.18); color:#C9A84C; font-family:'DM Sans',sans-serif; font-size:0.76rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; transition:all 0.2s ease;">
                     🤖 Android (Chrome)
@@ -528,22 +528,22 @@
                 <div style="display:flex;align-items:flex-start;gap:12px;">
                     <div style="width:26px;height:26px;border-radius:50%;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.75rem;font-weight:700;color:#C9A84C;">1</div>
                     <div style="padding-top:2px;">
-                        <p style="color:#f0ead8;font-size:0.82rem;margin:0 0 2px;font-weight:500;">Cliquez sur l'icône à gauche du lien</p>
-                        <p style="color:rgba(240,234,216,0.45);font-size:0.74rem;margin:0;">Appuyez sur 🔒 Cadenas ou ⚙️ Réglages (dans la barre d'adresse URL)</p>
+                        <p style="color:#f0ead8;font-size:0.82rem;margin:0 0 2px;font-weight:500;" data-i18n data-fr="Cliquez sur l'icône à gauche du lien" data-en="Click icon to the left of link" data-de="Klicken Sie auf das Symbol links vom Link">Cliquez sur l'icône à gauche du lien</p>
+                        <p style="color:rgba(240,234,216,0.45);font-size:0.74rem;margin:0;" data-i18n data-fr="Appuyez sur 🔒 Cadenas ou ⚙️ Réglages (dans la barre d'adresse URL)" data-en="Tap 🔒 Padlock or ⚙️ Settings (in URL bar)" data-de="Tippen Sie auf 🔒 Schloss oder ⚙️ Einstellungen (in URL-Leiste)">Appuyez sur 🔒 Cadenas ou ⚙️ Réglages (dans la barre d'adresse URL)</p>
                     </div>
                 </div>
                 <div style="display:flex;align-items:flex-start;gap:12px;">
                     <div style="width:26px;height:26px;border-radius:50%;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.75rem;font-weight:700;color:#C9A84C;">2</div>
                     <div style="padding-top:2px;">
-                        <p style="color:#f0ead8;font-size:0.82rem;margin:0 0 2px;font-weight:500;">Autoriser la localisation du site</p>
-                        <p style="color:rgba(240,234,216,0.45);font-size:0.74rem;margin:0;">Allez dans <span style="color:#C9A84C;font-weight:600;">Autorisations du site → Position → Autoriser</span></p>
+                        <p style="color:#f0ead8;font-size:0.82rem;margin:0 0 2px;font-weight:500;" data-i18n data-fr="Autoriser la localisation du site" data-en="Allow site location" data-de="Standort der Website zulassen">Autoriser la localisation du site</p>
+                        <p style="color:rgba(240,234,216,0.45);font-size:0.74rem;margin:0;">Allez dans <span style="color:#C9A84C;font-weight:600;">Autorisations → Position → Autoriser</span></p>
                     </div>
                 </div>
                 <div style="display:flex;align-items:flex-start;gap:12px;">
                     <div style="width:26px;height:26px;border-radius:50%;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.75rem;font-weight:700;color:#C9A84C;">3</div>
                     <div style="padding-top:2px;">
-                        <p style="color:#f0ead8;font-size:0.82rem;margin:0 0 2px;font-weight:500;">Vérifiez les réglages généraux Android</p>
-                        <p style="color:rgba(240,234,216,0.45);font-size:0.74rem;margin:0;">⚙️ Paramètres → Applications → Chrome → Autorisations → Position</p>
+                        <p style="color:#f0ead8;font-size:0.82rem;margin:0 0 2px;font-weight:500;" data-i18n data-fr="Vérifiez les réglages généraux Android" data-en="Check general Android settings" data-de="Allgemeine Android-Einstellungen prüfen">Vérifiez les réglages généraux Android</p>
+                        <p style="color:rgba(240,234,216,0.45);font-size:0.74rem;margin:0;">⚙️ Paramètres → Applications → Chrome → Position</p>
                     </div>
                 </div>
             </div>
@@ -553,21 +553,21 @@
                 <div style="display:flex;align-items:flex-start;gap:12px;">
                     <div style="width:26px;height:26px;border-radius:50%;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.75rem;font-weight:700;color:#C9A84C;">1</div>
                     <div style="padding-top:2px;">
-                        <p style="color:#f0ead8;font-size:0.82rem;margin:0 0 2px;font-weight:500;">Ouvrez les Réglages iPhone</p>
+                        <p style="color:#f0ead8;font-size:0.82rem;margin:0 0 2px;font-weight:500;" data-i18n data-fr="Ouvrez les Réglages iPhone" data-en="Open iPhone Settings" data-de="iPhone-Einstellungen öffnen">Ouvrez les Réglages iPhone</p>
                         <p style="color:rgba(240,234,216,0.45);font-size:0.74rem;margin:0;">⚙️ Réglages → Confidentialité et sécurité → Localisation</p>
                     </div>
                 </div>
                 <div style="display:flex;align-items:flex-start;gap:12px;">
                     <div style="width:26px;height:26px;border-radius:50%;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.75rem;font-weight:700;color:#C9A84C;">2</div>
                     <div style="padding-top:2px;">
-                        <p style="color:#f0ead8;font-size:0.82rem;margin:0 0 2px;font-weight:500;">Service de localisation → Safari</p>
+                        <p style="color:#f0ead8;font-size:0.82rem;margin:0 0 2px;font-weight:500;" data-i18n data-fr="Service de localisation → Safari" data-en="Location Services → Safari" data-de="Ortungsdienste → Safari">Service de localisation → Safari</p>
                         <p style="color:rgba(240,234,216,0.45);font-size:0.74rem;margin:0;">Choisir <span style="color:#C9A84C;font-weight:600;">« Lors de l'utilisation »</span></p>
                     </div>
                 </div>
                 <div style="display:flex;align-items:flex-start;gap:12px;">
                     <div style="width:26px;height:26px;border-radius:50%;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.75rem;font-weight:700;color:#C9A84C;">3</div>
                     <div style="padding-top:2px;">
-                        <p style="color:#f0ead8;font-size:0.82rem;margin:0 0 2px;font-weight:500;">Ou directement dans Safari</p>
+                        <p style="color:#f0ead8;font-size:0.82rem;margin:0 0 2px;font-weight:500;" data-i18n data-fr="Ou directement dans Safari" data-en="Or directly in Safari" data-de="Oder direkt in Safari">Ou directement dans Safari</p>
                         <p style="color:rgba(240,234,216,0.45);font-size:0.74rem;margin:0;">Touchez <span style="color:#C9A84C;font-weight:600;">aA</span> à gauche du lien → Réglages du site → Localisation</p>
                     </div>
                 </div>
@@ -577,17 +577,17 @@
             <div style="display:flex; flex-direction:column; gap:10px;">
                 <!-- Bouton 1 : Activer la localisation -->
                 <button onclick="GC_requestGpsAgain()" style="width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#C9A84C,#a07c2a);border:none;color:#07060a;font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:700;letter-spacing:0.04em;cursor:pointer;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 12px rgba(201,168,76,0.25);">
-                    <span style="font-size:1.1rem;">📍</span> Activer la localisation
+                    <span style="font-size:1.1rem;">📍</span> <span data-i18n data-fr="Activer la localisation" data-en="Enable location" data-de="Standort aktivieren">Activer la localisation</span>
                 </button>
 
-                <!-- Bouton 2 : CONTINUER EN MODE CONSULTATION (Cadre gold & style imposant) -->
+                <!-- Bouton 2 : CONTINUER EN MODE CONSULTATION -->
                 <button onclick="GC_dismissGpsBlocked()" style="width:100%;padding:14px 18px;border-radius:12px;background:rgba(201,168,76,0.14);border:1.5px solid #C9A84C;color:#F5E5C9;font-family:'DM Sans',sans-serif;font-size:0.92rem;font-weight:700;letter-spacing:0.03em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(201,168,76,0.15);transition:all 0.2s ease;-webkit-tap-highlight-color:transparent;">
-                    <span>📖</span> Continuer en mode consultation
+                    <span>📖</span> <span data-i18n data-fr="Continuer en mode consultation" data-en="Continue in view-only mode" data-de="Weiter im Nur-Lese-Modus">Continuer en mode consultation</span>
                 </button>
 
                 <!-- Bouton 3 : Recharger -->
                 <button onclick="location.reload()" style="width:100%;padding:11px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(240,234,216,0.5);font-family:'DM Sans',sans-serif;font-size:0.8rem;cursor:pointer;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center;gap:6px;">
-                    ↩️ Recharger la page
+                    <span data-i18n data-fr="↩️ Recharger la page" data-en="↩️ Reload page" data-de="↩️ Seite neu laden">↩️ Recharger la page</span>
                 </button>
             </div>
         </div>
@@ -609,31 +609,31 @@
             <div style="width:36px;height:3px;background:rgba(255,255,255,0.12);border-radius:2px;margin:0 auto 22px;"></div>
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
                 <div style="background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);border-radius:20px;padding:3px 12px;">
-                    <span style="color:#C9A84C;font-size:0.66rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;">🛒 Précommande</span>
+                    <span style="color:#C9A84C;font-size:0.66rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;" data-i18n data-fr="🛒 Précommande" data-en="🛒 Pre-order" data-de="🛒 Vorbestellung">🛒 Précommande</span>
                 </div>
             </div>
-            <h3 style="font-family:'Playfair Display',serif;color:#f0ead8;font-size:1.25rem;margin:0 0 6px;font-weight:600;">Vous êtes hors du café</h3>
-            <p style="color:rgba(240,234,216,0.48);font-size:0.8rem;margin:0 0 22px;line-height:1.65;">
+            <h3 style="font-family:'Playfair Display',serif;color:#f0ead8;font-size:1.25rem;margin:0 0 6px;font-weight:600;" data-i18n data-fr="Vous êtes hors du café" data-en="You are outside the café" data-de="Sie sind außerhalb des Cafés">Vous êtes hors du café</h3>
+            <p style="color:rgba(240,234,216,0.48);font-size:0.8rem;margin:0 0 22px;line-height:1.65;" data-i18n data-fr="Composez votre commande et envoyez-la via WhatsApp. Elle sera prête à votre arrivée." data-en="Prepare your order and send it via WhatsApp. It will be ready upon your arrival." data-de="Stellen Sie Ihre Bestellung zusammen und senden Sie sie per WhatsApp. Sie ist bei Ihrer Ankunft bereit.">
                 Composez votre commande et envoyez-la via WhatsApp.<br>Elle sera prête à votre arrivée.
             </p>
-            <p style="color:rgba(240,234,216,0.35);font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;margin:0 0 10px;">Mode de réception</p>
+            <p style="color:rgba(240,234,216,0.35);font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;margin:0 0 10px;" data-i18n data-fr="Mode de réception" data-en="Pickup method" data-de="Abholart">Mode de réception</p>
             <div style="display:flex;gap:10px;margin-bottom:18px;">
                 <button id="pmPickup" onclick="GC_selectMode('pickup')" style="flex:1;padding:14px 8px;border-radius:12px;cursor:pointer;background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.2);font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;align-items:center;gap:7px;transition:all 0.2s;-webkit-tap-highlight-color:transparent;">
                     <span style="font-size:1.5rem;">🥡</span>
-                    <span style="font-weight:600;color:#f0ead8;font-size:0.82rem;">À emporter</span>
-                    <span style="font-size:0.65rem;color:rgba(240,234,216,0.35);">Comptoir</span>
+                    <span style="font-weight:600;color:#f0ead8;font-size:0.82rem;" data-i18n data-fr="À emporter" data-en="Takeaway" data-de="Zum Mitnehmen">À emporter</span>
+                    <span style="font-size:0.65rem;color:rgba(240,234,216,0.35);" data-i18n data-fr="Comptoir" data-en="Counter" data-de="Theke">Comptoir</span>
                 </button>
-                <button id="pmTable" onclick="GC_selectMode('table')" style="flex:1;padding:14px 8px;border-radius:12px;cursor:pointer;background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.2);font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;align-items:center;gap:7px;transition:all 0.2s;-webkit-tap-highlight-color:transparent;">
+                <button id="pmTable" onclick="GC_selectMode('table')" style="flex:1;padding:14px 8px;border-radius:12px;cursor:pointer;background:rgba(201,168,76,0.07);border:1.5px solid rgba(201,168,76,0.2);font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;align-items:center;gap:7px;transition:all 0.2s;-webkit-tap-highlight-color:transparent;">
                     <span style="font-size:1.5rem;">🪑</span>
-                    <span style="font-weight:600;color:#f0ead8;font-size:0.82rem;">À table</span>
-                    <span style="font-size:0.65rem;color:rgba(240,234,216,0.35);">À l'arrivée</span>
+                    <span style="font-weight:600;color:#f0ead8;font-size:0.82rem;" data-i18n data-fr="À table" data-en="Dine-in" data-de="Im Café">À table</span>
+                    <span style="font-size:0.65rem;color:rgba(240,234,216,0.35);" data-i18n data-fr="À l'arrivée" data-en="Upon arrival" data-de="Bei Ankunft">À l'arrivée</span>
                 </button>
             </div>
             <div id="pmTableNumWrap" style="display:none;margin-bottom:16px;">
-                <input id="pmTableNumInput" type="number" placeholder="Numéro de table (optionnel)"
+                <input id="pmTableNumInput" type="number" data-i18n-placeholder data-placeholder-fr="Numéro de table (optionnel)" data-placeholder-en="Table number (optional)" data-placeholder-de="Tischnummer (optional)" placeholder="Numéro de table (optionnel)"
                     style="width:100%;padding:11px 14px;box-sizing:border-box;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.18);border-radius:8px;color:#f0ead8;font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;-webkit-appearance:none;">
             </div>
-            <button id="pmConfirm" onclick="GC_confirmMode()" disabled style="width:100%;padding:13px;border-radius:10px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);color:rgba(240,234,216,0.25);font-family:'DM Sans',sans-serif;font-size:0.84rem;font-weight:600;letter-spacing:0.06em;cursor:not-allowed;transition:all 0.3s;-webkit-tap-highlight-color:transparent;">
+            <button id="pmConfirm" onclick="GC_confirmMode()" disabled style="width:100%;padding:13px;border-radius:10px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);color:rgba(240,234,216,0.25);font-family:'DM Sans',sans-serif;font-size:0.84rem;font-weight:600;letter-spacing:0.06em;cursor:not-allowed;transition:all 0.3s;-webkit-tap-highlight-color:transparent;" data-i18n data-fr="Continuer →" data-en="Continue →" data-de="Weiter →">
                 Continuer →
             </button>
             <p style="text-align:center;margin:14px 0 0;">
@@ -641,7 +641,7 @@
                     onmouseover="this.style.background='rgba(201,168,76,0.2)'"
                     onmouseout="this.style.background='rgba(201,168,76,0.12)'"
                     onmousedown="this.style.transform='scale(0.98)'"
-                    onmouseup="this.style.transform='scale(1)'">
+                    onmouseup="this.style.transform='scale(1)'" data-i18n data-fr="Juste consulter le menu" data-en="Just browse the menu" data-de="Nur Speisekarte ansehen">
                     Juste consulter le menu
                 </button>
             </p>

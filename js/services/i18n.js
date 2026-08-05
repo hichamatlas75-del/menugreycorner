@@ -14,7 +14,8 @@ export function detectPhoneLanguage() {
   return "fr";
 }
 
-export let currentLang = localStorage.getItem("lang") || detectPhoneLanguage();
+const manualLang = sessionStorage.getItem("manual_lang");
+export let currentLang = manualLang || detectPhoneLanguage();
 
 export const PRIX_TEXTS = {
   fr: "★ Tous les prix sont en dirhams marocains (MAD)",
@@ -27,6 +28,12 @@ export function applyLanguageToStaticTexts() {
     const value = el.getAttribute(`data-${currentLang}`)
       || el.getAttribute("data-fr");
     if (value !== null) el.textContent = value;
+  });
+
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+    const value = el.getAttribute(`data-placeholder-${currentLang}`)
+      || el.getAttribute("data-placeholder-fr");
+    if (value !== null) el.placeholder = value;
   });
 
   const searchInput = document.getElementById("searchInput");
@@ -44,6 +51,7 @@ export function setLanguage(lang) {
   if (["fr", "en", "de"].includes(lang)) {
     currentLang = lang;
     window.currentLang = lang;
+    sessionStorage.setItem("manual_lang", lang);
     localStorage.setItem("lang", lang);
     document.documentElement.lang = lang;
     applyLanguageToStaticTexts();
