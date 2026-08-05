@@ -21,7 +21,11 @@ export function detectPhoneLanguage() {
 }
 
 const manualLang = sessionStorage.getItem("manual_lang");
-export let currentLang = manualLang || detectPhoneLanguage();
+const detectedLang = manualLang || detectPhoneLanguage();
+
+// currentLang is always fr/en/de for internal i18n; other langs use Google Translate
+export let currentLang = ["fr", "en", "de"].includes(detectedLang) ? detectedLang : "fr";
+export const initialDetectedLang = detectedLang;
 
 export const PRIX_TEXTS = {
   fr: "★ Tous les prix sont en dirhams marocains (MAD)",

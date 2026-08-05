@@ -4,7 +4,7 @@
 
 import { isFirebaseActive, db, dbService, whenAuthReady } from './config/firebase.js';
 import { menuData } from './data/menu-data.js';
-import { currentLang, setLanguage, updatePrixInfo, applyLanguageToStaticTexts, t } from './services/i18n.js';
+import { currentLang, setLanguage, updatePrixInfo, applyLanguageToStaticTexts, t, detectPhoneLanguage, initialDetectedLang } from './services/i18n.js';
 import { GPSService } from './services/gps.js';
 import { initClientCart, saveClientCart, clearCart, addToCart, updateCartUI, showToast } from './services/cart.js';
 import { submitPreOrder } from './services/orders.js';
@@ -22,6 +22,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const table = parseTableFromUrl();
   initClientCart();
   applyLanguageToStaticTexts();
+
+  // Set initial active flag state based on currentLang
+  document.querySelectorAll(".lang-button[data-lang]").forEach(b => {
+    b.classList.toggle("active", b.dataset.lang === currentLang);
+  });
+
   renderMenu();
   setupBurgerMenu();
   setupFloatingButtons();
@@ -88,8 +94,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Automatic startup translation matching phone language
-  const initialLang = detectPhoneLanguage();
-  if (!sessionStorage.getItem("manual_lang") && ["en", "de", "ar", "es", "ru", "zh-CN", "hi", "ja"].includes(initialLang)) {
+  const initialLang = initialDetectedLang;
+  if (!sessionStorage.getItem("manual_lang") && !["fr"].includes(initialLang)) {
     if (["en", "de"].includes(initialLang)) {
       setLanguage(initialLang);
       document.querySelectorAll(".lang-button[data-lang]").forEach(b => {
@@ -98,15 +104,16 @@ document.addEventListener("DOMContentLoaded", () => {
       renderMenu();
       updateCartUI();
     } else {
-      const checkInterval = setInterval(() => {
+      // For ar, es, zh-CN, hi, ja, ru — trigger Google Translate
+      const waitForGT = setInterval(() => {
         const s = document.querySelector(".goog-te-combo");
         if (s) {
           s.value = initialLang;
           s.dispatchEvent(new Event("change"));
-          clearInterval(checkInterval);
+          clearInterval(waitForGT);
         }
-      }, 150);
-      setTimeout(() => clearInterval(checkInterval), 3000);
+      }, 200);
+      setTimeout(() => clearInterval(waitForGT), 5000);
     }
   }
 
