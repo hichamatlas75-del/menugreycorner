@@ -920,7 +920,14 @@ body {
     position: static !important;
 }
 #google_translate_element {
-    display: none !important;
+    position: fixed !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    width: 1px !important;
+    height: 1px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    overflow: hidden !important;
 }
 
 /* Luxury Mobile Language Grid Modal */

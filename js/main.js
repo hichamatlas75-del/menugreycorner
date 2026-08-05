@@ -60,19 +60,20 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.querySelectorAll(".lang-option-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const code = btn.dataset.langCode;
+    btn.addEventListener("click", (e) => {
+      const targetBtn = e.target.closest(".lang-option-btn") || btn;
+      const code = targetBtn.dataset.langCode;
       closeLangModal();
 
       if (["fr", "en", "de"].includes(code)) {
         // Reset Google translate if previously active
         const select = document.querySelector(".goog-te-combo");
-        if (select && select.value && select.value !== "fr") {
+        if (select) {
           select.value = "fr";
           select.dispatchEvent(new Event("change"));
         }
         if (setLanguage(code)) {
-          document.querySelectorAll(".lang-button").forEach(b => {
+          document.querySelectorAll(".lang-button[data-lang]").forEach(b => {
             b.classList.toggle("active", b.dataset.lang === code);
           });
           renderMenu();
@@ -84,6 +85,17 @@ document.addEventListener("DOMContentLoaded", () => {
         if (select) {
           select.value = code;
           select.dispatchEvent(new Event("change"));
+        } else {
+          document.cookie = `googtrans=/fr/${code}; path=/`;
+          const checkInterval = setInterval(() => {
+            const s = document.querySelector(".goog-te-combo");
+            if (s) {
+              s.value = code;
+              s.dispatchEvent(new Event("change"));
+              clearInterval(checkInterval);
+            }
+          }, 150);
+          setTimeout(() => clearInterval(checkInterval), 2500);
         }
       }
     });

@@ -43,6 +43,7 @@ export function applyLanguageToStaticTexts() {
 export function setLanguage(lang) {
   if (["fr", "en", "de"].includes(lang)) {
     currentLang = lang;
+    window.currentLang = lang;
     localStorage.setItem("lang", lang);
     document.documentElement.lang = lang;
     applyLanguageToStaticTexts();
