@@ -55,9 +55,60 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  document.querySelectorAll(".lang-button").forEach(btn => {
-    btn.addEventListener("click", openLangModal);
+  // Direct flag buttons (🇫🇷, 🇬🇧, 🇩🇪) translate DIRECTLY without opening modal
+  document.querySelectorAll(".lang-button[data-lang]").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const lang = btn.dataset.lang;
+      sessionStorage.setItem("manual_lang", lang);
+
+      const select = document.querySelector(".goog-te-combo");
+      if (select && select.value && select.value !== "fr") {
+        select.value = "fr";
+        select.dispatchEvent(new Event("change"));
+      }
+
+      if (setLanguage(lang)) {
+        document.querySelectorAll(".lang-button[data-lang]").forEach(b => {
+          b.classList.toggle("active", b.dataset.lang === lang);
+        });
+        renderMenu();
+        updateCartUI();
+      }
+    });
   });
+
+  // Only Globe button (🌐) opens the world languages modal
+  const gtBtn = document.getElementById("googleTranslateBtn");
+  if (gtBtn) {
+    gtBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openLangModal();
+    });
+  }
+
+  // Automatic startup translation matching phone language
+  const initialLang = detectPhoneLanguage();
+  if (!sessionStorage.getItem("manual_lang") && ["en", "de", "ar", "es", "ru", "zh-CN", "hi", "ja"].includes(initialLang)) {
+    if (["en", "de"].includes(initialLang)) {
+      setLanguage(initialLang);
+      document.querySelectorAll(".lang-button[data-lang]").forEach(b => {
+        b.classList.toggle("active", b.dataset.lang === initialLang);
+      });
+      renderMenu();
+      updateCartUI();
+    } else {
+      const checkInterval = setInterval(() => {
+        const s = document.querySelector(".goog-te-combo");
+        if (s) {
+          s.value = initialLang;
+          s.dispatchEvent(new Event("change"));
+          clearInterval(checkInterval);
+        }
+      }, 150);
+      setTimeout(() => clearInterval(checkInterval), 3000);
+    }
+  }
 
   document.querySelectorAll(".lang-option-btn").forEach(btn => {
     btn.addEventListener("click", (e) => {
@@ -66,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
       closeLangModal();
 
       if (["fr", "en", "de"].includes(code)) {
-        // Reset Google translate if previously active
+        sessionStorage.setItem("manual_lang", code);
         const select = document.querySelector(".goog-te-combo");
         if (select) {
           select.value = "fr";
@@ -80,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
           updateCartUI();
         }
       } else {
-        // Programmatically trigger Google Translate for ar, es, zh-CN, hi, ja, ru
+        sessionStorage.setItem("manual_lang", code);
         const select = document.querySelector(".goog-te-combo");
         if (select) {
           select.value = code;
