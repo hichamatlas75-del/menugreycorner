@@ -39,7 +39,94 @@ document.addEventListener("DOMContentLoaded", () => {
     subscribeToActiveWaiterEvents(table);
   }
 
-  // Language selector modal setup
+  // ============================================================
+  //  LANGUAGE SYSTEM — Clean separation: Internal i18n vs Google Translate
+  // ============================================================
+
+  /**
+   * Reset Google Translate back to original (French).
+   * Removes the googtrans cookie and resets the combo.
+   * Returns a Promise that resolves after GT has been reset.
+   */
+  function resetGoogleTranslate() {
+    return new Promise((resolve) => {
+      // Clear googtrans cookies
+      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + location.hostname;
+
+      const select = document.querySelector(".goog-te-combo");
+      if (select && select.value && select.value !== "") {
+        select.value = "";
+        select.dispatchEvent(new Event("change"));
+        // Give Google Translate time to revert the DOM
+        setTimeout(resolve, 350);
+      } else {
+        resolve();
+      }
+    });
+  }
+
+  /**
+   * Trigger Google Translate to a specific language code.
+   */
+  function triggerGoogleTranslate(langCode) {
+    const select = document.querySelector(".goog-te-combo");
+    if (select) {
+      select.value = langCode;
+      select.dispatchEvent(new Event("change"));
+    } else {
+      // GT not loaded yet — set cookie and poll
+      document.cookie = `googtrans=/fr/${langCode}; path=/`;
+      const poll = setInterval(() => {
+        const s = document.querySelector(".goog-te-combo");
+        if (s) {
+          s.value = langCode;
+          s.dispatchEvent(new Event("change"));
+          clearInterval(poll);
+        }
+      }, 200);
+      setTimeout(() => clearInterval(poll), 5000);
+    }
+  }
+
+  /**
+   * Switch to an internal language (fr, en, de).
+   * First resets Google Translate if active, then applies internal i18n.
+   */
+  function switchToInternalLang(lang) {
+    sessionStorage.setItem("manual_lang", lang);
+
+    resetGoogleTranslate().then(() => {
+      if (setLanguage(lang)) {
+        document.querySelectorAll(".lang-button[data-lang]").forEach(b => {
+          b.classList.toggle("active", b.dataset.lang === lang);
+        });
+        renderMenu();
+        updateCartUI();
+      }
+    });
+  }
+
+  /**
+   * Switch to a Google Translate language (ar, es, zh-CN, hi, ja, ru).
+   * Sets internal lang to "fr" first, then triggers GT.
+   */
+  function switchToGoogleTranslateLang(langCode) {
+    sessionStorage.setItem("manual_lang", langCode);
+
+    // Ensure internal state is French (base for GT)
+    setLanguage("fr");
+    document.querySelectorAll(".lang-button[data-lang]").forEach(b => {
+      b.classList.remove("active");
+    });
+    renderMenu();
+    updateCartUI();
+
+    // Then trigger Google Translate on the fresh French DOM
+    setTimeout(() => triggerGoogleTranslate(langCode), 100);
+  }
+
+  // --- Modal setup ---
   const langModalOverlay = document.getElementById("langModalOverlay");
   const langCloseBtn = document.getElementById("langCloseBtn");
 
@@ -61,30 +148,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Direct flag buttons (🇫🇷, 🇬🇧, 🇩🇪) translate DIRECTLY without opening modal
+  // --- Direct flag buttons (🇫🇷 🇬🇧 🇩🇪) → translate DIRECTLY ---
   document.querySelectorAll(".lang-button[data-lang]").forEach(btn => {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
-      const lang = btn.dataset.lang;
-      sessionStorage.setItem("manual_lang", lang);
-
-      const select = document.querySelector(".goog-te-combo");
-      if (select && select.value && select.value !== "fr") {
-        select.value = "fr";
-        select.dispatchEvent(new Event("change"));
-      }
-
-      if (setLanguage(lang)) {
-        document.querySelectorAll(".lang-button[data-lang]").forEach(b => {
-          b.classList.toggle("active", b.dataset.lang === lang);
-        });
-        renderMenu();
-        updateCartUI();
-      }
+      switchToInternalLang(btn.dataset.lang);
     });
   });
 
-  // Only Globe button (🌐) opens the world languages modal
+  // --- Globe button (🌐) → opens modal ---
   const gtBtn = document.getElementById("googleTranslateBtn");
   if (gtBtn) {
     gtBtn.addEventListener("click", (e) => {
@@ -93,18 +165,28 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Automatic startup translation matching phone language
+  // --- Modal language buttons ---
+  document.querySelectorAll(".lang-option-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const targetBtn = e.target.closest(".lang-option-btn") || btn;
+      const code = targetBtn.dataset.langCode;
+      closeLangModal();
+
+      if (["fr", "en", "de"].includes(code)) {
+        switchToInternalLang(code);
+      } else {
+        switchToGoogleTranslateLang(code);
+      }
+    });
+  });
+
+  // --- Automatic startup: match phone language ---
   const initialLang = initialDetectedLang;
-  if (!sessionStorage.getItem("manual_lang") && !["fr"].includes(initialLang)) {
+  if (!sessionStorage.getItem("manual_lang") && initialLang !== "fr") {
     if (["en", "de"].includes(initialLang)) {
-      setLanguage(initialLang);
-      document.querySelectorAll(".lang-button[data-lang]").forEach(b => {
-        b.classList.toggle("active", b.dataset.lang === initialLang);
-      });
-      renderMenu();
-      updateCartUI();
+      switchToInternalLang(initialLang);
     } else {
-      // For ar, es, zh-CN, hi, ja, ru — trigger Google Translate
+      // ar, es, zh-CN, hi, ja, ru → wait for GT to load
       const waitForGT = setInterval(() => {
         const s = document.querySelector(".goog-te-combo");
         if (s) {
@@ -116,48 +198,6 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => clearInterval(waitForGT), 5000);
     }
   }
-
-  document.querySelectorAll(".lang-option-btn").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      const targetBtn = e.target.closest(".lang-option-btn") || btn;
-      const code = targetBtn.dataset.langCode;
-      closeLangModal();
-
-      if (["fr", "en", "de"].includes(code)) {
-        sessionStorage.setItem("manual_lang", code);
-        const select = document.querySelector(".goog-te-combo");
-        if (select) {
-          select.value = "fr";
-          select.dispatchEvent(new Event("change"));
-        }
-        if (setLanguage(code)) {
-          document.querySelectorAll(".lang-button[data-lang]").forEach(b => {
-            b.classList.toggle("active", b.dataset.lang === code);
-          });
-          renderMenu();
-          updateCartUI();
-        }
-      } else {
-        sessionStorage.setItem("manual_lang", code);
-        const select = document.querySelector(".goog-te-combo");
-        if (select) {
-          select.value = code;
-          select.dispatchEvent(new Event("change"));
-        } else {
-          document.cookie = `googtrans=/fr/${code}; path=/`;
-          const checkInterval = setInterval(() => {
-            const s = document.querySelector(".goog-te-combo");
-            if (s) {
-              s.value = code;
-              s.dispatchEvent(new Event("change"));
-              clearInterval(checkInterval);
-            }
-          }, 150);
-          setTimeout(() => clearInterval(checkInterval), 2500);
-        }
-      }
-    });
-  });
 
   // Allow clicking table badge in cart header to pick/change table
   const tableBadge = document.getElementById("cdTableBadge");
