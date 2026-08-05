@@ -909,16 +909,43 @@ header {
 .lang-button.active { background: var(--gold); color: #000; border: none; transform: scale(1.06); }
 .lang-button:hover { border-color: var(--gold); }
 
-/* Hide Google Translate Banners & Default Popups Completely */
-.goog-te-banner-frame.skiptranslate, .goog-te-banner-frame, iframe.goog-te-banner-frame, .goog-te-menu-frame, .VIpgJd-yD05ef-Lgbdpd-oJeWuf {
+/* Hide Google Translate Banners, Popups, Frames & Tooltips Completely */
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame,
+.goog-te-menu-frame,
+#goog-gt-tt,
+#goog-gt-tt *,
+.goog-te-balloon-frame,
+.goog-tooltip,
+.goog-tooltip:hover,
+.goog-text-highlight,
+.VIpgJd-yD05ef-Lgbdpd-oJeWuf,
+.VIpgJd-yD05ef-t5es21-ti6h9d,
+.VIpgJd-yD05ef-O226b,
+.VIpgJd-yD05ef-ibnAvc-wT6PTe-W308lh,
+div[id*="goog-gt-"] {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
+    pointer-events: none !important;
+    height: 0 !important;
+    width: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
 }
+
 body {
     top: 0px !important;
     position: static !important;
 }
+
+font {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
 #google_translate_element {
     position: fixed !important;
     left: -9999px !important;
