@@ -909,36 +909,59 @@ header {
 .lang-button.active { background: var(--gold); color: #000; border: none; transform: scale(1.06); }
 .lang-button:hover { border-color: var(--gold); }
 
-/* Google Translate Popup & Hide Top Banner */
-.goog-te-banner-frame.skiptranslate, .goog-te-banner-frame {
+/* Hide Google Translate Banners & Default Popups Completely */
+.goog-te-banner-frame.skiptranslate, .goog-te-banner-frame, iframe.goog-te-banner-frame, .goog-te-menu-frame, .VIpgJd-yD05ef-Lgbdpd-oJeWuf {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
 }
 body {
     top: 0px !important;
+    position: static !important;
 }
 #google_translate_element {
-    display: none;
-    position: fixed;
-    bottom: 90px;
-    right: 70px;
-    z-index: 99999;
-    background: #1A1412;
-    border: 1px solid rgba(201, 168, 76, 0.4);
-    border-radius: 12px;
-    padding: 10px 14px;
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    display: none !important;
 }
-#google_translate_element .goog-te-gadget-simple {
-    background: transparent !important;
-    border: none !important;
-    font-family: 'DM Sans', 'Poppins', sans-serif !important;
-    font-size: 0.85rem !important;
-    padding: 0 !important;
+
+/* Luxury Mobile Language Grid Modal */
+.lang-grid-modal {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    overflow-y: auto;
+    max-height: 380px;
+    padding: 2px;
 }
-#google_translate_element .goog-te-gadget-simple .goog-te-menu-value span {
-    color: #E2C97E !important;
+.lang-option-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--card);
+    border: 1px solid rgba(201, 168, 76, 0.25);
+    border-radius: 14px;
+    color: var(--text);
+    font-family: 'DM Sans', 'Poppins', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+.lang-option-btn:hover, .lang-option-btn.active {
+    background: rgba(201, 168, 76, 0.12);
+    border-color: var(--gold);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(201, 168, 76, 0.18);
+}
+.lang-option-btn .flag {
+    font-size: 1.35rem;
+    line-height: 1;
+}
+.lang-option-btn .lang-name {
+    flex: 1;
+    text-align: left;
 }
 
 /* =========================================

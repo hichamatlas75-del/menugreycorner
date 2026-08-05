@@ -33,30 +33,61 @@ document.addEventListener("DOMContentLoaded", () => {
     subscribeToActiveWaiterEvents(table);
   }
 
-  // Active language button state on load
-  document.querySelectorAll(".lang-button[data-lang]").forEach(btn => {
-    btn.classList.toggle("active", btn.dataset.lang === currentLang);
+  // Language selector modal setup
+  const langModalOverlay = document.getElementById("langModalOverlay");
+  const langCloseBtn = document.getElementById("langCloseBtn");
+
+  function openLangModal() {
+    if (langModalOverlay) langModalOverlay.style.display = "flex";
+  }
+
+  function closeLangModal() {
+    if (langModalOverlay) langModalOverlay.style.display = "none";
+  }
+
+  if (langCloseBtn) {
+    langCloseBtn.addEventListener("click", closeLangModal);
+  }
+
+  if (langModalOverlay) {
+    langModalOverlay.addEventListener("click", (e) => {
+      if (e.target === langModalOverlay) closeLangModal();
+    });
+  }
+
+  document.querySelectorAll(".lang-button").forEach(btn => {
+    btn.addEventListener("click", openLangModal);
+  });
+
+  document.querySelectorAll(".lang-option-btn").forEach(btn => {
     btn.addEventListener("click", () => {
-      const lang = btn.dataset.lang;
-      if (setLanguage(lang)) {
-        document.querySelectorAll(".lang-button").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        renderMenu();
-        updateCartUI();
+      const code = btn.dataset.langCode;
+      closeLangModal();
+
+      if (["fr", "en", "de"].includes(code)) {
+        // Reset Google translate if previously active
+        const select = document.querySelector(".goog-te-combo");
+        if (select && select.value && select.value !== "fr") {
+          select.value = "fr";
+          select.dispatchEvent(new Event("change"));
+        }
+        if (setLanguage(code)) {
+          document.querySelectorAll(".lang-button").forEach(b => {
+            b.classList.toggle("active", b.dataset.lang === code);
+          });
+          renderMenu();
+          updateCartUI();
+        }
+      } else {
+        // Programmatically trigger Google Translate for ar, es, zh-CN, hi, ja, ru
+        const select = document.querySelector(".goog-te-combo");
+        if (select) {
+          select.value = code;
+          select.dispatchEvent(new Event("change"));
+        }
       }
     });
   });
-
-  const gtBtn = document.getElementById("googleTranslateBtn");
-  if (gtBtn) {
-    gtBtn.addEventListener("click", () => {
-      const gEl = document.getElementById("google_translate_element");
-      if (gEl) {
-        const isShown = gEl.style.display === "block";
-        gEl.style.display = isShown ? "none" : "block";
-      }
-    });
-  }
 
   // Allow clicking table badge in cart header to pick/change table
   const tableBadge = document.getElementById("cdTableBadge");
