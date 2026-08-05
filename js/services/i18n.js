@@ -1,6 +1,6 @@
 /**
  * GREY CORNER — TRILINGUAL I18N SERVICE (ES Module)
- * (Français, English, Deutsch)
+ * Pure FR / EN / DE — No Google Translate dependency
  */
 
 export function detectPhoneLanguage() {
@@ -9,23 +9,12 @@ export function detectPhoneLanguage() {
     const code = (l || "").toLowerCase();
     if (code.startsWith("en")) return "en";
     if (code.startsWith("de")) return "de";
-    if (code.startsWith("ar")) return "ar";
-    if (code.startsWith("es")) return "es";
-    if (code.startsWith("ru")) return "ru";
-    if (code.startsWith("zh")) return "zh-CN";
-    if (code.startsWith("hi")) return "hi";
-    if (code.startsWith("ja")) return "ja";
     if (code.startsWith("fr")) return "fr";
   }
   return "fr";
 }
 
-const manualLang = sessionStorage.getItem("manual_lang");
-const detectedLang = manualLang || detectPhoneLanguage();
-
-// currentLang is always fr/en/de for internal i18n; other langs use Google Translate
-export let currentLang = ["fr", "en", "de"].includes(detectedLang) ? detectedLang : "fr";
-export const initialDetectedLang = detectedLang;
+export let currentLang = localStorage.getItem("lang") || detectPhoneLanguage();
 
 export const PRIX_TEXTS = {
   fr: "★ Tous les prix sont en dirhams marocains (MAD)",
@@ -55,7 +44,6 @@ export function setLanguage(lang) {
   if (["fr", "en", "de"].includes(lang)) {
     currentLang = lang;
     window.currentLang = lang;
-    sessionStorage.setItem("manual_lang", lang);
     localStorage.setItem("lang", lang);
     document.documentElement.lang = lang;
     applyLanguageToStaticTexts();
