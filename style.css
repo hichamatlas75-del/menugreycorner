@@ -32,6 +32,11 @@
 ========================================= */
 *, *::before, *::after { box-sizing: border-box; }
 
+button, input, select, textarea, a, .sc-btn, .category-drawer-header, .add-to-cart-btn, .cab-btn {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
 html.no-scroll,
 body.no-scroll {
     overflow: hidden !important;
@@ -699,7 +704,9 @@ header {
     height: 180px;
     background-size: cover !important;
     background-position: center !important;
-    background-color: #000;
+    background-color: #1a1716;
+    background-image: linear-gradient(90deg, #181514 25%, #282320 50%, #181514 75%);
+    background-size: 200% 100%;
     pointer-events: none;
     user-select: none;
     position: relative;
@@ -718,7 +725,7 @@ header {
     min-width: 0;
     white-space: normal;
     word-break: break-word;
-    font-size: 1.25rem;
+    font-size: clamp(1.05rem, 2.8vw, 1.25rem);
     font-weight: 700;
     font-family: 'Playfair Display', serif;
     letter-spacing: 0.5px;
@@ -1282,9 +1289,9 @@ footer a:hover { opacity: 0.8; }
     transform: scale(0.9);
 }
 
-/* Adjust body padding for fixed bottom bar */
+/* Adjust body padding for fixed bottom bar & iOS Safe Area */
 body {
-    padding-bottom: 84px !important;
+    padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)) !important;
 }
 
 /* --- Bottom Quick Action Bar --- */
@@ -1295,7 +1302,7 @@ body {
     transform: translateX(-50%);
     width: 100%;
     max-width: 600px;
-    height: 74px;
+    height: calc(74px + env(safe-area-inset-bottom, 0px));
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(252, 250, 246, 0.98) 100%);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -1304,7 +1311,7 @@ body {
     border-top-right-radius: 20px;
     box-shadow: 0 -8px 32px rgba(45, 35, 33, 0.08), 0 0 20px rgba(189, 30, 45, 0.05);
     z-index: 9999;
-    padding: 6px 12px 14px;
+    padding: 6px 12px calc(14px + env(safe-area-inset-bottom, 0px));
     box-sizing: border-box;
 }
 
@@ -1500,6 +1507,8 @@ body {
 .cd-body {
     flex: 1;
     overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     padding: 16px 20px;
     box-sizing: border-box;
 }
@@ -1680,7 +1689,7 @@ body {
 
 /* --- Drawer Footer --- */
 .cd-footer {
-    padding: 16px 20px 24px;
+    padding: 16px 20px calc(24px + env(safe-area-inset-bottom, 0px));
     border-top: 1px solid var(--sc-border);
     box-sizing: border-box;
 }
@@ -2714,5 +2723,27 @@ button, .sc-btn, .add-to-cart-btn, .category-drawer-header, .tgs-btn {
     }
     .sc-btn .sc-label {
         font-size: 5.5px;
+    }
+}
+
+/* =========================================
+   MICRO-INTERACTIONS & ACCESSIBILITY
+========================================= */
+@keyframes badgePop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.25); }
+    100% { transform: scale(1); }
+}
+
+.cab-badge.pop, .cart-counter.pop {
+    animation: badgePop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
 }
