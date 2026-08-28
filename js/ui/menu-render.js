@@ -342,7 +342,7 @@ export function renderMenu() {
     const categoryId = category.id || category.category.fr.toLowerCase().replace(/[^a-z0-9]+/g, "-");
     const bannerImg = (category.items && category.items.length > 0)
         ? category.items[0].image
-        : "images/logo-gold.png";
+        : "images/logo-gold.webp";
 
     const drawer = document.createElement("div");
     drawer.className = "category-drawer";

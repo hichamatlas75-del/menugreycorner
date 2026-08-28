@@ -64,7 +64,7 @@ a { text-decoration: none; color: inherit; }
 header {
     height: 270px;
     position: relative;
-    background-image: url("images/header-bg.jpg");
+    background-image: url("images/header-bg.webp");
     background-size: cover;
     background-position: center 40%;
     overflow: hidden;

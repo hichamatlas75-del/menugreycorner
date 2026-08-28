@@ -22,7 +22,7 @@ export const menuData = [
           de: "Paniertes Hähnchen, Kroketten, hausgemachtes Croque, Käseomelett, Aufschnitt, Käse, Roggenbrot, Beldi (2 Mlaoui, 2 Harcha), Mesclun-Salat, Muffin, Waffel, 2 Orangensäfte, 2 Heißgetränke nach Wahl, 2 Desserts und 2 Mineralwasser."
         },
         price: "144",
-        image: "images/petit-dej-duo.jpg"
+        image: "images/petit-dej-duo.webp"
       },
       {
         name: { fr: "BRUNCH GREYCORNER", en: "GREYCORNER BRUNCH", de: "GREYCORNER BRUNCH" },
@@ -32,7 +32,7 @@ export const menuData = [
           de: "Würstchen, Omelett, Käse, holländischer Toast, Käsekroketten, Aufschnitt, Roggenbrot, Mesclun-Salat, Waffel, Pfannkuchen, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser."
         },
         price: "85",
-        image: "images/petit-dej-gc.jpg"
+        image: "images/petit-dej-gc.webp"
       },
       {
         name: { fr: "AMERICAIN", en: "AMERICAN", de: "Amerikanisch" },
@@ -42,7 +42,7 @@ export const menuData = [
           de: "Bacon, Avocado, 2 Eier,  Käse, Getreidebrot, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser."
         },
         price: "68",
-        image: "images/petit-dej-americain.jpg",
+        image: "images/petit-dej-americain.webp",
         isNew: true
       },
       {
@@ -53,7 +53,7 @@ export const menuData = [
           de: "Lachs, Avocado, Käse, Getreidebrot, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser."
         },
         price: "68",
-        image: "images/petit-dej-norvegien.jpg"
+        image: "images/petit-dej-norvegien.webp"
       },
       {
         name: { fr: "ESPAGNOL", en: "SPANISH", de: "SPANISCH" },
@@ -63,7 +63,7 @@ export const menuData = [
           de: "Tortilla, Kroketten, Tapenade, Thunfisch, frische Tomaten, Käse, Roggenbrot, Mesclun-Salat, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser."
         },
         price: "64",
-        image: "images/petit-dej-espagnol.jpg"
+        image: "images/petit-dej-espagnol.webp"
       },
       {
         name: { fr: "MQUILA MERGUEZ", en: "MQUILA Merguez sausage ", de: "MQUILA Merguez-Wurst" },
@@ -73,7 +73,7 @@ export const menuData = [
           de: "Merguez, Paprika, Zwiebeln, Kirschtomaten, zwei Eier, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser."
         },
         price: "64",
-        image: "images/petit-dej-mquila.jpg"
+        image: "images/petit-dej-mquila.webp"
       },
       {
         name: { fr: "MQUILA-fruits de mer", en: "MQUILA-SEAFOOD", de: "MQUILA-Meeresfrüchte" },
@@ -83,7 +83,7 @@ export const menuData = [
           de: "Garnelen, Tintenfisch, Muscheln, Zwiebeln, zwei Eier, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser."
         },
         price: "78",
-        image: "images/petit-dej-mquila-fruitmer.jpg",
+        image: "images/petit-dej-mquila-fruitmer.webp",
         isNew: true
       },
 
@@ -95,7 +95,7 @@ export const menuData = [
           de: "3-Eier-Omelett, Pilze, Spinat, Käse, Mesclun-Salat, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser (Zusatz Freilandeier 05 DH)."
         },
         price: "58",
-        image: "images/petit-dej-chef.jpg"
+        image: "images/petit-dej-chef.webp"
       },
       {
         name: { fr: "HOLLANDAIS", en: "DUTCH", de: "HOLLÄNDISCH" },
@@ -105,7 +105,7 @@ export const menuData = [
           de: "Vollkorn-Toastbrot mit zwei Spiegeleiern, Käse, geräucherter Pute, Mesclun-Salat, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser."
         },
         price: "52",
-        image: "images/petit-dej-hollandais.jpg"
+        image: "images/petit-dej-hollandais.webp"
       },
       {
         name: { fr: "OMELETTE VEGETARIENNE", en: "VEGETARIAN OMELETTE", de: "VEGETARISCHES OMELETT" },
@@ -115,7 +115,7 @@ export const menuData = [
           de: "3-Eier-Omelett, Gemüse, Mesclun-Salat, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser (Zusatz Freilandeier 05 DH)."
         },
         price: "52",
-        image: "images/petit-dej-veg.jpg"
+        image: "images/petit-dej-veg.webp"
       },
       {
         name: { fr: "BERBÈRE", en: "BERBER", de: "BERBER" },
@@ -125,7 +125,7 @@ export const menuData = [
           de: "Baghrir, Amlou, Trockenfrüchte, Jben (Frischkäse), Honig, Banane, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser."
         },
         price: "54",
-        image: "images/petit-dej-berbere.jpg"
+        image: "images/petit-dej-berbere.webp"
       },
       {
         name: { fr: "COMPAGNAD", en: "COPAGNARD", de: "COMPAGNAR" },
@@ -135,7 +135,7 @@ export const menuData = [
           de: "3 Rühreier, 3 Sorten Aufschnitt, 2 Stücke Schokoladenkuchen, Roggenbrot, Olivenöl, schwarze Oliven , Mesclun-Salat, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser."
         },
         price: "52",
-        image: "images/petit-dej-compagnard.jpg",
+        image: "images/petit-dej-compagnard.webp",
         isNew: true
       },
       {
@@ -146,7 +146,7 @@ export const menuData = [
           de: "Khli3 (Trockenfleisch), drei Spiegeleier, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser (Zusatz Freilandeier 5 DH)."
         },
         price: "55",
-        image: "images/petit-dej-fassi.jpg"
+        image: "images/petit-dej-fassi.webp"
       },
       {
         name: { fr: "OMELETTE CONTINENTAL", en: "CONTINENTAL OMELETTE", de: "CONTINENTALES OMELETT" },
@@ -156,7 +156,7 @@ export const menuData = [
           de: "3-Eier-Omelett, Aufschnitt, Käse, Mesclun-Salat, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser (Zusatz Freilandeier 5 DH)."
         },
         price: "52",
-        image: "images/petit-dej-cont.jpg"
+        image: "images/petit-dej-cont.webp"
       },
       {
         name: { fr: "OMELETTE FROMAGE", en: "CHEESE OMELETTE", de: "KÄSE-OMELETT" },
@@ -166,7 +166,7 @@ export const menuData = [
           de: "3-Ei-Omelett, Käse, gemischter Salat, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser"
         },
         price: "52",
-        image: "images/omelette-fromage.jpg"
+        image: "images/omelette-fromage.webp"
       },
       {
         name: { fr: "BELDI", en: "BELDI", de: "BELDI" },
@@ -176,7 +176,7 @@ export const menuData = [
           de: "Zwei Mlaoui, zwei Harcha, ein Baghrir, Jben (Frischkäse), Olivenöl, Honig, schwarze Oliven, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser."
         },
         price: "45",
-        image: "images/petit-dej-beldi.jpg"
+        image: "images/petit-dej-beldi.webp"
       },
       {
         name: { fr: "OMELETTE NATURE", en: "PLAIN OMELETTE", de: "NATUR-OMELETT" },
@@ -186,7 +186,7 @@ export const menuData = [
           de: "3-Ei-Omelett, gemischter Salat, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser"
         },
         price: "42",
-        image: "images/omelette-nature.jpg"
+        image: "images/omelette-nature.webp"
       },
       {
         name: { fr: "LIGHT", en: "LIGHT", de: "LEICHT" },
@@ -196,7 +196,7 @@ export const menuData = [
           de: "Getoastetes Vollkornbrot, Jben (Frischkäse), Olivenöl, Amlou (Nussaufstrich), schwarze Oliven, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser."
         },
         price: "42",
-        image: "images/petit-dej-light.jpg"
+        image: "images/petit-dej-light.webp"
       },
       {
         name: { fr: "EXPRESS", en: "EXPRESS", de: "EXPRESS" },
@@ -206,7 +206,7 @@ export const menuData = [
           de: "Korb mit vier Gebäckstücken, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser."
         },
         price: "44",
-        image: "images/petit-dej-express.jpg"
+        image: "images/petit-dej-express.webp"
       },
       {
         name: { fr: "MENU ENFANT", en: "KIDS MENU", de: "KINDERMENÜ" },
@@ -216,7 +216,7 @@ export const menuData = [
           de: "Käsetoast, oder Nutella Crêpe, oder Waffel, oder Pfannkuchen, Cornflakes, Schokomilch."
         },
         price: "40",
-        image: "images/menu-enfant-pdj.jpg"
+        image: "images/menu-enfant-pdj.webp"
       }
     ]
   },
@@ -240,7 +240,7 @@ export const menuData = [
           de: "Burrata, Tomate, Walnüsse, Rucola, Balsamico-Essig."
         },
         price: "98",
-        image: "images/entree-burrata.jpg"
+        image: "images/entree-burrata.webp"
       },
       {
         name: { fr: "TERRE MER", en: "SURF & TURF", de: "SURF & TURF" },
@@ -250,7 +250,7 @@ export const menuData = [
           de: "Tintenfisch, Garnelen, paniertes Hähnchen, Salat, Mais, Kirschtomate, Soße des Chefkochs."
         },
         price: "78",
-        image: "images/entree-terremer.jpg"
+        image: "images/entree-terremer.webp"
       },
       {
         name: { fr: "TARTARE SAUMON  ", en: "Salmon tartare", de: "Lachstatar" },
@@ -260,7 +260,7 @@ export const menuData = [
           de: "Frischer Lachs, geräucherter Lachs, Avocado, Tartarsauce."
         },
         price: "88",
-        image: "images/entree-tartare.png",
+        image: "images/entree-tartare.webp",
         isNew: true
       },
       {
@@ -271,7 +271,7 @@ export const menuData = [
           de: "Verschiedener Quinoa, Garnelen, Brunoise, Apfel, Kiwi, Mango, Ananas, Minze, Honig-Senf-Soße."
         },
         price: "68",
-        image: "images/entree-quinoa.jpg"
+        image: "images/entree-quinoa.webp"
       },
       {
         name: { fr: "CESAR", en: "CAESAR", de: "CAESAR" },
@@ -281,7 +281,7 @@ export const menuData = [
           de: "Hähnchenwurst, Parmesan, Kirschtomate, Crouton, Römersalat, Caesar-Soße."
         },
         price: "65",
-        image: "images/entree-caesar.jpg"
+        image: "images/entree-caesar.webp"
       },
       {
         name: { fr: "RUSSE", en: "RUSSIAN", de: "RUSSISCH" },
@@ -291,7 +291,7 @@ export const menuData = [
           de: "Kartoffel, Karotte, Hähnchen, Thunfisch, Erbsen, Wachtelei."
         },
         price: "54",
-        image: "images/entree-russe.jpg"
+        image: "images/entree-russe.webp"
       },
       {
         name: { fr: "CERCLE VEGGI", en: "VEGGI CIRCLE", de: "VEGGI KREIS" },
@@ -301,7 +301,7 @@ export const menuData = [
           de: "Rohkost des Tages, Thunfisch, Ei, Salat, Mesclun."
         },
         price: "48",
-        image: "images/entree-veggi.jpg"
+        image: "images/entree-veggi.webp"
       }
     ]
   },
@@ -325,7 +325,7 @@ export const menuData = [
           de: "Kartoffelpüree, Garnelen paniert mit weißem Sesam."
         },
         price: "68",
-        image: "images/entree-croustillon.jpg"
+        image: "images/entree-croustillon.webp"
       },
       {
         name: { fr: "PIL PIL ESPAGNOL", en: "SPANISH PIL PIL", de: "SPANISCHES PIL PIL" },
@@ -335,7 +335,7 @@ export const menuData = [
           de: "Garnelen, Olivenöl, scharfe Paprika, Schnittlauch, Kirschtomate."
         },
         price: "68",
-        image: "images/entree-pilpil.jpg"
+        image: "images/entree-pilpil.webp"
       },
       {
         name: { fr: "BOULETTES DE POULET FROMAGE", en: "Chicken meatball with cheese", de: "Hähnchenfleischbällchen mit Käse" },
@@ -345,7 +345,7 @@ export const menuData = [
           de: "4 Gehackte Hähnchenbrust, Cheddar."
         },
         price: "52",
-        image: "images/entree-boulette-poulet.jpg",
+        image: "images/entree-boulette-poulet.webp",
         isNew: true
       }
     ]
@@ -370,7 +370,7 @@ export const menuData = [
           de: "Kurz gebratenes Lachssteak, hausgemachte Vierge-Sauce mit knackigem Gemüse und frischen Kräutern."
         },
         price: "145",
-        image: "images/plat-saumon.jpg"
+        image: "images/plat-saumon.webp"
       },
       {
         name: { fr: "FILET DE BŒUF AUX HERBES DE L'ATLAS ", en: "Beef fillet with Atlas herbs", de: "Rinderfilet mit Atlas-Kräutern" },
@@ -380,7 +380,7 @@ export const menuData = [
           de: "Kurz gebratenes Rinderfiletherz, mit aromatischen Atlas-Kräutern verfeinert"
         },
         price: "135",
-        image: "images/plat-filet.jpg"
+        image: "images/plat-filet.webp"
       },
       {
         name: { fr: "ROULADE DE BŒUF AUX SAVEURS DE L'ATLAS ", en: "Beef roulade with flavors of the Atlas", de: "Rinderroulade mit Aromen des Atlas" },
@@ -390,7 +390,7 @@ export const menuData = [
           de: "Hackfleisch vom Rind, Spinat- und Käsefüllung, Sahnesauce mit frischen Champignons"
         },
         price: "120",
-        image: "images/plat-rouladeboeuf.jpg",
+        image: "images/plat-rouladeboeuf.webp",
         isNew: true
       },
       {
@@ -401,7 +401,7 @@ export const menuData = [
           de: "Rinderfiletherz, frische Champignons, cremige Sauce, feine Kräuter."
         },
         price: "115",
-        image: "images/plat-eminceboeuf.jpg"
+        image: "images/plat-eminceboeuf.webp"
       },
       {
         name: { fr: "SUPRÊME DE POULET AUX CHAMPIGNONS ET PERSILLADE ", en: "Chicken supreme with mushrooms and parsley garlic butter", de: "Hähnchenbrust „Suprême“ mit Champignons und Petersilien-Knoblauchbutter" },
@@ -411,7 +411,7 @@ export const menuData = [
           de: "Kurz gebratene Hähnchenbrust „Suprême“, samtige Rahmsauce, frische Champignons, gehackte Petersilie"
         },
         price: "98",
-        image: "images/plat-supreme.jpg",
+        image: "images/plat-supreme.webp",
         isNew: true
       },
 
@@ -423,7 +423,7 @@ export const menuData = [
           de: "Goldbraune panierte Hähnchenschnitzel, samtige Sauce mit frischen Champignons"
         },
         price: "85",
-        image: "images/plat-milanaise.jpg"
+        image: "images/plat-milanaise.webp"
       },
       {
         name: { fr: "BROCHETTES DE POULET MARINÉES  ", en: "Marinated chicken skewers", de: "Marinierte Hähnchenspieße" },
@@ -433,7 +433,7 @@ export const menuData = [
           de: "Ausgewählte Hähnchenbrust, aromatische Marinade, gegrillt auf Spießen, Barbecue-Sauce"
         },
         price: "84",
-        image: "images/plat-brochette.jpg"
+        image: "images/plat-brochette.webp"
       },
       {
         name: { fr: "ÉMINCÉ DE POULET À LA CRÈME DE CHAMPIGNONS ", en: "Sliced chicken in creamy mushroom sauce", de: "Hähnchengeschnetzeltes in cremiger Champignonsauce" },
@@ -443,7 +443,7 @@ export const menuData = [
           de: "Kurz gebratene Hähnchenteile, samtige Sauce mit frischen Champignons."
         },
         price: "88",
-        image: "images/plat-emincepoulet.jpg"
+        image: "images/plat-emincepoulet.webp"
       },
       {
         name: { fr: "BALLOTINE DE POULET AU CŒUR D'ÉPINARDS ET FROMAGE ", en: "Chicken ballotine with spinach and cheese filling", de: "Hähnchen-Ballotine mit Spinat- und Käsefüllung" },
@@ -453,7 +453,7 @@ export const menuData = [
           de: "Gehacktes Geflügel, Herz aus Spinat und gereiftem Käse, exklusive Sauce des Küchenchefs"
         },
         price: "94",
-        image: "images/plat-ballotine.jpg"
+        image: "images/plat-ballotine.webp"
       },
       {
         name: { fr: "MENU ENFANT", en: "KIDS MENU", de: "KINDERMENÜ" },
@@ -463,7 +463,7 @@ export const menuData = [
           de: "Natur-Pasta oder Mini-Pizza mit Getränk nach Wahl ODER Burger oder Nuggets + Pommes mit Getränk nach Wahl."
         },
         price: "58",
-        image: "images/menu-enfant-plat.jpg"
+        image: "images/menu-enfant-plat.webp"
       },
       {
         name: { fr: "ACCOMPAGNEMENTS", en: "SIDE DISHES", de: "BEILAGEN" },
@@ -473,7 +473,7 @@ export const menuData = [
           de: "2 Beilagen nach Wahl: Gebratenes Gemüse, Reis, Pommes Frites, Kartoffelpüree, Kartoffelspalten."
         },
         price: "Inclus",
-        image: "images/accompagnements.jpg"
+        image: "images/accompagnements.webp"
       }
     ]
   },
@@ -496,7 +496,7 @@ export const menuData = [
           de: "Traditionelles Gericht, das freitags serviert wird."
         },
         price: "64",
-        image: "images/Couscous-poulet.jpg"
+        image: "images/Couscous-poulet.webp"
       },
       {
         name: { fr: "Couscous poulet avec petit lait", en: "Chicken couscous with buttermilk", de: "Hähnchen-Couscous mit Buttermilch" },
@@ -506,7 +506,7 @@ export const menuData = [
           de: "Traditionelles Gericht, das freitags serviert wird."
         },
         price: "54",
-        image: "images/Couscous-poulet.jpg"
+        image: "images/Couscous-poulet.webp"
       }
     ]
   },
@@ -530,7 +530,7 @@ export const menuData = [
           de: "Zartes gegrilltes Steak, Cheddar."
         },
         price: "65",
-        image: "images/sand-cheesesteak.jpg"
+        image: "images/sand-cheesesteak.webp"
       },
       {
         name: { fr: "FRUITS DE MER", en: "SEAFOOD", de: "MEERESFRÜCHTE" },
@@ -540,7 +540,7 @@ export const menuData = [
           de: "Garnele, Tintenfisch, Soße des Chefkochs."
         },
         price: "65",
-        image: "images/sand-fruitsmer.jpg"
+        image: "images/sand-fruitsmer.webp"
       },
       {
         name: { fr: "POULARD", en: "Sliced chicken with mushroom", de: "Hühnerstreifen-Sandwich mit Champignons" },
@@ -550,7 +550,7 @@ export const menuData = [
           de: "Geschnetzeltes Hähnchen, Cheddar, Champignons, weiße Soße."
         },
         price: "54",
-        image: "images/sand-cheesesteak.jpg",
+        image: "images/sand-cheesesteak.webp",
         isNew: true
       },
       {
@@ -561,7 +561,7 @@ export const menuData = [
           de: "Paniertes Hähnchenstäbchen, Cheddar, Salat."
         },
         price: "58",
-        image: "images/sand-crunchy.jpg"
+        image: "images/sand-crunchy.webp"
       },
       {
         name: { fr: "VIANDE HACHÉE", en: "MINCED MEAT", de: "HACKFLEISCH" },
@@ -571,7 +571,7 @@ export const menuData = [
           de: "Hackfleisch, Tomate, Salat, Spezialsoße, Cheddar."
         },
         price: "54",
-        image: "images/sand-hache.jpg"
+        image: "images/sand-hache.webp"
       },
       {
         name: { fr: "POULET", en: "CHICKEN", de: "HÄHNCHEN" },
@@ -581,7 +581,7 @@ export const menuData = [
           de: "Hähnchenbrust, Cheddar, Salat, Tomate."
         },
         price: "48",
-        image: "images/sand-poulet.jpg"
+        image: "images/sand-poulet.webp"
       },
       {
         name: { fr: "THON", en: "TUNA", de: "THUNFISCH" },
@@ -591,7 +591,7 @@ export const menuData = [
           de: "Thunfisch, Burgersoße, Zwiebel, Salat, Tomate, Cheddar."
         },
         price: "48",
-        image: "images/sand-thon.jpg"
+        image: "images/sand-thon.webp"
       }
     ]
   },
@@ -615,7 +615,7 @@ export const menuData = [
           de: "Gewürztes Hähnchen, Cheddar, Salat, Tomate, Zwiebel, Gurke, Biggy-Sauce."
         },
         price: "50",
-        image: "images/burger-cheese.jpg",
+        image: "images/burger-cheese.webp",
         isNew: true
       },
       {
@@ -626,7 +626,7 @@ export const menuData = [
           de: "Hackfleisch, paniertes Hähnchen, Cheddar, karamellisierte Zwiebeln, Salat, Tomate, Spezialsoße."
         },
         price: "70",
-        image: "images/burger-royal.jpg"
+        image: "images/burger-royal.webp"
       },
       {
         name: { fr: "BIG BURGER", en: "BIG BURGER", de: "BIG BURGER" },
@@ -636,7 +636,7 @@ export const menuData = [
           de: "2 Hackfleischpatties, Cheddar-Käse, Salat, Tomate, Zwiebel, Soße des Chefkochs."
         },
         price: "68",
-        image: "images/burger-big.jpg"
+        image: "images/burger-big.webp"
       },
       {
         name: { fr: "EGG ET CHEESEBURGER", en: "EGG AND CHEESEBURGER", de: "EI UND CHEESEBURGER" },
@@ -646,7 +646,7 @@ export const menuData = [
           de: "Hackfleisch, Cheddar, Pilz, Ei, Salat, Tomate, karamellisierte Zwiebel."
         },
         price: "56",
-        image: "images/burger-eggcheese.jpg"
+        image: "images/burger-eggcheese.webp"
       },
       {
         name: { fr: "CHEESE BURGER", en: "CHEESE BURGER", de: "CHEESE BURGER" },
@@ -656,7 +656,7 @@ export const menuData = [
           de: "Hackfleisch, Cheddar, Salat, Tomate, Zwiebel, Gurke, Burgersoße."
         },
         price: "54",
-        image: "images/burger-cheese.jpg"
+        image: "images/burger-cheese.webp"
       },
       {
         name: { fr: "AVOCADO FORESTIER", en: "AVOCADO FORESTIER", de: "AVOCADO FORESTER" },
@@ -666,7 +666,7 @@ export const menuData = [
           de: "Hähnchen, Avocado, Salat, Tomate, karamellisierte Zwiebel."
         },
         price: "54",
-        image: "images/burger-avocado.jpg"
+        image: "images/burger-avocado.webp"
       }
     ]
   },
@@ -690,7 +690,7 @@ export const menuData = [
           de: "Garnelen, Tintenfisch, Soße des Chefkochs."
         },
         price: "64",
-        image: "images/panini-fruitsmer.jpg"
+        image: "images/panini-fruitsmer.webp"
       },
       {
         name: { fr: "SAUMON", en: "SALMON", de: "LACHS" },
@@ -700,7 +700,7 @@ export const menuData = [
           de: "Frischer Lachs, Kapern, Käse, Soße des Chefkochs."
         },
         price: "64",
-        image: "images/panini-saumon.jpg"
+        image: "images/panini-saumon.webp"
       },
       {
         name: { fr: "MIXTE ", en: " MIX", de: "MIX" },
@@ -710,7 +710,7 @@ export const menuData = [
           de: "Mischung aus Hackfleisch und Hähnchen, Aufschnitt, Käse."
         },
         price: "58",
-        image: "images/panini-mixte.jpg"
+        image: "images/panini-mixte.webp"
       },
       {
         name: { fr: "VIANDE HACHÉE", en: "MINCED MEAT", de: "HACKFLEISCH" },
@@ -720,7 +720,7 @@ export const menuData = [
           de: "Hackfleisch, Käse, Burgersoße."
         },
         price: "54",
-        image: "images/panini-hache.jpg"
+        image: "images/panini-hache.webp"
       },
       {
         name: { fr: "CHARCUTERIE", en: "COLD CUTS", de: "AUFSCHNITT" },
@@ -730,7 +730,7 @@ export const menuData = [
           de: "3 Sorten Aufschnitt, Salami, Käse, Burgersoße."
         },
         price: "40",
-        image: "images/panini-charcuterie.jpg"
+        image: "images/panini-charcuterie.webp"
       },
       {
         name: { fr: "POULET", en: "CHICKEN", de: "HÄHNCHEN" },
@@ -740,7 +740,7 @@ export const menuData = [
           de: "Gegrilltes Hähnchen, Käse, Burgersoße."
         },
         price: "44",
-        image: "images/panini-poulet.jpg"
+        image: "images/panini-poulet.webp"
       },
       {
         name: { fr: "WRAP POULET", en: "WRAP CHICKEN", de: "WRAP HÄHNCHEN" },
@@ -750,7 +750,7 @@ export const menuData = [
           de: "Panierter Hähnchen, Cheddar, Tomate, Salat, Sauce."
         },
         price: "58",
-        image: "images/Wrap-poulet.jpg",
+        image: "images/Wrap-poulet.webp",
         isNew: true
       },
       {
@@ -761,7 +761,7 @@ export const menuData = [
           de: "Hackfleisch, Cheddar, Tomate, Salat, Sauce."
         },
         price: "62",
-        image: "images/Wrap-viande-hachee.jpg",
+        image: "images/Wrap-viande-hachee.webp",
         isNew: true
       },
       {
@@ -772,7 +772,7 @@ export const menuData = [
           de: "Panierter Hähnchen, Wurstwaren, Cheddar, Tomate, Salat, Sauce."
         },
         price: "64",
-        image: "images/Wrap-gourmand.jpg",
+        image: "images/Wrap-gourmand.webp",
         isNew: true
       }
 
@@ -798,7 +798,7 @@ export const menuData = [
           de: "Frischer Lachs, weiße Soße, Rucola, Kapern."
         },
         price: "94",
-        image: "images/pizza-saumon.jpg"
+        image: "images/pizza-saumon.webp"
       },
       {
         name: { fr: "FRUITS DE MER", en: "SEAFOOD", de: "MEERESFRÜCHTE" },
@@ -808,7 +808,7 @@ export const menuData = [
           de: "Garnelen, Tintenfisch, Muscheln, Pilz, weiße Soße, Mozzarella."
         },
         price: "88",
-        image: "images/pizza-fruitsmer.jpg"
+        image: "images/pizza-fruitsmer.webp"
       },
       {
         name: { fr: "4 SAISONS", en: "4 SEASONS", de: "4 JAHRESZEITEN" },
@@ -818,7 +818,7 @@ export const menuData = [
           de: "Meeresfrüchte, Hackfleisch, Hähnchen, Vegetarisch, Mozzarella."
         },
         price: "88",
-        image: "images/pizza-4saisons.jpg"
+        image: "images/pizza-4saisons.webp"
       },
       {
         name: { fr: "MOITIÉ MOITIÉ", en: "HALF AND HALF", de: "HALB UND HALB" },
@@ -828,7 +828,7 @@ export const menuData = [
           de: "Alles außer Meeresfrüchten und Lachs."
         },
         price: "88",
-        image: "images/pizza-moitiemoitie.jpg"
+        image: "images/pizza-moitiemoitie.webp"
       },
       {
         name: { fr: "BURRATA", en: "BURRATA", de: "BURRATA" },
@@ -838,7 +838,7 @@ export const menuData = [
           de: "Tomatensoße, Burrata, Kirschtomaten, Rucola, Balsamico-Essig, Walnüsse."
         },
         price: "110",
-        image: "images/pizza-burrata.jpg"
+        image: "images/pizza-burrata.webp"
       },
       {
         name: { fr: "POULET SAUCE BLANCHE", en: "CHICKEN WHITE SAUCE", de: "HÄHNCHEN WEISSE SOßE" },
@@ -848,7 +848,7 @@ export const menuData = [
           de: "Hähnchen, weiße Soße, Pilz, Mozzarella."
         },
         price: "78",
-        image: "images/pizza-pouletblanche.jpg"
+        image: "images/pizza-pouletblanche.webp"
       },
       {
         name: { fr: "5 FROMAGES", en: "5 CHEESES", de: "5 KÄSE" },
@@ -858,7 +858,7 @@ export const menuData = [
           de: "Tomatensoße, Mozzarella, Blauschimmelkäse, Parmesan, Gouda, Camembert."
         },
         price: "78",
-        image: "images/pizza-5fromages.jpg"
+        image: "images/pizza-5fromages.webp"
       },
       {
         name: { fr: "VIANDE HACHÉE", en: "MINCED MEAT", de: "HACKFLEISCH" },
@@ -868,7 +868,7 @@ export const menuData = [
           de: "Hackfleisch, Kirschtomate, Tomatensoße, Mozzarella."
         },
         price: "78",
-        image: "images/pizza-hache.jpg"
+        image: "images/pizza-hache.webp"
       },
       {
         name: { fr: "PEPPERONI", en: "PEPPERONI", de: "PEPPERONI" },
@@ -878,7 +878,7 @@ export const menuData = [
           de: "Pepperoni, Tomatensoße, Mozzarella."
         },
         price: "74",
-        image: "images/pizza-pepperoni.jpg"
+        image: "images/pizza-pepperoni.webp"
       },
       {
         name: { fr: "REGINA", en: "REGINA", de: "REGINA" },
@@ -888,7 +888,7 @@ export const menuData = [
           de: "Geräucherte Pute, frischer Pilz, Mozzarella, weiße Soße."
         },
         price: "68",
-        image: "images/pizza-regina.jpg"
+        image: "images/pizza-regina.webp"
       },
       {
         name: { fr: "THON", en: "TUNA", de: "THUNFISCH" },
@@ -898,7 +898,7 @@ export const menuData = [
           de: "Thunfisch, Zwiebeln, schwarze Oliven, Mozzarella."
         },
         price: "65",
-        image: "images/pizza-thon.jpg"
+        image: "images/pizza-thon.webp"
       },
       {
         name: { fr: "VEGETARIENNE", en: "VEGETARIAN", de: "VEGETARISCH" },
@@ -908,7 +908,7 @@ export const menuData = [
           de: "Verschiedenes Gemüse (Paprika, Pilze, Zucchini), Pesto-Soße, Mozzarella."
         },
         price: "62",
-        image: "images/pizza-veggie.jpg"
+        image: "images/pizza-veggie.webp"
       },
       {
         name: { fr: "MARGARITA", en: "MARGARITA", de: "MARGARITA" },
@@ -918,7 +918,7 @@ export const menuData = [
           de: "Tomatensoße, Basilikum, schwarze Oliven, Mozzarella."
         },
         price: "52",
-        image: "images/pizza-margherita.jpg"
+        image: "images/pizza-margherita.webp"
       }
     ]
   },
@@ -942,7 +942,7 @@ export const menuData = [
           de: "Pasta, frischer Lachs, Dill, Parmesan."
         },
         price: "98",
-        image: "images/pasta-saumon.jpg"
+        image: "images/pasta-saumon.webp"
       },
       {
         name: { fr: "FRUITS DE MER", en: "SEAFOOD", de: "MEERESFRÜCHTE" },
@@ -952,7 +952,7 @@ export const menuData = [
           de: "Pasta, Garnelen, Tintenfisch, Muscheln, weiße Soße."
         },
         price: "88",
-        image: "images/pasta-fruitsmer.jpg"
+        image: "images/pasta-fruitsmer.webp"
       },
       {
         name: { fr: "POULET CHAMPIGNON / EPINARD", en: "CHICKEN MUSHROOM / SPINACH", de: "HÄHNCHEN PILZ / SPINAT" },
@@ -962,7 +962,7 @@ export const menuData = [
           de: "Pasta, Hähnchen, Pilz, Spinat, Parmesan."
         },
         price: "75",
-        image: "images/pasta-poulet.jpg"
+        image: "images/pasta-poulet.webp"
       },
       {
         name: { fr: "REGATONI RICOTTA", en: "RICOTTA REGATONI", de: "RICOTTA REGATONI" },
@@ -972,7 +972,7 @@ export const menuData = [
           de: "Ricotta, Spinat, Parmesan, Zucchini, weiße Soße."
         },
         price: "68",
-        image: "images/pasta-ricotta.jpg"
+        image: "images/pasta-ricotta.webp"
       },
       {
         name: { fr: "BOLOGNAISE", en: "BOLOGNESE", de: "BOLOGNESE" },
@@ -982,7 +982,7 @@ export const menuData = [
           de: "Pasta, Bolognese-Soße mit Hackfleisch, Kirschtomate."
         },
         price: "75",
-        image: "images/pasta-bolognaise.jpg"
+        image: "images/pasta-bolognaise.webp"
       },
       {
         name: { fr: "CARBONARA", en: "CARBONARA", de: "CARBONARA" },
@@ -992,7 +992,7 @@ export const menuData = [
           de: "Pasta, Putenschinken, Parmesan."
         },
         price: "65",
-        image: "images/pasta-carbonara.jpg"
+        image: "images/pasta-carbonara.webp"
       },
       {
         name: { fr: "5 FROMAGE", en: "5 CHEESES", de: "5 KÄSE" },
@@ -1002,7 +1002,7 @@ export const menuData = [
           de: "Pasta, Mischung aus fünf Käsesorten (Parmesan, Blau, Mozzarella, Cheddar, Gouda)."
         },
         price: "70",
-        image: "images/pasta-5fromages.jpg"
+        image: "images/pasta-5fromages.webp"
       },
       {
         name: { fr: "VEGETARIEN", en: "VEGETARIAN", de: "VEGETARISCH" },
@@ -1012,7 +1012,7 @@ export const menuData = [
           de: "Pasta, verschiedenes Gemüse (Zucchini, Paprika, Tomaten), Pesto-Soße, Olivenöl."
         },
         price: "60",
-        image: "images/pasta-veg.jpg"
+        image: "images/pasta-veg.webp"
       },
       {
         name: { fr: "SPAGHETTIS NOIRS", en: "BLACK SPAGHETTI", de: "SCHWARZE SPAGHETTI" },
@@ -1022,7 +1022,7 @@ export const menuData = [
           de: "Zuschlag für schwarze Pasta mit Tintenfischtinte."
         },
         price: "5",
-        image: "images/pasta-noir.jpg"
+        image: "images/pasta-noir.webp"
       },
       {
         name: { fr: "LASAGNE POULET CHAMPIGNON ", en: "CHICKEN MUSHROOM LASAGNE", de: "Lasagne mit Hähnchen und Champignons " },
@@ -1032,7 +1032,7 @@ export const menuData = [
           de: "Hähnchen, Lasagne-Nudeln, weiße Sauce, Béchamelsauce, Käse"
         },
         price: "60",
-        image: "images/lasagne-poulet.jpg",
+        image: "images/lasagne-poulet.webp",
         isNew: true
       },
       {
@@ -1043,7 +1043,7 @@ export const menuData = [
           de: "Hackfleisch, Lasagne-Nudeln, Bolognese-Sauce, Béchamelsauce, Käse."
         },
         price: "72",
-        image: "images/lasagne-viande.jpg",
+        image: "images/lasagne-viande.webp",
         isNew: true
       },
       {
@@ -1054,7 +1054,7 @@ export const menuData = [
           de: "Garnelen, Kalmar, Lasagne-Nudeln, weiße Sauce, Béchamelsauce, Käse"
         },
         price: "78",
-        image: "images/Lasagnes-de-fruits-de-mer.jpg",
+        image: "images/Lasagnes-de-fruits-de-mer.webp",
         isNew: true
       }
     ]
@@ -1079,7 +1079,7 @@ export const menuData = [
           de: "Crêpe oder Waffel mit Gourmet-Sorten."
         },
         price: "52",
-        image: "images/crepe-gc.jpg"
+        image: "images/crepe-gc.webp"
       },
       {
         name: { fr: "EXOTIQUE (fruits saisons)", en: "EXOTIC (seasonal fruits)", de: "EXOTISCH (saisonale Früchte)" },
@@ -1089,7 +1089,7 @@ export const menuData = [
           de: "Crêpe oder Waffel mit saisonalen Früchten."
         },
         price: "48",
-        image: "images/crepe-exotique.jpg"
+        image: "images/crepe-exotique.webp"
       },
       {
         name: { fr: "KUNAFA PISTACHE", en: "PISTACHIO KUNAFA", de: "PISTAZIEN KUNAFA" },
@@ -1099,7 +1099,7 @@ export const menuData = [
           de: "Crêpe oder Waffel mit Kunafa Pistazien-Geschmack."
         },
         price: "48",
-        image: "images/crepe-kunafa.jpg"
+        image: "images/crepe-kunafa.webp"
       },
       {
         name: { fr: "BANANE-NUTELLA", en: "BANANA-NUTELLA", de: "BANANE-NUTELLA" },
@@ -1109,7 +1109,7 @@ export const menuData = [
           de: "Crêpe oder Waffel mit Banane und Nutella."
         },
         price: "42",
-        image: "images/crepe-bananenutella.jpg"
+        image: "images/crepe-bananenutella.webp"
       },
       {
         name: { fr: "POMME CARAMELISÉE", en: "CARAMELIZED APPLE", de: "KARAMELLISIERTER APFEL" },
@@ -1119,7 +1119,7 @@ export const menuData = [
           de: "Crêpe oder Waffel mit karamellisiertem Apfel."
         },
         price: "40",
-        image: "images/crepe-pomme.jpg"
+        image: "images/crepe-pomme.webp"
       },
       {
         name: { fr: "CHOCOLAT NOISETTE", en: "HAZELNUT CHOCOLATE", de: "HASELNUSS-SCHOKOLADE" },
@@ -1129,7 +1129,7 @@ export const menuData = [
           de: "Crêpe oder Waffel mit Haselnuss-Schokolade."
         },
         price: "42",
-        image: "images/crepe-noisette.jpg"
+        image: "images/crepe-noisette.webp"
       },
       {
         name: { fr: "NUTELLA", en: "NUTELLA", de: "NUTELLA" },
@@ -1139,7 +1139,7 @@ export const menuData = [
           de: "Crêpe oder Waffel mit Nutella."
         },
         price: "38",
-        image: "images/crepe-nutella.jpg"
+        image: "images/crepe-nutella.webp"
       }
     ]
   },
@@ -1162,7 +1162,7 @@ export const menuData = [
           de: "Herzhafter Crêpe mit Meeresfrüchten."
         },
         price: "58",
-        image: "images/crepe-sal-pecheur.jpg"
+        image: "images/crepe-sal-pecheur.webp"
       },
       {
         name: { fr: "Crêpe NORVÉGIENNE", en: "NORWEGIAN Crêpe", de: "NORWEGISCHER Crêpe" },
@@ -1172,7 +1172,7 @@ export const menuData = [
           de: "Herzhafter Crêpe mit Lachs."
         },
         price: "58",
-        image: "images/crepe-sal-norve.jpg"
+        image: "images/crepe-sal-norve.webp"
       },
       {
         name: { fr: "Crêpe GREY CORNER (MIXTE)", en: "GREY CORNER Crêpe (MIXED)", de: "GREY CORNER Crêpe (GEMISCHT)" },
@@ -1182,7 +1182,7 @@ export const menuData = [
           de: "Gemischter herzhafter Crêpe (Fleisch und Käse)."
         },
         price: "58",
-        image: "images/crepe-sal-gc.jpg"
+        image: "images/crepe-sal-gc.webp"
       },
       {
         name: { fr: "Crêpe BOLOGNAISE", en: "BOLOGNESE Crêpe", de: "BOLOGNESE Crêpe" },
@@ -1192,7 +1192,7 @@ export const menuData = [
           de: "Herzhafter Crêpe mit Bolognese-Soße."
         },
         price: "54",
-        image: "images/crepe-sal-bologn.jpg"
+        image: "images/crepe-sal-bologn.webp"
       },
       {
         name: { fr: "Crêpe POULET-CHAMPIGNON", en: "CHICKEN-MUSHROOM Crêpe", de: "HÄHNCHEN-PILZ Crêpe" },
@@ -1202,7 +1202,7 @@ export const menuData = [
           de: "Herzhafter Crêpe mit Hähnchen und Pilzen."
         },
         price: "48",
-        image: "images/crepe-sal-poulet.jpg"
+        image: "images/crepe-sal-poulet.webp"
       },
       {
         name: { fr: "Crêpe CHARCUTERIE", en: "COLD CUTS Crêpe", de: "AUFSCHNITT Crêpe" },
@@ -1212,7 +1212,7 @@ export const menuData = [
           de: "Herzhafter Crêpe mit Aufschnitt."
         },
         price: "45",
-        image: "images/crepe-sal-charcut.jpg"
+        image: "images/crepe-sal-charcut.webp"
       },
       {
         name: { fr: "Crêpe FROMAGE", en: "CHEESE Crêpe", de: "KÄSE Crêpe" },
@@ -1222,7 +1222,7 @@ export const menuData = [
           de: "Herzhafter Crêpe mit Käse."
         },
         price: "45",
-        image: "images/crepe-sal-fromage.jpg"
+        image: "images/crepe-sal-fromage.webp"
       }
     ]
   },
@@ -1246,7 +1246,7 @@ export const menuData = [
           de: "Geschmacksrichtungen: rote Früchte, Karamell, Pistazie, dunkle Schokolade, Honig."
         },
         price: "45",
-        image: "images/gateau-sanseb-vari.jpg"
+        image: "images/gateau-sanseb-vari.webp"
       },
       {
         name: { fr: "CHEESECAKE (Chocolat, Pistache, Framboise)", en: "CHEESECAKE (Chocolate, Pistachio, Raspberry)", de: "CHEESECAKE (Schokolade, Pistazie, Himbeere)" },
@@ -1256,7 +1256,7 @@ export const menuData = [
           de: "Leckerer Käsekuchen mit Schokolade-, Pistazien- und Himbeergeschmack."
         },
         price: "45",
-        image: "images/gateau-cheesecake-choco.jpg"
+        image: "images/gateau-cheesecake-choco.webp"
       },
       {
         name: { fr: "FONDANT AU CHOCOLAT", en: "CHOCOLATE FONDANT", de: "SCHOKOLADEN-FONDANT" },
@@ -1266,7 +1266,7 @@ export const menuData = [
           de: "Serviert mit Vanillekugel."
         },
         price: "40",
-        image: "images/gateau-fondant.jpg"
+        image: "images/gateau-fondant.webp"
       },
       {
         name: { fr: "SAN SEBASTIEN (Nutella)", en: "SAN SEBASTIEN (Nutella)", de: "SAN SEBASTIEN (Nutella)" },
@@ -1276,7 +1276,7 @@ export const menuData = [
           de: "Baskischer Käsekuchen mit Nutella."
         },
         price: "40",
-        image: "images/gateau-sanseb-nutella.jpg"
+        image: "images/gateau-sanseb-nutella.webp"
       },
       {
         name: { fr: "CHEESECAKE (Lotus, Citron)", en: "CHEESECAKE (Lotus, Lemon)", de: "CHEESECAKE (Lotus, Zitrone)" },
@@ -1286,7 +1286,7 @@ export const menuData = [
           de: "Cremiger Käsekuchen mit Lotus- und Zitronengeschmack."
         },
         price: "40",
-        image: "images/gateau-cheesecake-lotus.jpg"
+        image: "images/gateau-cheesecake-lotus.webp"
       },
       {
         name: { fr: "TIRAMISU", en: "TIRAMISU", de: "TIRAMISU" },
@@ -1296,7 +1296,7 @@ export const menuData = [
           de: "Klassisches italienisches Dessert."
         },
         price: "38",
-        image: "images/gateau-tiramisu.jpg"
+        image: "images/gateau-tiramisu.webp"
       }
     ]
   },
@@ -1319,7 +1319,7 @@ export const menuData = [
           de: "Reiche geschmolzene Schokolade."
         },
         price: "26",
-        image: "images/boisson-choc-fondue.jpg"
+        image: "images/boisson-choc-fondue.webp"
       },
       {
         name: { fr: "CAFÉ NESPRESSO", en: "NESPRESSO COFFEE", de: "NESPRESSO KAFFEE" },
@@ -1329,7 +1329,7 @@ export const menuData = [
           de: "Serviert mit einem 33 cl Mineralwasser."
         },
         price: "22",
-        image: "images/boisson-nespresso.jpg"
+        image: "images/boisson-nespresso.webp"
       },
       {
         name: { fr: "CAPPUCHINO AVEC CHANTILLY", en: "CAPPUCCINO WITH WHIPPED CREAM", de: "CAPPUCCINO MIT SCHLAGSAHNE" },
@@ -1339,7 +1339,7 @@ export const menuData = [
           de: "Serviert mit einem 33 cl Mineralwasser."
         },
         price: "22",
-        image: "images/boisson-cappu-chant.jpg"
+        image: "images/boisson-cappu-chant.webp"
       },
       {
         name: { fr: "CHOCOLAT AVEC CHANTILLY", en: "CHOCOLATE WITH WHIPPED CREAM", de: "SCHOKOLADE MIT SCHLAGSAHNE" },
@@ -1349,7 +1349,7 @@ export const menuData = [
           de: "Serviert mit einem 33 cl Mineralwasser."
         },
         price: "22",
-        image: "images/boisson-choc-chant.jpg"
+        image: "images/boisson-choc-chant.webp"
       },
       {
         name: { fr: "CAFÉ AU LAIT", en: "COFFEE WITH MILK", de: "KAFFEE MIT MILCH" },
@@ -1359,7 +1359,7 @@ export const menuData = [
           de: "Serviert mit einem 33 cl Mineralwasser."
         },
         price: "19",
-        image: "images/boisson-cafelait.jpg"
+        image: "images/boisson-cafelait.webp"
       },
       {
         name: { fr: "CAPPUCHINO ITALIEN", en: "ITALIAN CAPPUCCINO", de: "ITALIENISCHER CAPPUCCINO" },
@@ -1369,7 +1369,7 @@ export const menuData = [
           de: "Serviert mit einem 33 cl Mineralwasser."
         },
         price: "19",
-        image: "images/boisson-cappu.jpg"
+        image: "images/boisson-cappu.webp"
       },
       {
         name: { fr: "CHOCOLAT AU LAIT", en: "HOT CHOCOLATE", de: "HEISSE SCHOKOLADE" },
@@ -1379,7 +1379,7 @@ export const menuData = [
           de: "Serviert mit einem 33 cl Mineralwasser."
         },
         price: "18",
-        image: "images/boisson-chocolat.jpg"
+        image: "images/boisson-chocolat.webp"
       },
       {
         name: { fr: "CAFÉ LATTE", en: "CAFE LATTE", de: "CAFÉ LATTE" },
@@ -1389,7 +1389,7 @@ export const menuData = [
           de: "Serviert mit einem 33 cl Mineralwasser."
         },
         price: "19",
-        image: "images/boisson-cafelatte.jpg"
+        image: "images/boisson-cafelatte.webp"
       },
       {
         name: { fr: "THÉ NOIR AU LAIT", en: "BLACK TEA WITH MILK", de: "SCHWARZER TEE MIT MILCH" },
@@ -1399,7 +1399,7 @@ export const menuData = [
           de: "Schwarzer Tee serviert mit Milch."
         },
         price: "18",
-        image: "images/boisson-thenoir-lait.jpg"
+        image: "images/boisson-thenoir-lait.webp"
       },
       {
         name: { fr: "THÉ INFUSION", en: "INFUSION TEA", de: "KRÄUTERTEE" },
@@ -1409,7 +1409,7 @@ export const menuData = [
           de: "Auswahl an Kräutertees."
         },
         price: "18",
-        image: "images/boisson-infusion.jpg"
+        image: "images/boisson-infusion.webp"
       },
       {
         name: { fr: "VERVEINE AROMATISÉE", en: "FLAVORED VERBENA", de: "AROMATISIERTE VERBENA" },
@@ -1419,7 +1419,7 @@ export const menuData = [
           de: "Aromatisierter Eisenkraut-Aufguss."
         },
         price: "18",
-        image: "images/boisson-verveine-arom.jpg"
+        image: "images/boisson-verveine-arom.webp"
       },
       {
         name: { fr: "CAFÉ AMERICAIN", en: "AMERICAN COFFEE", de: "AMERICANO" },
@@ -1429,7 +1429,7 @@ export const menuData = [
           de: "Serviert mit einem 33 cl Mineralwasser."
         },
         price: "17",
-        image: "images/boisson-americano.jpg"
+        image: "images/boisson-americano.webp"
       },
       {
         name: { fr: "CAFÉ NOIR", en: "BLACK COFFEE", de: "SCHWARZER KAFFEE" },
@@ -1439,7 +1439,7 @@ export const menuData = [
           de: "Serviert mit einem 33 cl Mineralwasser."
         },
         price: "16",
-        image: "images/boisson-cafe.jpg"
+        image: "images/boisson-cafe.webp"
       },
       {
         name: { fr: "THÉ À LA MENTHE", en: "MINT TEA", de: "MINZTEE" },
@@ -1449,7 +1449,7 @@ export const menuData = [
           de: "Traditioneller Minztee."
         },
         price: "16",
-        image: "images/boisson-the.jpg"
+        image: "images/boisson-the.webp"
       },
       {
         name: { fr: "THÉ NOIR", en: "BLACK TEA", de: "SCHWARZER TEE" },
@@ -1459,7 +1459,7 @@ export const menuData = [
           de: "Purer schwarzer Tee."
         },
         price: "15",
-        image: "images/boisson-thenoir.jpg"
+        image: "images/boisson-thenoir.webp"
       },
       {
         name: { fr: "VERVEINE", en: "VERBENA", de: "VERBENA" },
@@ -1469,7 +1469,7 @@ export const menuData = [
           de: "Eisenkraut-Aufguss."
         },
         price: "15",
-        image: "images/boisson-verveine.jpg"
+        image: "images/boisson-verveine.webp"
       },
       {
         name: { fr: "LAIT FROID / CHAUD", en: "COLD / HOT MILK", de: "KALTE / WARME MILCH" },
@@ -1479,7 +1479,7 @@ export const menuData = [
           de: "Normale Milch."
         },
         price: "12",
-        image: "images/boisson-lait.jpg"
+        image: "images/boisson-lait.webp"
       }
     ]
   },
@@ -1502,7 +1502,7 @@ export const menuData = [
           de: "Energy-Drink."
         },
         price: "28",
-        image: "images/soda-redbull.jpg"
+        image: "images/soda-redbull.webp"
       },
       {
         name: { fr: "COCA", en: "COKE", de: "COCA" },
@@ -1512,7 +1512,7 @@ export const menuData = [
           de: "Sprudelgetränk."
         },
         price: "17",
-        image: "images/soda-coca.jpg"
+        image: "images/soda-coca.webp"
       },
       {
         name: { fr: "COCA ZERO", en: "COKE ZERO", de: "COCA ZERO" },
@@ -1522,7 +1522,7 @@ export const menuData = [
           de: "Zuckerfreies Sprudelgetränk."
         },
         price: "17",
-        image: "images/soda-cocazero.jpg"
+        image: "images/soda-cocazero.webp"
       },
       {
         name: { fr: "SPRITE", en: "SPRITE", de: "SPRITE" },
@@ -1532,7 +1532,7 @@ export const menuData = [
           de: "Sprudelgetränk."
         },
         price: "17",
-        image: "images/soda-sprite.jpg"
+        image: "images/soda-sprite.webp"
       },
       {
         name: { fr: "HAWAI", en: "HAWAI", de: "HAWAI" },
@@ -1542,7 +1542,7 @@ export const menuData = [
           de: "Sprudelgetränk."
         },
         price: "17",
-        image: "images/soda-hawai.jpg"
+        image: "images/soda-hawai.webp"
       },
       {
         name: { fr: "POMS", en: "POMS", de: "POMS" },
@@ -1552,7 +1552,7 @@ export const menuData = [
           de: "Sprudelgetränk."
         },
         price: "17",
-        image: "images/soda-poms.jpg"
+        image: "images/soda-poms.webp"
       },
       {
         name: { fr: "ORANGINA", en: "ORANGINA", de: "ORANGINA" },
@@ -1562,7 +1562,7 @@ export const menuData = [
           de: "Sprudelgetränk."
         },
         price: "17",
-        image: "images/soda-orangina.jpg"
+        image: "images/soda-orangina.webp"
       },
       {
         name: { fr: "SCHWEPPES CITRON/TONIC", en: "SCHWEPPES LEMON/TONIC", de: "SCHWEPPES ZITRONE/TONIC" },
@@ -1572,7 +1572,7 @@ export const menuData = [
           de: "Sprudelgetränk."
         },
         price: "17",
-        image: "images/soda-schweppes.jpg"
+        image: "images/soda-schweppes.webp"
       }
     ]
   },
@@ -1595,7 +1595,7 @@ export const menuData = [
           de: "Sprudelndes Mineralwasser."
         },
         price: "26",
-        image: "images/eau-oulmes75cl.jpg"
+        image: "images/eau-oulmes75cl.webp"
       },
       {
         name: { fr: "0.75 l", en: "0.75 l", de: "0.75 l" },
@@ -1605,7 +1605,7 @@ export const menuData = [
           de: "75 cl Mineralwasserflasche."
         },
         price: "22",
-        image: "images/eau-75.jpg"
+        image: "images/eau-75.webp"
       },
       {
         name: { fr: "OULMES", en: "OULMES (Sparkling)", de: "OULMES (Sprudel)" },
@@ -1615,7 +1615,7 @@ export const menuData = [
           de: "Sprudelndes Mineralwasser."
         },
         price: "16",
-        image: "images/eau-oulmes.jpg"
+        image: "images/eau-oulmes.webp"
       },
       {
         name: { fr: "0.5 l", en: "0.5 l", de: "0.5 l" },
@@ -1625,7 +1625,7 @@ export const menuData = [
           de: "50 cl Mineralwasserflasche."
         },
         price: "12",
-        image: "images/eau-50.jpg"
+        image: "images/eau-50.webp"
       }
 
     ]
@@ -1650,7 +1650,7 @@ export const menuData = [
           de: "Reicher marokkanischer Cocktail mit Nussfrüchten und Milch."
         },
         price: "46",
-        image: "images/jus-za3za3.jpg"
+        image: "images/jus-za3za3.webp"
       },
       {
         name: { fr: "COCKTAIL ORANGE", en: "ORANGE COCKTAIL", de: "ORANGEN-COCKTAIL" },
@@ -1660,7 +1660,7 @@ export const menuData = [
           de: "Cocktail auf Orangenbasis."
         },
         price: "42",
-        image: "images/jus-cocktailorange.jpg"
+        image: "images/jus-cocktailorange.webp"
       },
       {
         name: { fr: "JUS DE FRUITS SECS AVOCAT", en: "AVOCADO DRIED FRUIT JUICE", de: "AVOCADO-NUSSFRÜCHTE SAFT" },
@@ -1670,7 +1670,7 @@ export const menuData = [
           de: "Mischung aus Avocado und Nussfrüchten."
         },
         price: "38",
-        image: "images/jus-avocatsec.jpg"
+        image: "images/jus-avocatsec.webp"
       },
       {
         name: { fr: "PANACHÉ AU LAIT", en: "MILK PANACHE", de: "MILCH PANACHE" },
@@ -1680,7 +1680,7 @@ export const menuData = [
           de: "Mischung aus Fruchtsäften mit Milch."
         },
         price: "38",
-        image: "images/jus-panache.jpg"
+        image: "images/jus-panache.webp"
       },
       {
         name: { fr: "JUS DE FRAMBOISE", en: "RASPBERRY JUICE", de: "HIMBEERSAFT" },
@@ -1690,7 +1690,7 @@ export const menuData = [
           de: "Frischer Himbeersaft."
         },
         price: "35",
-        image: "images/jus-framboise.jpg"
+        image: "images/jus-framboise.webp"
       },
       {
         name: { fr: "JUS D'AVOCAT", en: "AVOCADO JUICE", de: "AVOCADOSAFT" },
@@ -1700,7 +1700,7 @@ export const menuData = [
           de: "Frischer Avocadosaft."
         },
         price: "32",
-        image: "images/jus-avocat.jpg"
+        image: "images/jus-avocat.webp"
       },
       {
         name: { fr: "JUS D'ANANAS", en: "PINEAPPLE JUICE", de: "ANANASSAFT" },
@@ -1710,7 +1710,7 @@ export const menuData = [
           de: "Frischer Ananassaft."
         },
         price: "32",
-        image: "images/jus-ananas.jpg"
+        image: "images/jus-ananas.webp"
       },
       {
         name: { fr: "JUS DE MANGUE", en: "MANGO JUICE", de: "MANGOSSAFT" },
@@ -1720,7 +1720,7 @@ export const menuData = [
           de: "Frischer Mangosaft."
         },
         price: "30",
-        image: "images/jus-mangue.jpg"
+        image: "images/jus-mangue.webp"
       },
       {
         name: { fr: "JUS DE PÊCHE", en: "PEACH JUICE", de: "PFIRSICHSAFT" },
@@ -1730,7 +1730,7 @@ export const menuData = [
           de: "Frischer Pfirsichsaft."
         },
         price: "30",
-        image: "images/jus-peche.jpg"
+        image: "images/jus-peche.webp"
       },
       {
         name: { fr: "JUS DE FRAISE", en: "STRAWBERRY JUICE", de: "ERDBEERSAFT" },
@@ -1740,7 +1740,7 @@ export const menuData = [
           de: "Frischer Erdbeersaft."
         },
         price: "30",
-        image: "images/jus-fraise.jpg"
+        image: "images/jus-fraise.webp"
       },
       {
         name: { fr: "JUS DE POMME / BANANE", en: "APPLE / BANANA JUICE", de: "APFEL / BANANENSAFT" },
@@ -1750,7 +1750,7 @@ export const menuData = [
           de: "Apfel- oder Bananensaft."
         },
         price: "28",
-        image: "images/jus-pomme-banane.jpg"
+        image: "images/jus-pomme-banane.webp"
       },
       {
         name: { fr: "JUS DE CITRON", en: "LEMON JUICE", de: "ZITRONENSAFT" },
@@ -1760,7 +1760,7 @@ export const menuData = [
           de: "Frischer Zitronensaft."
         },
         price: "25",
-        image: "images/jus-citron.jpg"
+        image: "images/jus-citron.webp"
       },
       {
         name: { fr: "JUS DE CAROTTE", en: "CARROT JUICE", de: "KAROTTENSAFT" },
@@ -1770,7 +1770,7 @@ export const menuData = [
           de: "Frischer Karottensaft."
         },
         price: "25",
-        image: "images/jus-carotte.jpg"
+        image: "images/jus-carotte.webp"
       },
       {
         name: { fr: "JUS D'ORANGE", en: "ORANGE JUICE", de: "ORANGENSAFT" },
@@ -1780,7 +1780,7 @@ export const menuData = [
           de: "Frisch gepresster Orangensaft."
         },
         price: "22",
-        image: "images/jus-orange.jpg"
+        image: "images/jus-orange.webp"
       }
     ]
   },
@@ -1803,7 +1803,7 @@ export const menuData = [
           de: "Eistee mit Zitronengeschmack."
         },
         price: "28",
-        image: "images/icetea-citron.jpg"
+        image: "images/icetea-citron.webp"
       },
       {
         name: { fr: "ICE TEA PÊCHE", en: "PEACH ICE TEA", de: "PFIRSICH-EISTEE" },
@@ -1813,7 +1813,7 @@ export const menuData = [
           de: "Eistee mit Pfirsichgeschmack."
         },
         price: "28",
-        image: "images/icetea-peche.jpg"
+        image: "images/icetea-peche.webp"
       },
       {
         name: { fr: "ICE TEA FRAMBOISE", en: "RASPBERRY ICE TEA", de: "HIMBEER-EISTEE" },
@@ -1823,7 +1823,7 @@ export const menuData = [
           de: "Eistee mit Himbeergeschmack."
         },
         price: "28",
-        image: "images/icetea-framboise.jpg"
+        image: "images/icetea-framboise.webp"
       }
     ]
   },
@@ -1846,7 +1846,7 @@ export const menuData = [
           de: "Eiskaffee mit Geschmack nach Wahl."
         },
         price: "23",
-        image: "images/icecoffee-arom.jpg"
+        image: "images/icecoffee-arom.webp"
       },
       {
         name: { fr: "CAFÉ GLACÉ CLASSIQUE", en: "CLASSIC ICE COFFEE", de: "KLASSISCHER EISKAFFEE" },
@@ -1856,7 +1856,7 @@ export const menuData = [
           de: "Traditioneller Eiskaffee."
         },
         price: "20",
-        image: "images/icecoffee-class.jpg"
+        image: "images/icecoffee-class.webp"
       }
     ]
   },
@@ -1879,7 +1879,7 @@ export const menuData = [
           de: "Frappuccino mit Geschmack nach Wahl."
         },
         price: "28",
-        image: "images/frappu-arom.jpg"
+        image: "images/frappu-arom.webp"
       },
       {
         name: { fr: "FRAPPUCCINO CLASSIQUE", en: "CLASSIC FRAPPUCCINO", de: "KLASSISCHER FRAPPUCCINO" },
@@ -1889,7 +1889,7 @@ export const menuData = [
           de: "Gemischtes Eiskaffeegetränk, Frappé-Stil."
         },
         price: "25",
-        image: "images/frappu-class.jpg"
+        image: "images/frappu-class.webp"
       }
     ]
   },
@@ -1912,7 +1912,7 @@ export const menuData = [
           de: "Ananas, Avocado, saisonale Frucht, Passionsfruchtsirup."
         },
         price: "48",
-        image: "images/cocktail-gc.jpg"
+        image: "images/cocktail-gc.webp"
       },
       {
         name: { fr: "FRAÎCHEUR", en: "FRESHNESS", de: "FRISCHE" },
@@ -1922,7 +1922,7 @@ export const menuData = [
           de: "Ananas, Birne, Zitrone, Minze."
         },
         price: "42",
-        image: "images/cocktail-fraicheur.jpg"
+        image: "images/cocktail-fraicheur.webp"
       },
       {
         name: { fr: "TROPICAL", en: "TROPICAL", de: "TROPISCH" },
@@ -1932,7 +1932,7 @@ export const menuData = [
           de: "Mango, Banane, Orange, Hibiskus."
         },
         price: "42",
-        image: "images/cocktail-tropical.jpg"
+        image: "images/cocktail-tropical.webp"
       },
       {
         name: { fr: "PINA COLADA", en: "PINA COLADA", de: "PINA COLADA" },
@@ -1942,7 +1942,7 @@ export const menuData = [
           de: "Ananas, Kokosnuss."
         },
         price: "42",
-        image: "images/cocktail-pinacolada.jpg"
+        image: "images/cocktail-pinacolada.webp"
       },
       {
         name: { fr: "COCKTAIL GINGEMBRE", en: "GINGER COCKTAIL", de: "INGWER-COCKTAIL" },
@@ -1952,7 +1952,7 @@ export const menuData = [
           de: "Ingwer, Zitrone, Honig."
         },
         price: "32",
-        image: "images/cocktail-gingembre.jpg"
+        image: "images/cocktail-gingembre.webp"
       },
       {
         name: { fr: "SAN FRANCISCO", en: "SAN FRANCISCO", de: "SAN FRANCISCO" },
@@ -1962,7 +1962,7 @@ export const menuData = [
           de: "Ingwer, Hibiskus, Orange, Zitrone."
         },
         price: "34",
-        image: "images/cocktail-sf.jpg"
+        image: "images/cocktail-sf.webp"
       }
     ]
   },
@@ -1985,7 +1985,7 @@ export const menuData = [
           de: "Belebender Mojito mit Redbull."
         },
         price: "44",
-        image: "images/mojito-redbull.jpg"
+        image: "images/mojito-redbull.webp"
       },
       {
         name: { fr: "MOJITO TROPICAL", en: "TROPICAL MOJITO", de: "TROPISCHER MOJITO" },
@@ -1995,7 +1995,7 @@ export const menuData = [
           de: "Mojito mit tropischen Aromen."
         },
         price: "38",
-        image: "images/mojito-tropical.jpg"
+        image: "images/mojito-tropical.webp"
       },
       {
         name: { fr: "MOJITO CITRON", en: "LEMON MOJITO", de: "ZITRONEN MOJITO" },
@@ -2005,7 +2005,7 @@ export const menuData = [
           de: "Klassischer Zitronen Mojito."
         },
         price: "34",
-        image: "images/mojito-citron.jpg"
+        image: "images/mojito-citron.webp"
       }
     ]
   },
@@ -2028,7 +2028,7 @@ export const menuData = [
           de: "Banane, Amlou, Himbeere, Blaubeere."
         },
         price: "48",
-        image: "images/smoothie-jelly.jpg"
+        image: "images/smoothie-jelly.webp"
       },
       {
         name: { fr: "PINK SMOOTHIE", en: "PINK SMOOTHIE", de: "PINK SMOOTHIE" },
@@ -2038,7 +2038,7 @@ export const menuData = [
           de: "Himbeere, Orange, Erdbeere."
         },
         price: "48",
-        image: "images/smoothie-pink.jpg"
+        image: "images/smoothie-pink.webp"
       },
       {
         name: { fr: "TRIPLE BERRY", en: "TRIPLE BERRY", de: "TRIPLE BERRY" },
@@ -2048,7 +2048,7 @@ export const menuData = [
           de: "Blaubeere, Himbeere, Erdbeere."
         },
         price: "48",
-        image: "images/smoothie-triple.jpg"
+        image: "images/smoothie-triple.webp"
       },
       {
         name: { fr: "ÉNERGÉTIQUE", en: "ENERGETIC", de: "ENERGETISCH" },
@@ -2058,7 +2058,7 @@ export const menuData = [
           de: "Banane, Ananas, Mango."
         },
         price: "42",
-        image: "images/smoothie-energetic.jpg"
+        image: "images/smoothie-energetic.webp"
       },
 
       {
@@ -2069,7 +2069,7 @@ export const menuData = [
           de: "Orange, Pfirsich, Karotte."
         },
         price: "42",
-        image: "images/smoothie-multiv.jpg"
+        image: "images/smoothie-multiv.webp"
       },
       {
         name: { fr: "HAWAIEN", en: "HAWAIIAN", de: "HAWAIIAN" },
@@ -2079,7 +2079,7 @@ export const menuData = [
           de: "Erdbeere, Ananas, Kiwi, Avocado, Minze."
         },
         price: "42",
-        image: "images/smoothie-hawai.jpg"
+        image: "images/smoothie-hawai.webp"
       }
     ]
   },
@@ -2102,7 +2102,7 @@ export const menuData = [
           de: "Mango, Avocado, Banane, Zitrone, Erdbeere, Orange."
         },
         price: "48",
-        image: "images/smoothiebowl-ultra.jpg"
+        image: "images/smoothiebowl-ultra.webp"
       },
       {
         name: { fr: "EXOTIQUE", en: "EXOTIC", de: "EXOTISCH" },
@@ -2112,7 +2112,7 @@ export const menuData = [
           de: "Ananas, Pfirsich, Mango, Banane, Orange."
         },
         price: "48",
-        image: "images/smoothiebowl-exotic.jpg"
+        image: "images/smoothiebowl-exotic.webp"
       }
     ]
   },
@@ -2135,7 +2135,7 @@ export const menuData = [
           de: "Milkshake mit Erdbeergeschmack."
         },
         price: "42",
-        image: "images/milkshake-fraise.jpg"
+        image: "images/milkshake-fraise.webp"
       },
       {
         name: { fr: "MILKSHAKE CARAMEL", en: "CARAMEL MILKSHAKE", de: "KARAMELL MILKSHAKE" },
@@ -2145,7 +2145,7 @@ export const menuData = [
           de: "Milkshake mit Karamellgeschmack."
         },
         price: "42",
-        image: "images/milkshake-caramel.jpg"
+        image: "images/milkshake-caramel.webp"
       },
       {
         name: { fr: "MILKSHAKE CHOCOLAT", en: "CHOCOLATE MILKSHAKE", de: "SCHOKOLADEN MILKSHAKE" },
@@ -2155,7 +2155,7 @@ export const menuData = [
           de: "Milkshake mit Schokoladengeschmack."
         },
         price: "42",
-        image: "images/milkshake-choc.jpg"
+        image: "images/milkshake-choc.webp"
       },
       {
         name: { fr: "MILKSHAKE VANILLE", en: "VANILLA MILKSHAKE", de: "VANILLE MILKSHAKE" },
@@ -2165,7 +2165,7 @@ export const menuData = [
           de: "Milkshake mit Vanillegeschmack."
         },
         price: "42",
-        image: "images/milkshake-vanille.jpg"
+        image: "images/milkshake-vanille.webp"
       },
       {
         name: { fr: "MILKSHAKE COOKIES", en: "COOKIES MILKSHAKE", de: "COOKIES MILKSHAKE" },
@@ -2175,7 +2175,7 @@ export const menuData = [
           de: "Milkshake mit Cookies-Geschmack."
         },
         price: "42",
-        image: "images/milkshake-cookies.jpg"
+        image: "images/milkshake-cookies.webp"
       },
       {
         name: { fr: "MILKSHAKE KITKAT", en: "KITKAT MILKSHAKE", de: "KITKAT MILKSHAKE" },
@@ -2185,7 +2185,7 @@ export const menuData = [
           de: "Milkshake mit Kitkat-Geschmack."
         },
         price: "42",
-        image: "images/milkshake-kitkat.jpg"
+        image: "images/milkshake-kitkat.webp"
       },
       {
         name: { fr: "MILKSHAKE OREO", en: "OREO MILKSHAKE", de: "OREO MILKSHAKE" },
@@ -2195,7 +2195,7 @@ export const menuData = [
           de: "Milkshake mit Oreo-Geschmack."
         },
         price: "42",
-        image: "images/milkshake-oreo.jpg"
+        image: "images/milkshake-oreo.webp"
       },
       {
         name: { fr: "MILKSHAKE NUTELLA", en: "NUTELLA MILKSHAKE", de: "NUTELLA MILKSHAKE" },
@@ -2205,7 +2205,7 @@ export const menuData = [
           de: "Milkshake mit Nutella-Geschmack."
         },
         price: "42",
-        image: "images/milkshake-nutella.jpg"
+        image: "images/milkshake-nutella.webp"
       },
 
       {
@@ -2216,7 +2216,7 @@ export const menuData = [
           de: "Zusatz von Schlagsahne."
         },
         price: "05",
-        image: "images/milkshake-chant.jpg"
+        image: "images/milkshake-chant.webp"
       }
     ]
   },
@@ -2239,7 +2239,7 @@ export const menuData = [
           de: "Orangen Milkshake (Erdbeere, Karamell, Schokolade, Vanille, Oreo, Nougat)."
         },
         price: "42",
-        image: "images/orangshake.jpg"
+        image: "images/orangshake.webp"
       }
     ]
   },
@@ -2263,7 +2263,7 @@ export const menuData = [
           de: "Vanille, Nougat, Waldbeerjoghurt,pistazie."
         },
         price: "65",
-        image: "images/glace-gc.jpg"
+        image: "images/glace-gc.webp"
       },
       {
         name: { fr: "BANANA SPLIT", en: "BANANA SPLIT", de: "BANANA SPLIT" },
@@ -2273,7 +2273,7 @@ export const menuData = [
           de: "Vanille, Schokolade, Erdbeere."
         },
         price: "50",
-        image: "images/glace-banana.jpg"
+        image: "images/glace-banana.webp"
       },
       {
         name: { fr: "COUPE AMOR", en: "AMOR CUP", de: "AMOR BECHER" },
@@ -2283,7 +2283,7 @@ export const menuData = [
           de: "Erdbeere, Joghurt, nougat."
         },
         price: "45",
-        image: "images/glace-amor.jpg"
+        image: "images/glace-amor.webp"
       },
       {
         name: { fr: "COUPE ENFANT", en: "KIDS CUP", de: "KINDERBECHER" },
@@ -2293,7 +2293,7 @@ export const menuData = [
           de: "schokolade, Bubble, Schlagsahne."
         },
         price: "40",
-        image: "images/glace-enfant.jpg"
+        image: "images/glace-enfant.webp"
       },
       {
         name: { fr: "2 Boules de glace", en: "2 Scoops of Ice Cream", de: "2 Kugeln Eis" },
@@ -2303,7 +2303,7 @@ export const menuData = [
           de: "Geschmacksrichtungen nach Wahl: Vanille, Schokolade, Nougat, pistazie, Bubble, Waldbeerjoghurt, Erdbeere, Karamell."
         },
         price: "30",
-        image: "images/glace-2boules.jpg"
+        image: "images/glace-2boules.webp"
       },
       {
         name: { fr: "1 Boule de glace", en: "1 Scoop of Ice Cream", de: "1 Kugel Eis" },
@@ -2313,7 +2313,7 @@ export const menuData = [
           de: "Geschmack nach Wahl: Vanille, Schokolade, Nougat, pistazie, Bubble, Waldbeerjoghurt, Erdbeere, Karamell."
         },
         price: "16",
-        image: "images/glace-1boule.jpg"
+        image: "images/glace-1boule.webp"
       }
     ]
   }
