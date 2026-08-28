@@ -7,24 +7,24 @@
    VARIABLES
 ========================================= */
 :root {
-    --bg:           #FCFAF6;       /* Fond crème doux */
+    --bg:           #FAF7F2;       /* Crème cachemire doux */
     --card:         #FFFFFF;       /* Cartes blanc pur */
-    --text:         #2D2321;       /* Texte charbon chaud */
-    --muted:        #8E827B;       /* Texte secondaire gris-brun doux */
-    --gold:         #E09200;       /* Jaune d'or/ambre chaleureux */
-    --gold-dark:    #C67E00;       /* Jaune d'or foncé */
-    --primary:      #BD1E2D;       /* Rouge cramoisi principal */
-    --primary-dark: #9A1622;       /* Rouge cramoisi foncé */
+    --text:         #2B2321;       /* Brun charbon café */
+    --muted:        #7E736D;       /* Gris-taupe doux */
+    --gold:         #C9A84C;       /* Or satiné élégant */
+    --gold-dark:    #A48332;       /* Or vieilli profond */
+    --primary:      #7A1C24;       /* Bordeaux velours chic */
+    --primary-dark: #5E1219;       /* Bordeaux foncé impérial */
     --radius:       20px;
-    --shadow:       0 12px 35px rgba(45, 35, 33, 0.05);
-    --shadow-hover: 0 16px 45px rgba(189, 30, 45, 0.12);
+    --shadow:       0 12px 35px rgba(43, 35, 33, 0.06);
+    --shadow-hover: 0 16px 45px rgba(122, 28, 36, 0.14);
 
     /* Palette luxe — icons & logo (Dark luxury overlay) */
     --sc-gold:       #C9A84C;
     --sc-gold-light: #E2C97E;
     --sc-border:     rgba(201, 168, 76, 0.35);
-    --sc-bg:         rgba(10, 9, 6, 0.65);
-    --sc-bg-hover:   rgba(201, 168, 76, 0.15);
+    --sc-bg:         rgba(18, 12, 11, 0.72);
+    --sc-bg-hover:   rgba(122, 28, 36, 0.15);
 }
 
 /* =========================================
@@ -208,7 +208,7 @@ header {
     top: 22%;
     height: 56%;
     width: 1px;
-    background: rgba(189, 30, 45, 0.13);
+    background: rgba(122, 28, 36, 0.13);
     pointer-events: none;
 }
 
@@ -219,7 +219,7 @@ header {
         border-color: var(--primary);
         background: var(--sc-bg-hover);
         transform: translateY(-3px);
-        box-shadow: 0 8px 24px rgba(189, 30, 45, 0.15);
+        box-shadow: 0 8px 24px rgba(122, 28, 36, 0.15);
         height: 56px;
     }
     .sc-btn:hover .sc-label {
@@ -232,7 +232,7 @@ header {
 /* Tap mobile */
 .sc-btn:active {
     transform: scale(0.93);
-    background: rgba(189, 30, 45, 0.14);
+    background: rgba(122, 28, 36, 0.14);
     border-color: var(--primary);
     color: var(--primary-dark);
 }
@@ -244,7 +244,7 @@ header {
     left: 50%;
     transform: translateX(-50%) translateY(8px);
     background: rgba(255, 255, 255, 0.95);
-    border: 1px solid rgba(189, 30, 45, 0.2);
+    border: 1px solid rgba(122, 28, 36, 0.2);
     color: var(--primary);
     font-family: 'DM Sans', 'Poppins', sans-serif;
     font-size: 11px;
@@ -403,7 +403,7 @@ header {
     transition: left 0.3s ease;
     z-index: 9998;
     overflow-y: auto;
-    border-right: 1px solid rgba(189, 30, 45, 0.15);
+    border-right: 1px solid rgba(122, 28, 36, 0.15);
     box-shadow: 4px 0 30px rgba(45, 35, 33, 0.06);
 }
 .burger-nav-hidden a {
@@ -432,7 +432,7 @@ header {
 
 .categories-horizontal a {
     background: var(--card);
-    border: 1px solid rgba(189, 30, 45, 0.15);
+    border: 1px solid rgba(122, 28, 36, 0.15);
     padding: 8px 18px;
     border-radius: 999px;
     color: var(--text);
@@ -491,7 +491,7 @@ header {
     overflow: hidden;
     background-color: #000;
     box-shadow: 0 6px 16px rgba(45, 35, 33, 0.08);
-    border: 1px solid rgba(189, 30, 45, 0.12);
+    border: 1px solid rgba(122, 28, 36, 0.12);
 }
 
 .carousel-img {
@@ -518,7 +518,7 @@ header {
     text-transform: uppercase;
     padding: 3px 6px;
     border-radius: 6px;
-    box-shadow: 0 2px 6px rgba(189, 30, 45, 0.3);
+    box-shadow: 0 2px 6px rgba(122, 28, 36, 0.3);
     z-index: 2;
     pointer-events: none;
 }
@@ -543,12 +543,12 @@ header {
 @keyframes highlightBorderFlash {
     0% {
         border-color: var(--primary);
-        box-shadow: 0 0 20px rgba(189, 30, 45, 0.4);
+        box-shadow: 0 0 20px rgba(122, 28, 36, 0.4);
         transform: translateY(-4px) scale(1.02);
     }
     50% {
         border-color: var(--primary);
-        box-shadow: 0 0 20px rgba(189, 30, 45, 0.4);
+        box-shadow: 0 0 20px rgba(122, 28, 36, 0.4);
         transform: translateY(-4px) scale(1.02);
     }
     100% {
@@ -598,7 +598,7 @@ header {
     padding-left: 48px !important;
     padding-right: 46px !important;
     background: rgba(255, 255, 255, 0.96);
-    border: 1px solid rgba(189, 30, 45, 0.22);
+    border: 1px solid rgba(122, 28, 36, 0.22);
     border-radius: 999px;
     color: var(--text);
     font-family: "DM Sans", "Poppins", sans-serif;
@@ -623,7 +623,7 @@ header {
 #searchInput::placeholder { color: var(--muted); font-size: 0.88rem; }
 #searchInput:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(189, 30, 45, 0.18), 0 6px 20px rgba(189, 30, 45, 0.1);
+    box-shadow: 0 0 0 3px rgba(122, 28, 36, 0.18), 0 6px 20px rgba(122, 28, 36, 0.1);
     background: #FFFFFF;
 }
 
@@ -635,7 +635,7 @@ header {
     width: 26px;
     height: 26px;
     border-radius: 50%;
-    background: rgba(189, 30, 45, 0.12);
+    background: rgba(122, 28, 36, 0.12);
     border: none;
     color: var(--primary);
     font-size: 16px;
@@ -848,7 +848,7 @@ header {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 6px 20px rgba(189, 30, 45, 0.45);
+    box-shadow: 0 6px 20px rgba(122, 28, 36, 0.45);
     transition: transform 0.25s cubic-bezier(.22, 1, .36, 1), box-shadow 0.25s ease, filter 0.2s;
     z-index: 1000000;
     pointer-events: auto;
@@ -857,7 +857,7 @@ header {
 
 .secure-lightbox-add-btn:hover {
     transform: translateX(-50%) scale(1.08);
-    box-shadow: 0 8px 24px rgba(189, 30, 45, 0.6);
+    box-shadow: 0 8px 24px rgba(122, 28, 36, 0.6);
     filter: brightness(1.1);
 }
 
@@ -1273,7 +1273,7 @@ footer a:hover { opacity: 0.8; }
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(189, 30, 45, 0.2);
+    box-shadow: 0 4px 10px rgba(122, 28, 36, 0.2);
     transition: transform 0.25s cubic-bezier(.22, 1, .36, 1), box-shadow 0.25s ease, filter 0.2s;
     z-index: 5;
     outline: none;
@@ -1281,7 +1281,7 @@ footer a:hover { opacity: 0.8; }
 
 .add-to-cart-btn:hover {
     transform: scale(1.12);
-    box-shadow: 0 6px 14px rgba(189, 30, 45, 0.35);
+    box-shadow: 0 6px 14px rgba(122, 28, 36, 0.35);
     filter: brightness(1.1);
 }
 
@@ -1306,10 +1306,10 @@ body {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(252, 250, 246, 0.98) 100%);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-top: 1.5px solid rgba(189, 30, 45, 0.3);
+    border-top: 1.5px solid rgba(122, 28, 36, 0.3);
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    box-shadow: 0 -8px 32px rgba(45, 35, 33, 0.08), 0 0 20px rgba(189, 30, 45, 0.05);
+    box-shadow: 0 -8px 32px rgba(45, 35, 33, 0.08), 0 0 20px rgba(122, 28, 36, 0.05);
     z-index: 9999;
     padding: 6px 12px calc(14px + env(safe-area-inset-bottom, 0px));
     box-sizing: border-box;
@@ -1524,7 +1524,7 @@ body {
 }
 
 .cd-empty-state svg {
-    color: rgba(189, 30, 45, 0.15);
+    color: rgba(122, 28, 36, 0.15);
 }
 
 .cd-empty-state p {
@@ -1726,7 +1726,7 @@ body {
     border: none;
     border-radius: 12px;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(189, 30, 45, 0.25);
+    box-shadow: 0 4px 15px rgba(122, 28, 36, 0.25);
     transition: filter 0.2s, transform 0.2s, box-shadow 0.2s;
     display: flex;
     align-items: center;
@@ -2332,14 +2332,14 @@ body {
     margin-bottom: 20px;
     border-radius: 18px;
     overflow: hidden;
-    border: 1px solid rgba(189, 30, 45, 0.1);
+    border: 1px solid rgba(122, 28, 36, 0.1);
     background: var(--card);
     box-shadow: 0 8px 30px rgba(45, 35, 33, 0.03);
     transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .category-drawer:hover {
-    box-shadow: 0 12px 40px rgba(189, 30, 45, 0.05);
+    box-shadow: 0 12px 40px rgba(122, 28, 36, 0.05);
 }
 
 .category-drawer-header {
@@ -2503,7 +2503,7 @@ body {
     padding: 12px 24px;
     border-radius: 30px;
     cursor: pointer;
-    box-shadow: 0 8px 25px rgba(189, 30, 45, 0.4);
+    box-shadow: 0 8px 25px rgba(122, 28, 36, 0.4);
     display: flex;
     align-items: center;
     gap: 8px;
@@ -2523,7 +2523,7 @@ body {
 .floating-close-category:hover {
     background: var(--primary-dark);
     transform: translateX(-50%) translateY(-2px);
-    box-shadow: 0 10px 30px rgba(189, 30, 45, 0.55);
+    box-shadow: 0 10px 30px rgba(122, 28, 36, 0.55);
 }
 
 .floating-close-category:active {
