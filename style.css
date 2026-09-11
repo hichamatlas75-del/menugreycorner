@@ -2768,13 +2768,22 @@ button, .sc-btn, .add-to-cart-btn, .category-drawer-header, .tgs-btn {
 }
 
 [dir="rtl"] .item-price-line {
-    flex-direction: row-reverse;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
 }
 
 [dir="rtl"] .item-name {
     padding-right: 0;
     padding-left: 15px;
     text-align: right;
+}
+
+[dir="rtl"] .item-price {
+    margin-left: 0;
+    margin-right: auto;
+    text-align: left;
+    flex-shrink: 0;
 }
 
 [dir="rtl"] .category-drawer-chevron svg {
