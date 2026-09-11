@@ -69,7 +69,8 @@ export function addToCart(menuItem, choices = null) {
   const toastMsgs = {
     fr: "Ajouté au panier !",
     en: "Added to basket !",
-    de: "In den Korb gelegt !"
+    de: "In den Korb gelegt !",
+    ar: "تمت إضافته إلى السلة !"
   };
   const choicesStr = (choices && choices.length > 0) ? ` (${choices.join(', ')})` : '';
   showToast(`${menuItem.name[currentLang] || menuItem.name.fr}${choicesStr} — ${toastMsgs[currentLang] || toastMsgs.fr}`);

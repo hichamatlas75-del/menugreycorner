@@ -160,6 +160,13 @@ export const GPSService = {
         suspect: "Ungültige GPS-Position !",
         denied: "GPS erlauben zum Bestellen",
         error: "GPS-Fehler. Einstellungen prüfen"
+      },
+      ar: {
+        inside: "في غري كورنر فاس",
+        outside: "وضع التصفح فقط",
+        suspect: "موقع GPS غير دقيق !",
+        denied: "يرجى تفعيل GPS للطلب",
+        error: "خطأ في تحديد الموقع"
       }
     };
 

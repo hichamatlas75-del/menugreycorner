@@ -272,7 +272,8 @@ export function openLightboxForItem(item, imgUrl) {
     lbAddBtn.style.display = "block";
     const btnText = currentLang === "en" ? "+ Add to cart"
       : currentLang === "de" ? "+ In den Warenkorb"
-        : "+ Ajouter au panier";
+        : currentLang === "ar" ? "+ أضف إلى السلة"
+          : "+ Ajouter au panier";
     lbAddBtn.textContent = btnText;
   } else if (lbAddBtn) {
     lbAddBtn.style.display = "none";
@@ -386,7 +387,8 @@ export function renderMenu() {
         card.classList.add("nouveau-flash");
         const badgeText = currentLang === "en" ? "NEW"
           : currentLang === "de" ? "NEU"
-            : "NOUVEAU";
+            : currentLang === "ar" ? "جديد"
+              : "NOUVEAU";
         card.setAttribute("data-badge", badgeText);
       }
 
@@ -395,7 +397,8 @@ export function renderMenu() {
 
       const btnText = currentLang === "en" ? "+ Add"
         : currentLang === "de" ? "+ Hinzufügen"
-          : "+ Ajouter";
+          : currentLang === "ar" ? "+ أضف"
+            : "+ Ajouter";
 
       card.innerHTML = `
         <div class="item-img-wrapper" style="background-image: url('${item.image}')"></div>

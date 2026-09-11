@@ -26,7 +26,8 @@ export function submitPreOrder(clientTable, onComplete) {
     const tableMsgs = {
       fr: "Veuillez choisir votre numéro de table avant d'envoyer la commande.",
       en: "Please select your table number before sending the order.",
-      de: "Bitte wählen Sie Ihre Tischnummer, bevor Sie die Bestellung senden."
+      de: "Bitte wählen Sie Ihre Tischnummer, bevor Sie die Bestellung senden.",
+      ar: "يرجى اختيار رقم طاولتك قبل إرسال الطلب."
     };
     showToast(tableMsgs[currentLang] || tableMsgs.fr);
     setPendingActionAfterTableSelect((selectedTable) => submitPreOrder(selectedTable, onComplete));
@@ -70,7 +71,8 @@ export function submitPreOrder(clientTable, onComplete) {
       const okMsgs = {
         fr: "Précommande envoyée ! Le serveur arrive la confirmer.",
         en: "Pre-order sent! The waiter is coming to confirm.",
-        de: "Vorbestellung gesendet! Der Kellner kommt zur Bestätigung."
+        de: "Vorbestellung gesendet! Der Kellner kommt zur Bestätigung.",
+        ar: "تم إرسال الطلب المسبق ! النادل قادم لتأكيده."
       };
       showToast(okMsgs[currentLang] || okMsgs.fr);
 

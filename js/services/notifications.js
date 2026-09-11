@@ -31,7 +31,8 @@ export function triggerQuickServiceCall(clientTable, type) {
     const tableMsgs = {
       fr: "Veuillez choisir votre numéro de table.",
       en: "Please select your table number.",
-      de: "Bitte wählen Sie Ihre Tischnummer."
+      de: "Bitte wählen Sie Ihre Tischnummer.",
+      ar: "يرجى اختيار رقم طاولتك."
     };
     showToast(tableMsgs[currentLang] || tableMsgs.fr);
     setPendingActionAfterTableSelect((selectedTable) => triggerQuickServiceCall(selectedTable, type));
@@ -44,7 +45,8 @@ export function triggerQuickServiceCall(clientTable, type) {
     const errorMsgs = {
       fr: `Veuillez attendre ${waitRemaining}s avant de renouveler cet appel.`,
       en: `Please wait ${waitRemaining}s before repeating this request.`,
-      de: `Bitte warten Sie ${waitRemaining}s, bevor Sie diese Anfrage wiederholen.`
+      de: `Bitte warten Sie ${waitRemaining}s, bevor Sie diese Anfrage wiederholen.`,
+      ar: `يرجى الانتظار ${waitRemaining} ثانية قبل تكرار هذا الطلب.`
     };
     showToast(errorMsgs[currentLang] || errorMsgs.fr);
     return;
@@ -63,7 +65,8 @@ export function triggerQuickServiceCall(clientTable, type) {
       const okMsgs = {
         fr: "Appel envoyé ! Votre serveur a été alerté.",
         en: "Call sent! Your waiter has been alerted.",
-        de: "Anruf gesendet! Ihr Kellner wurde benachrichtigt."
+        de: "Anruf gesendet! Ihr Kellner wurde benachrichtigt.",
+        ar: "تم إرسال الطلب ! تم إشعار نادلك."
       };
       showToast(okMsgs[currentLang] || okMsgs.fr);
       if (callId) {
@@ -268,7 +271,8 @@ export function subscribeToActiveWaiterEvents(clientTable) {
         const acceptedMsgs = {
           fr: `🔔 Le serveur a accepté votre ${typeLabel} et arrive à votre table !`,
           en: `🔔 The waiter accepted your ${typeLabel} and is coming to your table!`,
-          de: `🔔 Ihr Kellner hat Ihre ${typeLabel} angenommen und kommt zu Ihrem Tisch!`
+          de: `🔔 Ihr Kellner hat Ihre ${typeLabel} angenommen und kommt zu Ihrem Tisch!`,
+          ar: `🔔 لقد قبل النادل طلبك وهو في الطريق إلى طاولتك !`
         };
         const msg = acceptedMsgs[currentLang] || acceptedMsgs.fr;
 
@@ -312,7 +316,8 @@ export function subscribeToActiveWaiterEvents(clientTable) {
         const acceptedMsgs = {
           fr: "👨‍🍳 Le serveur a validé votre précommande !",
           en: "👨‍🍳 The waiter confirmed your pre-order!",
-          de: "👨‍🍳 Der Kellner hat Ihre Vorbestellung bestätigt!"
+          de: "👨‍🍳 Der Kellner hat Ihre Vorbestellung bestätigt!",
+          ar: "👨‍🍳 لقد وافق النادل على طلبك المسبق !"
         };
         const msg = acceptedMsgs[currentLang] || acceptedMsgs.fr;
 

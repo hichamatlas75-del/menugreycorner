@@ -2747,3 +2747,66 @@ button, .sc-btn, .add-to-cart-btn, .category-drawer-header, .tgs-btn {
         scroll-behavior: auto !important;
     }
 }
+
+/* =========================================
+   RTL MODE (ARABIC / ARABE 🇲🇦)
+========================================= */
+[dir="rtl"] {
+    font-family: 'Segoe UI', 'Tajawal', 'Cairo', Tahoma, sans-serif;
+}
+
+[dir="rtl"] .item-name,
+[dir="rtl"] .category-drawer-title,
+[dir="rtl"] .cd-title {
+    font-family: 'Segoe UI', 'Tajawal', 'Cairo', Tahoma, serif;
+    letter-spacing: normal;
+}
+
+[dir="rtl"] .item-desc {
+    text-align: right;
+    line-height: 1.5;
+}
+
+[dir="rtl"] .item-price-line {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .item-name {
+    padding-right: 0;
+    padding-left: 15px;
+    text-align: right;
+}
+
+[dir="rtl"] .category-drawer-chevron svg {
+    transform: scaleX(-1);
+}
+
+[dir="rtl"] .category-drawer.open .category-drawer-chevron svg {
+    transform: rotate(180deg) scaleX(-1);
+}
+
+[dir="rtl"] #searchInput {
+    text-align: right;
+    padding-right: 48px !important;
+    padding-left: 46px !important;
+}
+
+[dir="rtl"] .search-icon-wrap {
+    left: auto;
+    right: 18px;
+}
+
+[dir="rtl"] #searchClearBtn {
+    right: auto;
+    left: 16px;
+}
+
+[dir="rtl"] .cd-total-line,
+[dir="rtl"] .cd-item {
+    direction: rtl;
+}
+
+[dir="rtl"] .nouveau-flash::after {
+    right: auto;
+    left: 12px;
+}
