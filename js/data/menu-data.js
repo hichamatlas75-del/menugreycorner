@@ -565,23 +565,6 @@ export const menuData = [
       },
       {
         "name": {
-          "fr": "ROULADE DE BŒUF AUX SAVEURS DE L'ATLAS ",
-          "en": "Beef roulade with flavors of the Atlas",
-          "de": "Rinderroulade mit Aromen des Atlas",
-          "ar": "رولاد لحم بقري بنكهات الأطلس"
-        },
-        "description": {
-          "fr": "Viande de bœuf hachée, farce épinards et fromages, sauce crème fraîche et champignons frais",
-          "en": "Minced beef, spinach and cheese stuffing, fresh cream sauce with fresh mushrooms",
-          "de": "Hackfleisch vom Rind, Spinat- und Käsefüllung, Sahnesauce mit frischen Champignons",
-          "ar": "لحم بقري مفروم محشو بالسبانخ والجبن، مع صلصة الكريمة الطازجة والفطر الطري."
-        },
-        "price": "120",
-        "image": "images/plat-rouladeboeuf.webp",
-        "isNew": true
-      },
-      {
-        "name": {
           "fr": "LE FILET DE BŒUF ÉMINCÉ ",
           "en": "Sliced beef fillet",
           "de": "Geschnittenes Rinderfilet",
@@ -595,23 +578,6 @@ export const menuData = [
         },
         "price": "115",
         "image": "images/plat-eminceboeuf.webp"
-      },
-      {
-        "name": {
-          "fr": "SUPRÊME DE POULET AUX CHAMPIGNONS ET PERSILLADE ",
-          "en": "Chicken supreme with mushrooms and parsley garlic butter",
-          "de": "Hähnchenbrust „Suprême“ mit Champignons und Petersilien-Knoblauchbutter",
-          "ar": "سوبريم الدجاج بالفطر وصلصة البقدونس"
-        },
-        "description": {
-          "fr": "Suprême de poulet saisi, sauce veloutée à la crème, champignons frais, persil ciselé",
-          "en": "Seared chicken supreme, creamy velouté sauce, fresh mushrooms, chopped parsley",
-          "de": "Kurz gebratene Hähnchenbrust „Suprême“, samtige Rahmsauce, frische Champignons, gehackte Petersilie",
-          "ar": "سوبريم دجاج محمر، صلصة كريمة مخملية، فطر طازج، وبقدونس مفروم بعناية."
-        },
-        "price": "98",
-        "image": "images/plat-supreme.webp",
-        "isNew": true
       },
       {
         "name": {
@@ -660,22 +626,6 @@ export const menuData = [
         },
         "price": "88",
         "image": "images/plat-emincepoulet.webp"
-      },
-      {
-        "name": {
-          "fr": "BALLOTINE DE POULET AU CŒUR D'ÉPINARDS ET FROMAGE ",
-          "en": "Chicken ballotine with spinach and cheese filling",
-          "de": "Hähnchen-Ballotine mit Spinat- und Käsefüllung",
-          "ar": "بالوتين دجاج محشوة بالسبانخ والجبن"
-        },
-        "description": {
-          "fr": "Volaille hachée, cœur épinards et fromage affiné, sauce exclusive du Chef",
-          "en": "Minced poultry, spinach and aged cheese center, Chef’s signature sauce",
-          "de": "Gehacktes Geflügel, Herz aus Spinat und gereiftem Käse, exklusive Sauce des Küchenchefs",
-          "ar": "دجاج مفروم محشو بالسبانخ والجبن المعتق، مع صلصة الشيف الحصرية."
-        },
-        "price": "94",
-        "image": "images/plat-ballotine.webp"
       },
       {
         "name": {
