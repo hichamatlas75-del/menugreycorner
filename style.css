@@ -37,6 +37,12 @@ button, input, select, textarea, a, .sc-btn, .category-drawer-header, .add-to-ca
     -webkit-tap-highlight-color: transparent;
 }
 
+html {
+    overflow-x: hidden;
+    width: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
 html.no-scroll,
 body.no-scroll {
     overflow: hidden !important;
@@ -45,6 +51,7 @@ body.no-scroll {
 body {
     margin: 0;
     padding: 0;
+    width: 100%;
     background: var(--bg);
     color: var(--text);
     font-family: "Poppins", sans-serif;
