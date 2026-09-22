@@ -13,8 +13,9 @@ const GOOGLE_REVIEW_URL = "https://g.page/r/CXF0QNm04m-ZEAE/review";
 
 const FEEDBACK_I18N = {
   fr: {
-    fabLabel: "Avis & Service",
-    fabSub: "Donnez votre avis",
+    fabLabel: "Avis & Service Client",
+    fabSub: "Votre avis compte • Réponse immédiate du manager",
+    fabCta: "Noter ➜",
     title: "Votre avis compte pour nous",
     subtitle: "Comment s'est passée votre expérience chez Grey Corner ?",
     note1: "Décevant",
@@ -38,7 +39,8 @@ const FEEDBACK_I18N = {
   },
   ar: {
     fabLabel: "رأيكم وخدمتكم",
-    fabSub: "شاركنا تقييمك",
+    fabSub: "رأيكم يهمنا • تواصل مباشر مع الإدارة",
+    fabCta: "تقييم ➜",
     title: "رأيكم يهمنا جداً",
     subtitle: "كيف كانت تجربتكم اليوم في غري كورنر ؟",
     note1: "مخيب للأمل",
@@ -61,8 +63,9 @@ const FEEDBACK_I18N = {
     waCommentPrompt: "ملاحظاتي : "
   },
   en: {
-    fabLabel: "Review & Service",
-    fabSub: "Give your feedback",
+    fabLabel: "Review & Customer Service",
+    fabSub: "Your feedback matters • Immediate manager support",
+    fabCta: "Rate ➜",
     title: "Your feedback matters",
     subtitle: "How was your experience at Grey Corner today?",
     note1: "Disappointing",
@@ -86,7 +89,8 @@ const FEEDBACK_I18N = {
   },
   de: {
     fabLabel: "Feedback & Service",
-    fabSub: "Ihre Bewertung",
+    fabSub: "Ihre Meinung zählt • Sofortige Manager-Antwort",
+    fabCta: "Bewerten ➜",
     title: "Ihre Meinung ist uns wichtig",
     subtitle: "Wie war Ihr Erlebnis heute bei Grey Corner?",
     note1: "Enttäuschend",
@@ -163,9 +167,15 @@ function resetFeedbackModalView() {
 export function updateFeedbackTexts() {
   const t = getFeedbackTexts();
 
-  // Update FAB text
+  // Update banner text
   const fabLabel = document.querySelector(".fb-fab-label");
   if (fabLabel) fabLabel.textContent = t.fabLabel;
+
+  const fcbSub = document.getElementById("fcbSubText");
+  if (fcbSub) fcbSub.textContent = t.fabSub;
+
+  const fcbCta = document.getElementById("fcbCtaText");
+  if (fcbCta) fcbCta.textContent = t.fabCta;
 
   // Update modal header
   const titleEl = document.getElementById("fbModalTitle");

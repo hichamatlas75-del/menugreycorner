@@ -930,101 +930,160 @@ header {
 
 
 /* =========================================
-   SMART FEEDBACK & WHATSAPP PILL (FAB)
+   AVIS & SERVICE CLIENT — CARTE FLOTTANTE IMPOSANTE
+   Positionnée entre les catégories et la recherche
 ========================================= */
-.feedback-fab,
-.google-review-fab {
-    position: fixed;
-    bottom: 20px;
-    left: 14px;
-    z-index: 9999;
-    display: inline-flex;
-    align-items: center;
-    gap: 0;
-    border: 1.5px solid rgba(201, 168, 76, 0.35);
-    border-radius: 999px;
-    overflow: hidden;
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    background: rgba(18, 14, 14, 0.9);
-    cursor: pointer;
-    text-decoration: none;
-    outline: none;
-    padding: 0;
-    transition:
-        border-color 0.28s ease,
-        box-shadow   0.28s ease,
-        transform    0.28s cubic-bezier(.22,1,.36,1);
-    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.35), 0 0 14px rgba(37, 211, 102, 0.12);
-}
-.feedback-fab:hover,
-.google-review-fab:hover {
-    border-color: rgba(201, 168, 76, 0.65);
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45), 0 0 20px rgba(37, 211, 102, 0.25);
-    transform: translateY(-2px);
-}
-.feedback-fab:active,
-.google-review-fab:active {
-    transform: scale(0.96);
+.feedback-banner-wrap {
+    width: 100%;
+    max-width: 700px;
+    margin: 10px auto 8px;
+    padding: 0 16px;
+    box-sizing: border-box;
 }
 
-.fb-fab-left,
-.gr-left {
-    background: rgba(37, 211, 102, 0.12);
-    padding: 9px 12px;
+.feedback-card-banner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 13px 18px;
+    background: linear-gradient(145deg, #1C1516 0%, #110B0C 100%);
+    border: 1.5px solid rgba(201, 168, 76, 0.45);
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22), 0 0 18px rgba(201, 168, 76, 0.12);
+    cursor: pointer;
+    text-align: left;
+    outline: none;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.26s cubic-bezier(.22, 1, .36, 1), box-shadow 0.26s ease, border-color 0.26s ease;
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+}
+
+.feedback-card-banner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.7), transparent);
+}
+
+.feedback-card-banner:hover {
+    transform: translateY(-2px);
+    border-color: rgba(201, 168, 76, 0.75);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3), 0 0 24px rgba(201, 168, 76, 0.22);
+}
+
+.feedback-card-banner:active {
+    transform: scale(0.98);
+}
+
+.fcb-left {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-right: 1px solid rgba(201, 168, 76, 0.2);
-    flex-shrink: 0;
-    position: relative;
 }
-.fb-wa-icon {
-    width: 20px;
-    height: 20px;
-    display: block;
-    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
-}
-.gr-left svg { width: 18px; height: 18px; display: block; }
 
-.fb-fab-right,
-.gr-right {
-    background: rgba(18, 14, 14, 0.88);
-    padding: 8px 14px;
+.fcb-wa-badge {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(37, 211, 102, 0.15);
+    border: 1.5px solid rgba(37, 211, 102, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 14px rgba(37, 211, 102, 0.25);
+    transition: transform 0.25s ease;
+}
+
+.feedback-card-banner:hover .fcb-wa-badge {
+    transform: scale(1.08);
+    box-shadow: 0 0 18px rgba(37, 211, 102, 0.45);
+}
+
+.fcb-wa-svg {
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+
+.fcb-center {
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 3px;
-    text-align: left;
-    white-space: nowrap;
+    min-width: 0;
 }
-.fb-fab-label,
-.gr-label {
+
+.fcb-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.fcb-title {
     font-family: 'DM Sans', 'Poppins', sans-serif;
-    font-size: 8.5px;
+    font-size: 0.92rem;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--gold-light, #E2C275);
-    line-height: 1;
-    white-space: nowrap;
+    line-height: 1.2;
 }
-.fb-fab-stars,
-.gr-stars {
+
+.fcb-stars {
     display: flex;
     gap: 2px;
     align-items: center;
-}
-.fb-fab-stars span,
-.gr-stars span {
-    font-size: 11px;
     color: #C9A84C;
+    font-size: 13px;
+    letter-spacing: 1px;
     line-height: 1;
 }
 
-/* If bottom client action bar is shown, elevate the FAB so it doesn't overlap */
-body.has-client-action-bar .feedback-fab,
-body:has(#clientActionBar:not([style*="display: none"])) .feedback-fab {
-    bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+.fcb-subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    color: rgba(250, 246, 239, 0.75);
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fcb-right {
+    flex-shrink: 0;
+}
+
+.fcb-cta-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgba(201, 168, 76, 0.22) 0%, rgba(201, 168, 76, 0.12) 100%);
+    border: 1px solid rgba(201, 168, 76, 0.5);
+    color: #FAF6EF;
+    font-family: 'DM Sans', 'Poppins', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.feedback-card-banner:hover .fcb-cta-badge {
+    background: linear-gradient(135deg, #C9A84C 0%, #E2C275 100%);
+    color: #120D0E;
+    box-shadow: 0 4px 14px rgba(201, 168, 76, 0.4);
 }
 
 /* =========================================
@@ -1547,25 +1606,39 @@ footer a:hover { opacity: 0.8; }
     .close-btn { top: -38px; width: 32px; height: 32px; font-size: 1.3rem; }
     footer { font-size: 0.78rem; padding: 20px 10px; margin-top: 40px; }
 
-    /* Feedback / WhatsApp pill on mobile */
-    .feedback-fab,
-    .google-review-fab {
-        bottom: calc(14px + env(safe-area-inset-bottom, 0px));
-        left: 10px;
-        transition: bottom 0.28s ease, transform 0.2s;
+    /* Feedback Card Banner on mobile */
+    .feedback-banner-wrap {
+        padding: 0 12px;
+        margin: 6px auto 10px;
     }
-    .fb-fab-left,
-    .gr-left { padding: 7px 10px; }
-    .fb-wa-icon { width: 19px; height: 19px; }
-    .gr-left svg { width: 16px; height: 16px; }
-    .fb-fab-right,
-    .gr-right { padding: 6px 11px; }
-    .fb-fab-label,
-    .gr-label { font-size: 8px; letter-spacing: 0.12em; }
-    .fb-fab-stars span,
-    .gr-stars span { font-size: 10px; }
+    .feedback-card-banner {
+        padding: 10px 14px;
+        gap: 10px;
+        border-radius: 16px;
+    }
+    .fcb-wa-badge {
+        width: 38px;
+        height: 38px;
+    }
+    .fcb-wa-svg {
+        width: 20px;
+        height: 20px;
+    }
+    .fcb-title {
+        font-size: 0.82rem;
+    }
+    .fcb-stars {
+        font-size: 11px;
+    }
+    .fcb-subtitle {
+        font-size: 0.72rem;
+    }
+    .fcb-cta-badge {
+        padding: 6px 11px;
+        font-size: 0.72rem;
+    }
 
-    /* Lang switch on mobile: compact 34px buttons, aligned at same bottom baseline */
+    /* Lang switch on mobile */
     .lang-switch {
         bottom: calc(14px + env(safe-area-inset-bottom, 0px));
         right: 10px;
@@ -1583,9 +1656,9 @@ footer a:hover { opacity: 0.8; }
         border-radius: 9px;
     }
 
-    /* GPS badge on mobile: stacked above the feedback pill, no collision */
+    /* GPS badge on mobile: bottom-left */
     .gps-status-badge {
-        bottom: calc(66px + env(safe-area-inset-bottom, 0px));
+        bottom: calc(14px + env(safe-area-inset-bottom, 0px));
         left: 10px;
         padding: 6px 12px;
         font-size: 9.5px;
@@ -1593,19 +1666,13 @@ footer a:hover { opacity: 0.8; }
     }
 
     /* Elevated when client action bar is active on mobile */
-    body.has-client-action-bar .feedback-fab,
-    body.has-client-action-bar .google-review-fab,
-    body:has(#clientActionBar:not([style*="display: none"])) .feedback-fab,
-    body:has(#clientActionBar:not([style*="display: none"])) .google-review-fab {
-        bottom: calc(84px + env(safe-area-inset-bottom, 0px)) !important;
-    }
     body.has-client-action-bar .lang-switch,
     body:has(#clientActionBar:not([style*="display: none"])) .lang-switch {
         bottom: calc(84px + env(safe-area-inset-bottom, 0px)) !important;
     }
     body.has-client-action-bar .gps-status-badge,
     body:has(#clientActionBar:not([style*="display: none"])) .gps-status-badge {
-        bottom: calc(136px + env(safe-area-inset-bottom, 0px)) !important;
+        bottom: calc(84px + env(safe-area-inset-bottom, 0px)) !important;
     }
     .back-to-top {
         bottom: calc(84px + env(safe-area-inset-bottom, 0px));
@@ -1624,8 +1691,6 @@ footer a:hover { opacity: 0.8; }
     .fb-rate-stars { font-size: 12px; }
     .fb-rate-name { font-size: 0.82rem; }
 
-    [dir="rtl"] .feedback-fab,
-    [dir="rtl"] .google-review-fab { right: 10px; left: auto; }
     [dir="rtl"] .gps-status-badge { right: 10px; left: auto; }
     [dir="rtl"] .lang-switch { left: 10px; right: auto; }
 }
@@ -3221,10 +3286,12 @@ button, .sc-btn, .add-to-cart-btn, .category-drawer-header, .tgs-btn {
     left: 12px;
 }
 
-[dir="rtl"] .feedback-fab,
-[dir="rtl"] .google-review-fab {
-    left: auto;
-    right: 14px;
+[dir="rtl"] .feedback-card-banner {
+    text-align: right;
+}
+[dir="rtl"] .fcb-title-row {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
 }
 [dir="rtl"] .gps-status-badge {
     left: auto;
@@ -3233,15 +3300,6 @@ button, .sc-btn, .add-to-cart-btn, .category-drawer-header, .tgs-btn {
 [dir="rtl"] .lang-switch {
     right: auto;
     left: 14px;
-}
-[dir="rtl"] .fb-fab-left,
-[dir="rtl"] .gr-left {
-    border-right: none;
-    border-left: 1px solid rgba(201, 168, 76, 0.2);
-}
-[dir="rtl"] .fb-fab-right,
-[dir="rtl"] .gr-right {
-    text-align: right;
 }
 [dir="rtl"] .fb-close-btn {
     right: auto;
