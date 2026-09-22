@@ -147,6 +147,10 @@ export function closeFeedbackModal() {
 }
 
 function resetFeedbackModalView() {
+  const modal = document.getElementById("feedbackModal");
+  if (modal) {
+    modal.querySelectorAll(".fb-rate-btn").forEach(btn => btn.classList.remove("selected"));
+  }
   const stepRating = document.getElementById("fbStepRating");
   const stepUnhappy = document.getElementById("fbStepUnhappy");
   const stepHappy = document.getElementById("fbStepHappy");
@@ -200,64 +204,31 @@ export function updateFeedbackTexts() {
   if (waHappyBtn) waHappyBtn.textContent = t.whatsappHappyBtn;
 }
 
-export function handleFeedbackRating(stars) {
+export function handleFeedbackRating(stars, clickedBtn) {
   currentSelectedRating = stars;
-  const t = getFeedbackTexts();
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-  const stepRating = document.getElementById("fbStepRating");
-  const stepUnhappy = document.getElementById("fbStepUnhappy");
-  const stepHappy = document.getElementById("fbStepHappy");
-
-  if (stars <= 3) {
-    // Note 1 à 3 : mécontent ou moyen -> Manager WhatsApp direct
-    if (stepRating) stepRating.style.display = "none";
-    if (stepHappy) stepHappy.style.display = "none";
-    if (stepUnhappy) stepUnhappy.style.display = "block";
-
-    // Build WhatsApp URL
-    const waUrl = buildWhatsAppUrl(stars, false);
-
-    const waBtn = document.getElementById("fbOpenWhatsAppBtn");
-    if (waBtn) {
-      waBtn.onclick = () => {
-        window.open(waUrl, "_blank", "noopener");
-        closeFeedbackModal();
-      };
-    }
-
-    // Auto-redirect après 1.2s pour une réactivité maximale tout en laissant lire le message
-    setTimeout(() => {
-      // Si la modale est toujours ouverte sur cette étape
-      const modal = document.getElementById("feedbackModal");
-      if (modal && modal.classList.contains("open") && stepUnhappy && stepUnhappy.style.display === "block") {
-        window.open(waUrl, "_blank", "noopener");
-        closeFeedbackModal();
-      }
-    }, 1200);
-
-  } else {
-    // Note 4 ou 5 : satisfait -> Google Reviews + Option WhatsApp
-    if (stepRating) stepRating.style.display = "none";
-    if (stepUnhappy) stepUnhappy.style.display = "none";
-    if (stepHappy) stepHappy.style.display = "block";
-
-    const googleBtn = document.getElementById("fbGoogleReviewBtn");
-    if (googleBtn) {
-      googleBtn.onclick = () => {
-        window.open(GOOGLE_REVIEW_URL, "_blank", "noopener");
-        closeFeedbackModal();
-      };
-    }
-
-    const waHappyBtn = document.getElementById("fbWhatsAppHappyBtn");
-    if (waHappyBtn) {
-      const waUrl = buildWhatsAppUrl(stars, true);
-      waHappyBtn.onclick = () => {
-        window.open(waUrl, "_blank", "noopener");
-        closeFeedbackModal();
-      };
-    }
+  if (clickedBtn) {
+    clickedBtn.classList.add("selected");
   }
+
+  // Feedback visuel et tactile rapide (180ms) puis redirection immédiate sans popup-blocker
+  setTimeout(() => {
+    if (stars <= 3) {
+      // Notes 1 à 3 : Traitement direct Manager WhatsApp (+212666265160)
+      const waUrl = buildWhatsAppUrl(stars, false);
+      closeFeedbackModal();
+      if (isMobile) {
+        window.location.href = waUrl;
+      } else {
+        window.open(waUrl, "_blank", "noopener");
+      }
+    } else {
+      // Notes 4 et 5 : Avis Google Reviews 5 étoiles
+      closeFeedbackModal();
+      window.open(GOOGLE_REVIEW_URL, "_blank", "noopener");
+    }
+  }, 180);
 }
 
 function buildWhatsAppUrl(stars, isHappy) {
@@ -292,6 +263,12 @@ function getUrlTableParam() {
   }
 }
 
+export function syncActionBarState() {
+  const bar = document.getElementById("clientActionBar");
+  const isVisible = !!(bar && bar.style.display !== "none" && getComputedStyle(bar).display !== "none");
+  document.body.classList.toggle("has-client-action-bar", isVisible);
+}
+
 export function initFeedbackWidget() {
   const fab = document.getElementById("feedbackFab");
   if (fab) {
@@ -319,7 +296,7 @@ export function initFeedbackWidget() {
     btn.addEventListener("click", () => {
       const rating = parseInt(btn.dataset.rating, 10);
       if (rating >= 1 && rating <= 5) {
-        handleFeedbackRating(rating);
+        handleFeedbackRating(rating, btn);
       }
     });
   });
@@ -333,6 +310,14 @@ export function initFeedbackWidget() {
 
   // Initial text update
   updateFeedbackTexts();
+
+  // Synchronize client action bar presence with body class
+  syncActionBarState();
+  const bar = document.getElementById("clientActionBar");
+  if (bar && typeof MutationObserver !== "undefined") {
+    const observer = new MutationObserver(() => syncActionBarState());
+    observer.observe(bar, { attributes: true, attributeFilter: ["style", "class"] });
+  }
 }
 
 // Bind to window for global access / language switch callbacks
@@ -340,3 +325,4 @@ window.initFeedbackWidget = initFeedbackWidget;
 window.openFeedbackModal = openFeedbackModal;
 window.closeFeedbackModal = closeFeedbackModal;
 window.updateFeedbackTexts = updateFeedbackTexts;
+window.syncActionBarState = syncActionBarState;

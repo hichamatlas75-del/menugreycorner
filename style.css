@@ -982,22 +982,24 @@ header {
 
 .fb-fab-right,
 .gr-right {
-    background: rgba(18, 14, 14, 0.85);
+    background: rgba(18, 14, 14, 0.88);
     padding: 8px 14px;
     display: flex;
     flex-direction: column;
     gap: 3px;
     text-align: left;
+    white-space: nowrap;
 }
 .fb-fab-label,
 .gr-label {
     font-family: 'DM Sans', 'Poppins', sans-serif;
     font-size: 8.5px;
-    font-weight: 600;
-    letter-spacing: 0.15em;
+    font-weight: 700;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--gold-light, #E2C275);
     line-height: 1;
+    white-space: nowrap;
 }
 .fb-fab-stars,
 .gr-stars {
@@ -1012,9 +1014,10 @@ header {
     line-height: 1;
 }
 
-/* If bottom client action bar is shown on mobile, elevate the FAB so it doesn't overlap */
+/* If bottom client action bar is shown, elevate the FAB so it doesn't overlap */
+body.has-client-action-bar .feedback-fab,
 body:has(#clientActionBar:not([style*="display: none"])) .feedback-fab {
-    bottom: calc(86px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(84px + env(safe-area-inset-bottom, 0px));
 }
 
 /* =========================================
@@ -1047,16 +1050,26 @@ body:has(#clientActionBar:not([style*="display: none"])) .feedback-fab {
     position: relative;
     width: 100%;
     max-width: 440px;
+    max-height: calc(100dvh - 32px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     background: linear-gradient(165deg, #1D1717 0%, #110D0D 100%);
     border: 1.5px solid rgba(201, 168, 76, 0.35);
     border-radius: 24px;
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 35px rgba(122, 28, 36, 0.25);
-    padding: 26px 20px 22px;
+    padding: 24px 18px 20px;
     box-sizing: border-box;
     transform: translateY(16px) scale(0.96);
     transition: transform 0.3s cubic-bezier(.22, 1, .36, 1);
     color: var(--text, #FAF6EF);
     text-align: center;
+}
+.feedback-modal-sheet::-webkit-scrollbar {
+    width: 4px;
+}
+.feedback-modal-sheet::-webkit-scrollbar-thumb {
+    background: rgba(201, 168, 76, 0.35);
+    border-radius: 4px;
 }
 .feedback-modal-overlay.open .feedback-modal-sheet {
     transform: translateY(0) scale(1);
@@ -1064,15 +1077,15 @@ body:has(#clientActionBar:not([style*="display: none"])) .feedback-fab {
 
 .fb-close-btn {
     position: absolute;
-    top: 14px;
-    right: 16px;
-    width: 32px;
-    height: 32px;
+    top: 12px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 20px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 22px;
     line-height: 1;
     cursor: pointer;
     display: flex;
@@ -1080,6 +1093,8 @@ body:has(#clientActionBar:not([style*="display: none"])) .feedback-fab {
     justify-content: center;
     transition: all 0.2s;
     outline: none;
+    -webkit-tap-highlight-color: transparent;
+    z-index: 10;
 }
 .fb-close-btn:hover {
     background: rgba(231, 76, 60, 0.2);
@@ -1128,22 +1143,29 @@ body:has(#clientActionBar:not([style*="display: none"])) .feedback-fab {
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 11px 16px;
+    padding: 10px 14px;
+    min-height: 48px;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(201, 168, 76, 0.16);
     border-radius: 14px;
     cursor: pointer;
-    transition: all 0.22s ease;
+    transition: all 0.2s ease;
     text-align: left;
     outline: none;
     width: 100%;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
-.fb-rate-btn:hover,
-.fb-rate-btn:active {
+.fb-rate-btn:hover {
     background: rgba(201, 168, 76, 0.12);
     border-color: rgba(201, 168, 76, 0.5);
-    transform: translateY(-1px) scale(1.01);
+    transform: translateY(-1px);
+}
+.fb-rate-btn:active,
+.fb-rate-btn.selected {
+    background: rgba(201, 168, 76, 0.22) !important;
+    border-color: #C9A84C !important;
+    transform: scale(0.98);
 }
 .fb-rate-emoji {
     font-size: 26px;
@@ -1518,21 +1540,87 @@ footer a:hover { opacity: 0.8; }
     .close-btn { top: -38px; width: 32px; height: 32px; font-size: 1.3rem; }
     footer { font-size: 0.78rem; padding: 20px 10px; margin-top: 40px; }
 
-    /* Feedback / WhatsApp pill */
+    /* Feedback / WhatsApp pill on mobile */
     .feedback-fab,
-    .google-review-fab { bottom: 16px; left: 10px; }
+    .google-review-fab {
+        bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+        left: 10px;
+        transition: bottom 0.28s ease, transform 0.2s;
+    }
     .fb-fab-left,
-    .gr-left { padding: 8px 10px; }
-    .fb-wa-icon { width: 18px; height: 18px; }
+    .gr-left { padding: 7px 10px; }
+    .fb-wa-icon { width: 19px; height: 19px; }
     .gr-left svg { width: 16px; height: 16px; }
     .fb-fab-right,
-    .gr-right { padding: 7px 11px; }
+    .gr-right { padding: 6px 11px; }
     .fb-fab-label,
-    .gr-label { font-size: 7.5px; }
+    .gr-label { font-size: 8px; letter-spacing: 0.12em; }
     .fb-fab-stars span,
     .gr-stars span { font-size: 10px; }
+
+    /* Lang switch on mobile: compact 34px buttons, aligned at same bottom baseline */
+    .lang-switch {
+        bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+        right: 10px;
+        gap: 6px;
+        transition: bottom 0.28s ease;
+    }
+    .lang-button {
+        width: 34px;
+        height: 34px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        border-radius: 9px;
+    }
+
+    /* GPS badge on mobile: stacked above the feedback pill, no collision */
+    .gps-status-badge {
+        bottom: calc(66px + env(safe-area-inset-bottom, 0px));
+        left: 10px;
+        padding: 6px 12px;
+        font-size: 9.5px;
+        transition: bottom 0.28s ease;
+    }
+
+    /* Elevated when client action bar is active on mobile */
+    body.has-client-action-bar .feedback-fab,
+    body.has-client-action-bar .google-review-fab,
+    body:has(#clientActionBar:not([style*="display: none"])) .feedback-fab,
+    body:has(#clientActionBar:not([style*="display: none"])) .google-review-fab {
+        bottom: calc(84px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+    body.has-client-action-bar .lang-switch,
+    body:has(#clientActionBar:not([style*="display: none"])) .lang-switch {
+        bottom: calc(84px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+    body.has-client-action-bar .gps-status-badge,
+    body:has(#clientActionBar:not([style*="display: none"])) .gps-status-badge {
+        bottom: calc(136px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+    .back-to-top {
+        bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+    }
+
+    /* Mobile modal adjustments */
+    .feedback-modal-sheet {
+        padding: 20px 14px 16px;
+        border-radius: 20px;
+    }
+    .fb-modal-title { font-size: 1.15rem; }
+    .fb-modal-subtitle { font-size: 0.82rem; }
+    .fb-ratings-grid { gap: 7px; margin-top: 10px; }
+    .fb-rate-btn { padding: 9px 12px; gap: 11px; min-height: 46px; border-radius: 12px; }
+    .fb-rate-emoji { font-size: 24px; }
+    .fb-rate-stars { font-size: 12px; }
+    .fb-rate-name { font-size: 0.82rem; }
+
     [dir="rtl"] .feedback-fab,
     [dir="rtl"] .google-review-fab { right: 10px; left: auto; }
+    [dir="rtl"] .gps-status-badge { right: 10px; left: auto; }
+    [dir="rtl"] .lang-switch { left: 10px; right: auto; }
 }
 
 /* =========================================
@@ -3131,6 +3219,14 @@ button, .sc-btn, .add-to-cart-btn, .category-drawer-header, .tgs-btn {
     left: auto;
     right: 14px;
 }
+[dir="rtl"] .gps-status-badge {
+    left: auto;
+    right: 14px;
+}
+[dir="rtl"] .lang-switch {
+    right: auto;
+    left: 14px;
+}
 [dir="rtl"] .fb-fab-left,
 [dir="rtl"] .gr-left {
     border-right: none;
@@ -3142,9 +3238,13 @@ button, .sc-btn, .add-to-cart-btn, .category-drawer-header, .tgs-btn {
 }
 [dir="rtl"] .fb-close-btn {
     right: auto;
-    left: 16px;
+    left: 14px;
 }
 [dir="rtl"] .fb-rate-btn {
     text-align: right;
+}
+[dir="rtl"] .add-to-cart-btn {
+    right: auto;
+    left: 14px;
 }
 
