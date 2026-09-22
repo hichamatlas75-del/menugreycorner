@@ -17,11 +17,13 @@ import {
   GC_showPreorderModal, GC_hidePreorderModal
 } from './ui/modals.js';
 import { renderMenu, toggleCategoryDrawer, openDrawer, closeDrawer, updateFloatingButtons, setupFloatingButtons } from './ui/menu-render.js';
+import { initFeedbackWidget, updateFeedbackTexts } from './ui/feedback.js';
 
 document.addEventListener("DOMContentLoaded", () => {
   const table = parseTableFromUrl();
   initClientCart();
   applyLanguageToStaticTexts();
+  initFeedbackWidget();
 
   // Set initial active flag state based on currentLang
   document.querySelectorAll(".lang-button[data-lang]").forEach(b => {
@@ -53,6 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         renderMenu();
         updateCartUI();
+        updateFeedbackTexts();
       }
     });
   });

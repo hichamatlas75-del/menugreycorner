@@ -61,6 +61,9 @@ export function setLanguage(lang) {
     document.documentElement.classList.toggle("rtl-mode", lang === "ar");
     applyLanguageToStaticTexts();
     updatePrixInfo();
+    if (typeof window.updateFeedbackTexts === "function") {
+      window.updateFeedbackTexts();
+    }
     return true;
   }
   return false;
