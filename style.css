@@ -38,7 +38,7 @@ button, input, select, textarea, a, .sc-btn, .category-drawer-header, .add-to-ca
 }
 
 html {
-    overflow-x: hidden;
+    overflow-x: clip;
     width: 100%;
     -webkit-text-size-adjust: 100%;
 }
@@ -57,7 +57,7 @@ body {
     font-family: "Poppins", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden !important;
+    overflow-x: clip;
 }
 
 img { max-width: 100%; display: block; }
@@ -74,20 +74,15 @@ a { text-decoration: none; color: inherit; }
    HEADER
 ========================================= */
 header {
-    height: 270px;
+    height: auto;
     position: relative;
-    background-image: url("images/header-bg.webp");
-    background-size: cover;
-    background-position: center 40%;
+    background: linear-gradient(180deg, #F5EFE6 0%, #FAF8F5 100%);
+    border-bottom: 1px solid #EBE4D8;
     overflow: hidden;
 }
 
 .header-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.48);
-    backdrop-filter: blur(2px);
-    z-index: 1;
+    display: none;
 }
 
 .header-center {
@@ -95,10 +90,11 @@ header {
     z-index: 2;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    height: 100%;
-    padding: 16px 14px 16px;
+    height: auto;
+    padding: 16px 14px 14px;
+    gap: 12px;
 }
 
 /* =========================================
@@ -841,13 +837,13 @@ header {
     height: 44px;
     width: auto;
     min-width: 170px;
-    padding: 0 20px;
+    padding: 0 22px;
     border-radius: 22px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    border: none;
+    background: linear-gradient(135deg, #C9A84C 0%, #A87B24 100%);
+    border: 1px solid rgba(255, 255, 255, 0.45);
     color: #FFFFFF;
     font-family: 'Poppins', sans-serif;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -855,7 +851,7 @@ header {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 6px 20px rgba(122, 28, 36, 0.45);
+    box-shadow: 0 6px 22px rgba(201, 168, 76, 0.5), 0 2px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.25s cubic-bezier(.22, 1, .36, 1), box-shadow 0.25s ease, filter 0.2s;
     z-index: 1000000;
     pointer-events: auto;
@@ -863,13 +859,14 @@ header {
 }
 
 .secure-lightbox-add-btn:hover {
-    transform: translateX(-50%) scale(1.08);
-    box-shadow: 0 8px 24px rgba(122, 28, 36, 0.6);
-    filter: brightness(1.1);
+    transform: translateX(-50%) scale(1.06);
+    background: linear-gradient(135deg, #D4B255 0%, #B8892A 100%);
+    box-shadow: 0 8px 28px rgba(201, 168, 76, 0.65), 0 3px 10px rgba(0, 0, 0, 0.25);
+    filter: brightness(1.06);
 }
 
 .secure-lightbox-add-btn:active {
-    transform: translateX(-50%) scale(0.95);
+    transform: translateX(-50%) scale(0.96);
 }
 
 
@@ -1557,28 +1554,28 @@ footer a:hover { opacity: 0.8; }
 @media (max-width: 480px) {
     body { font-size: 14px; padding: 0; }
 
-    header { height: auto; min-height: 230px; background-position: center 55%; }
+    header { height: auto !important; min-height: unset !important; padding: 14px 12px !important; }
 
     .header-center {
-        padding: 16px 14px 16px;
+        padding: 0 !important;
+        gap: 10px !important;
     }
 
-    /* ── LOGO mobile : carré arrondi, jamais cercle ── */
+    /* ── LOGO mobile minimaliste chic ── */
     .logo-big {
-        width: 115px !important;
-        height: 115px !important;
-        border-radius: 20px !important;
-        padding: 9px;
+        width: 62px !important;
+        height: 62px !important;
+        border-radius: 16px !important;
+        padding: 5px !important;
     }
 
     .sc-btn {
-        width: 54px;
-        height: 54px;
-        border-radius: 14px;
-        color: rgba(240,234,216,0.62);
+        width: 46px !important;
+        height: 46px !important;
+        border-radius: 13px !important;
     }
-    .sc-btn .sc-label { opacity: 1; transform: translateY(0); font-size: 6.5px; }
-    .sc-btn + .sc-btn::before { display: none; }
+    .sc-btn .sc-label { opacity: 1 !important; transform: translateY(0) !important; font-size: 6.5px !important; }
+    .sc-btn + .sc-btn::before { display: none !important; }
 
     /* Burger */
     .burger-btn { top: 12px; left: 12px; width: 50px; height: 50px; border-radius: 13px; }
@@ -3312,4 +3309,742 @@ button, .sc-btn, .add-to-cart-btn, .category-drawer-header, .tgs-btn {
     right: auto;
     left: 14px;
 }
+
+
+
+
+/* ==========================================================================
+   ==========================================================================
+   NOUVEAU MODÈLE HUB TACTILE — GRANDES PASTILLES & PLATS IMPOSANTS
+   - Style Lumineux Warm Cashmere & Or Brasserie Chic (100% Mobile First)
+   - Grandes pastilles circulaires tactiles avec photos et badges dorés
+   - Plats imposants avec visuels grand format et ajout rapide (+)
+   - Prix épurés sans suffixe DH
+   - Préservation 100% des fonctions : panier, commande à distance, GPS, RTL
+   ========================================================================== */
+
+/* Fond général et typographie Lumineuse Warm Cashmere */
+body {
+    background-color: #FAF8F5 !important;
+    color: #2D2420 !important;
+    font-family: 'DM Sans', 'Poppins', sans-serif !important;
+    -webkit-tap-highlight-color: transparent !important;
+    scroll-behavior: smooth !important;
+}
+
+/* 0. HEADER MINIMALISTE WARM CASHMERE & OR (OPTION 1) */
+header {
+    height: auto !important;
+    min-height: unset !important;
+    position: relative !important;
+    background-image: none !important;
+    background: linear-gradient(180deg, #F5EFE6 0%, #FAF8F5 100%) !important;
+    border-bottom: 1px solid #EBE4D8 !important;
+    padding: 18px 14px 14px !important;
+    overflow: hidden !important;
+    box-shadow: 0 2px 10px rgba(44, 34, 28, 0.03) !important;
+}
+
+.header-overlay {
+    display: none !important;
+}
+
+.header-center {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    height: auto !important;
+    padding: 0 !important;
+    gap: 12px !important;
+}
+
+/* Médaillon Logo Épuré & Lumineux */
+.logo-big {
+    width: 66px !important;
+    height: 66px !important;
+    object-fit: contain !important;
+    border-radius: 18px !important;
+    background: #FFFFFF !important;
+    border: 1.5px solid #E5DCD0 !important;
+    padding: 6px !important;
+    box-shadow: 0 4px 14px rgba(44, 34, 28, 0.06) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    display: block !important;
+    flex-shrink: 0 !important;
+    transition: transform 0.25s ease, border-color 0.25s, box-shadow 0.25s !important;
+}
+
+.logo-big:hover {
+    border-color: #C9A84C !important;
+    box-shadow: 0 6px 20px rgba(201, 168, 76, 0.25) !important;
+    transform: translateY(-2px) scale(1.03) !important;
+}
+
+/* Raccourcis Minimalistes sous le logo */
+.shortcut-icons {
+    position: static !important;
+    transform: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.sc-btn {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    width: 46px !important;
+    height: 46px !important;
+    background: #FFFFFF !important;
+    border: 1px solid #E5DCD0 !important;
+    border-radius: 14px !important;
+    color: #4A3E39 !important;
+    box-shadow: 0 2px 8px rgba(44, 34, 28, 0.05) !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    padding: 0 !important;
+    outline: none !important;
+    transition: all 0.22s cubic-bezier(0.2, 0.8, 0.3, 1) !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+.sc-btn svg {
+    width: 17px !important;
+    height: 17px !important;
+    stroke: #A87B24 !important;
+    transition: stroke 0.2s, transform 0.2s !important;
+    flex-shrink: 0 !important;
+    pointer-events: none !important;
+}
+
+.sc-label {
+    font-size: 7px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.04em !important;
+    text-transform: uppercase !important;
+    color: #5C4E46 !important;
+    line-height: 1 !important;
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: none !important;
+    display: block !important;
+    transition: color 0.2s !important;
+}
+
+.sc-btn + .sc-btn::before {
+    display: none !important;
+}
+
+.sc-btn:hover, .sc-btn:active {
+    background: #241E1B !important;
+    border-color: #C9A84C !important;
+    transform: translateY(-2px) scale(1.04) !important;
+    box-shadow: 0 4px 14px rgba(201, 168, 76, 0.3) !important;
+}
+
+.sc-btn:hover svg, .sc-btn:active svg {
+    stroke: #C9A84C !important;
+    transform: scale(1.1) !important;
+}
+
+.sc-btn:hover .sc-label, .sc-btn:active .sc-label {
+    color: #FAF8F5 !important;
+}
+
+/* Masquage des boutons flottants qui gênent l'affichage des pastilles de catégories */
+.burger-btn,
+#burger,
+.bell-btn,
+#notificationBellBtn {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* 1. CONTENEUR HUB TACTILE : GRANDES PASTILLES CATÉGORIES */
+.hub-categories-wrap {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 99 !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    border-bottom: 1px solid #EBE4D8 !important;
+    padding: 14px 0 16px !important;
+    box-shadow: 0 4px 20px rgba(44, 34, 28, 0.05) !important;
+}
+
+.hub-categories {
+    display: flex !important;
+    gap: 16px !important;
+    overflow-x: auto !important;
+    padding: 0 16px !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-behavior: smooth !important;
+}
+
+.hub-categories::-webkit-scrollbar {
+    display: none !important;
+}
+
+/* Pastille individuelle */
+.hub-cat-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+    width: 82px !important;
+    outline: none !important;
+    transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.3, 1) !important;
+}
+
+.hub-cat-item:active {
+    transform: scale(0.95) !important;
+}
+
+/* Cercle photo pastille */
+.hub-cat-circle {
+    width: 76px !important;
+    height: 76px !important;
+    border-radius: 50% !important;
+    position: relative !important;
+    overflow: hidden !important;
+    border: 2px solid #E5DCD0 !important;
+    box-shadow: 0 4px 14px rgba(44, 34, 28, 0.08) !important;
+    transition: all 0.28s ease !important;
+    background: #FFFFFF !important;
+}
+
+.hub-cat-item:hover .hub-cat-circle {
+    border-color: #C9A84C !important;
+}
+
+/* État ACTIF : Anneau or éclatant avec halo lumineux */
+.hub-cat-item.active .hub-cat-circle {
+    border-color: #C9A84C !important;
+    box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.3), 0 6px 20px rgba(201, 168, 76, 0.4) !important;
+    transform: scale(1.06) !important;
+}
+
+.hub-cat-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    filter: brightness(0.96) !important;
+    transition: filter 0.25s, transform 0.3s !important;
+}
+
+.hub-cat-item:hover .hub-cat-img,
+.hub-cat-item.active .hub-cat-img {
+    filter: brightness(1) !important;
+    transform: scale(1.05) !important;
+}
+
+.hub-cat-overlay {
+    position: absolute !important;
+    inset: 0 !important;
+    background: radial-gradient(circle, transparent 50%, rgba(45, 36, 32, 0.25) 100%) !important;
+    pointer-events: none !important;
+}
+
+/* Badge icône au centre bas du cercle */
+.hub-cat-icon {
+    position: absolute !important;
+    bottom: 5px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 22px !important;
+    height: 22px !important;
+    border-radius: 50% !important;
+    background: #241E1B !important;
+    border: 1.5px solid #C9A84C !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #C9A84C !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3) !important;
+}
+
+.hub-cat-icon svg {
+    width: 12px !important;
+    height: 12px !important;
+    stroke: currentColor !important;
+}
+
+/* Texte sous la pastille */
+.hub-cat-label {
+    margin-top: 8px !important;
+    font-size: 0.72rem !important;
+    font-weight: 600 !important;
+    color: #5C4E46 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.04em !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    width: 100% !important;
+    transition: color 0.25s !important;
+}
+
+.hub-cat-item.active .hub-cat-label {
+    color: #9E7430 !important;
+    font-weight: 800 !important;
+    text-shadow: 0 0 10px rgba(201, 168, 76, 0.25) !important;
+}
+
+/* 2. EN-TÊTE DE SECTION (TITRE & COMPTEUR / VOIR TOUT) */
+.hub-section-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 24px 20px 14px !important;
+    border-bottom: 1px solid #EBE4D8 !important;
+    margin-bottom: 18px !important;
+}
+
+.hub-header-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+}
+
+.hub-section-title {
+    font-family: 'Playfair Display', serif !important;
+    font-size: 1.45rem !important;
+    font-weight: 700 !important;
+    color: #241E1B !important;
+    letter-spacing: 0.04em !important;
+    margin: 0 !important;
+    text-transform: uppercase !important;
+}
+
+.hub-section-count {
+    font-size: 0.75rem !important;
+    color: #8F6720 !important;
+    background: rgba(201, 168, 76, 0.12) !important;
+    border: 1px solid rgba(201, 168, 76, 0.28) !important;
+    padding: 3px 10px !important;
+    border-radius: 20px !important;
+    font-weight: 600 !important;
+}
+
+.hub-view-all-btn {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    background: #FFFFFF !important;
+    border: 1.5px solid #C9A84C !important;
+    color: #8F6720 !important;
+    font-size: 0.76rem !important;
+    font-weight: 700 !important;
+    padding: 6px 14px !important;
+    border-radius: 20px !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 8px rgba(201, 168, 76, 0.12) !important;
+    transition: all 0.2s !important;
+}
+
+.hub-view-all-btn:hover {
+    background: #C9A84C !important;
+    color: #FFFFFF !important;
+}
+
+.hub-view-all-btn svg {
+    width: 14px !important;
+    height: 14px !important;
+    fill: currentColor !important;
+}
+
+/* 3. GRILLE DE PLATS IMPOSANTS (100% MOBILE FIRST) */
+.hub-dishes-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+    gap: 20px !important;
+    padding: 0 16px 120px !important;
+}
+
+@media (max-width: 480px) {
+    .hub-dishes-grid {
+        grid-template-columns: 1fr !important;
+        gap: 18px !important;
+        padding: 0 14px 120px !important;
+    }
+}
+
+/* Carte de plat imposante — Fond blanc chic et bordure or */
+.hub-card {
+    background: #FFFFFF !important;
+    border: 1px solid #EBE3D7 !important;
+    border-radius: 20px !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    box-shadow: 0 6px 22px rgba(45, 36, 32, 0.06) !important;
+    transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s !important;
+    position: relative !important;
+}
+
+.hub-card:hover {
+    border-color: #C9A84C !important;
+    box-shadow: 0 12px 30px rgba(201, 168, 76, 0.18) !important;
+    transform: translateY(-3px) !important;
+}
+
+/* Photo imposante au sommet de la carte */
+.hub-card-media {
+    position: relative !important;
+    width: 100% !important;
+    height: 200px !important;
+    overflow: hidden !important;
+    background: #FAF7F2 !important;
+    cursor: pointer !important;
+}
+
+@media (max-width: 480px) {
+    .hub-card-media {
+        height: 210px !important;
+    }
+}
+
+.hub-card-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    transition: transform 0.4s ease !important;
+}
+
+.hub-card:hover .hub-card-img {
+    transform: scale(1.04) !important;
+}
+
+.hub-card-gradient {
+    position: absolute !important;
+    inset: 0 !important;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.35) 0%, transparent 50%) !important;
+    pointer-events: none !important;
+}
+
+.hub-badge-new {
+    position: absolute !important;
+    top: 12px !important;
+    left: 12px !important;
+    background: linear-gradient(135deg, #C9A84C, #9E7430) !important;
+    color: #FFFFFF !important;
+    font-size: 0.68rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.08em !important;
+    padding: 4px 10px !important;
+    border-radius: 6px !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2) !important;
+    z-index: 2 !important;
+}
+
+.hub-badge-cat {
+    position: absolute !important;
+    top: 12px !important;
+    right: 12px !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+    backdrop-filter: blur(6px) !important;
+    border: 1px solid #EAE2D5 !important;
+    color: #241E1B !important;
+    font-size: 0.66rem !important;
+    font-weight: 600 !important;
+    padding: 4px 10px !important;
+    border-radius: 20px !important;
+    z-index: 2 !important;
+}
+
+.hub-card-zoom-hint {
+    position: absolute !important;
+    bottom: 10px !important;
+    right: 12px !important;
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 50% !important;
+    background: rgba(255, 255, 255, 0.85) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+    backdrop-filter: blur(4px) !important;
+    border: 1px solid #EAE2D5 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #241E1B !important;
+    opacity: 0.85 !important;
+    transition: all 0.2s !important;
+    z-index: 2 !important;
+}
+
+.hub-card:hover .hub-card-zoom-hint {
+    opacity: 1 !important;
+    transform: scale(1.1) !important;
+    color: #C9A84C !important;
+    border-color: #C9A84C !important;
+}
+
+/* Corps de la carte */
+.hub-card-content {
+    padding: 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+    justify-content: space-between !important;
+}
+
+.hub-card-name {
+    font-family: 'Playfair Display', serif !important;
+    font-size: 1.15rem !important;
+    font-weight: 700 !important;
+    color: #241E1B !important;
+    margin: 0 0 6px !important;
+    line-height: 1.3 !important;
+}
+
+.hub-card-desc {
+    font-size: 0.8rem !important;
+    color: #6E6157 !important;
+    line-height: 1.45 !important;
+    margin: 0 0 16px !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+}
+
+/* Pied de carte avec prix et bouton Commander */
+.hub-card-footer {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-top: auto !important;
+    padding-top: 10px !important;
+    border-top: 1px solid #F2ECE1 !important;
+    gap: 10px !important;
+}
+
+.hub-card-price-wrap {
+    display: flex !important;
+    align-items: baseline !important;
+    flex-shrink: 0 !important;
+}
+
+.hub-card-price {
+    font-family: 'Playfair Display', serif !important;
+    font-size: 1.35rem !important;
+    font-weight: 800 !important;
+    color: #A87B24 !important;
+    letter-spacing: -0.01em !important;
+}
+
+/* Bouton "Commander" Stylé — Format Compact Raffiné Brasserie */
+.hub-order-btn {
+    position: static !important;
+    inset: auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    min-height: 31px !important;
+    padding: 0 11px !important;
+    border-radius: 16px !important;
+    background: linear-gradient(135deg, #241E1B 0%, #352B25 100%) !important;
+    border: 1px solid #C9A84C !important;
+    color: #FAF8F5 !important;
+    cursor: pointer !important;
+    outline: none !important;
+    box-shadow: 0 2px 8px rgba(36, 30, 27, 0.12) !important;
+    transition: all 0.22s cubic-bezier(0.2, 0.8, 0.3, 1) !important;
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+    white-space: nowrap !important;
+    text-decoration: none !important;
+}
+
+.hub-order-btn-label {
+    font-family: 'DM Sans', 'Poppins', sans-serif !important;
+    font-size: 0.70rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.03em !important;
+    text-transform: uppercase !important;
+    line-height: 1 !important;
+    color: #FAF8F5 !important;
+    transition: color 0.2s ease !important;
+}
+
+.hub-order-btn-icon {
+    width: 12px !important;
+    height: 12px !important;
+    stroke: #C9A84C !important;
+    transition: all 0.2s ease !important;
+    flex-shrink: 0 !important;
+}
+
+/* État Hover / Active / Tap tactile */
+.hub-order-btn:hover,
+.hub-order-btn:active {
+    background: linear-gradient(135deg, #C9A84C 0%, #A87B24 100%) !important;
+    border-color: #C9A84C !important;
+    transform: translateY(-1px) scale(1.02) !important;
+    box-shadow: 0 4px 14px rgba(201, 168, 76, 0.38) !important;
+}
+
+.hub-order-btn:hover .hub-order-btn-label,
+.hub-order-btn:active .hub-order-btn-label {
+    color: #FFFFFF !important;
+}
+
+.hub-order-btn:hover .hub-order-btn-icon,
+.hub-order-btn:active .hub-order-btn-icon {
+    stroke: #FFFFFF !important;
+    transform: scale(1.08) rotate(-4deg) !important;
+}
+
+/* 4. BARRE D'ACTION CLIENT & COMMANDE À DISTANCE */
+.client-action-bar {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 100% !important;
+    max-width: 600px !important;
+    background: rgba(30, 24, 21, 0.96) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-top: 1px solid rgba(201, 168, 76, 0.35) !important;
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.4) !important;
+    z-index: 9990 !important;
+}
+
+.cab-btn {
+    color: #F0EAD8 !important;
+}
+
+.cab-btn:hover, .cab-btn:active, .cab-btn.active {
+    color: #C9A84C !important;
+}
+
+.cab-cart-btn {
+    background: linear-gradient(135deg, #C9A84C, #9E7430) !important;
+    color: #0A0908 !important;
+}
+
+/* 5. ZONE DE RECHERCHE & BANNIÈRE AVIS LUMINEUSES */
+.search-wrapper {
+    background: transparent !important;
+    padding: 10px 16px !important;
+}
+
+.search-box-wrap {
+    background: #FFFFFF !important;
+    border: 1px solid #E2D7C5 !important;
+    border-radius: 30px !important;
+    box-shadow: 0 3px 12px rgba(44, 34, 28, 0.04) !important;
+    transition: border-color 0.25s, box-shadow 0.25s !important;
+}
+
+.search-box-wrap:focus-within {
+    border-color: #C9A84C !important;
+    box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.22) !important;
+}
+
+#searchInput {
+    color: #241E1B !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+#searchInput:focus {
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+.prix-info {
+    color: #7E7166 !important;
+}
+
+.feedback-card-banner {
+    background: #FFFFFF !important;
+    border: 1px solid #EAE2D5 !important;
+    box-shadow: 0 4px 18px rgba(45, 36, 32, 0.05) !important;
+}
+
+.fcb-title {
+    color: #241E1B !important;
+}
+
+.fcb-subtitle {
+    color: #6E6157 !important;
+}
+
+/* 6. SUPPORT ARABE RTL PARFAIT */
+[dir="rtl"] .hub-card-content {
+    text-align: right !important;
+}
+
+[dir="rtl"] .hub-view-all-btn svg {
+    transform: rotate(180deg) !important;
+}
+
+[dir="rtl"] .hub-badge-new {
+    left: auto !important;
+    right: 12px !important;
+}
+
+[dir="rtl"] .hub-badge-cat {
+    right: auto !important;
+    left: 12px !important;
+}
+
+[dir="rtl"] .hub-card-zoom-hint {
+    right: auto !important;
+    left: 12px !important;
+}
+
+/* Annulation du letter-spacing pour l'arabe (ligatures cursives) */
+[dir="rtl"] .hub-cat-label,
+[dir="rtl"] .hub-section-title,
+[dir="rtl"] .hub-badge-new,
+[dir="rtl"] .hub-order-btn-label {
+    letter-spacing: 0 !important;
+}
+
+[dir="rtl"] .hub-order-btn-label {
+    font-family: 'Poppins', 'Segoe UI', Tahoma, sans-serif !important;
+    font-weight: 800 !important;
+    font-size: 0.74rem !important;
+}
+
+/* Bouton Commander dans la Lightbox — Doré Brasserie Chic Garanti */
+.secure-lightbox-add-btn {
+    background: linear-gradient(135deg, #C9A84C 0%, #A87B24 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.45) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 6px 22px rgba(201, 168, 76, 0.5), 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.secure-lightbox-add-btn:hover {
+    background: linear-gradient(135deg, #D4B255 0%, #B8892A 100%) !important;
+    box-shadow: 0 8px 28px rgba(201, 168, 76, 0.65), 0 3px 10px rgba(0, 0, 0, 0.25) !important;
+}
+
 

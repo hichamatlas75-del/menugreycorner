@@ -61,8 +61,8 @@
         <span data-i18n data-fr="Fermer la catégorie" data-en="Close category" data-de="Kategorie schließen" data-ar="إغلاق القسم">Fermer la catégorie</span>
     </button>
 
-    <!-- Burger button -->
-    <button id="burger" class="burger-btn" aria-label="Menu" aria-expanded="false">
+    <!-- Burger button (masqué pour libérer l'affichage des pastilles de catégories) -->
+    <button id="burger" class="burger-btn" aria-label="Menu" aria-expanded="false" style="display: none !important;">
         <span class="burger-lines">
             <span class="bl bl1"></span>
             <span class="bl bl2"></span>
@@ -71,8 +71,8 @@
         <span class="burger-label">Menu</span>
     </button>
 
-    <!-- Notification Bell Button (Rolex Premium Style) -->
-    <button id="notificationBellBtn" class="bell-btn" aria-label="Notifications" style="display: none;">
+    <!-- Notification Bell Button (masqué pour libérer l'affichage des pastilles de catégories) -->
+    <button id="notificationBellBtn" class="bell-btn" aria-label="Notifications" style="display: none !important;">
         <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
             <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
@@ -170,21 +170,12 @@
     <!-- Toast partage -->
     <div class="sc-toast" id="scToast">Lien copié ✓</div>
 
-    <!-- Barre catégories horizontale -->
-    <nav class="categories-horizontal">
-        <a href="#petit-dejeuner" data-i18n data-fr="Petit Déj" data-en="Breakfast" data-de="Frühstück" data-ar="فطور الصباح">Petit Déj</a>
-        <a href="#entrees" data-i18n data-fr="Entrées" data-en="Starters" data-de="Vorspeisen" data-ar="المقبلات">Entrées</a>
-        <a href="#plats" data-i18n data-fr="Plats" data-en="Main Dishes" data-de="Hauptgerichte" data-ar="الأطباق الرئيسية">Plats</a>
-        <a href="#sandwichs" data-i18n data-fr="Sandwichs" data-en="Sandwiches" data-de="Sandwiches" data-ar="السندويتشات">Sandwichs</a>
-        <a href="#burgers" data-i18n data-fr="Burgers" data-en="Burgers" data-de="Burger" data-ar="البرجر">Burgers</a>
-        <a href="#panini" data-i18n data-fr="Panini" data-en="Panini" data-de="Panini" data-ar="البانيني">Panini</a>
-        <a href="#pizza" data-i18n data-fr="Pizza" data-en="Pizza" data-de="Pizza" data-ar="البيتزا">Pizza</a>
-        <a href="#pasta" data-i18n data-fr="Pasta" data-en="Pasta" data-de="Pasta" data-ar="الباستا">Pasta</a>
-        <a href="#crepes" data-i18n data-fr="Crêpes" data-en="Crepes" data-de="Pfannkuchen" data-ar="الكريب">Crêpes</a>
-        <a href="#gateaux" data-i18n data-fr="Gâteaux" data-en="Cakes" data-de="Kuchen" data-ar="الحلويات">Gâteaux</a>
-        <a href="#boissons" data-i18n data-fr="Boissons" data-en="Drinks" data-de="Getränke" data-ar="المشروبات">Boissons</a>
-        <a href="#glace" data-i18n data-fr="Glace" data-en="Ice Cream" data-de="Eis" data-ar="المثلجات">Glace</a>
-    </nav>
+    <!-- ======================================================================
+         HUB TACTILE — GRANDES PASTILLES CATÉGORIES (MODÈLE HUB TACTILE)
+    ======================================================================= -->
+    <div class="hub-categories-wrap">
+        <div class="hub-categories" id="hubCategories"></div>
+    </div>
 
     <!-- Carrousel Nouveautés -->
     <div class="new-items-carousel" id="newItemsCarousel"></div>
@@ -268,7 +259,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-    <script type="module" src="js/config/firebase.js"></script>
 
     <!-- ======================================================================
          CLIENT INTERACTIVE QUICK ACTION BAR
@@ -277,11 +267,12 @@
         <div class="cab-container">
             <!-- Call Waiter -->
             <button class="cab-btn" id="cabCallWaiter">
-                <div class="cab-icon-wrap">
+                <div class="cab-icon-wrap" style="position: relative;">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                         <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                     </svg>
+                    <span class="cab-badge" id="cabCallBadge" style="display: none; background: #2ecc71;"></span>
                 </div>
                 <span class="cab-label" data-i18n data-fr="Appeler" data-en="Call Waiter" data-de="Rufen" data-ar="اتصال">Appeler</span>
             </button>
@@ -752,7 +743,7 @@
     </div>
 
     <!-- Scripts -->
-    <script type="module" src="js/main.js"></script>
+    <script defer src="js/bundle.js"></script>
     <!-- ======================================================================
          GPS ROUTING — PATCH sur GPSService
     ======================================================================= -->
@@ -1098,4 +1089,5 @@
             setTimeout(() => toast.classList.remove('show'), 2400);
         });
     </script>
+
 </body>
