@@ -712,17 +712,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     startAndroidKeepAlive();
 
-    if (typeof dbService !== "undefined" && dbService.isCloud()) {
-        firebase.auth().signInAnonymously()
-            .then(() => {
-                console.log("🔒 Authentification anonyme réussie.");
-                startRealtimeHub();
-            })
-            .catch(e => {
-                console.error("❌ Auth échouée, démarrage en mode fallback:", e);
-                startRealtimeHub();
-            });
+    function startWaiterApp() {
+        if (typeof dbService !== "undefined" && dbService.isCloud()) {
+            firebase.auth().signInAnonymously()
+                .then(() => {
+                    console.log("🔒 Authentification anonyme réussie.");
+                    startRealtimeHub();
+                })
+                .catch(e => {
+                    console.error("❌ Auth échouée, démarrage en mode fallback:", e);
+                    startRealtimeHub();
+                });
+        } else {
+            startRealtimeHub();
+        }
+    }
+
+    if (typeof dbService !== "undefined") {
+        startWaiterApp();
     } else {
-        startRealtimeHub();
+        const checkInterval = setInterval(() => {
+            if (typeof dbService !== "undefined") {
+                clearInterval(checkInterval);
+                startWaiterApp();
+            }
+        }, 50);
     }
 });

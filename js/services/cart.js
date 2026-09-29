@@ -110,8 +110,14 @@ export function updateCartUI() {
       clientCart.forEach(item => {
         const itemDiv = document.createElement("div");
         itemDiv.className = "cd-item";
+        const isDrinkItem = item.categoryNameFr && (
+          item.categoryNameFr.toLowerCase().includes("boisson") ||
+          item.categoryNameFr.toLowerCase().includes("petit-d") ||
+          item.categoryNameFr.toLowerCase().includes("café")
+        );
+        const choiceIcon = isDrinkItem ? '☕' : '🍽️';
         const drinkChoicesStr = item.drinkChoices && item.drinkChoices.length > 0
-          ? `<div style="font-size:0.75rem; color:var(--sc-gold-light); margin-top:2px;">☕ ${item.drinkChoices.join(', ')}</div>`
+          ? `<div style="font-size:0.75rem; color:var(--sc-gold-light); margin-top:2px;">${choiceIcon} ${item.drinkChoices.join(', ')}</div>`
           : '';
 
         itemDiv.innerHTML = `

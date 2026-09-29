@@ -125,15 +125,6 @@
     return `Table ${num}`;
   }
   function sendFcmToWaiters(type, title, body, tableId, docId) {
-    fetch("https://fcm.googleapis.com/fcm/send", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        to: "/topics/waiters",
-        notification: { title, body, sound: "default" },
-        data: { type, tableId: String(tableId), docId: String(docId) }
-      })
-    }).catch((e) => console.warn("\u26A0\uFE0F FCM notification error:", e));
   }
   var dbService = {
     isCloud() {
@@ -3371,8 +3362,8 @@
   var GeoFenceManager = {
     CENTER_LAT: 34.0344054,
     CENTER_LNG: -5.0154828,
-    ALLOWED_RADIUS: 50,
-    // meters
+    ALLOWED_RADIUS: 65,
+    // meters (adjusted with tolerance for indoor reception)
     calculateDistance(lat1, lon1, lat2, lon2) {
       const R = 6371e3;
       const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -3381,10 +3372,11 @@
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       return R * c;
     },
-    isWithinGeofence(lat, lng) {
+    isWithinGeofence(lat, lng, accuracy = 0) {
       const dist = this.calculateDistance(this.CENTER_LAT, this.CENTER_LNG, lat, lng);
-      console.log(`\u{1F4CF} Distance to Grey Corner center: ${dist.toFixed(1)} meters.`);
-      return dist <= this.ALLOWED_RADIUS;
+      console.log(`\u{1F4CF} Distance to Grey Corner center: ${dist.toFixed(1)} meters (accuracy: \xB1${(accuracy || 0).toFixed(1)}m).`);
+      const effectiveDist = Math.max(0, dist - Math.min(accuracy || 0, 25));
+      return effectiveDist <= this.ALLOWED_RADIUS;
     }
   };
   var LocationSecurityManager = {
@@ -3453,7 +3445,7 @@
             return;
           }
           this.isSuspicious = false;
-          const inside = GeoFenceManager.isWithinGeofence(coords.latitude, coords.longitude);
+          const inside = GeoFenceManager.isWithinGeofence(coords.latitude, coords.longitude, coords.accuracy);
           this.isInside = inside;
           if (inside) {
             this.updateUI("inside");
@@ -3517,15 +3509,28 @@
           error: "\u062E\u0637\u0623 \u0641\u064A \u062A\u062D\u062F\u064A\u062F \u0627\u0644\u0645\u0648\u0642\u0639"
         }
       };
+      this.lastState = state;
       const currentLangTexts = textMap[currentLang] || textMap.fr;
       if (state === "inside") {
         badge.classList.add("gps-inside");
         text.textContent = currentLangTexts.inside;
         this.toggleInteractiveControls(true);
+        window._GC_modalShown = true;
+        window.GC_isPreorder = false;
+        if (typeof window.GC_hidePreorderModal === "function") window.GC_hidePreorderModal();
+        if (typeof window.GC_hideGpsBlocked === "function") window.GC_hideGpsBlocked();
       } else if (state === "outside") {
-        badge.classList.add("gps-outside");
-        text.textContent = currentLangTexts.outside;
-        this.toggleInteractiveControls(false);
+        if (window.GC_isPreorder) {
+          if (typeof window.GC_applyPreorderUI === "function") window.GC_applyPreorderUI();
+        } else {
+          badge.classList.add("gps-outside");
+          text.textContent = currentLangTexts.outside;
+          this.toggleInteractiveControls(false);
+          if (!window._GC_modalShown && typeof window.GC_showPreorderModal === "function") {
+            window._GC_modalShown = true;
+            window.GC_showPreorderModal();
+          }
+        }
       } else if (state === "suspect") {
         badge.classList.add("gps-suspect");
         text.textContent = currentLangTexts.suspect;
@@ -3534,10 +3539,18 @@
         badge.classList.add("gps-denied");
         text.textContent = currentLangTexts.denied;
         this.toggleInteractiveControls(false);
+        if (!window._GC_gpsBlockedShown && typeof window.GC_showGpsBlocked === "function") {
+          window._GC_gpsBlockedShown = true;
+          window.GC_showGpsBlocked();
+        }
       } else {
         badge.classList.add("gps-error");
         text.textContent = currentLangTexts.error;
         this.toggleInteractiveControls(false);
+        if (!window._GC_gpsBlockedShown && typeof window.GC_showGpsBlocked === "function") {
+          window._GC_gpsBlockedShown = true;
+          window.GC_showGpsBlocked();
+        }
       }
     },
     toggleInteractiveControls(enable) {
@@ -3545,8 +3558,7 @@
       const cabWater = document.getElementById("cabRequestWater");
       const cabBill = document.getElementById("cabRequestBill");
       const cdSubmit = document.getElementById("cdSubmitBtn");
-      const buttons = [cabCall, cabWater, cabBill, cdSubmit];
-      buttons.forEach((btn) => {
+      [cabCall, cabWater, cabBill].forEach((btn) => {
         if (!btn) return;
         if (enable) {
           btn.classList.remove("disabled-gps");
@@ -3554,6 +3566,15 @@
           btn.classList.add("disabled-gps");
         }
       });
+      if (cdSubmit) {
+        if (enable || window.GC_isPreorder) {
+          cdSubmit.classList.remove("disabled-gps");
+          cdSubmit.disabled = false;
+          cdSubmit.removeAttribute("disabled");
+        } else {
+          cdSubmit.classList.add("disabled-gps");
+        }
+      }
       const actionBar = document.getElementById("clientActionBar");
       if (actionBar) {
         actionBar.style.display = "block";
@@ -3660,7 +3681,9 @@
         clientCart.forEach((item) => {
           const itemDiv = document.createElement("div");
           itemDiv.className = "cd-item";
-          const drinkChoicesStr = item.drinkChoices && item.drinkChoices.length > 0 ? `<div style="font-size:0.75rem; color:var(--sc-gold-light); margin-top:2px;">\u2615 ${item.drinkChoices.join(", ")}</div>` : "";
+          const isDrinkItem = item.categoryNameFr && (item.categoryNameFr.toLowerCase().includes("boisson") || item.categoryNameFr.toLowerCase().includes("petit-d") || item.categoryNameFr.toLowerCase().includes("caf\xE9"));
+          const choiceIcon = isDrinkItem ? "\u2615" : "\u{1F37D}\uFE0F";
+          const drinkChoicesStr = item.drinkChoices && item.drinkChoices.length > 0 ? `<div style="font-size:0.75rem; color:var(--sc-gold-light); margin-top:2px;">${choiceIcon} ${item.drinkChoices.join(", ")}</div>` : "";
           itemDiv.innerHTML = `
           <div class="cd-item-img" style="background-image: url('${item.image}')"></div>
           <div class="cd-item-details">
@@ -3943,8 +3966,11 @@
   function checkItemOptionsAndAdd(menuItem) {
     if (!menuItem) return;
     const nameFr = menuItem.name && menuItem.name.fr ? menuItem.name.fr : String(menuItem.name || "");
-    const upperName = nameFr.toUpperCase();
+    const upperName = nameFr.toUpperCase().trim();
     const catId = menuItem.categoryId || "";
+    if (upperName === "ACCOMPAGNEMENTS" && (menuItem.price === "Inclus" || isNaN(parseFloat(menuItem.price)))) {
+      return;
+    }
     if (catId === "petit-dejeuner" && upperName !== "MENU ENFANT") {
       openHotDrinkSelectorModal(menuItem);
       return;
@@ -3953,7 +3979,7 @@
       openPastaSelectorModal(menuItem);
       return;
     }
-    if (catId === "plats" || upperName.includes("ACCOMPAGN")) {
+    if (catId === "plats" && upperName !== "MENU ENFANT") {
       openSidesSelectorModal(menuItem);
       return;
     }
@@ -3963,13 +3989,20 @@
     pendingActionAfterTableSelect = action;
   }
   function parseTableFromUrl() {
-    localStorage.removeItem("grey_corner_table");
     const params = new URLSearchParams(window.location.search);
     const table = params.get("table") || params.get("t");
     if (table) {
       clientTable = table;
+      try {
+        localStorage.setItem("grey_corner_table", table);
+      } catch (e) {
+      }
     } else {
-      clientTable = null;
+      try {
+        clientTable = localStorage.getItem("grey_corner_table") || null;
+      } catch (e) {
+        clientTable = null;
+      }
     }
     updateTableUI();
     return clientTable;
@@ -3991,6 +4024,10 @@
   }
   function setTable(num) {
     clientTable = String(num);
+    try {
+      localStorage.setItem("grey_corner_table", clientTable);
+    } catch (e) {
+    }
     updateTableUI();
     try {
       const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?table=${num}`;
@@ -4014,6 +4051,17 @@
     if (!modal || !grid) return;
     modal.style.display = "flex";
     grid.innerHTML = "";
+    if (!modal._hasBackdropListener) {
+      modal._hasBackdropListener = true;
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeTableModal();
+      });
+    }
+    const closeBtn = document.getElementById("tableModalCloseBtn");
+    if (closeBtn && !closeBtn._hasListener) {
+      closeBtn._hasListener = true;
+      closeBtn.addEventListener("click", closeTableModal);
+    }
     const zones = [
       { name: "Salle", start: 101, end: 115 },
       { name: "Loge", start: 201, end: 219 },
@@ -4209,6 +4257,118 @@
       overlay.style.display = "none";
     }, 380);
   }
+  function GC_selectMode(mode) {
+    window.GC_preorderMode = mode;
+    const p = document.getElementById("pmPickup");
+    const t2 = document.getElementById("pmTable");
+    const w = document.getElementById("pmTableNumWrap");
+    const c = document.getElementById("pmConfirm");
+    const GOLD = "rgba(201,168,76,0.18)", DIM = "rgba(201,168,76,0.07)";
+    if (p) {
+      p.style.background = mode === "pickup" ? GOLD : DIM;
+      p.style.borderColor = mode === "pickup" ? "#C9A84C" : "rgba(201,168,76,0.2)";
+    }
+    if (t2) {
+      t2.style.background = mode === "table" ? GOLD : DIM;
+      t2.style.borderColor = mode === "table" ? "#C9A84C" : "rgba(201,168,76,0.2)";
+    }
+    if (w) w.style.display = mode === "table" ? "block" : "none";
+    if (c) {
+      c.disabled = false;
+      c.style.background = "rgba(201,168,76,0.18)";
+      c.style.borderColor = "#C9A84C";
+      c.style.color = "#f0ead8";
+      c.style.cursor = "pointer";
+    }
+  }
+  function GC_confirmMode() {
+    if (!window.GC_preorderMode) return;
+    const inp = document.getElementById("pmTableNumInput");
+    window.GC_preorderTable = inp && inp.value.trim() ? inp.value.trim() : null;
+    window.GC_isPreorder = true;
+    GC_hidePreorderModal();
+    GC_applyPreorderUI();
+  }
+  function GC_dismissModal() {
+    GC_hidePreorderModal();
+    GC_applyReadonlyUI();
+  }
+  function GC_requestGpsAgain() {
+    if (!navigator.geolocation) {
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      () => {
+        GC_hideGpsBlocked();
+        if (typeof window.GPSService !== "undefined" && typeof window.GPSService.checkLocation === "function") {
+          window.GPSService.checkLocation();
+        } else {
+          location.reload();
+        }
+      },
+      (err) => {
+        if (err.code === 1) {
+          const hint = document.getElementById("gpsBlockedHint");
+          if (hint) {
+            hint.style.display = "block";
+            hint.style.color = "#e87c3e";
+          }
+        } else {
+          location.reload();
+        }
+      },
+      { timeout: 8e3, enableHighAccuracy: true }
+    );
+  }
+  function GC_patchSubmitButton() {
+    const btn = document.getElementById("cdSubmitBtn");
+    if (!btn) return false;
+    btn.innerHTML = `<span style="display:flex;align-items:center;justify-content:center;gap:8px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.522 5.85L0 24l6.335-1.502A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.814 9.814 0 01-5.007-1.373l-.36-.214-3.727.883.936-3.619-.234-.373A9.818 9.818 0 012.182 12C2.182 6.578 6.578 2.182 12 2.182S21.818 6.578 21.818 12 17.422 21.818 12 21.818z"/>
+      </svg>
+      Commander via WhatsApp
+  </span>`;
+    btn.style.background = "linear-gradient(135deg,#25D366,#128C7E)";
+    btn.style.borderColor = "#25D366";
+    btn.style.color = "#fff";
+    btn.style.opacity = "1";
+    btn.style.pointerEvents = "auto";
+    btn.disabled = false;
+    btn.removeAttribute("disabled");
+    btn.classList.remove("disabled-gps", "frozen-disabled");
+    document.querySelectorAll(".cd-warning-text").forEach((el) => el.style.display = "none");
+    return true;
+  }
+  function GC_applyPreorderUI() {
+    const badge = document.getElementById("gpsStatusBadge");
+    const text = document.getElementById("gpsStatusText");
+    if (badge) {
+      badge.className = "gps-status-badge";
+      badge.style.background = "rgba(201,168,76,0.15)";
+      badge.style.borderColor = "rgba(201,168,76,0.4)";
+    }
+    if (text) text.textContent = "\u{1F7E1} Pr\xE9commande";
+    const cdBadge = document.getElementById("cdTableBadge");
+    if (cdBadge) {
+      cdBadge.textContent = window.GC_preorderMode === "pickup" ? "\xC0 emporter" : window.GC_preorderTable ? "Table " + window.GC_preorderTable : "\xC0 table";
+    }
+    ["cabCallWaiter", "cabRequestWater", "cabRequestBill"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = "none";
+    });
+    const bar = document.getElementById("clientActionBar");
+    if (bar) bar.style.display = "block";
+    GC_patchSubmitButton();
+  }
+  function GC_applyReadonlyUI() {
+    const bar = document.getElementById("clientActionBar");
+    if (bar) bar.style.display = "none";
+  }
+  window.GC_preorderMode = window.GC_preorderMode || null;
+  window.GC_preorderTable = window.GC_preorderTable || null;
+  window.GC_isPreorder = window.GC_isPreorder || false;
   window.openCartDrawer = openCartDrawer;
   window.closeCartDrawer = closeCartDrawer;
   window.openTableModal = openTableModal;
@@ -4224,6 +4384,13 @@
   window.GC_dismissGpsBlocked = GC_dismissGpsBlocked;
   window.GC_showPreorderModal = GC_showPreorderModal;
   window.GC_hidePreorderModal = GC_hidePreorderModal;
+  window.GC_selectMode = GC_selectMode;
+  window.GC_confirmMode = GC_confirmMode;
+  window.GC_dismissModal = GC_dismissModal;
+  window.GC_requestGpsAgain = GC_requestGpsAgain;
+  window.GC_patchSubmitButton = GC_patchSubmitButton;
+  window.GC_applyPreorderUI = GC_applyPreorderUI;
+  window.GC_applyReadonlyUI = GC_applyReadonlyUI;
 
   // js/services/notifications.js
   var memoryNotifications = [];
@@ -4562,6 +4729,57 @@
   window.triggerHapticVibrate = triggerHapticVibrate;
 
   // js/services/orders.js
+  var WHATSAPP_NUMBER = "212666265160";
+  function GC_sendWhatsApp() {
+    if (!clientCart || clientCart.length === 0) {
+      const emptyMsgs = {
+        fr: "Votre panier est vide.",
+        en: "Your cart is empty.",
+        de: "Ihr Warenkorb ist leer.",
+        ar: "\u0633\u0644\u062A\u0643\u0645 \u0641\u0627\u0631\u063A\u0629."
+      };
+      alert(emptyMsgs[currentLang] || emptyMsgs.fr);
+      return;
+    }
+    const lang = currentLang || localStorage.getItem("lang") || "fr";
+    const modeLabel = window.GC_preorderMode === "pickup" ? "\xC0 emporter (comptoir)" : "\xC0 table" + (window.GC_preorderTable ? " n\xB0" + window.GC_preorderTable : " \u2014 num\xE9ro \xE0 pr\xE9ciser \xE0 l'arriv\xE9e");
+    let lines = "", total = 0;
+    clientCart.forEach((item) => {
+      const qty = item.qty || 1;
+      const price = item.price || 0;
+      const sub = price * qty;
+      total += sub;
+      const name = item.name && typeof item.name === "object" ? item.name[lang] || item.name.fr || Object.values(item.name)[0] : item.name || "Article";
+      const drinkInfo = item.drinkChoices && item.drinkChoices.length > 0 ? " (" + item.drinkChoices.join(", ") + ")" : "";
+      lines += `\u2022 ${name}${drinkInfo}${qty > 1 ? " x" + qty : ""} \u2014 ${sub} MAD
+`;
+    });
+    const noteEl = document.getElementById("cdSpecialNote");
+    const noteText = noteEl && noteEl.value.trim() ? "\n\u{1F4DD} Note : " + noteEl.value.trim() : "";
+    const msg = `\u{1F6D2} *Pr\xE9commande Grey Corner*
+Mode : ${modeLabel}
+\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+\u{1F4B0} Total : ${total} MAD${noteText}`;
+    window.open("https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(msg), "_blank");
+    setTimeout(() => {
+      clearCart();
+      if (noteEl) noteEl.value = "";
+      const ov = document.getElementById("cartDrawerOverlay");
+      const dr = document.getElementById("cartDrawer");
+      if (ov) ov.classList.remove("active");
+      if (dr) dr.classList.remove("active");
+      document.body.style.overflow = "";
+    }, 600);
+  }
+  function submitOrderOrWhatsApp(clientTable2, onComplete) {
+    if (window.GC_isPreorder) {
+      GC_sendWhatsApp();
+      if (onComplete) onComplete();
+      return;
+    }
+    submitPreOrder(clientTable2, onComplete);
+  }
   function submitPreOrder(clientTable2, onComplete) {
     if (!clientCart || clientCart.length === 0) return;
     const btn = document.getElementById("cdSubmitBtn");
@@ -4571,6 +4789,16 @@
       if (spinner) spinner.style.display = "none";
       if (onComplete) onComplete();
     };
+    if (window.systemFrozen) {
+      const frozenMsgs = {
+        fr: "Le service est temporairement suspendu (mode rush). Merci de patienter un instant.",
+        en: "Service is temporarily paused (rush mode). Please wait a moment.",
+        de: "Der Service ist vor\xFCbergehend pausiert (Sto\xDFzeit). Bitte warten Sie einen Moment.",
+        ar: "\u0627\u0644\u062E\u062F\u0645\u0629 \u0645\u0639\u0644\u0642\u0629 \u0645\u0624\u0642\u062A\u0627\u064B (\u0641\u062A\u0631\u0629 \u0627\u0644\u0630\u0631\u0648\u0629). \u064A\u0631\u062C\u0649 \u0627\u0644\u0627\u0646\u062A\u0638\u0627\u0631 \u0644\u062D\u0638\u0627\u062A."
+      };
+      showToast(frozenMsgs[currentLang] || frozenMsgs.fr);
+      return;
+    }
     if (!clientTable2) {
       resetBtn();
       const tableMsgs = {
@@ -4638,6 +4866,8 @@
     });
   }
   window.submitPreOrder = submitPreOrder;
+  window.submitOrderOrWhatsApp = submitOrderOrWhatsApp;
+  window.GC_sendWhatsApp = GC_sendWhatsApp;
 
   // js/ui/menu-render.js
   var activeCategoryId = null;
@@ -5279,24 +5509,24 @@
   }
   function handleFeedbackRating(stars, clickedBtn) {
     currentSelectedRating = stars;
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const modal = document.getElementById("feedbackModal");
+    if (modal) {
+      modal.querySelectorAll(".fb-rate-btn").forEach((btn) => btn.classList.remove("selected"));
+    }
     if (clickedBtn) {
       clickedBtn.classList.add("selected");
     }
-    setTimeout(() => {
-      if (stars <= 3) {
-        const waUrl = buildWhatsAppUrl(stars, false);
-        closeFeedbackModal();
-        if (isMobile) {
-          window.location.href = waUrl;
-        } else {
-          window.open(waUrl, "_blank", "noopener");
-        }
-      } else {
-        closeFeedbackModal();
-        window.open(GOOGLE_REVIEW_URL, "_blank", "noopener");
-      }
-    }, 180);
+    const stepRating = document.getElementById("fbStepRating");
+    const stepUnhappy = document.getElementById("fbStepUnhappy");
+    const stepHappy = document.getElementById("fbStepHappy");
+    if (stepRating) stepRating.style.display = "none";
+    if (stars <= 3) {
+      if (stepUnhappy) stepUnhappy.style.display = "block";
+      if (stepHappy) stepHappy.style.display = "none";
+    } else {
+      if (stepUnhappy) stepUnhappy.style.display = "none";
+      if (stepHappy) stepHappy.style.display = "block";
+    }
   }
   function buildWhatsAppUrl(stars, isHappy) {
     const t2 = getFeedbackTexts();
@@ -5361,6 +5591,32 @@
         }
       });
     });
+    const openWaBtn = document.getElementById("fbOpenWhatsAppBtn");
+    if (openWaBtn && !openWaBtn._hasClickListener) {
+      openWaBtn._hasClickListener = true;
+      openWaBtn.addEventListener("click", () => {
+        const waUrl = buildWhatsAppUrl(currentSelectedRating || 3, false);
+        closeFeedbackModal();
+        window.open(waUrl, "_blank", "noopener");
+      });
+    }
+    const googleBtn = document.getElementById("fbGoogleReviewBtn");
+    if (googleBtn && !googleBtn._hasClickListener) {
+      googleBtn._hasClickListener = true;
+      googleBtn.addEventListener("click", () => {
+        closeFeedbackModal();
+        window.open(GOOGLE_REVIEW_URL, "_blank", "noopener");
+      });
+    }
+    const waHappyBtn = document.getElementById("fbWhatsAppHappyBtn");
+    if (waHappyBtn && !waHappyBtn._hasClickListener) {
+      waHappyBtn._hasClickListener = true;
+      waHappyBtn.addEventListener("click", () => {
+        const waUrl = buildWhatsAppUrl(currentSelectedRating || 5, true);
+        closeFeedbackModal();
+        window.open(waUrl, "_blank", "noopener");
+      });
+    }
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && modal.classList.contains("open")) {
         closeFeedbackModal();
@@ -5396,6 +5652,37 @@
     updatePrixInfo();
     updateCartUI();
     GPSService.init();
+    const btt = document.getElementById("backToTop");
+    if (btt) {
+      window.addEventListener("scroll", () => {
+        btt.classList.toggle("show", window.scrollY > 350);
+      }, { passive: true });
+      btt.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
+    if (typeof dbService !== "undefined" && typeof dbService.onSystemFreezeChange === "function") {
+      dbService.onSystemFreezeChange((frozen) => {
+        window.systemFrozen = frozen;
+        let banner = document.getElementById("clientFreezeBanner");
+        const submitBtn = document.getElementById("cdSubmitBtn");
+        if (frozen) {
+          if (!banner) {
+            banner = document.createElement("div");
+            banner.id = "clientFreezeBanner";
+            banner.style.cssText = "position:fixed;top:0;left:0;right:0;z-index:99999;background:linear-gradient(135deg,#c0392b,#962d22);color:#fff;text-align:center;padding:10px 16px;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,0.3);letter-spacing:0.02em;";
+            banner.textContent = "\u23F3 Mode rush actif : La prise de commande est momentan\xE9ment suspendue. Merci de votre compr\xE9hension !";
+            document.body.appendChild(banner);
+          } else {
+            banner.style.display = "block";
+          }
+          if (submitBtn) submitBtn.classList.add("frozen-disabled");
+        } else {
+          if (banner) banner.style.display = "none";
+          if (submitBtn) submitBtn.classList.remove("frozen-disabled");
+        }
+      });
+    }
     if (table) {
       subscribeToActiveWaiterEvents(table);
     }
@@ -5409,6 +5696,9 @@
           renderMenu();
           updateCartUI();
           updateFeedbackTexts();
+          if (GPSService && GPSService.lastState) {
+            GPSService.updateUI(GPSService.lastState);
+          }
         }
       });
     });
@@ -5429,7 +5719,52 @@
     if (btnOpenCart) btnOpenCart.addEventListener("click", openCartDrawer);
     if (btnCloseCart) btnCloseCart.addEventListener("click", closeCartDrawer);
     if (overlayCart) overlayCart.addEventListener("click", closeCartDrawer);
-    if (btnSubmitOrder) btnSubmitOrder.addEventListener("click", () => submitPreOrder(clientTable));
+    if (btnSubmitOrder) btnSubmitOrder.addEventListener("click", () => submitOrderOrWhatsApp(clientTable));
+    const shareBtn = document.getElementById("shareMenu");
+    if (shareBtn) {
+      shareBtn.addEventListener("click", async () => {
+        const url = window.location.href;
+        const texts = {
+          fr: { title: "Grey Corner \u2014 Menu", text: "\u{1F37D}\uFE0F D\xE9couvrez le menu Grey Corner Caf\xE9 \xE0 F\xE8s !" },
+          en: { title: "Grey Corner \u2014 Menu", text: "\u{1F37D}\uFE0F Discover the Grey Corner Caf\xE9 menu in F\xE8s!" },
+          de: { title: "Grey Corner \u2014 Men\xFC", text: "\u{1F37D}\uFE0F Entdecken Sie das Men\xFC des Grey Corner Caf\xE9 in F\xE8s!" },
+          ar: { title: "Grey Corner \u2014 \u0642\u0627\u0626\u0645\u0629 \u0627\u0644\u0637\u0639\u0627\u0645", text: "\u{1F37D}\uFE0F \u0627\u0643\u062A\u0634\u0641 \u0642\u0627\u0626\u0645\u0629 \u0645\u0642\u0647\u0649 Grey Corner \u0641\u064A \u0641\u0627\u0633!" }
+        };
+        const tShare = texts[currentLang] || texts.fr;
+        if (navigator.share) {
+          try {
+            await navigator.share({ title: tShare.title, text: tShare.text, url });
+            return;
+          } catch (e) {
+          }
+        }
+        try {
+          await navigator.clipboard.writeText(url);
+        } catch {
+          const ta = document.createElement("textarea");
+          ta.value = url;
+          ta.style.cssText = "position:fixed;opacity:0;top:0;left:0;";
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+        }
+        const toastMsg = {
+          fr: "Lien copi\xE9 \u2713",
+          en: "Link copied \u2713",
+          de: "Link kopiert \u2713",
+          ar: "\u062A\u0645 \u0646\u0633\u062E \u0627\u0644\u0631\u0627\u0628\u0637 \u2713"
+        };
+        const toast = document.getElementById("scToast");
+        if (toast) {
+          toast.textContent = toastMsg[currentLang] || toastMsg.fr;
+          toast.classList.add("show");
+          setTimeout(() => toast.classList.remove("show"), 2400);
+        } else {
+          showToast(toastMsg[currentLang] || toastMsg.fr);
+        }
+      });
+    }
     console.log("\u{1F680} Main ES Module initialized successfully.");
   });
 })();

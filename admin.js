@@ -553,20 +553,21 @@ function renderAdminHistoryFeed() {
     });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    // Initialize tab navigation
+function startAdminApp() {
     initAdminTabs();
 
-    // 1. Bind the freeze toggle button FIRST to protect against any database stream startup crashes!
+    // 1. Bind the freeze toggle button
     const btn = document.getElementById("toggleFreezeBtn");
     if (btn) {
         btn.addEventListener("click", () => {
             console.log("⚡ Freeze button clicked");
-            dbService.setSystemFreeze(!systemFrozen, (success, errorMsg) => {
-                if (!success) {
-                    alert("Erreur lors de la modification de l'état freeze :\n" + (errorMsg || "Erreur inconnue (Vérifiez votre connexion ou vos permissions Firebase)"));
-                }
-            });
+            if (typeof dbService !== "undefined") {
+                dbService.setSystemFreeze(!systemFrozen, (success, errorMsg) => {
+                    if (!success) {
+                        alert("Erreur lors de la modification de l'état freeze :\n" + (errorMsg || "Erreur inconnue (Vérifiez votre connexion ou vos permissions Firebase)"));
+                    }
+                });
+            }
         });
     }
 
@@ -575,21 +576,36 @@ document.addEventListener("DOMContentLoaded", () => {
     if (cleanupBtn) {
         cleanupBtn.addEventListener("click", () => {
             if (confirm("Voulez-vous purger de la base de données toutes les données datant de plus de 24 heures ?")) {
-                dbService.cleanupOldData((success) => {
-                    if (success) {
-                        alert("Purge effectuée avec succès !");
-                    } else {
-                        alert("Échec de la purge.");
-                    }
-                });
+                if (typeof dbService !== "undefined") {
+                    dbService.cleanupOldData((success) => {
+                        if (success) {
+                            alert("Purge effectuée avec succès !");
+                        } else {
+                            alert("Échec de la purge.");
+                        }
+                    });
+                }
             }
         });
     }
 
-    // 2. Now start streams safely
+    // 2. Start streams safely
     try {
         initAdminStreams();
     } catch (err) {
         console.error("⚠️ Error starting streams:", err);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    if (typeof dbService !== "undefined") {
+        startAdminApp();
+    } else {
+        const checkInterval = setInterval(() => {
+            if (typeof dbService !== "undefined") {
+                clearInterval(checkInterval);
+                startAdminApp();
+            }
+        }, 50);
     }
 });

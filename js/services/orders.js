@@ -8,6 +8,61 @@ import { dbService } from '../config/firebase.js';
 import { showTableSelectorModal, setPendingActionAfterTableSelect } from '../ui/modals.js';
 import { subscribeToActiveWaiterEvents } from './notifications.js';
 
+export const WHATSAPP_NUMBER = '212666265160';
+
+export function GC_sendWhatsApp() {
+  if (!clientCart || clientCart.length === 0) {
+    const emptyMsgs = {
+      fr: 'Votre panier est vide.',
+      en: 'Your cart is empty.',
+      de: 'Ihr Warenkorb ist leer.',
+      ar: 'سلتكم فارغة.'
+    };
+    alert(emptyMsgs[currentLang] || emptyMsgs.fr);
+    return;
+  }
+  const lang = currentLang || localStorage.getItem('lang') || 'fr';
+  const modeLabel = window.GC_preorderMode === 'pickup'
+    ? 'À emporter (comptoir)'
+    : ('À table' + (window.GC_preorderTable ? ' n°' + window.GC_preorderTable : " — numéro à préciser à l'arrivée"));
+  let lines = '', total = 0;
+  clientCart.forEach(item => {
+    const qty = item.qty || 1;
+    const price = item.price || 0;
+    const sub = price * qty;
+    total += sub;
+    const name = (item.name && typeof item.name === 'object')
+      ? (item.name[lang] || item.name.fr || Object.values(item.name)[0])
+      : (item.name || 'Article');
+    const drinkInfo = (item.drinkChoices && item.drinkChoices.length > 0)
+      ? ' (' + item.drinkChoices.join(', ') + ')'
+      : '';
+    lines += `• ${name}${drinkInfo}${qty > 1 ? ' x' + qty : ''} — ${sub} MAD\n`;
+  });
+  const noteEl = document.getElementById('cdSpecialNote');
+  const noteText = noteEl && noteEl.value.trim() ? '\n📝 Note : ' + noteEl.value.trim() : '';
+  const msg = `🛒 *Précommande Grey Corner*\nMode : ${modeLabel}\n─────────────────────\n${lines}─────────────────────\n💰 Total : ${total} MAD${noteText}`;
+  window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg), '_blank');
+  setTimeout(() => {
+    clearCart();
+    if (noteEl) noteEl.value = '';
+    const ov = document.getElementById('cartDrawerOverlay');
+    const dr = document.getElementById('cartDrawer');
+    if (ov) ov.classList.remove('active');
+    if (dr) dr.classList.remove('active');
+    document.body.style.overflow = '';
+  }, 600);
+}
+
+export function submitOrderOrWhatsApp(clientTable, onComplete) {
+  if (window.GC_isPreorder) {
+    GC_sendWhatsApp();
+    if (onComplete) onComplete();
+    return;
+  }
+  submitPreOrder(clientTable, onComplete);
+}
+
 export function submitPreOrder(clientTable, onComplete) {
   if (!clientCart || clientCart.length === 0) return;
 
@@ -20,7 +75,17 @@ export function submitPreOrder(clientTable, onComplete) {
     if (onComplete) onComplete();
   };
 
-  // CHECK: If no table is chosen, prompt the user to pick their table first!
+  if (window.systemFrozen) {
+    const frozenMsgs = {
+      fr: "Le service est temporairement suspendu (mode rush). Merci de patienter un instant.",
+      en: "Service is temporarily paused (rush mode). Please wait a moment.",
+      de: "Der Service ist vorübergehend pausiert (Stoßzeit). Bitte warten Sie einen Moment.",
+      ar: "الخدمة معلقة مؤقتاً (فترة الذروة). يرجى الانتظار لحظات."
+    };
+    showToast(frozenMsgs[currentLang] || frozenMsgs.fr);
+    return;
+  }
+
   if (!clientTable) {
     resetBtn();
     const tableMsgs = {
@@ -98,3 +163,5 @@ export function submitPreOrder(clientTable, onComplete) {
 }
 
 window.submitPreOrder = submitPreOrder;
+window.submitOrderOrWhatsApp = submitOrderOrWhatsApp;
+window.GC_sendWhatsApp = GC_sendWhatsApp;

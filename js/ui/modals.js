@@ -266,10 +266,15 @@ export function openPastaSelectorModal(menuItem) {
 export function checkItemOptionsAndAdd(menuItem) {
   if (!menuItem) return;
   const nameFr = menuItem.name && menuItem.name.fr ? menuItem.name.fr : String(menuItem.name || "");
-  const upperName = nameFr.toUpperCase();
+  const upperName = nameFr.toUpperCase().trim();
   const catId = menuItem.categoryId || "";
 
-  // 1. PETIT DÉJEUNER (Breakfast) -> Hot drink selection
+  // If item is ACCOMPAGNEMENTS (informational item with price 'Inclus'), do not add or prompt
+  if (upperName === "ACCOMPAGNEMENTS" && (menuItem.price === "Inclus" || isNaN(parseFloat(menuItem.price)))) {
+    return;
+  }
+
+  // 1. PETIT DÉJEUNER (Breakfast) -> Hot drink selection (excluding Menu Enfant)
   if (catId === "petit-dejeuner" && upperName !== "MENU ENFANT") {
     openHotDrinkSelectorModal(menuItem);
     return;
@@ -281,8 +286,8 @@ export function checkItemOptionsAndAdd(menuItem) {
     return;
   }
 
-  // 3. PLATS / ACCOMPAGNEMENTS -> 2 Sides selection
-  if (catId === "plats" || upperName.includes("ACCOMPAGN")) {
+  // 3. PLATS -> 2 Sides selection (excluding Menu Enfant)
+  if (catId === "plats" && upperName !== "MENU ENFANT") {
     openSidesSelectorModal(menuItem);
     return;
   }
@@ -296,13 +301,13 @@ export function setPendingActionAfterTableSelect(action) {
 }
 
 export function parseTableFromUrl() {
-  localStorage.removeItem("grey_corner_table");
   const params = new URLSearchParams(window.location.search);
   const table = params.get("table") || params.get("t");
   if (table) {
     clientTable = table;
+    try { localStorage.setItem("grey_corner_table", table); } catch(e) {}
   } else {
-    clientTable = null;
+    try { clientTable = localStorage.getItem("grey_corner_table") || null; } catch(e) { clientTable = null; }
   }
   updateTableUI();
   return clientTable;
@@ -326,6 +331,7 @@ export function updateTableUI() {
 
 export function setTable(num) {
   clientTable = String(num);
+  try { localStorage.setItem("grey_corner_table", clientTable); } catch(e) {}
   updateTableUI();
 
   try {
@@ -355,6 +361,19 @@ export function showTableSelectorModal() {
 
   modal.style.display = "flex";
   grid.innerHTML = "";
+
+  if (!modal._hasBackdropListener) {
+    modal._hasBackdropListener = true;
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeTableModal();
+    });
+  }
+
+  const closeBtn = document.getElementById("tableModalCloseBtn");
+  if (closeBtn && !closeBtn._hasListener) {
+    closeBtn._hasListener = true;
+    closeBtn.addEventListener("click", closeTableModal);
+  }
 
   const zones = [
     { name: "Salle", start: 101, end: 115 },
@@ -586,7 +605,127 @@ export function GC_hidePreorderModal() {
   setTimeout(() => { overlay.style.display = 'none'; }, 380);
 }
 
+export function GC_selectMode(mode) {
+  window.GC_preorderMode = mode;
+  const p = document.getElementById('pmPickup');
+  const t = document.getElementById('pmTable');
+  const w = document.getElementById('pmTableNumWrap');
+  const c = document.getElementById('pmConfirm');
+  const GOLD = 'rgba(201,168,76,0.18)', DIM = 'rgba(201,168,76,0.07)';
+  if (p) {
+    p.style.background  = mode === 'pickup' ? GOLD : DIM;
+    p.style.borderColor = mode === 'pickup' ? '#C9A84C' : 'rgba(201,168,76,0.2)';
+  }
+  if (t) {
+    t.style.background  = mode === 'table'  ? GOLD : DIM;
+    t.style.borderColor = mode === 'table'  ? '#C9A84C' : 'rgba(201,168,76,0.2)';
+  }
+  if (w) w.style.display = mode === 'table' ? 'block' : 'none';
+  if (c) {
+    c.disabled = false;
+    c.style.background  = 'rgba(201,168,76,0.18)';
+    c.style.borderColor = '#C9A84C';
+    c.style.color       = '#f0ead8';
+    c.style.cursor      = 'pointer';
+  }
+}
+
+export function GC_confirmMode() {
+  if (!window.GC_preorderMode) return;
+  const inp = document.getElementById('pmTableNumInput');
+  window.GC_preorderTable = inp && inp.value.trim() ? inp.value.trim() : null;
+  window.GC_isPreorder    = true;
+  GC_hidePreorderModal();
+  GC_applyPreorderUI();
+}
+
+export function GC_dismissModal() {
+  GC_hidePreorderModal();
+  GC_applyReadonlyUI();
+}
+
+export function GC_requestGpsAgain() {
+  if (!navigator.geolocation) { return; }
+  navigator.geolocation.getCurrentPosition(
+    () => {
+      GC_hideGpsBlocked();
+      if (typeof window.GPSService !== 'undefined' && typeof window.GPSService.checkLocation === 'function') {
+        window.GPSService.checkLocation();
+      } else {
+        location.reload();
+      }
+    },
+    (err) => {
+      if (err.code === 1) {
+        const hint = document.getElementById('gpsBlockedHint');
+        if (hint) {
+          hint.style.display = 'block';
+          hint.style.color = '#e87c3e';
+        }
+      } else {
+        location.reload();
+      }
+    },
+    { timeout: 8000, enableHighAccuracy: true }
+  );
+}
+
+export function GC_patchSubmitButton() {
+  const btn = document.getElementById('cdSubmitBtn');
+  if (!btn) return false;
+  btn.innerHTML = `<span style="display:flex;align-items:center;justify-content:center;gap:8px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.522 5.85L0 24l6.335-1.502A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.814 9.814 0 01-5.007-1.373l-.36-.214-3.727.883.936-3.619-.234-.373A9.818 9.818 0 012.182 12C2.182 6.578 6.578 2.182 12 2.182S21.818 6.578 21.818 12 17.422 21.818 12 21.818z"/>
+      </svg>
+      Commander via WhatsApp
+  </span>`;
+  btn.style.background    = 'linear-gradient(135deg,#25D366,#128C7E)';
+  btn.style.borderColor   = '#25D366';
+  btn.style.color         = '#fff';
+  btn.style.opacity       = '1';
+  btn.style.pointerEvents = 'auto';
+  btn.disabled            = false;
+  btn.removeAttribute('disabled');
+  btn.classList.remove('disabled-gps', 'frozen-disabled');
+  document.querySelectorAll('.cd-warning-text').forEach(el => el.style.display = 'none');
+  return true;
+}
+
+export function GC_applyPreorderUI() {
+  const badge = document.getElementById('gpsStatusBadge');
+  const text  = document.getElementById('gpsStatusText');
+  if (badge) {
+    badge.className = 'gps-status-badge';
+    badge.style.background = 'rgba(201,168,76,0.15)';
+    badge.style.borderColor = 'rgba(201,168,76,0.4)';
+  }
+  if (text) text.textContent = '🟡 Précommande';
+  const cdBadge = document.getElementById('cdTableBadge');
+  if (cdBadge) {
+    cdBadge.textContent = window.GC_preorderMode === 'pickup'
+      ? 'À emporter'
+      : (window.GC_preorderTable ? 'Table ' + window.GC_preorderTable : 'À table');
+  }
+  ['cabCallWaiter','cabRequestWater','cabRequestBill'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  const bar = document.getElementById('clientActionBar');
+  if (bar) bar.style.display = 'block';
+  GC_patchSubmitButton();
+}
+
+export function GC_applyReadonlyUI() {
+  const bar = document.getElementById('clientActionBar');
+  if (bar) bar.style.display = 'none';
+}
+
 // Bind to window for backwards compatibility with inline HTML onclicks
+window.GC_preorderMode  = window.GC_preorderMode || null;
+window.GC_preorderTable = window.GC_preorderTable || null;
+window.GC_isPreorder    = window.GC_isPreorder || false;
+
 window.openCartDrawer = openCartDrawer;
 window.closeCartDrawer = closeCartDrawer;
 window.openTableModal = openTableModal;
@@ -602,3 +741,10 @@ window.GC_hideGpsBlocked = GC_hideGpsBlocked;
 window.GC_dismissGpsBlocked = GC_dismissGpsBlocked;
 window.GC_showPreorderModal = GC_showPreorderModal;
 window.GC_hidePreorderModal = GC_hidePreorderModal;
+window.GC_selectMode = GC_selectMode;
+window.GC_confirmMode = GC_confirmMode;
+window.GC_dismissModal = GC_dismissModal;
+window.GC_requestGpsAgain = GC_requestGpsAgain;
+window.GC_patchSubmitButton = GC_patchSubmitButton;
+window.GC_applyPreorderUI = GC_applyPreorderUI;
+window.GC_applyReadonlyUI = GC_applyReadonlyUI;

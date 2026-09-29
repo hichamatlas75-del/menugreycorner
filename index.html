@@ -26,10 +26,10 @@
     <meta property="og:title" content="Grey Corner Café — Menu | Fès" />
     <meta property="og:description"
         content="Menu complet du Grey Corner Café à Fès. Petits-déjeuners, plats du jour, pizzas, burgers, boissons et desserts." />
-    <meta property="og:image" content="https://menugreycorner.pages.dev/images/og-preview.jpg" />
+    <meta property="og:image" content="https://menugreycorner.pages.dev/images/og-preview.webp" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:type" content="image/webp" />
     <meta property="og:url" content="https://menugreycorner.pages.dev/" />
     <meta property="og:locale" content="fr_MA" />
     <meta property="og:site_name" content="Grey Corner Café" />
@@ -37,8 +37,10 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Grey Corner Café — Menu | Fès" />
     <meta name="twitter:description" content="Menu complet du Grey Corner Café à Fès." />
-    <meta name="twitter:image" content="https://menugreycorner.pages.dev/images/og-preview.jpg" />
+    <meta name="twitter:image" content="https://menugreycorner.pages.dev/images/og-preview.webp" />
 
+    <link rel="manifest" href="site.webmanifest" />
+    <meta name="theme-color" content="#07060a" />
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png" />
@@ -54,7 +56,7 @@
 
 
     <div id="backToTop" class="back-to-top">⬆</div>
-    <button id="floatingCloseCategory" class="floating-close-category">
+    <button id="floatingCloseCategory" class="floating-close-category" style="display: none !important;">
         <svg viewBox="0 0 24 24">
             <path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"/>
         </svg>
@@ -389,7 +391,10 @@
     ======================================================================= -->
     <div class="table-modal-overlay" id="tableModalOverlay" style="display: none;">
         <div class="table-modal">
-            <h3 data-i18n data-fr="Sélectionnez votre Table" data-en="Select Your Table" data-de="Wählen Sie Ihren Tisch" data-ar="اختر طاولتك">Sélectionnez votre Table</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 data-i18n data-fr="Sélectionnez votre Table" data-en="Select Your Table" data-de="Wählen Sie Ihren Tisch" data-ar="اختر طاولتك" style="margin: 0; text-align: left;">Sélectionnez votre Table</h3>
+                <button id="tableModalCloseBtn" style="background: none; border: none; color: var(--muted, rgba(255,255,255,0.6)); font-size: 24px; cursor: pointer; outline: none; line-height: 1; padding: 4px;" aria-label="Fermer">&times;</button>
+            </div>
             <p data-i18n data-fr="Pour activer le service digital, veuillez choisir votre numéro de table :" data-en="To activate the digital service, please select your table number:" data-de="Um den digitalen Service zu aktivieren, wählen Sie bitte Ihre Tischnummer:" data-ar="لتفعيل الخدمة الرقمية، يرجى اختيار رقم طاولتك :">Pour activer le service digital, veuillez choisir votre numéro de table :</p>
             <div class="table-grid-select" id="tableGridSelect">
                 <!-- Generated tables 1 to 24 -->
@@ -744,350 +749,4 @@
 
     <!-- Scripts -->
     <script defer src="js/bundle.js"></script>
-    <!-- ======================================================================
-         GPS ROUTING — PATCH sur GPSService
-    ======================================================================= -->
-    <script>
-    const WHATSAPP_NUMBER = '212666265160';
-
-    window.GC_preorderMode  = null;
-    window.GC_preorderTable = null;
-    window.GC_isPreorder    = false;
-
-    // ── MODAL PRÉCOMMANDE ──
-    function GC_showPreorderModal() {
-        const overlay = document.getElementById('preorderModeOverlay');
-        const sheet   = document.getElementById('preorderModeSheet');
-        if (!overlay) return;
-        overlay.style.display = 'flex';
-        requestAnimationFrame(() => requestAnimationFrame(() => { sheet.style.transform = 'translateY(0)'; }));
-    }
-    function GC_hidePreorderModal() {
-        const overlay = document.getElementById('preorderModeOverlay');
-        const sheet   = document.getElementById('preorderModeSheet');
-        if (!overlay) return;
-        sheet.style.transform = 'translateY(100%)';
-        setTimeout(() => { overlay.style.display = 'none'; }, 380);
-    }
-
-    window.GC_selectMode = function(mode) {
-        window.GC_preorderMode = mode;
-        const p = document.getElementById('pmPickup');
-        const t = document.getElementById('pmTable');
-        const w = document.getElementById('pmTableNumWrap');
-        const c = document.getElementById('pmConfirm');
-        const GOLD = 'rgba(201,168,76,0.18)', DIM = 'rgba(201,168,76,0.07)';
-        p.style.background  = mode === 'pickup' ? GOLD : DIM;
-        p.style.borderColor = mode === 'pickup' ? '#C9A84C' : 'rgba(201,168,76,0.2)';
-        t.style.background  = mode === 'table'  ? GOLD : DIM;
-        t.style.borderColor = mode === 'table'  ? '#C9A84C' : 'rgba(201,168,76,0.2)';
-        w.style.display = mode === 'table' ? 'block' : 'none';
-        c.disabled = false;
-        c.style.background  = 'rgba(201,168,76,0.18)';
-        c.style.borderColor = '#C9A84C';
-        c.style.color       = '#f0ead8';
-        c.style.cursor      = 'pointer';
-    };
-    window.GC_confirmMode = function() {
-        if (!window.GC_preorderMode) return;
-        const inp = document.getElementById('pmTableNumInput');
-        window.GC_preorderTable = inp && inp.value.trim() ? inp.value.trim() : null;
-        window.GC_isPreorder    = true;
-        GC_hidePreorderModal();
-        GC_applyPreorderUI();
-    };
-    window.GC_dismissModal = function() {
-        GC_hidePreorderModal();
-        GC_applyReadonlyUI();
-    };
-
-    // ── GESTION DES ONGLETS GUIDE GPS (Android vs iOS) ──
-    window.GC_switchGpsTab = function(type) {
-        const btnAndroid = document.getElementById('gpsTabAndroid');
-        const btnIos = document.getElementById('gpsTabIos');
-        const guideAndroid = document.getElementById('gpsGuideAndroid');
-        const guideIos = document.getElementById('gpsGuideIos');
-
-        if (!btnAndroid || !btnIos || !guideAndroid || !guideIos) return;
-
-        const ACTIVE_BG = 'rgba(201,168,76,0.18)';
-        const ACTIVE_COLOR = '#C9A84C';
-        const INACTIVE_BG = 'transparent';
-        const INACTIVE_COLOR = 'rgba(240,234,216,0.5)';
-
-        if (type === 'ios') {
-            btnIos.style.background = ACTIVE_BG;
-            btnIos.style.color = ACTIVE_COLOR;
-            btnIos.style.fontWeight = '700';
-
-            btnAndroid.style.background = INACTIVE_BG;
-            btnAndroid.style.color = INACTIVE_COLOR;
-            btnAndroid.style.fontWeight = '600';
-
-            guideIos.style.display = 'flex';
-            guideAndroid.style.display = 'none';
-        } else {
-            btnAndroid.style.background = ACTIVE_BG;
-            btnAndroid.style.color = ACTIVE_COLOR;
-            btnAndroid.style.fontWeight = '700';
-
-            btnIos.style.background = INACTIVE_BG;
-            btnIos.style.color = INACTIVE_COLOR;
-            btnIos.style.fontWeight = '600';
-
-            guideAndroid.style.display = 'flex';
-            guideIos.style.display = 'none';
-        }
-    };
-
-    // ── MODAL GPS BLOQUÉ (Multi-Mobile) ──
-    function GC_showGpsBlocked() {
-        const overlay = document.getElementById('gpsBlockedOverlay');
-        const sheet   = document.getElementById('gpsBlockedSheet');
-        if (!overlay) return;
-
-        // Auto-détection de l'appareil (iOS vs Android)
-        const ua = navigator.userAgent || '';
-        const isIOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-        GC_switchGpsTab(isIOS ? 'ios' : 'android');
-
-        overlay.style.display = 'flex';
-        requestAnimationFrame(() => requestAnimationFrame(() => { sheet.style.transform = 'translateY(0)'; }));
-    }
-    function GC_hideGpsBlocked() {
-        const overlay = document.getElementById('gpsBlockedOverlay');
-        const sheet   = document.getElementById('gpsBlockedSheet');
-        if (!overlay) return;
-        sheet.style.transform = 'translateY(100%)';
-        setTimeout(() => { overlay.style.display = 'none'; }, 380);
-    }
-    window.GC_requestGpsAgain = function() {
-        if (!navigator.geolocation) { return; }
-        // Tente de redemander la permission — si l'user avait juste ignoré, la popup iOS réapparaît
-        navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                // Permission accordée — on relance la détection via GPSService si dispo
-                GC_hideGpsBlocked();
-                if (typeof GPSService !== 'undefined' && typeof GPSService.checkLocation === 'function') {
-                    GPSService.checkLocation();
-                } else {
-                    // Fallback : recharge la page
-                    location.reload();
-                }
-            },
-            (err) => {
-                if (err.code === 1) {
-                    // PERMISSION_DENIED définitif → les réglages sont la seule option
-                    // On met à jour le texte du modal pour guider vers Réglages
-                    const hint = document.getElementById('gpsBlockedHint');
-                    if (hint) {
-                        hint.style.display = 'block';
-                        hint.style.color = '#e87c3e';
-                    }
-                } else {
-                    location.reload();
-                }
-            },
-            { timeout: 8000, enableHighAccuracy: true }
-        );
-    };
-
-    window.GC_dismissGpsBlocked = function() {
-        GC_hideGpsBlocked();
-        GC_applyReadonlyUI();
-    };
-
-    // ── UI PRÉCOMMANDE ──
-    function GC_applyPreorderUI() {
-        const badge = document.getElementById('gpsStatusBadge');
-        const text  = document.getElementById('gpsStatusText');
-        if (badge) { badge.className = 'gps-status-badge'; badge.style.background = 'rgba(201,168,76,0.15)'; badge.style.borderColor = 'rgba(201,168,76,0.4)'; }
-        if (text)  text.textContent = '🟡 Précommande';
-        const cdBadge = document.getElementById('cdTableBadge');
-        if (cdBadge) {
-            cdBadge.textContent = window.GC_preorderMode === 'pickup'
-                ? 'À emporter'
-                : (window.GC_preorderTable ? 'Table ' + window.GC_preorderTable : 'À table');
-        }
-        ['cabCallWaiter','cabRequestWater','cabRequestBill'].forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.style.display = 'none';
-        });
-        const bar = document.getElementById('clientActionBar');
-        if (bar) bar.style.display = 'block';
-        GC_patchSubmitButton();
-    }
-
-    // ── UI CONSULTATION ──
-    function GC_applyReadonlyUI() {
-        const bar = document.getElementById('clientActionBar');
-        if (bar) bar.style.display = 'none';
-    }
-
-    // ── PATCH BOUTON → WHATSAPP ──
-    function GC_patchSubmitButton() {
-        const doIt = () => {
-            const btn = document.getElementById('cdSubmitBtn');
-            if (!btn) return false;
-            const fresh = btn.cloneNode(false);
-            fresh.id = 'cdSubmitBtn';
-            fresh.className = btn.className;
-            fresh.innerHTML = `<span style="display:flex;align-items:center;justify-content:center;gap:8px;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-                  <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.522 5.85L0 24l6.335-1.502A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.814 9.814 0 01-5.007-1.373l-.36-.214-3.727.883.936-3.619-.234-.373A9.818 9.818 0 012.182 12C2.182 6.578 6.578 2.182 12 2.182S21.818 6.578 21.818 12 17.422 21.818 12 21.818z"/>
-                </svg>
-                Commander via WhatsApp
-            </span>`;
-            fresh.style.background    = 'linear-gradient(135deg,#25D366,#128C7E)';
-            fresh.style.borderColor   = '#25D366';
-            fresh.style.color         = '#fff';
-            fresh.style.opacity       = '1';
-            fresh.style.pointerEvents = 'auto';
-            fresh.disabled            = false;
-            fresh.removeAttribute('disabled');
-            fresh.classList.remove('disabled-gps', 'frozen-disabled');
-            fresh.addEventListener('click', GC_sendWhatsApp);
-            btn.parentNode.replaceChild(fresh, btn);
-            clearInterval(window._gcBtnGuard);
-            window._gcBtnGuard = setInterval(() => {
-                const b = document.getElementById('cdSubmitBtn');
-                if (!b) { clearInterval(window._gcBtnGuard); return; }
-                if (typeof systemFrozen !== 'undefined' && systemFrozen) return;
-                if (b.classList.contains('disabled-gps')) {
-                    b.classList.remove('disabled-gps');
-                    b.disabled = false;
-                    b.removeAttribute('disabled');
-                    b.style.opacity       = '1';
-                    b.style.pointerEvents = 'auto';
-                    b.style.background    = 'linear-gradient(135deg,#25D366,#128C7E)';
-                    b.style.color         = '#fff';
-                }
-            }, 300);
-            document.querySelectorAll('.cd-warning-text').forEach(el => el.style.display = 'none');
-            return true;
-        };
-        if (!doIt()) {
-            const obs = new MutationObserver(() => { if (doIt()) obs.disconnect(); });
-            obs.observe(document.body, { childList: true, subtree: true });
-        }
-    }
-
-    // ── ENVOI WHATSAPP + VIDAGE PANIER ──
-    function GC_sendWhatsApp() {
-        if (typeof clientCart === 'undefined' || clientCart.length === 0) {
-            alert('Votre panier est vide.');
-            return;
-        }
-        const lang = localStorage.getItem('lang') || 'fr';
-        const modeLabel = window.GC_preorderMode === 'pickup'
-            ? 'À emporter (comptoir)'
-            : ('À table' + (window.GC_preorderTable ? ' n°' + window.GC_preorderTable : " — numéro à préciser à l'arrivée"));
-        let lines = '', total = 0;
-        clientCart.forEach(item => {
-            const qty   = item.qty || 1;
-            const price = item.price || 0;
-            const sub   = price * qty;
-            total += sub;
-            const name = (item.name && typeof item.name === 'object') ? (item.name[lang] || item.name.fr || Object.values(item.name)[0]) : (item.name || 'Article');
-            const drinkInfo = (item.drinkChoices && item.drinkChoices.length > 0) ? ' (' + item.drinkChoices.join(', ') + ')' : '';
-            lines += `• ${name}${drinkInfo}${qty > 1 ? ' x' + qty : ''} — ${sub} MAD\n`;
-        });
-        const noteEl   = document.getElementById('cdSpecialNote');
-        const noteText = noteEl && noteEl.value.trim() ? '\n📝 Note : ' + noteEl.value.trim() : '';
-        const msg = `🛒 *Précommande Grey Corner*\nMode : ${modeLabel}\n─────────────────────\n${lines}─────────────────────\n💰 Total : ${total} MAD${noteText}`;
-        window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg), '_blank');
-        setTimeout(() => {
-            if (typeof clearCart === 'function') {
-                clearCart();
-            } else {
-                clientCart.length = 0;
-                localStorage.removeItem('grey_cart');
-                if (typeof updateCartUI === 'function') updateCartUI();
-            }
-            if (noteEl) noteEl.value = '';
-            if (typeof renderCartDrawer === 'function') renderCartDrawer();
-            if (typeof updateCartBadge  === 'function') updateCartBadge();
-            const ov = document.getElementById('cartDrawerOverlay');
-            const dr = document.getElementById('cartDrawer');
-            if (ov) ov.classList.remove('active');
-            if (dr) dr.classList.remove('active');
-            document.body.style.overflow = '';
-        }, 600);
-    }
-
-    // ── PATCH GPSService.updateUI ──
-    document.addEventListener('DOMContentLoaded', function() {
-        const waitForGPS = setInterval(() => {
-            if (typeof GPSService === 'undefined') return;
-            clearInterval(waitForGPS);
-            const _orig = GPSService.updateUI.bind(GPSService);
-            GPSService.updateUI = function(state) {
-                _orig(state);
-                if (state === 'outside') {
-                    if (!window.GC_isPreorder && !window._GC_modalShown) {
-                        window._GC_modalShown = true;
-                        GC_showPreorderModal();
-                    }
-                } else if (state === 'inside') {
-                    window._GC_modalShown = true;
-                    GC_hidePreorderModal();
-                    GC_hideGpsBlocked();
-                    window.GC_isPreorder = false;
-                    clearInterval(window._gcBtnGuard);
-                } else if (state === 'denied' || state === 'error') {
-                    if (!window._GC_gpsBlockedShown) {
-                        window._GC_gpsBlockedShown = true;
-                        GC_showGpsBlocked();
-                    }
-                }
-            };
-        }, 50);
-    });
-    </script>
-
-
-
-    <script>
-        // ── PARTAGER ──
-        document.getElementById('shareMenu').addEventListener('click', async function () {
-            const url = window.location.href;
-            const lang = localStorage.getItem('lang') || 'fr';
-            const texts = {
-                fr: { title: 'Grey Corner — Menu', text: '🍽️ Découvrez le menu Grey Corner Café à Fès !' },
-                en: { title: 'Grey Corner — Menu', text: '🍽️ Discover the Grey Corner Café menu in Fès!' },
-                de: { title: 'Grey Corner — Menü', text: '🍽️ Entdecken Sie das Menü des Grey Corner Café in Fès!' }
-            };
-            const t = texts[lang] || texts.fr;
-
-            // Web Share API (mobile natif — WhatsApp, SMS, etc.)
-            if (navigator.share) {
-                try {
-                    await navigator.share({ title: t.title, text: t.text, url });
-                    return;
-                } catch (e) { return; }
-            }
-
-            // Fallback desktop : copier dans le presse-papier
-            try {
-                await navigator.clipboard.writeText(url);
-            } catch {
-                const ta = document.createElement('textarea');
-                ta.value = url;
-                ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0;';
-                document.body.appendChild(ta);
-                ta.select();
-                document.execCommand('copy');
-                document.body.removeChild(ta);
-            }
-
-            // Toast multilingue
-            const toastMsg = { fr: 'Lien copié ✓', en: 'Link copied ✓', de: 'Link kopiert ✓' };
-            const toast = document.getElementById('scToast');
-            toast.textContent = toastMsg[lang] || toastMsg.fr;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2400);
-        });
-    </script>
-
 </body>

@@ -132,15 +132,8 @@ export function getTableZoneName(tableNum) {
 }
 
 export function sendFcmToWaiters(type, title, body, tableId, docId) {
-    fetch("https://fcm.googleapis.com/fcm/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            to: "/topics/waiters",
-            notification: { title: title, body: body, sound: "default" },
-            data: { type: type, tableId: String(tableId), docId: String(docId) }
-        })
-    }).catch(e => console.warn("⚠️ FCM notification error:", e));
+    // Note: Legacy FCM HTTP endpoint (fcm.googleapis.com/fcm/send) was retired by Google in June 2024.
+    // Real-time synchronization is natively provided by Firestore onSnapshot in waiter.js.
 }
 
 export const dbService = {

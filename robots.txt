@@ -1,0 +1,17 @@
+# Robots.txt for Grey Corner Café Fès
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /style.css
+Allow: /js/
+Allow: /images/
+
+# Disallow internal staff portals from search engine indexing
+Disallow: /admin.html
+Disallow: /waiter.html
+Disallow: /admin.js
+Disallow: /waiter.js
+Disallow: /admin.css
+Disallow: /waiter.css
+
+Sitemap: https://menugreycorner.pages.dev/sitemap.xml

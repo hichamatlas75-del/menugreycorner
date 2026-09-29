@@ -468,6 +468,9 @@ header {
     margin-left: auto;
     margin-right: auto;
 }
+.new-items-carousel:empty {
+    display: none;
+}
 .new-items-carousel::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
 }
