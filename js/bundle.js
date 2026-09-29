@@ -525,7 +525,7 @@
             "de": "Paniertes H\xE4hnchen, Kroketten, hausgemachtes Croque, K\xE4seomelett, Aufschnitt, K\xE4se, Roggenbrot, Beldi (2 Mlaoui, 2 Harcha), Mesclun-Salat, Muffin, Waffel, 2 Orangens\xE4fte, 2 Hei\xDFgetr\xE4nke nach Wahl, 2 Desserts und 2 Mineralwasser.",
             "ar": "\u062F\u062C\u0627\u062C \u0645\u0642\u0631\u0645\u0634\u060C \u0643\u0631\u0648\u0643\u064A\u062A\u060C \u0643\u0631\u0648\u0643 \u0645\u0646\u0632\u0644\u064A\u060C \u0623\u0648\u0645\u0644\u064A\u062A \u0628\u0627\u0644\u062C\u0628\u0646\u060C \u0634\u0627\u0631\u0643\u0648\u062A\u0631\u064A\u060C \u062C\u0628\u0646\u060C \u062E\u0628\u0632 \u0627\u0644\u0634\u0648\u0641\u0627\u0646\u060C \u0641\u0637\u0648\u0631 \u0628\u0644\u062F\u064A (2 \u0645\u0644\u0627\u0648\u064A\u060C 2 \u062D\u0631\u0634\u0629)\u060C \u0633\u0644\u0637\u0629 \u0645\u064A\u0633\u0643\u0644\u0627\u0646\u060C \u0645\u0627\u0641\u0646\u060C \u0648\u0627\u0641\u0644\u060C 2 \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C 2 \u0645\u0634\u0631\u0648\u0628 \u0633\u0627\u062E\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643\u060C 2 \u062A\u062D\u0644\u064A\u0629 \u06482 \u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A."
           },
-          "price": "148",
+          "price": "144",
           "image": "images/petit-dej-duo.webp"
         },
         {
@@ -541,7 +541,7 @@
             "de": "W\xFCrstchen, Omelett, K\xE4se, holl\xE4ndischer Toast, K\xE4sekroketten, Aufschnitt, Roggenbrot, Mesclun-Salat, Waffel, Pfannkuchen, Orangensaft, Hei\xDFgetr\xE4nk nach Wahl, Dessert und Mineralwasser.",
             "ar": "\u0646\u0642\u0627\u0646\u0642\u060C \u0623\u0648\u0645\u0644\u064A\u062A\u060C \u062C\u0628\u0646\u060C \u062A\u0648\u0633\u062A \u0647\u0648\u0644\u0646\u062F\u064A\u060C \u0643\u0631\u0648\u0643\u064A\u062A \u062C\u0628\u0646\u060C \u0634\u0627\u0631\u0643\u0648\u062A\u0631\u064A\u060C \u062E\u0628\u0632 \u0627\u0644\u0634\u0648\u0641\u0627\u0646\u060C \u0633\u0644\u0637\u0629 \u0645\u064A\u0633\u0643\u0644\u0627\u0646\u060C \u0648\u0627\u0641\u0644\u060C \u0628\u0627\u0646\u0643\u064A\u0643\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0645\u0634\u0631\u0648\u0628 \u0633\u0627\u062E\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643\u060C \u062A\u062D\u0644\u064A\u0629 \u0648\u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A."
           },
-          "price": "89",
+          "price": "85",
           "image": "images/petit-dej-gc.webp"
         },
         {
@@ -557,7 +557,7 @@
             "de": "Bacon, Avocado, 2 Eier,  K\xE4se, Getreidebrot, Orangensaft, Hei\xDFgetr\xE4nk nach Wahl, Dessert und Mineralwasser.",
             "ar": "\u0628\u064A\u0643\u0648\u0646\u060C \u0623\u0641\u0648\u0643\u0627\u062F\u0648\u060C \u0628\u064A\u0636\u062A\u0627\u0646\u060C \u062C\u0628\u0646\u060C \u062E\u0628\u0632 \u0627\u0644\u062D\u0628\u0648\u0628 \u0627\u0644\u0643\u0627\u0645\u0644\u0629\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0645\u0634\u0631\u0648\u0628 \u0633\u0627\u062E\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643\u060C \u062A\u062D\u0644\u064A\u0629 \u0648\u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A."
           },
-          "price": "72",
+          "price": "68",
           "image": "images/petit-dej-americain.webp",
           "isNew": true
         },
@@ -574,7 +574,7 @@
             "de": "Lachs, Avocado, K\xE4se, Getreidebrot, Orangensaft, Hei\xDFgetr\xE4nk nach Wahl, Dessert und Mineralwasser.",
             "ar": "\u0633\u0644\u0645\u0648\u0646 \u0645\u062F\u062E\u0646\u060C \u0623\u0641\u0648\u0643\u0627\u062F\u0648\u060C \u062C\u0628\u0646\u060C \u062E\u0628\u0632 \u0627\u0644\u062D\u0628\u0648\u0628 \u0627\u0644\u0643\u0627\u0645\u0644\u0629\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0645\u0634\u0631\u0648\u0628 \u0633\u0627\u062E\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643\u060C \u062A\u062D\u0644\u064A\u0629 \u0648\u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A."
           },
-          "price": "72",
+          "price": "68",
           "image": "images/petit-dej-norvegien.webp"
         },
         {
@@ -590,8 +590,41 @@
             "de": "Tortilla, Kroketten, Tapenade, Thunfisch, frische Tomaten, K\xE4se, Roggenbrot, Mesclun-Salat, Orangensaft, Hei\xDFgetr\xE4nk nach Wahl, Dessert und Mineralwasser.",
             "ar": "\u062A\u0648\u0631\u062A\u064A\u0644\u0627 \u0625\u0633\u0628\u0627\u0646\u064A\u0629\u060C \u0643\u0631\u0648\u0643\u064A\u062A\u060C \u062A\u0627\u0628\u064A\u0646\u0627\u062F\u060C \u062A\u0648\u0646\u0629\u060C \u0637\u0645\u0627\u0637\u0645 \u0637\u0627\u0632\u062C\u0629\u060C \u062C\u0628\u0646\u060C \u062E\u0628\u0632 \u0627\u0644\u0634\u0648\u0641\u0627\u0646 \u0648\u0633\u0644\u0637\u0629 \u0645\u064A\u0633\u0643\u0644\u0627\u0646\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0645\u0634\u0631\u0648\u0628 \u0633\u0627\u062E\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643\u060C \u062A\u062D\u0644\u064A\u0629 \u0648\u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A."
           },
-          "price": "68",
+          "price": "64",
           "image": "images/petit-dej-espagnol.webp"
+        },
+        {
+          "name": {
+            "fr": "MQUILA MERGUEZ",
+            "en": "MQUILA Merguez sausage ",
+            "de": "MQUILA Merguez-Wurst",
+            "ar": "\u0645\u0642\u064A\u0644\u0629 \u0628\u0627\u0644\u0645\u0631\u0642\u0627\u0632 \u0648\u0627\u0644\u0628\u064A\u0636 \u0627\u0644\u0628\u0644\u062F\u064A"
+          },
+          "description": {
+            "fr": "Merguez, poivrons, oignons, tomates cerises, deux \u0153ufs, jus d'orange, boisson chaude au choix, dessert et eau min\xE9rale.",
+            "en": "Merguez, peppers, onions, cherry tomatoes, two eggs, orange juice, hot drink of choice, dessert, and mineral water.",
+            "de": "Merguez, Paprika, Zwiebeln, Kirschtomaten, zwei Eier, Orangensaft, Hei\xDFgetr\xE4nk nach Wahl, Dessert und Mineralwasser.",
+            "ar": "\u0645\u0631\u0642\u0627\u0632\u060C \u0641\u0644\u0641\u0644 \u062D\u0644\u0648\u060C \u0628\u0635\u0644\u060C \u0637\u0645\u0627\u0637\u0645 \u0643\u0631\u0632\u064A\u0629\u060C \u0628\u064A\u0636\u062A\u0627\u0646\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0645\u0634\u0631\u0648\u0628 \u0633\u0627\u062E\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643\u060C \u062A\u062D\u0644\u064A\u0629 \u0648\u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A."
+          },
+          "price": "64",
+          "image": "images/petit-dej-mquila.webp"
+        },
+        {
+          "name": {
+            "fr": "MQUILA-fruits de mer",
+            "en": "MQUILA-SEAFOOD",
+            "de": "MQUILA-Meeresfr\xFCchte",
+            "ar": "\u0645\u0642\u064A\u0644\u0629 \u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u0628\u062D\u0631"
+          },
+          "description": {
+            "fr": "Crevette, calamar, moules, oignons, deux \u0153ufs, jus d'orange, boisson chaude au choix, dessert et eau min\xE9rale.",
+            "en": "Shrimp, squid, mussels, onions, two eggs, orange juice, hot drink of your choice, dessert, and mineral water.",
+            "de": "Garnelen, Tintenfisch, Muscheln, Zwiebeln, zwei Eier, Orangensaft, Hei\xDFgetr\xE4nk nach Wahl, Dessert und Mineralwasser.",
+            "ar": "\u062C\u0645\u0628\u0631\u064A\u060C \u0643\u0644\u0645\u0627\u0631\u060C \u0628\u0644\u062D \u0627\u0644\u0628\u062D\u0631\u060C \u0628\u0635\u0644\u060C \u0628\u064A\u0636\u062A\u0627\u0646\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0645\u0634\u0631\u0648\u0628 \u0633\u0627\u062E\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643\u060C \u062A\u062D\u0644\u064A\u0629 \u0648\u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A."
+          },
+          "price": "78",
+          "image": "images/petit-dej-mquila-fruitmer.webp",
+          "isNew": true
         },
         {
           "name": {
@@ -606,7 +639,7 @@
             "de": "3-Eier-Omelett, Pilze, Spinat, K\xE4se, Mesclun-Salat, Orangensaft, Hei\xDFgetr\xE4nk nach Wahl, Dessert und Mineralwasser (Zusatz Freilandeier 05 DH).",
             "ar": "\u0623\u0648\u0645\u0644\u064A\u062A 3 \u0628\u064A\u0636\u0627\u062A\u060C \u0641\u0637\u0631\u060C \u0633\u0628\u0627\u0646\u062E\u060C \u062C\u0628\u0646\u060C \u0633\u0644\u0637\u0629 \u0645\u064A\u0633\u0643\u0644\u0627\u0646\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0645\u0634\u0631\u0648\u0628 \u0633\u0627\u062E\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643\u060C \u062A\u062D\u0644\u064A\u0629 \u0648\u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A (\u0625\u0636\u0627\u0641\u0629 \u0628\u064A\u0636 \u0628\u0644\u062F\u064A 5 \u062F\u0631\u0627\u0647\u0645)."
           },
-          "price": "62",
+          "price": "58",
           "image": "images/petit-dej-chef.webp"
         },
         {
@@ -622,7 +655,7 @@
             "de": "Vollkorn-Toastbrot mit zwei Spiegeleiern, K\xE4se, ger\xE4ucherter Pute, Mesclun-Salat, Orangensaft, Hei\xDFgetr\xE4nk nach Wahl, Dessert und Mineralwasser.",
             "ar": "\u062A\u0648\u0633\u062A \u0642\u0645\u062D \u0643\u0627\u0645\u0644 \u0645\u0639 \u0628\u064A\u0636\u062A\u064A\u0646 \u0645\u0642\u0644\u064A\u062A\u064A\u0646\u060C \u062C\u0628\u0646\u060C \u062F\u064A\u0643 \u0631\u0648\u0645\u064A \u0645\u062F\u062E\u0646\u060C \u0633\u0644\u0637\u0629 \u0645\u064A\u0633\u0643\u0644\u0627\u0646\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0645\u0634\u0631\u0648\u0628 \u0633\u0627\u062E\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643\u060C \u062A\u062D\u0644\u064A\u0629 \u0648\u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A."
           },
-          "price": "55",
+          "price": "52",
           "image": "images/petit-dej-hollandais.webp"
         },
         {
@@ -638,7 +671,7 @@
             "de": "3-Eier-Omelett, Gem\xFCse, Mesclun-Salat, Orangensaft, Hei\xDFgetr\xE4nk nach Wahl, Dessert und Mineralwasser (Zusatz Freilandeier 05 DH).",
             "ar": "\u0623\u0648\u0645\u0644\u064A\u062A 3 \u0628\u064A\u0636\u0627\u062A\u060C \u062E\u0636\u0627\u0631 \u0645\u0634\u0643\u0644\u0629\u060C \u0633\u0644\u0637\u0629 \u0645\u064A\u0633\u0643\u0644\u0627\u0646\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0645\u0634\u0631\u0648\u0628 \u0633\u0627\u062E\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643\u060C \u062A\u062D\u0644\u064A\u0629 \u0648\u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A (\u0625\u0636\u0627\u0641\u0629 \u0628\u064A\u0636 \u0628\u0644\u062F\u064A 5 \u062F\u0631\u0627\u0647\u0645)."
           },
-          "price": "55",
+          "price": "52",
           "image": "images/petit-dej-veg.webp"
         },
         {
@@ -654,7 +687,7 @@
             "de": "Baghrir, Amlou, Trockenfr\xFCchte, Jben (Frischk\xE4se), Honig, Banane, Orangensaft, Hei\xDFgetr\xE4nk nach Wahl, Dessert und Mineralwasser.",
             "ar": "\u0628\u063A\u0631\u064A\u0631\u060C \u0623\u0645\u0644\u0648 \u0628\u0627\u0644\u0644\u0648\u0632\u060C \u0641\u0648\u0627\u0643\u0647 \u062C\u0627\u0641\u0629\u060C \u062C\u0628\u0646 \u0628\u0644\u062F\u064A\u060C \u0639\u0633\u0644 \u062D\u0631\u060C \u0645\u0648\u0632\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0645\u0634\u0631\u0648\u0628 \u0633\u0627\u062E\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643\u060C \u062A\u062D\u0644\u064A\u0629 \u0648\u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A."
           },
-          "price": "57",
+          "price": "54",
           "image": "images/petit-dej-berbere.webp"
         },
         {
@@ -670,7 +703,7 @@
             "de": "3 R\xFChreier, 3 Sorten Aufschnitt, 2 St\xFCcke Schokoladenkuchen, Roggenbrot, Oliven\xF6l, schwarze Oliven , Mesclun-Salat, Orangensaft, Hei\xDFgetr\xE4nk nach Wahl, Dessert und Mineralwasser.",
             "ar": "3 \u0628\u064A\u0636\u0627\u062A \u0645\u062E\u0641\u0648\u0642\u0629\u060C 3 \u0623\u0646\u0648\u0627\u0639 \u0634\u0627\u0631\u0643\u0648\u062A\u0631\u064A\u060C 2 \u0628\u0627\u0646 \u0643\u064A\u0643 \u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629\u060C \u062E\u0628\u0632 \u0627\u0644\u0634\u0648\u0641\u0627\u0646\u060C \u0632\u064A\u062A \u0632\u064A\u062A\u0648\u0646\u060C \u0632\u064A\u062A\u0648\u0646\u060C \u0633\u0644\u0637\u0629 \u0645\u064A\u0633\u0643\u0644\u0627\u0646\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0645\u0634\u0631\u0648\u0628 \u0633\u0627\u062E\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643\u060C \u062A\u062D\u0644\u064A\u0629 \u0648\u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A."
           },
-          "price": "56",
+          "price": "52",
           "image": "images/petit-dej-compagnard.webp",
           "isNew": true
         },
@@ -687,7 +720,7 @@
             "de": "Khli3 (Trockenfleisch), drei Spiegeleier, Orangensaft, Hei\xDFgetr\xE4nk nach Wahl, Dessert und Mineralwasser (Zusatz Freilandeier 5 DH).",
             "ar": "\u062E\u0644\u064A\u0639 \u0641\u0627\u0633\u064A\u060C 3 \u0628\u064A\u0636\u0627\u062A \u0645\u0642\u0644\u064A\u0629\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0645\u0634\u0631\u0648\u0628 \u0633\u0627\u062E\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643\u060C \u062A\u062D\u0644\u064A\u0629 \u0648\u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A (\u0625\u0636\u0627\u0641\u0629 \u0628\u064A\u0636 \u0628\u0644\u062F\u064A 5 \u062F\u0631\u0627\u0647\u0645)."
           },
-          "price": "59",
+          "price": "55",
           "image": "images/petit-dej-fassi.webp"
         },
         {
@@ -703,7 +736,7 @@
             "de": "3-Eier-Omelett, Aufschnitt, K\xE4se, Mesclun-Salat, Orangensaft, Hei\xDFgetr\xE4nk nach Wahl, Dessert und Mineralwasser (Zusatz Freilandeier 5 DH).",
             "ar": "\u0623\u0648\u0645\u0644\u064A\u062A 3 \u0628\u064A\u0636\u0627\u062A\u060C \u0634\u0627\u0631\u0643\u0648\u062A\u0631\u064A\u060C \u062C\u0628\u0646\u060C \u0633\u0644\u0637\u0629 \u0645\u064A\u0633\u0643\u0644\u0627\u0646\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0645\u0634\u0631\u0648\u0628 \u0633\u0627\u062E\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643\u060C \u062A\u062D\u0644\u064A\u0629 \u0648\u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A (\u0625\u0636\u0627\u0641\u0629 \u0628\u064A\u0636 \u0628\u0644\u062F\u064A 5 \u062F\u0631\u0627\u0647\u0645)."
           },
-          "price": "55",
+          "price": "52",
           "image": "images/petit-dej-cont.webp"
         },
         {
@@ -719,7 +752,7 @@
             "de": "3-Ei-Omelett, K\xE4se, gemischter Salat, Orangensaft, Hei\xDFgetr\xE4nk nach Wahl, Dessert und Mineralwasser",
             "ar": "\u0623\u0648\u0645\u0644\u064A\u062A 3 \u0628\u064A\u0636\u0627\u062A\u060C \u062C\u0628\u0646\u060C \u0633\u0644\u0637\u0629 \u0645\u064A\u0633\u0643\u0644\u0627\u0646\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0645\u0634\u0631\u0648\u0628 \u0633\u0627\u062E\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643\u060C \u062A\u062D\u0644\u064A\u0629 \u0648\u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A."
           },
-          "price": "55",
+          "price": "52",
           "image": "images/omelette-fromage.webp"
         },
         {
@@ -735,7 +768,7 @@
             "de": "Zwei Mlaoui, zwei Harcha, ein Baghrir, Jben (Frischk\xE4se), Oliven\xF6l, Honig, schwarze Oliven, Orangensaft, Hei\xDFgetr\xE4nk nach Wahl, Dessert und Mineralwasser.",
             "ar": "\u0627\u062B\u0646\u0627\u0646 \u0645\u0644\u0627\u0648\u064A\u060C \u0627\u062B\u0646\u0627\u0646 \u062D\u0631\u0634\u0629\u060C \u0628\u063A\u0631\u064A\u0631\u060C \u062C\u0628\u0646 \u0628\u0644\u062F\u064A\u060C \u0632\u064A\u062A \u0632\u064A\u062A\u0648\u0646\u060C \u0639\u0633\u0644 \u062D\u0631\u060C \u0632\u064A\u062A\u0648\u0646 \u0623\u0633\u0648\u062F\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0645\u0634\u0631\u0648\u0628 \u0633\u0627\u062E\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643\u060C \u062A\u062D\u0644\u064A\u0629 \u0648\u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A."
           },
-          "price": "46",
+          "price": "45",
           "image": "images/petit-dej-beldi.webp"
         },
         {
@@ -751,7 +784,7 @@
             "de": "3-Ei-Omelett, gemischter Salat, Orangensaft, Hei\xDFgetr\xE4nk nach Wahl, Dessert und Mineralwasser",
             "ar": "\u0623\u0648\u0645\u0644\u064A\u062A 3 \u0628\u064A\u0636\u0627\u062A \u0633\u0627\u062F\u0629\u060C \u0633\u0644\u0637\u0629 \u0645\u064A\u0633\u0643\u0644\u0627\u0646\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0645\u0634\u0631\u0648\u0628 \u0633\u0627\u062E\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643\u060C \u062A\u062D\u0644\u064A\u0629 \u0648\u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A."
           },
-          "price": "45",
+          "price": "42",
           "image": "images/omelette-nature.webp"
         },
         {
@@ -783,7 +816,7 @@
             "de": "Korb mit vier Geb\xE4ckst\xFCcken, Orangensaft, Hei\xDFgetr\xE4nk nach Wahl, Dessert und Mineralwasser.",
             "ar": "\u0633\u0644\u0629 \u0645\u0646 \u0623\u0631\u0628\u0639 \u0642\u0637\u0639 \u0645\u0639\u062C\u0646\u0627\u062A \u0641\u0631\u0646\u0633\u064A\u0629\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0645\u0634\u0631\u0648\u0628 \u0633\u0627\u062E\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643\u060C \u062A\u062D\u0644\u064A\u0629 \u0648\u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A."
           },
-          "price": "45",
+          "price": "44",
           "image": "images/petit-dej-express.webp"
         },
         {
@@ -799,7 +832,7 @@
             "de": "K\xE4setoast, oder Nutella Cr\xEApe, oder Waffel, oder Pfannkuchen, Cornflakes, Schokomilch.",
             "ar": "\u062A\u0648\u0633\u062A \u0628\u0627\u0644\u062C\u0628\u0646\u060C \u0623\u0648 \u0643\u0631\u064A\u0628 \u0646\u0648\u062A\u064A\u0644\u0627\u060C \u0623\u0648 \u0648\u0627\u0641\u0644\u060C \u0623\u0648 \u0628\u0627\u0646\u0643\u064A\u0643\u060C \u0643\u0648\u0631\u0646 \u0641\u0644\u064A\u0643\u0633\u060C \u0648\u062D\u0644\u064A\u0628 \u0628\u0627\u0644\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629."
           },
-          "price": "42",
+          "price": "40",
           "image": "images/menu-enfant-pdj.webp"
         }
       ]
@@ -815,6 +848,22 @@
       "items": [
         {
           "name": {
+            "fr": "BURRATTA",
+            "en": "BURRATA",
+            "de": "BURRATA",
+            "ar": "\u0633\u0644\u0637\u0629 \u0627\u0644\u0628\u0648\u0631\u0627\u062A\u0627 \u0627\u0644\u0625\u064A\u0637\u0627\u0644\u064A\u0629"
+          },
+          "description": {
+            "fr": "Burrata, tomate, noix, roquette, Vinaigre balsamique.",
+            "en": "Burrata, tomato, walnuts, arugula, balsamic vinegar.",
+            "de": "Burrata, Tomate, Waln\xFCsse, Rucola, Balsamico-Essig.",
+            "ar": "\u062C\u0628\u0646\u0629 \u0628\u0648\u0631\u0627\u062A\u0627 \u0637\u0627\u0632\u062C\u0629\u060C \u0637\u0645\u0627\u0637\u0645\u060C \u062C\u0648\u0632 (\u0643\u0631\u0643\u0627\u0639)\u060C \u062C\u0631\u062C\u064A\u0631 (\u0631\u0648\u0643\u0627)\u060C \u0648\u062E\u0644 \u0627\u0644\u0628\u0644\u0633\u0645\u064A\u0643 \u0627\u0644\u0645\u0631\u0643\u0632."
+          },
+          "price": "98",
+          "image": "images/entree-burrata.webp"
+        },
+        {
+          "name": {
             "fr": "TERRE MER",
             "en": "SURF & TURF",
             "de": "SURF & TURF",
@@ -826,8 +875,25 @@
             "de": "Tintenfisch, Garnelen, paniertes H\xE4hnchen, Salat, Mais, Kirschtomate, So\xDFe des Chefkochs.",
             "ar": "\u0643\u0644\u0645\u0627\u0631\u060C \u062C\u0645\u0628\u0631\u064A (\u0642\u064A\u0645\u0631\u0648\u0646)\u060C \u062F\u062C\u0627\u062C \u0645\u0642\u0631\u0645\u0634\u060C \u062E\u0633\u060C \u0630\u0631\u0629\u060C \u0637\u0645\u0627\u0637\u0645 \u0643\u0631\u0632\u064A\u0629\u060C \u0648\u0635\u0644\u0635\u0629 \u0627\u0644\u0634\u064A\u0641 \u0627\u0644\u062E\u0627\u0635\u0629."
           },
-          "price": "80",
+          "price": "78",
           "image": "images/entree-terremer.webp"
+        },
+        {
+          "name": {
+            "fr": "TARTARE SAUMON  ",
+            "en": "Salmon tartare",
+            "de": "Lachstatar",
+            "ar": "\u062A\u0627\u0631\u062A\u0627\u0631 \u0627\u0644\u0633\u0644\u0645\u0648\u0646 \u0648\u0627\u0644\u0623\u0641\u0648\u0643\u0627\u062F\u0648"
+          },
+          "description": {
+            "fr": "Saumon frais, saumon fum\xE9e, avocat, , sauce tartare.",
+            "en": "Fresh salmon, smoked salmon, avocado, tartar sauce.",
+            "de": "Frischer Lachs, ger\xE4ucherter Lachs, Avocado, Tartarsauce.",
+            "ar": "\u0633\u0644\u0645\u0648\u0646 \u0637\u0627\u0632\u062C\u060C \u0633\u0644\u0645\u0648\u0646 \u0645\u062F\u062E\u0646\u060C \u0623\u0641\u0648\u0643\u0627\u062F\u0648\u060C \u0648\u0635\u0644\u0635\u0629 \u0627\u0644\u062A\u0627\u0631\u062A\u0627\u0631 \u0627\u0644\u0644\u0630\u064A\u0630\u0629."
+          },
+          "price": "88",
+          "image": "images/entree-tartare.webp",
+          "isNew": true
         },
         {
           "name": {
@@ -842,7 +908,7 @@
             "de": "Verschiedener Quinoa, Garnelen, Brunoise, Apfel, Kiwi, Mango, Ananas, Minze, Honig-Senf-So\xDFe.",
             "ar": "\u0643\u064A\u0646\u0648\u0627 \u0645\u0634\u0643\u0644\u0629\u060C \u062C\u0645\u0628\u0631\u064A\u060C \u0628\u0631\u0648\u0646\u0648\u0627\u0632 \u062E\u0636\u0627\u0631\u060C \u062A\u0641\u0627\u062D\u060C \u0643\u064A\u0648\u064A\u060C \u0645\u0627\u0646\u062C\u0648\u060C \u0623\u0646\u0627\u0646\u0627\u0633\u060C \u0646\u0639\u0646\u0627\u0639\u060C \u0648\u0635\u0644\u0635\u0629 \u0627\u0644\u0639\u0633\u0644 \u0648\u0627\u0644\u062E\u0631\u062F\u0644."
           },
-          "price": "70",
+          "price": "68",
           "image": "images/entree-quinoa.webp"
         },
         {
@@ -858,8 +924,40 @@
             "de": "H\xE4hnchenwurst, Parmesan, Kirschtomate, Crouton, R\xF6mersalat, Caesar-So\xDFe.",
             "ar": "\u0631\u0648\u0644 \u062F\u062C\u0627\u062C\u060C \u062C\u0628\u0646\u0629 \u0628\u0627\u0631\u0645\u064A\u0632\u0627\u0646\u060C \u0637\u0645\u0627\u0637\u0645 \u0643\u0631\u0632\u064A\u0629\u060C \u0642\u0637\u0639 \u062E\u0628\u0632 \u0645\u062D\u0645\u0635 (\u0643\u0631\u0648\u062A\u0648\u0646)\u060C \u062E\u0633 \u0631\u0648\u0645\u0627\u0646\u064A\u060C \u0648\u0635\u0644\u0635\u0629 \u0633\u064A\u0632\u0631 \u0627\u0644\u063A\u0646\u064A\u0629."
           },
-          "price": "68",
+          "price": "65",
           "image": "images/entree-caesar.webp"
+        },
+        {
+          "name": {
+            "fr": "RUSSE",
+            "en": "RUSSIAN",
+            "de": "RUSSISCH",
+            "ar": "\u0633\u0644\u0637\u0629 \u0631\u0648\u0633\u064A\u0629 \u0643\u0644\u0627\u0633\u064A\u0643\u064A\u0629"
+          },
+          "description": {
+            "fr": "Pomme de terre, carotte, poulet, thon, petit pois, \u0153uf de caille.",
+            "en": "Potato, carrot, chicken, tuna, peas, quail egg.",
+            "de": "Kartoffel, Karotte, H\xE4hnchen, Thunfisch, Erbsen, Wachtelei.",
+            "ar": "\u0628\u0637\u0627\u0637\u0633\u060C \u062C\u0632\u0631\u060C \u062F\u062C\u0627\u062C\u060C \u062A\u0648\u0646\u0629\u060C \u062C\u0644\u0628\u0627\u0646\u0629 (\u0628\u0627\u0632\u0644\u0627\u0621)\u060C \u0648\u0628\u064A\u0636 \u0627\u0644\u0633\u0645\u0627\u0646."
+          },
+          "price": "54",
+          "image": "images/entree-russe.webp"
+        },
+        {
+          "name": {
+            "fr": "CERCLE VEGGI",
+            "en": "VEGGI CIRCLE",
+            "de": "VEGGI KREIS",
+            "ar": "\u0633\u0644\u0637\u0629 \u0627\u0644\u062E\u0636\u0627\u0631 \u0627\u0644\u0637\u0627\u0632\u062C\u0629 (\u0633\u064A\u0631\u0643\u0644 \u0641\u064A\u062C\u064A)"
+          },
+          "description": {
+            "fr": "Crudit\xE9 du jour, thon, \u0153uf, salade, mesclun.",
+            "en": "Raw vegetables of the day, tuna, egg, salad, mesclun.",
+            "de": "Rohkost des Tages, Thunfisch, Ei, Salat, Mesclun.",
+            "ar": "\u062E\u0636\u0627\u0631 \u0637\u0627\u0632\u062C\u0629 \u0645\u0648\u0633\u0645\u064A\u0629\u060C \u062A\u0648\u0646\u0629\u060C \u0628\u064A\u0636 \u0645\u0633\u0644\u0648\u0642\u060C \u062E\u0636\u0631 \u0648\u0631\u0642\u064A\u0629 \u0648\u0633\u0644\u0637\u0629 \u0645\u064A\u0633\u0643\u0644\u0627\u0646."
+          },
+          "price": "48",
+          "image": "images/entree-veggi.webp"
         }
       ]
     },
@@ -885,7 +983,7 @@
             "de": "Kartoffelp\xFCree, Garnelen paniert mit wei\xDFem Sesam.",
             "ar": "\u0628\u0637\u0627\u0637\u0633 \u0645\u0647\u0631\u0648\u0633\u0629 (\u0628\u0648\u0631\u064A\u0647)\u060C \u062C\u0645\u0628\u0631\u064A \u0628\u0627\u0646\u064A\u0647 \u0645\u0642\u0631\u0645\u0634 \u0628\u0627\u0644\u0633\u0645\u0633\u0645 \u0627\u0644\u0623\u0628\u064A\u0636."
           },
-          "price": "72",
+          "price": "68",
           "image": "images/entree-croustillon.webp"
         },
         {
@@ -901,7 +999,7 @@
             "de": "Garnelen, Oliven\xF6l, scharfe Paprika, Schnittlauch, Kirschtomate.",
             "ar": "\u062C\u0645\u0628\u0631\u064A\u060C \u0632\u064A\u062A \u0632\u064A\u062A\u0648\u0646 \u0628\u0643\u0631\u060C \u0641\u0644\u0641\u0644 \u062D\u0627\u0631\u060C \u062B\u0648\u0645 \u0642\u0635\u0628\u064A (\u0633\u064A\u0628\u0648\u0644\u064A\u062A)\u060C \u0648\u0637\u0645\u0627\u0637\u0645 \u0643\u0631\u0632\u064A\u0629."
           },
-          "price": "72",
+          "price": "68",
           "image": "images/entree-pilpil.webp"
         },
         {
@@ -917,7 +1015,7 @@
             "de": "4 Gehackte H\xE4hnchenbrust, Cheddar.",
             "ar": "4 \u0643\u0631\u0627\u062A \u0645\u0646 \u0635\u062F\u0631 \u0627\u0644\u062F\u062C\u0627\u062C \u0627\u0644\u0645\u0641\u0631\u0648\u0645 \u0645\u0639 \u062C\u0628\u0646\u0629 \u0627\u0644\u0634\u064A\u062F\u0631 \u0627\u0644\u0630\u0627\u0626\u0628\u0629."
           },
-          "price": "55",
+          "price": "52",
           "image": "images/entree-boulette-poulet.webp",
           "isNew": true
         }
@@ -945,7 +1043,7 @@
             "de": "Kurz gebratenes Lachssteak, hausgemachte Vierge-Sauce mit knackigem Gem\xFCse und frischen Kr\xE4utern.",
             "ar": "\u0642\u0637\u0639\u0629 \u0633\u0644\u0645\u0648\u0646 \u0645\u0634\u0648\u064A\u0629 \u0639\u0644\u0649 \u0627\u0644\u0628\u0644\u0627\u0646\u0634\u0627\u060C \u0635\u0644\u0635\u0629 \u0641\u064A\u0631\u062C \u0645\u062A\u0628\u0644\u0629 \u0628\u0627\u0644\u062E\u0636\u0627\u0631 \u0627\u0644\u0645\u0642\u0631\u0645\u0634\u0629 \u0648\u0627\u0644\u0623\u0639\u0634\u0627\u0628 \u0627\u0644\u0637\u0627\u0632\u062C\u0629."
           },
-          "price": "150",
+          "price": "145",
           "image": "images/plat-saumon.webp"
         },
         {
@@ -961,7 +1059,7 @@
             "de": "Kurz gebratenes Rinderfiletherz, mit aromatischen Atlas-Kr\xE4utern verfeinert",
             "ar": "\u0642\u0644\u0628 \u0641\u064A\u0644\u064A\u0647 \u0644\u062D\u0645 \u0628\u0642\u0631\u064A \u0637\u0631\u064A \u0645\u0634\u0648\u064A\u060C \u0645\u0646\u0643\u0647 \u0628\u0627\u0644\u0623\u0639\u0634\u0627\u0628 \u0627\u0644\u0639\u0637\u0631\u064A\u0629 \u0645\u0646 \u062C\u0628\u0627\u0644 \u0627\u0644\u0623\u0637\u0644\u0633."
           },
-          "price": "145",
+          "price": "135",
           "image": "images/plat-filet.webp"
         },
         {
@@ -977,7 +1075,7 @@
             "de": "Rinderfiletherz, frische Champignons, cremige Sauce, feine Kr\xE4uter.",
             "ar": "\u0642\u0644\u0628 \u0641\u064A\u0644\u064A\u0647 \u0644\u062D\u0645 \u0628\u0642\u0631\u064A\u060C \u0641\u0637\u0631 \u0628\u0627\u0631\u064A\u0633 \u0637\u0627\u0632\u062C\u060C \u0643\u0631\u064A\u0645\u0629 \u0646\u0627\u0639\u0645\u0629 \u063A\u0646\u064A\u0629\u060C \u0648\u0623\u0639\u0634\u0627\u0628 \u0645\u0646\u0633\u0645\u0629."
           },
-          "price": "124",
+          "price": "115",
           "image": "images/plat-eminceboeuf.webp"
         },
         {
@@ -993,7 +1091,7 @@
             "de": "Goldbraune panierte H\xE4hnchenschnitzel, samtige Sauce mit frischen Champignons",
             "ar": "\u0625\u0633\u0643\u0627\u0644\u0648\u0628 \u062F\u062C\u0627\u062C \u0645\u0642\u0631\u0645\u0634 \u0630\u0647\u0628\u064A\u060C \u064A\u0642\u062F\u0645 \u0645\u0639 \u0635\u0644\u0635\u0629 \u0627\u0644\u0641\u0637\u0631 \u0627\u0644\u0637\u0627\u0632\u062C \u0627\u0644\u0645\u062E\u0645\u0644\u064A\u0629."
           },
-          "price": "90",
+          "price": "85",
           "image": "images/plat-milanaise.webp"
         },
         {
@@ -1009,7 +1107,7 @@
             "de": "Ausgew\xE4hlte H\xE4hnchenbrust, aromatische Marinade, gegrillt auf Spie\xDFen, Barbecue-Sauce",
             "ar": "\u0635\u062F\u0631 \u062F\u062C\u0627\u062C \u0645\u0646\u062A\u0642\u0649 \u0648\u0645\u062A\u0628\u0644 \u0628\u0627\u0644\u0623\u0639\u0634\u0627\u0628 \u0627\u0644\u0639\u0637\u0631\u064A\u0629 \u0648\u0645\u0634\u0648\u064A \u0639\u0644\u0649 \u0627\u0644\u0633\u064A\u062E\u060C \u064A\u0642\u062F\u0645 \u0645\u0639 \u0635\u0644\u0635\u0629 \u0627\u0644\u0628\u0627\u0631\u0628\u064A\u0643\u064A\u0648."
           },
-          "price": "88",
+          "price": "84",
           "image": "images/plat-brochette.webp"
         },
         {
@@ -1025,7 +1123,7 @@
             "de": "Kurz gebratene H\xE4hnchenteile, samtige Sauce mit frischen Champignons.",
             "ar": "\u0642\u0637\u0639 \u062F\u062C\u0627\u062C \u0637\u0631\u064A\u0629 \u0645\u062D\u0645\u0631\u0629\u060C \u0645\u0639 \u0635\u0644\u0635\u0629 \u0643\u0631\u064A\u0645\u064A\u0629 \u063A\u0646\u064A\u0629 \u0628\u0641\u0637\u0631 \u0628\u0627\u0631\u064A\u0633 \u0627\u0644\u0637\u0627\u0632\u062C."
           },
-          "price": "90",
+          "price": "88",
           "image": "images/plat-emincepoulet.webp"
         },
         {
@@ -1041,7 +1139,7 @@
             "de": "Natur-Pasta oder Mini-Pizza mit Getr\xE4nk nach Wahl ODER Burger oder Nuggets + Pommes mit Getr\xE4nk nach Wahl.",
             "ar": "\u0628\u0627\u0633\u062A\u0627 \u0633\u0627\u062F\u0629 \u0623\u0648 \u0645\u064A\u0646\u064A \u0628\u064A\u062A\u0632\u0627 \u0645\u0639 \u0645\u0634\u0631\u0648\u0628 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643\u060C \u0623\u0648 \u0628\u0631\u062C\u0631 / \u0646\u0627\u063A\u062A\u0633 \u0648\u0628\u0637\u0627\u0637\u0633 \u0645\u0642\u0644\u064A\u0629 \u0645\u0639 \u0645\u0634\u0631\u0648\u0628 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643."
           },
-          "price": "62",
+          "price": "58",
           "image": "images/menu-enfant-plat.webp"
         },
         {
@@ -1083,7 +1181,7 @@
             "de": "Traditionelles Gericht, das freitags serviert wird.",
             "ar": "\u0643\u0633\u0643\u0633 \u0645\u063A\u0631\u0628\u064A \u062A\u0642\u0644\u064A\u062F\u064A \u0641\u0627\u062E\u0631 \u0628\u0627\u0644\u0644\u062D\u0645 \u0648\u0627\u0644\u062E\u0636\u0627\u0631 \u0627\u0644\u0633\u0628\u0639\u0629\u060C \u064A\u0642\u062F\u0645 \u0645\u0639 \u0627\u0644\u0644\u0628\u0646 \u0627\u0644\u0631\u0627\u0626\u0628 \u0643\u0644 \u064A\u0648\u0645 \u062C\u0645\u0639\u0629."
           },
-          "price": "69",
+          "price": "64",
           "image": "images/Couscous-poulet.webp"
         },
         {
@@ -1099,7 +1197,7 @@
             "de": "Traditionelles Gericht, das freitags serviert wird.",
             "ar": "\u0643\u0633\u0643\u0633 \u0645\u063A\u0631\u0628\u064A \u062A\u0642\u0644\u064A\u062F\u064A \u0641\u0627\u062E\u0631 \u0628\u0627\u0644\u062F\u062C\u0627\u062C \u0648\u0627\u0644\u062E\u0636\u0627\u0631 \u0627\u0644\u0633\u0628\u0639\u0629\u060C \u064A\u0642\u062F\u0645 \u0645\u0639 \u0627\u0644\u0644\u0628\u0646 \u0627\u0644\u0631\u0627\u0626\u0628 \u0643\u0644 \u064A\u0648\u0645 \u062C\u0645\u0639\u0629."
           },
-          "price": "59",
+          "price": "54",
           "image": "images/Couscous-poulet.webp"
         }
       ]
@@ -1126,7 +1224,7 @@
             "de": "Zartes gegrilltes Steak, Cheddar.",
             "ar": "\u0634\u0631\u064A\u062D\u0629 \u0633\u062A\u064A\u0643 \u0628\u0642\u0631\u064A \u0637\u0631\u064A\u0629 \u0645\u0634\u0648\u064A\u0629\u060C \u0648\u062C\u0628\u0646\u0629 \u0634\u064A\u062F\u0631 \u0630\u0627\u0626\u0628\u0629 \u0641\u064A \u062E\u0628\u0632 \u062A\u0634\u0627\u0628\u0627\u062A\u0627 \u0627\u0644\u0625\u064A\u0637\u0627\u0644\u064A."
           },
-          "price": "68",
+          "price": "65",
           "image": "images/sand-cheesesteak.webp"
         },
         {
@@ -1142,7 +1240,7 @@
             "de": "Garnele, Tintenfisch, So\xDFe des Chefkochs.",
             "ar": "\u062C\u0645\u0628\u0631\u064A\u060C \u0643\u0644\u0645\u0627\u0631 \u0637\u0631\u064A\u060C \u0648\u0635\u0644\u0635\u0629 \u0627\u0644\u0634\u064A\u0641 \u0627\u0644\u062E\u0627\u0635\u0629 \u0641\u064A \u062E\u0628\u0632 \u062A\u0634\u0627\u0628\u0627\u062A\u0627."
           },
-          "price": "69",
+          "price": "65",
           "image": "images/sand-fruitsmer.webp"
         },
         {
@@ -1158,7 +1256,7 @@
             "de": "Geschnetzeltes H\xE4hnchen, Cheddar, Champignons, wei\xDFe So\xDFe.",
             "ar": "\u0634\u0631\u0627\u0626\u062D \u062F\u062C\u0627\u062C \u0645\u062A\u0628\u0644\u0629\u060C \u062C\u0628\u0646\u0629 \u0634\u064A\u062F\u0631\u060C \u0641\u0637\u0631 \u0637\u0627\u0632\u062C\u060C \u0648\u0635\u0644\u0635\u0629 \u0628\u064A\u0636\u0627\u0621 \u0643\u0631\u064A\u0645\u064A\u0629."
           },
-          "price": "58",
+          "price": "54",
           "image": "images/sand-cheesesteak.webp",
           "isNew": true
         },
@@ -1175,7 +1273,7 @@
             "de": "Paniertes H\xE4hnchenst\xE4bchen, Cheddar, Salat.",
             "ar": "\u0623\u0635\u0627\u0628\u0639 \u062F\u062C\u0627\u062C \u0645\u0642\u0631\u0645\u0634\u0629\u060C \u062C\u0628\u0646\u0629 \u0634\u064A\u062F\u0631\u060C \u0648\u062E\u0633 \u0637\u0627\u0632\u062C."
           },
-          "price": "60",
+          "price": "58",
           "image": "images/sand-crunchy.webp"
         },
         {
@@ -1191,7 +1289,7 @@
             "de": "Hackfleisch, Tomate, Salat, Spezialso\xDFe, Cheddar.",
             "ar": "\u0644\u062D\u0645 \u0645\u0641\u0631\u0648\u0645 (\u0643\u0641\u062A\u0629)\u060C \u0637\u0645\u0627\u0637\u0645\u060C \u0633\u0644\u0637\u0629 \u062E\u0636\u0631\u0627\u0621\u060C \u0635\u0644\u0635\u0629 \u062E\u0627\u0635\u0629\u060C \u0648\u062C\u0628\u0646\u0629 \u0634\u064A\u062F\u0631 \u0630\u0627\u0626\u0628\u0629."
           },
-          "price": "58",
+          "price": "54",
           "image": "images/sand-hache.webp"
         },
         {
@@ -1207,7 +1305,7 @@
             "de": "H\xE4hnchenbrust, Cheddar, Salat, Tomate.",
             "ar": "\u0635\u062F\u0631 \u062F\u062C\u0627\u062C \u0645\u0634\u0648\u064A\u060C \u062C\u0628\u0646\u0629 \u0634\u064A\u062F\u0631\u060C \u0633\u0644\u0637\u0629\u060C \u0648\u0637\u0645\u0627\u0637\u0645 \u0637\u0627\u0632\u062C\u0629."
           },
-          "price": "50",
+          "price": "48",
           "image": "images/sand-poulet.webp"
         },
         {
@@ -1223,7 +1321,7 @@
             "de": "Thunfisch, Burgerso\xDFe, Zwiebel, Salat, Tomate, Cheddar.",
             "ar": "\u062A\u0648\u0646\u0629 \u0645\u0645\u062A\u0627\u0632\u0629\u060C \u0635\u0644\u0635\u0629 \u0627\u0644\u0628\u0631\u062C\u0631\u060C \u0628\u0635\u0644\u060C \u0633\u0644\u0637\u0629\u060C \u0637\u0645\u0627\u0637\u0645\u060C \u0648\u062C\u0628\u0646\u0629 \u0634\u064A\u062F\u0631."
           },
-          "price": "49",
+          "price": "48",
           "image": "images/sand-thon.webp"
         }
       ]
@@ -1250,7 +1348,7 @@
             "de": "Gew\xFCrztes H\xE4hnchen, Cheddar, Salat, Tomate, Zwiebel, Gurke, Biggy-Sauce.",
             "ar": "\u062F\u062C\u0627\u062C \u0645\u062A\u0628\u0644 \u0645\u0642\u0631\u0645\u0634\u060C \u062C\u0628\u0646\u0629 \u0634\u064A\u062F\u0631\u060C \u062E\u0633\u060C \u0637\u0645\u0627\u0637\u0645\u060C \u0628\u0635\u0644\u060C \u062E\u064A\u0627\u0631 \u0645\u062E\u0644\u0644 (\u0643\u0648\u0631\u0646\u064A\u0634\u0648\u0646)\u060C \u0648\u0635\u0644\u0635\u0629 \u0628\u064A\u063A\u064A \u0627\u0644\u0634\u0647\u064A\u0631\u0629."
           },
-          "price": "52",
+          "price": "50",
           "image": "images/burger-cheese.webp",
           "isNew": true
         },
@@ -1267,7 +1365,7 @@
             "de": "Hackfleisch, paniertes H\xE4hnchen, Cheddar, karamellisierte Zwiebeln, Salat, Tomate, Spezialso\xDFe.",
             "ar": "\u0644\u062D\u0645 \u0645\u0641\u0631\u0648\u0645\u060C \u062F\u062C\u0627\u062C \u0628\u0627\u0646\u064A\u0647 \u0645\u0642\u0631\u0645\u0634\u060C \u062C\u0628\u0646\u0629 \u0634\u064A\u062F\u0631\u060C \u0628\u0635\u0644 \u0645\u0643\u0631\u0645\u0644\u060C \u062E\u0633\u060C \u0637\u0645\u0627\u0637\u0645\u060C \u0648\u0635\u0644\u0635\u0629 \u062E\u0627\u0635\u0629."
           },
-          "price": "74",
+          "price": "70",
           "image": "images/burger-royal.webp"
         },
         {
@@ -1283,8 +1381,24 @@
             "de": "2 Hackfleischpatties, Cheddar-K\xE4se, Salat, Tomate, Zwiebel, So\xDFe des Chefkochs.",
             "ar": "\u0634\u0631\u064A\u062D\u062A\u0627 \u0644\u062D\u0645 \u0645\u0641\u0631\u0648\u0645\u060C \u062C\u0628\u0646\u0629 \u0634\u064A\u062F\u0631\u060C \u062E\u0633\u060C \u0637\u0645\u0627\u0637\u0645\u060C \u0628\u0635\u0644\u060C \u0648\u0635\u0644\u0635\u0629 \u0627\u0644\u0634\u064A\u0641 \u0627\u0644\u062E\u0627\u0635\u0629."
           },
-          "price": "72",
+          "price": "68",
           "image": "images/burger-big.webp"
+        },
+        {
+          "name": {
+            "fr": "EGG ET CHEESEBURGER",
+            "en": "EGG AND CHEESEBURGER",
+            "de": "EI UND CHEESEBURGER",
+            "ar": "\u0628\u0631\u062C\u0631 \u0627\u0644\u0628\u064A\u0636 \u0648\u0627\u0644\u062C\u0628\u0646"
+          },
+          "description": {
+            "fr": "Viande hach\xE9e, cheddar, champignon, \u0153uf, laitue, tomate, oignon caram\xE9lis\xE9.",
+            "en": "Minced meat, cheddar, mushroom, egg, lettuce, tomato, caramelized onion.",
+            "de": "Hackfleisch, Cheddar, Pilz, Ei, Salat, Tomate, karamellisierte Zwiebel.",
+            "ar": "\u0644\u062D\u0645 \u0645\u0641\u0631\u0648\u0645\u060C \u062C\u0628\u0646\u0629 \u0634\u064A\u062F\u0631\u060C \u0641\u0637\u0631\u060C \u0628\u064A\u0636\u0629 \u0645\u0642\u0644\u064A\u0629\u060C \u062E\u0633\u060C \u0637\u0645\u0627\u0637\u0645\u060C \u0648\u0628\u0635\u0644 \u0645\u0643\u0631\u0645\u0644."
+          },
+          "price": "56",
+          "image": "images/burger-eggcheese.webp"
         },
         {
           "name": {
@@ -1299,8 +1413,24 @@
             "de": "Hackfleisch, Cheddar, Salat, Tomate, Zwiebel, Gurke, Burgerso\xDFe.",
             "ar": "\u0644\u062D\u0645 \u0645\u0641\u0631\u0648\u0645\u060C \u062C\u0628\u0646\u0629 \u0634\u064A\u062F\u0631\u060C \u062E\u0633\u060C \u0637\u0645\u0627\u0637\u0645\u060C \u0628\u0635\u0644\u060C \u062E\u064A\u0627\u0631 \u0645\u062E\u0644\u0644\u060C \u0648\u0635\u0644\u0635\u0629 \u0627\u0644\u0628\u0631\u062C\u0631."
           },
-          "price": "56",
+          "price": "54",
           "image": "images/burger-cheese.webp"
+        },
+        {
+          "name": {
+            "fr": "AVOCADO FORESTIER",
+            "en": "AVOCADO FORESTIER",
+            "de": "AVOCADO FORESTER",
+            "ar": "\u0628\u0631\u062C\u0631 \u0623\u0641\u0648\u0643\u0627\u062F\u0648 \u0641\u0648\u0631\u064A\u0633\u062A\u064A\u064A\u0631"
+          },
+          "description": {
+            "fr": "Poulet, avocat, laitue, tomate, oignon caram\xE9lis\xE9.",
+            "en": "Chicken, avocado, lettuce, tomato, caramelized onion.",
+            "de": "H\xE4hnchen, Avocado, Salat, Tomate, karamellisierte Zwiebel.",
+            "ar": "\u062F\u062C\u0627\u062C \u0645\u0634\u0648\u064A\u060C \u0623\u0641\u0648\u0643\u0627\u062F\u0648 \u0637\u0627\u0632\u062C\u060C \u062E\u0633\u060C \u0637\u0645\u0627\u0637\u0645\u060C \u0648\u0628\u0635\u0644 \u0645\u0643\u0631\u0645\u0644 \u0644\u0630\u064A\u0630."
+          },
+          "price": "54",
+          "image": "images/burger-avocado.webp"
         }
       ]
     },
@@ -1326,8 +1456,24 @@
             "de": "Garnelen, Tintenfisch, So\xDFe des Chefkochs.",
             "ar": "\u062C\u0645\u0628\u0631\u064A\u060C \u0643\u0644\u0645\u0627\u0631\u060C \u0648\u0635\u0644\u0635\u0629 \u0627\u0644\u0634\u064A\u0641 \u0641\u064A \u062E\u0628\u0632 \u0628\u0627\u0646\u064A\u0646\u064A \u0645\u062D\u0645\u0635 \u0648\u0645\u0642\u0631\u0645\u0634."
           },
-          "price": "68",
+          "price": "64",
           "image": "images/panini-fruitsmer.webp"
+        },
+        {
+          "name": {
+            "fr": "SAUMON",
+            "en": "SALMON",
+            "de": "LACHS",
+            "ar": "\u0628\u0627\u0646\u064A\u0646\u064A \u0633\u0644\u0645\u0648\u0646 \u0645\u062F\u062E\u0646"
+          },
+          "description": {
+            "fr": "Saumon frais, capre, fromage, sauce du chef.",
+            "en": "Fresh salmon, caper, cheese, chef's sauce.",
+            "de": "Frischer Lachs, Kapern, K\xE4se, So\xDFe des Chefkochs.",
+            "ar": "\u0633\u0644\u0645\u0648\u0646 \u0637\u0627\u0632\u062C\u060C \u0643\u0628\u0631\u060C \u062C\u0628\u0646 \u0630\u0627\u0626\u0628\u060C \u0648\u0635\u0644\u0635\u0629 \u0627\u0644\u0634\u064A\u0641 \u0627\u0644\u062E\u0627\u0635\u0629."
+          },
+          "price": "64",
+          "image": "images/panini-saumon.webp"
         },
         {
           "name": {
@@ -1342,7 +1488,7 @@
             "de": "Mischung aus Hackfleisch und H\xE4hnchen, Aufschnitt, K\xE4se.",
             "ar": "\u0645\u0632\u064A\u062C \u0644\u0630\u064A\u0630 \u0645\u0646 \u0627\u0644\u0644\u062D\u0645 \u0627\u0644\u0645\u0641\u0631\u0648\u0645 \u0648\u0627\u0644\u062F\u062C\u0627\u062C\u060C \u0634\u0627\u0631\u0643\u0648\u062A\u0631\u064A\u060C \u0648\u062C\u0628\u0646 \u0630\u0627\u0626\u0628."
           },
-          "price": "60",
+          "price": "58",
           "image": "images/panini-mixte.webp"
         },
         {
@@ -1358,8 +1504,24 @@
             "de": "Hackfleisch, K\xE4se, Burgerso\xDFe.",
             "ar": "\u0644\u062D\u0645 \u0645\u0641\u0631\u0648\u0645 \u0645\u062A\u0628\u0644\u060C \u062C\u0628\u0646 \u0630\u0627\u0626\u0628\u060C \u0648\u0635\u0644\u0635\u0629 \u0628\u0631\u062C\u0631 \u0645\u0645\u064A\u0632\u0629."
           },
-          "price": "58",
+          "price": "54",
           "image": "images/panini-hache.webp"
+        },
+        {
+          "name": {
+            "fr": "CHARCUTERIE",
+            "en": "COLD CUTS",
+            "de": "AUFSCHNITT",
+            "ar": "\u0628\u0627\u0646\u064A\u0646\u064A \u0634\u0627\u0631\u0643\u0648\u062A\u0631\u064A \u0648\u062C\u0628\u0646"
+          },
+          "description": {
+            "fr": "3 Charcuteries, salami, fromage, sauce burger.",
+            "en": "3 Cold cuts, salami, cheese, burger sauce.",
+            "de": "3 Sorten Aufschnitt, Salami, K\xE4se, Burgerso\xDFe.",
+            "ar": "3 \u0623\u0646\u0648\u0627\u0639 \u0634\u0627\u0631\u0643\u0648\u062A\u0631\u064A\u060C \u0633\u0644\u0627\u0645\u064A\u060C \u062C\u0628\u0646 \u0630\u0627\u0626\u0628\u060C \u0648\u0635\u0644\u0635\u0629 \u0628\u0631\u062C\u0631."
+          },
+          "price": "40",
+          "image": "images/panini-charcuterie.webp"
         },
         {
           "name": {
@@ -1374,7 +1536,7 @@
             "de": "Gegrilltes H\xE4hnchen, K\xE4se, Burgerso\xDFe.",
             "ar": "\u062F\u062C\u0627\u062C \u0645\u0634\u0648\u064A\u060C \u062C\u0628\u0646 \u0630\u0627\u0626\u0628\u060C \u0648\u0635\u0644\u0635\u0629 \u0628\u0631\u062C\u0631."
           },
-          "price": "46",
+          "price": "44",
           "image": "images/panini-poulet.webp"
         },
         {
@@ -1390,7 +1552,7 @@
             "de": "Panierter H\xE4hnchen, Cheddar, Tomate, Salat, Sauce.",
             "ar": "\u062F\u062C\u0627\u062C \u0645\u0642\u0631\u0645\u0634 (\u0628\u0627\u0646\u064A\u0647)\u060C \u062C\u0628\u0646\u0629 \u0634\u064A\u062F\u0631\u060C \u0637\u0645\u0627\u0637\u0645\u060C \u062E\u0633 \u0637\u0627\u0632\u062C\u060C \u0648\u0635\u0644\u0635\u0629 \u062E\u0627\u0635\u0629 \u0641\u064A \u062E\u0628\u0632 \u0627\u0644\u062A\u0648\u0631\u062A\u064A\u0644\u0627."
           },
-          "price": "60",
+          "price": "58",
           "image": "images/Wrap-poulet.webp",
           "isNew": true
         },
@@ -1407,7 +1569,7 @@
             "de": "Hackfleisch, Cheddar, Tomate, Salat, Sauce.",
             "ar": "\u0644\u062D\u0645 \u0645\u0641\u0631\u0648\u0645 \u0645\u062A\u0628\u0644\u060C \u062C\u0628\u0646\u0629 \u0634\u064A\u062F\u0631\u060C \u0637\u0645\u0627\u0637\u0645\u060C \u062E\u0633 \u0637\u0627\u0632\u062C\u060C \u0648\u0635\u0644\u0635\u0629 \u062E\u0627\u0635\u0629 \u0641\u064A \u062E\u0628\u0632 \u0627\u0644\u062A\u0648\u0631\u062A\u064A\u0644\u0627."
           },
-          "price": "64",
+          "price": "62",
           "image": "images/Wrap-viande-hachee.webp",
           "isNew": true
         },
@@ -1424,7 +1586,7 @@
             "de": "Panierter H\xE4hnchen, Wurstwaren, Cheddar, Tomate, Salat, Sauce.",
             "ar": "\u062F\u062C\u0627\u062C \u0645\u0642\u0631\u0645\u0634\u060C \u0634\u0627\u0631\u0643\u0648\u062A\u0631\u064A\u060C \u062C\u0628\u0646\u0629 \u0634\u064A\u062F\u0631\u060C \u0637\u0645\u0627\u0637\u0645\u060C \u062E\u0633\u060C \u0648\u0635\u0644\u0635\u0629 \u0641\u064A \u062E\u0628\u0632 \u0627\u0644\u062A\u0648\u0631\u062A\u064A\u0644\u0627 \u0627\u0644\u0645\u062D\u0645\u0635."
           },
-          "price": "67",
+          "price": "64",
           "image": "images/Wrap-gourmand.webp",
           "isNew": true
         }
@@ -1441,6 +1603,22 @@
       "items": [
         {
           "name": {
+            "fr": "SAUMON",
+            "en": "SALMON",
+            "de": "LACHS",
+            "ar": "\u0628\u064A\u062A\u0632\u0627 \u0627\u0644\u0633\u0644\u0645\u0648\u0646 \u0627\u0644\u0645\u062F\u062E\u0646"
+          },
+          "description": {
+            "fr": "Saumon frais, Sauce blanche, roquette, c\xE2pre.",
+            "en": "Fresh salmon, white sauce, arugula, caper.",
+            "de": "Frischer Lachs, wei\xDFe So\xDFe, Rucola, Kapern.",
+            "ar": "\u0633\u0644\u0645\u0648\u0646 \u0637\u0627\u0632\u062C\u060C \u0635\u0644\u0635\u0629 \u0628\u064A\u0636\u0627\u0621\u060C \u062C\u0631\u062C\u064A\u0631 \u0637\u0627\u0632\u062C (\u0631\u0648\u0643\u0627)\u060C \u0648\u062D\u0628\u0627\u062A \u0627\u0644\u0643\u0628\u0631."
+          },
+          "price": "94",
+          "image": "images/pizza-saumon.webp"
+        },
+        {
+          "name": {
             "fr": "FRUITS DE MER",
             "en": "SEAFOOD",
             "de": "MEERESFR\xDCCHTE",
@@ -1452,7 +1630,7 @@
             "de": "Garnelen, Tintenfisch, Muscheln, Pilz, wei\xDFe So\xDFe, Mozzarella.",
             "ar": "\u062C\u0645\u0628\u0631\u064A\u060C \u0643\u0644\u0645\u0627\u0631\u060C \u0628\u0644\u062D \u0627\u0644\u0628\u062D\u0631\u060C \u0641\u0637\u0631\u060C \u0635\u0644\u0635\u0629 \u0628\u064A\u0636\u0627\u0621\u060C \u0648\u062C\u0628\u0646\u0629 \u0645\u0648\u0632\u0627\u0631\u064A\u0644\u0627 \u0630\u0627\u0626\u0628\u0629."
           },
-          "price": "92",
+          "price": "88",
           "image": "images/pizza-fruitsmer.webp"
         },
         {
@@ -1468,7 +1646,7 @@
             "de": "Meeresfr\xFCchte, Hackfleisch, H\xE4hnchen, Vegetarisch, Mozzarella.",
             "ar": "\u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u0628\u062D\u0631\u060C \u0644\u062D\u0645 \u0645\u0641\u0631\u0648\u0645\u060C \u062F\u062C\u0627\u062C\u060C \u062E\u0636\u0627\u0631\u060C \u0648\u062C\u0628\u0646\u0629 \u0645\u0648\u0632\u0627\u0631\u064A\u0644\u0627."
           },
-          "price": "92",
+          "price": "88",
           "image": "images/pizza-4saisons.webp"
         },
         {
@@ -1484,8 +1662,24 @@
             "de": "Alles au\xDFer Meeresfr\xFCchten und Lachs.",
             "ar": "\u0646\u0635\u0641\u0627\u0646 \u0628\u0646\u0643\u0647\u062A\u064A\u0646 \u0645\u062E\u062A\u0644\u0641\u062A\u064A\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643 (\u0628\u0627\u0633\u062A\u062B\u0646\u0627\u0621 \u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u0628\u062D\u0631 \u0648\u0627\u0644\u0633\u0644\u0645\u0648\u0646)."
           },
-          "price": "92",
+          "price": "88",
           "image": "images/pizza-moitiemoitie.webp"
+        },
+        {
+          "name": {
+            "fr": "BURRATA",
+            "en": "BURRATA",
+            "de": "BURRATA",
+            "ar": "\u0628\u064A\u062A\u0632\u0627 \u0627\u0644\u0628\u0648\u0631\u0627\u062A\u0627 \u0627\u0644\u0625\u064A\u0637\u0627\u0644\u064A\u0629"
+          },
+          "description": {
+            "fr": "Sauce tomate, burrata, tomates cerises, roquette, vinaigre balsamique, noix.",
+            "en": "Tomato sauce, burrata, cherry tomatoes, arugula, balsamic vinegar, walnuts.",
+            "de": "Tomatenso\xDFe, Burrata, Kirschtomaten, Rucola, Balsamico-Essig, Waln\xFCsse.",
+            "ar": "\u0635\u0644\u0635\u0629 \u0637\u0645\u0627\u0637\u0645\u060C \u062C\u0628\u0646\u0629 \u0628\u0648\u0631\u0627\u062A\u0627 \u0637\u0627\u0632\u062C\u0629\u060C \u0637\u0645\u0627\u0637\u0645 \u0643\u0631\u0632\u064A\u0629\u060C \u062C\u0631\u062C\u064A\u0631\u060C \u062E\u0644 \u0628\u0644\u0633\u0645\u064A\u0643\u060C \u0648\u062C\u0648\u0632 (\u0643\u0631\u0643\u0627\u0639)."
+          },
+          "price": "110",
+          "image": "images/pizza-burrata.webp"
         },
         {
           "name": {
@@ -1500,7 +1694,7 @@
             "de": "H\xE4hnchen, wei\xDFe So\xDFe, Pilz, Mozzarella.",
             "ar": "\u062F\u062C\u0627\u062C\u060C \u0635\u0644\u0635\u0629 \u0628\u064A\u0636\u0627\u0621 \u0643\u0631\u064A\u0645\u064A\u0629\u060C \u0641\u0637\u0631 \u0637\u0627\u0632\u062C\u060C \u0648\u062C\u0628\u0646\u0629 \u0645\u0648\u0632\u0627\u0631\u064A\u0644\u0627."
           },
-          "price": "80",
+          "price": "78",
           "image": "images/pizza-pouletblanche.webp"
         },
         {
@@ -1516,7 +1710,7 @@
             "de": "Tomatenso\xDFe, Mozzarella, Blauschimmelk\xE4se, Parmesan, Gouda, Camembert.",
             "ar": "\u0635\u0644\u0635\u0629 \u0637\u0645\u0627\u0637\u0645\u060C \u0645\u0648\u0632\u0627\u0631\u064A\u0644\u0627\u060C \u062C\u0628\u0646 \u0623\u0632\u0631\u0642 (\u0628\u0644\u0648)\u060C \u0628\u0627\u0631\u0645\u064A\u0632\u0627\u0646\u060C \u063A\u0648\u062F\u0627\u060C \u0648\u062C\u0628\u0646\u0629 \u0643\u0627\u0645\u0645\u0628\u0631\u062A."
           },
-          "price": "82",
+          "price": "78",
           "image": "images/pizza-5fromages.webp"
         },
         {
@@ -1532,7 +1726,7 @@
             "de": "Hackfleisch, Kirschtomate, Tomatenso\xDFe, Mozzarella.",
             "ar": "\u0644\u062D\u0645 \u0645\u0641\u0631\u0648\u0645 \u0645\u062A\u0628\u0644\u060C \u0637\u0645\u0627\u0637\u0645 \u0643\u0631\u0632\u064A\u0629\u060C \u0635\u0644\u0635\u0629 \u0637\u0645\u0627\u0637\u0645\u060C \u0648\u062C\u0628\u0646\u0629 \u0645\u0648\u0632\u0627\u0631\u064A\u0644\u0627."
           },
-          "price": "82",
+          "price": "78",
           "image": "images/pizza-hache.webp"
         },
         {
@@ -1548,7 +1742,7 @@
             "de": "Pepperoni, Tomatenso\xDFe, Mozzarella.",
             "ar": "\u0628\u064A\u0628\u0631\u0648\u0646\u064A \u0628\u0642\u0631\u064A\u060C \u0635\u0644\u0635\u0629 \u0637\u0645\u0627\u0637\u0645 \u0645\u062A\u0628\u0644\u0629\u060C \u0648\u062C\u0628\u0646\u0629 \u0645\u0648\u0632\u0627\u0631\u064A\u0644\u0627 \u0630\u0627\u0626\u0628\u0629."
           },
-          "price": "78",
+          "price": "74",
           "image": "images/pizza-pepperoni.webp"
         },
         {
@@ -1564,7 +1758,7 @@
             "de": "Ger\xE4ucherte Pute, frischer Pilz, Mozzarella, wei\xDFe So\xDFe.",
             "ar": "\u062F\u064A\u0643 \u0631\u0648\u0645\u064A \u0645\u062F\u062E\u0646\u060C \u0641\u0637\u0631 \u0637\u0627\u0632\u062C\u060C \u062C\u0628\u0646\u0629 \u0645\u0648\u0632\u0627\u0631\u064A\u0644\u0627\u060C \u0648\u0635\u0644\u0635\u0629 \u0628\u064A\u0636\u0627\u0621."
           },
-          "price": "72",
+          "price": "68",
           "image": "images/pizza-regina.webp"
         },
         {
@@ -1580,7 +1774,7 @@
             "de": "Thunfisch, Zwiebeln, schwarze Oliven, Mozzarella.",
             "ar": "\u062A\u0648\u0646\u0629\u060C \u0628\u0635\u0644\u060C \u0632\u064A\u062A\u0648\u0646 \u0623\u0633\u0648\u062F\u060C \u0648\u062C\u0628\u0646\u0629 \u0645\u0648\u0632\u0627\u0631\u064A\u0644\u0627."
           },
-          "price": "68",
+          "price": "65",
           "image": "images/pizza-thon.webp"
         },
         {
@@ -1596,7 +1790,7 @@
             "de": "Verschiedenes Gem\xFCse (Paprika, Pilze, Zucchini), Pesto-So\xDFe, Mozzarella.",
             "ar": "\u062E\u0636\u0627\u0631 \u0645\u0634\u0643\u0644\u0629 (\u0641\u0644\u0641\u0644\u060C \u0641\u0637\u0631\u060C \u0628\u0635\u0644\u060C \u0642\u0631\u0639 \u0623\u062E\u0636\u0631)\u060C \u0635\u0644\u0635\u0629 \u0628\u064A\u0633\u062A\u0648\u060C \u0648\u062C\u0628\u0646\u0629 \u0645\u0648\u0632\u0627\u0631\u064A\u0644\u0627."
           },
-          "price": "65",
+          "price": "62",
           "image": "images/pizza-veggie.webp"
         },
         {
@@ -1612,7 +1806,7 @@
             "de": "Tomatenso\xDFe, Basilikum, schwarze Oliven, Mozzarella.",
             "ar": "\u0635\u0644\u0635\u0629 \u0637\u0645\u0627\u0637\u0645 \u0625\u064A\u0637\u0627\u0644\u064A\u0629\u060C \u0631\u064A\u062D\u0627\u0646 \u0637\u0627\u0632\u062C\u060C \u0632\u064A\u062A\u0648\u0646 \u0623\u0633\u0648\u062F\u060C \u0648\u062C\u0628\u0646\u0629 \u0645\u0648\u0632\u0627\u0631\u064A\u0644\u0627."
           },
-          "price": "55",
+          "price": "52",
           "image": "images/pizza-margherita.webp"
         }
       ]
@@ -1639,7 +1833,7 @@
             "de": "Pasta, frischer Lachs, Dill, Parmesan.",
             "ar": "\u0645\u0643\u0631\u0648\u0646\u0629\u060C \u0633\u0644\u0645\u0648\u0646 \u0637\u0627\u0632\u062C\u060C \u0634\u0628\u062A (\u0623\u0646\u0628\u062A)\u060C \u0648\u062C\u0628\u0646\u0629 \u0628\u0627\u0631\u0645\u064A\u0632\u0627\u0646 \u0625\u064A\u0637\u0627\u0644\u064A\u0629."
           },
-          "price": "99",
+          "price": "98",
           "image": "images/pasta-saumon.webp"
         },
         {
@@ -1655,7 +1849,7 @@
             "de": "Pasta, Garnelen, Tintenfisch, Muscheln, wei\xDFe So\xDFe.",
             "ar": "\u0645\u0643\u0631\u0648\u0646\u0629\u060C \u062C\u0645\u0628\u0631\u064A\u060C \u0643\u0644\u0645\u0627\u0631\u060C \u0628\u0644\u062D \u0627\u0644\u0628\u062D\u0631\u060C \u0648\u0635\u0644\u0635\u0629 \u0628\u064A\u0636\u0627\u0621 \u0643\u0631\u064A\u0645\u064A\u0629."
           },
-          "price": "92",
+          "price": "88",
           "image": "images/pasta-fruitsmer.webp"
         },
         {
@@ -1671,8 +1865,24 @@
             "de": "Pasta, H\xE4hnchen, Pilz, Spinat, Parmesan.",
             "ar": "\u0645\u0643\u0631\u0648\u0646\u0629\u060C \u062F\u062C\u0627\u062C \u0645\u062A\u0628\u0644\u060C \u0641\u0637\u0631 \u0637\u0627\u0632\u062C\u060C \u0633\u0628\u0627\u0646\u062E\u060C \u0648\u062C\u0628\u0646\u0629 \u0628\u0627\u0631\u0645\u064A\u0632\u0627\u0646."
           },
-          "price": "78",
+          "price": "75",
           "image": "images/pasta-poulet.webp"
+        },
+        {
+          "name": {
+            "fr": "REGATONI RICOTTA",
+            "en": "RICOTTA REGATONI",
+            "de": "RICOTTA REGATONI",
+            "ar": "\u0631\u064A\u063A\u0627\u062A\u0648\u0646\u064A \u0628\u062C\u0628\u0646\u0629 \u0627\u0644\u0631\u064A\u0643\u0648\u062A\u0627 \u0648\u0627\u0644\u0633\u0628\u0627\u0646\u062E"
+          },
+          "description": {
+            "fr": "Ricotta, \xE9pinard, parmesan, courgette, sauce blanche.",
+            "en": "Ricotta, spinach, parmesan, zucchini, white sauce.",
+            "de": "Ricotta, Spinat, Parmesan, Zucchini, wei\xDFe So\xDFe.",
+            "ar": "\u062C\u0628\u0646\u0629 \u0631\u064A\u0643\u0648\u062A\u0627\u060C \u0633\u0628\u0627\u0646\u062E\u060C \u0628\u0627\u0631\u0645\u064A\u0632\u0627\u0646\u060C \u0642\u0631\u0639 \u0623\u062E\u0636\u0631\u060C \u0648\u0635\u0644\u0635\u0629 \u0628\u064A\u0636\u0627\u0621 \u0646\u0627\u0639\u0645\u0629."
+          },
+          "price": "68",
+          "image": "images/pasta-ricotta.webp"
         },
         {
           "name": {
@@ -1687,7 +1897,7 @@
             "de": "Pasta, Bolognese-So\xDFe mit Hackfleisch, Kirschtomate.",
             "ar": "\u0645\u0643\u0631\u0648\u0646\u0629\u060C \u0635\u0644\u0635\u0629 \u0628\u0648\u0644\u0648\u0646\u064A\u0632 \u063A\u0646\u064A\u0629 \u0628\u0627\u0644\u0644\u062D\u0645 \u0627\u0644\u0645\u0641\u0631\u0648\u0645\u060C \u0648\u0637\u0645\u0627\u0637\u0645 \u0643\u0631\u0632\u064A\u0629."
           },
-          "price": "78",
+          "price": "75",
           "image": "images/pasta-bolognaise.webp"
         },
         {
@@ -1703,7 +1913,7 @@
             "de": "Pasta, Putenschinken, Parmesan.",
             "ar": "\u0645\u0643\u0631\u0648\u0646\u0629\u060C \u062C\u0627\u0645\u0628\u0648\u0646 \u062F\u064A\u0643 \u0631\u0648\u0645\u064A\u060C \u0648\u062C\u0628\u0646\u0629 \u0628\u0627\u0631\u0645\u064A\u0632\u0627\u0646 \u0625\u064A\u0637\u0627\u0644\u064A\u0629 \u0645\u0639 \u0627\u0644\u0635\u0644\u0635\u0629 \u0627\u0644\u0643\u0631\u064A\u0645\u064A\u0629."
           },
-          "price": "68",
+          "price": "65",
           "image": "images/pasta-carbonara.webp"
         },
         {
@@ -1719,7 +1929,7 @@
             "de": "Pasta, Mischung aus f\xFCnf K\xE4sesorten (Parmesan, Blau, Mozzarella, Cheddar, Gouda).",
             "ar": "\u0645\u0643\u0631\u0648\u0646\u0629 \u0628\u0635\u0644\u0635\u0629 \u062E\u0645\u0633\u0629 \u0623\u062C\u0628\u0627\u0646 \u0641\u0627\u062E\u0631\u0629 (\u0628\u0627\u0631\u0645\u064A\u0632\u0627\u0646\u060C \u062C\u0628\u0646 \u0623\u0632\u0631\u0642\u060C \u0645\u0648\u0632\u0627\u0631\u064A\u0644\u0627\u060C \u0634\u064A\u062F\u0631\u060C \u0648\u063A\u0648\u062F\u0627)."
           },
-          "price": "75",
+          "price": "70",
           "image": "images/pasta-5fromages.webp"
         },
         {
@@ -1735,8 +1945,24 @@
             "de": "Pasta, verschiedenes Gem\xFCse (Zucchini, Paprika, Tomaten), Pesto-So\xDFe, Oliven\xF6l.",
             "ar": "\u0645\u0643\u0631\u0648\u0646\u0629\u060C \u062E\u0636\u0627\u0631 \u0645\u0634\u0643\u0644\u0629 (\u0642\u0631\u0639 \u0623\u062E\u0636\u0631\u060C \u0641\u0644\u0641\u0644\u060C \u0637\u0645\u0627\u0637\u0645)\u060C \u0635\u0644\u0635\u0629 \u0628\u064A\u0633\u062A\u0648\u060C \u0648\u0632\u064A\u062A \u0632\u064A\u062A\u0648\u0646 \u0628\u0643\u0631."
           },
-          "price": "63",
+          "price": "60",
           "image": "images/pasta-veg.webp"
+        },
+        {
+          "name": {
+            "fr": "SPAGHETTIS NOIRS",
+            "en": "BLACK SPAGHETTI",
+            "de": "SCHWARZE SPAGHETTI",
+            "ar": "\u0633\u0628\u0627\u063A\u064A\u062A\u064A \u0633\u0648\u062F\u0627\u0621 \u0628\u062D\u0628\u0631 \u0627\u0644\u062D\u0628\u0627\u0631"
+          },
+          "description": {
+            "fr": "Suppl\xE9ment pour p\xE2tes noires \xE0 l'encre de seiche.",
+            "en": "Supplement for black pasta with squid ink.",
+            "de": "Zuschlag f\xFCr schwarze Pasta mit Tintenfischtinte.",
+            "ar": "\u0625\u0636\u0627\u0641\u0629 \u0627\u062E\u062A\u064A\u0627\u0631\u064A\u0629 \u0644\u0628\u0627\u0633\u062A\u0627 \u0633\u0648\u062F\u0627\u0621 \u0645\u0645\u064A\u0632\u0629 \u0628\u062D\u0628\u0631 \u0627\u0644\u062D\u0628\u0627\u0631 (\u0633\u064A\u0628\u064A\u0627)."
+          },
+          "price": "5",
+          "image": "images/pasta-noir.webp"
         },
         {
           "name": {
@@ -1751,7 +1977,7 @@
             "de": "H\xE4hnchen, Lasagne-Nudeln, wei\xDFe Sauce, B\xE9chamelsauce, K\xE4se",
             "ar": "\u0637\u0628\u0642\u0627\u062A \u0644\u0627\u0632\u0627\u0646\u064A\u0627 \u0628\u0627\u0644\u062F\u062C\u0627\u062C\u060C \u0641\u0637\u0631 \u0637\u0627\u0632\u062C\u060C \u0635\u0644\u0635\u0629 \u0628\u064A\u0636\u0627\u0621\u060C \u0628\u064A\u0634\u0627\u0645\u064A\u0644\u060C \u0648\u062C\u0628\u0646 \u0645\u062D\u0645\u0631 \u0641\u064A \u0627\u0644\u0641\u0631\u0646."
           },
-          "price": "64",
+          "price": "60",
           "image": "images/lasagne-poulet.webp",
           "isNew": true
         },
@@ -1768,8 +1994,25 @@
             "de": "Hackfleisch, Lasagne-Nudeln, Bolognese-Sauce, B\xE9chamelsauce, K\xE4se.",
             "ar": "\u0637\u0628\u0642\u0627\u062A \u0644\u0627\u0632\u0627\u0646\u064A\u0627 \u0628\u0627\u0644\u0644\u062D\u0645 \u0627\u0644\u0645\u0641\u0631\u0648\u0645\u060C \u0635\u0644\u0635\u0629 \u0628\u0648\u0644\u0648\u0646\u064A\u0632\u060C \u0628\u064A\u0634\u0627\u0645\u064A\u0644\u060C \u0648\u062C\u0628\u0646 \u063A\u0646\u064A \u0645\u062D\u0645\u0631 \u0641\u064A \u0627\u0644\u0641\u0631\u0646."
           },
-          "price": "75",
+          "price": "72",
           "image": "images/lasagne-viande.webp",
+          "isNew": true
+        },
+        {
+          "name": {
+            "fr": "LASAGNE FRUIT DE MER ",
+            "en": "Seafood lasagne",
+            "de": "Meeresfr\xFCchte-Lasagne",
+            "ar": "\u0644\u0627\u0632\u0627\u0646\u064A\u0627 \u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u0628\u062D\u0631 \u0627\u0644\u0645\u0634\u0643\u0644\u0629"
+          },
+          "description": {
+            "fr": "Crevette, calamars, , P\xE2tes lasagne, Sauce blanche, B\xE9chamel, fromage",
+            "en": "Shrimp, squid, lasagne pasta, white sauce, b\xE9chamel, cheese.",
+            "de": "Garnelen, Kalmar, Lasagne-Nudeln, wei\xDFe Sauce, B\xE9chamelsauce, K\xE4se",
+            "ar": "\u0637\u0628\u0642\u0627\u062A \u0644\u0627\u0632\u0627\u0646\u064A\u0627 \u0628\u0627\u0644\u062C\u0645\u0628\u0631\u064A \u0648\u0627\u0644\u0643\u0644\u0645\u0627\u0631\u060C \u0635\u0644\u0635\u0629 \u0628\u064A\u0636\u0627\u0621\u060C \u0628\u064A\u0634\u0627\u0645\u064A\u0644\u060C \u0648\u062C\u0628\u0646 \u0645\u062D\u0645\u0631 \u0641\u064A \u0627\u0644\u0641\u0631\u0646."
+          },
+          "price": "78",
+          "image": "images/Lasagnes-de-fruits-de-mer.webp",
           "isNew": true
         }
       ]
@@ -1785,6 +2028,38 @@
       "items": [
         {
           "name": {
+            "fr": "GREY CORNER (vari\xE9t\xE9s gourmandises)",
+            "en": "GREY CORNER (gourmet varieties)",
+            "de": "GREY CORNER (Gourmet-Sorten)",
+            "ar": "\u0643\u0631\u064A\u0628 \u0623\u0648 \u0648\u0627\u0641\u0644 \u063A\u0631\u064A \u0643\u0648\u0631\u0646\u0631 \u0627\u0644\u0645\u0634\u0643\u0644 \u0627\u0644\u0641\u0627\u062E\u0631"
+          },
+          "description": {
+            "fr": "Cr\xEApe ou gaufre avec des vari\xE9t\xE9s gourmandes.",
+            "en": "Cr\xEApe or waffle with gourmet varieties.",
+            "de": "Cr\xEApe oder Waffel mit Gourmet-Sorten.",
+            "ar": "\u0643\u0631\u064A\u0628 \u0623\u0648 \u0648\u0627\u0641\u0644 \u0645\u0634\u0643\u0644 \u0628\u062A\u0634\u0643\u064A\u0644\u0629 \u0644\u0630\u064A\u0630\u0629 \u0645\u0646 \u0627\u0644\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0648\u0627\u0644\u0645\u0643\u0633\u0631\u0627\u062A \u0648\u0627\u0644\u0641\u0648\u0627\u0643\u0647."
+          },
+          "price": "52",
+          "image": "images/crepe-gc.webp"
+        },
+        {
+          "name": {
+            "fr": "EXOTIQUE (fruits saisons)",
+            "en": "EXOTIC (seasonal fruits)",
+            "de": "EXOTISCH (saisonale Fr\xFCchte)",
+            "ar": "\u0643\u0631\u064A\u0628 \u0623\u0648 \u0648\u0627\u0641\u0644 \u0628\u0627\u0644\u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u0645\u0648\u0633\u0645\u064A\u0629"
+          },
+          "description": {
+            "fr": "Cr\xEApe ou gaufre aux fruits de saison.",
+            "en": "Cr\xEApe or waffle with seasonal fruits.",
+            "de": "Cr\xEApe oder Waffel mit saisonalen Fr\xFCchten.",
+            "ar": "\u0643\u0631\u064A\u0628 \u0623\u0648 \u0648\u0627\u0641\u0644 \u0645\u0632\u064A\u0646 \u0628\u062A\u0634\u0643\u064A\u0644\u0629 \u0645\u0646\u0639\u0634\u0629 \u0645\u0646 \u0627\u0644\u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u0645\u0648\u0633\u0645\u064A\u0629 \u0627\u0644\u0637\u0627\u0632\u062C\u0629 \u0648\u0627\u0644\u0635\u0644\u0635\u0629."
+          },
+          "price": "48",
+          "image": "images/crepe-exotique.webp"
+        },
+        {
+          "name": {
             "fr": "KUNAFA PISTACHE",
             "en": "PISTACHIO KUNAFA",
             "de": "PISTAZIEN KUNAFA",
@@ -1796,7 +2071,7 @@
             "de": "Cr\xEApe oder Waffel mit Kunafa Pistazien-Geschmack.",
             "ar": "\u0643\u0631\u064A\u0628 \u0623\u0648 \u0648\u0627\u0641\u0644 \u0645\u0645\u064A\u0632 \u0628\u0646\u0643\u0647\u0629 \u0627\u0644\u0643\u0646\u0627\u0641\u0629 \u0627\u0644\u0645\u0642\u0631\u0645\u0634\u0629 \u0645\u0639 \u0627\u0644\u0641\u0633\u062A\u0642 \u0627\u0644\u062D\u0644\u0628\u064A \u0627\u0644\u063A\u0646\u064A."
           },
-          "price": "52",
+          "price": "48",
           "image": "images/crepe-kunafa.webp"
         },
         {
@@ -1812,8 +2087,40 @@
             "de": "Cr\xEApe oder Waffel mit Banane und Nutella.",
             "ar": "\u0643\u0631\u064A\u0628 \u0623\u0648 \u0648\u0627\u0641\u0644 \u0645\u062D\u0634\u0648 \u0628\u0634\u0631\u0627\u0626\u062D \u0627\u0644\u0645\u0648\u0632 \u0627\u0644\u0637\u0627\u0632\u062C \u0648\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0646\u0648\u062A\u064A\u0644\u0627 \u0627\u0644\u0623\u0635\u0644\u064A\u0629."
           },
-          "price": "45",
+          "price": "42",
           "image": "images/crepe-bananenutella.webp"
+        },
+        {
+          "name": {
+            "fr": "POMME CARAMELIS\xC9E",
+            "en": "CARAMELIZED APPLE",
+            "de": "KARAMELLISIERTER APFEL",
+            "ar": "\u0643\u0631\u064A\u0628 \u0623\u0648 \u0648\u0627\u0641\u0644 \u062A\u0641\u0627\u062D \u0645\u0643\u0631\u0645\u0644"
+          },
+          "description": {
+            "fr": "Cr\xEApe ou gaufre \xE0 la pomme caram\xE9lis\xE9e.",
+            "en": "Cr\xEApe or waffle with caramelized apple.",
+            "de": "Cr\xEApe oder Waffel mit karamellisiertem Apfel.",
+            "ar": "\u0643\u0631\u064A\u0628 \u0623\u0648 \u0648\u0627\u0641\u0644 \u0645\u0639 \u0642\u0637\u0639 \u0627\u0644\u062A\u0641\u0627\u062D \u0627\u0644\u0645\u0643\u0631\u0645\u0644 \u0628\u0646\u0643\u0647\u0629 \u0627\u0644\u0642\u0631\u0641\u0629 \u0627\u0644\u0644\u0630\u064A\u0630\u0629."
+          },
+          "price": "40",
+          "image": "images/crepe-pomme.webp"
+        },
+        {
+          "name": {
+            "fr": "CHOCOLAT NOISETTE",
+            "en": "HAZELNUT CHOCOLATE",
+            "de": "HASELNUSS-SCHOKOLADE",
+            "ar": "\u0643\u0631\u064A\u0628 \u0623\u0648 \u0648\u0627\u0641\u0644 \u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0628\u0627\u0644\u0628\u0646\u062F\u0642"
+          },
+          "description": {
+            "fr": "Cr\xEApe ou gaufre au chocolat noisette.",
+            "en": "Cr\xEApe or waffle with hazelnut chocolate.",
+            "de": "Cr\xEApe oder Waffel mit Haselnuss-Schokolade.",
+            "ar": "\u0643\u0631\u064A\u0628 \u0623\u0648 \u0648\u0627\u0641\u0644 \u0645\u063A\u0637\u0649 \u0628\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0627\u0644\u0628\u0646\u062F\u0642 \u0627\u0644\u0641\u0627\u062E\u0631\u0629 \u0627\u0644\u0645\u0642\u0631\u0645\u0634\u0629."
+          },
+          "price": "42",
+          "image": "images/crepe-noisette.webp"
         },
         {
           "name": {
@@ -1828,7 +2135,7 @@
             "de": "Cr\xEApe oder Waffel mit Nutella.",
             "ar": "\u0643\u0631\u064A\u0628 \u0623\u0648 \u0648\u0627\u0641\u0644 \u0645\u0639 \u0637\u0628\u0642\u0629 \u0648\u0641\u064A\u0631\u0629 \u0645\u0646 \u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0646\u0648\u062A\u064A\u0644\u0627 \u0627\u0644\u0644\u0630\u064A\u0630\u0629."
           },
-          "price": "40",
+          "price": "38",
           "image": "images/crepe-nutella.webp"
         }
       ]
@@ -1854,8 +2161,24 @@
             "de": "Herzhafter Cr\xEApe mit Meeresfr\xFCchten.",
             "ar": "\u0643\u0631\u064A\u0628 \u0645\u0627\u0644\u062D \u0645\u062D\u0634\u0648 \u0628\u0627\u0644\u062C\u0645\u0628\u0631\u064A \u0648\u0627\u0644\u0643\u0644\u0645\u0627\u0631 \u0648\u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u0628\u062D\u0631 \u0648\u0627\u0644\u0635\u0644\u0635\u0629 \u0627\u0644\u0628\u064A\u0636\u0627\u0621 \u0648\u0627\u0644\u062C\u0628\u0646."
           },
-          "price": "62",
+          "price": "58",
           "image": "images/crepe-sal-pecheur.webp"
+        },
+        {
+          "name": {
+            "fr": "Cr\xEApe NORV\xC9GIENNE",
+            "en": "NORWEGIAN Cr\xEApe",
+            "de": "NORWEGISCHER Cr\xEApe",
+            "ar": "\u0643\u0631\u064A\u0628 \u0645\u0627\u0644\u062D \u0646\u0631\u0648\u064A\u062C\u064A \u0628\u0627\u0644\u0633\u0644\u0645\u0648\u0646"
+          },
+          "description": {
+            "fr": "Cr\xEApe sal\xE9e au saumon.",
+            "en": "Savory cr\xEApe with salmon.",
+            "de": "Herzhafter Cr\xEApe mit Lachs.",
+            "ar": "\u0643\u0631\u064A\u0628 \u0645\u0627\u0644\u062D \u0645\u062D\u0634\u0648 \u0628\u0627\u0644\u0633\u0644\u0645\u0648\u0646 \u0627\u0644\u0645\u062F\u062E\u0646 \u0648\u0627\u0644\u062C\u0628\u0646 \u0648\u0627\u0644\u0635\u0644\u0635\u0629 \u0627\u0644\u0643\u0631\u064A\u0645\u064A\u0629."
+          },
+          "price": "58",
+          "image": "images/crepe-sal-norve.webp"
         },
         {
           "name": {
@@ -1870,8 +2193,24 @@
             "de": "Gemischter herzhafter Cr\xEApe (Fleisch und K\xE4se).",
             "ar": "\u0643\u0631\u064A\u0628 \u0645\u0627\u0644\u062D \u0645\u0634\u0643\u0644 \u064A\u062C\u0645\u0639 \u0628\u064A\u0646 \u0627\u0644\u0644\u062D\u0645 \u0648\u0627\u0644\u062F\u062C\u0627\u062C \u0648\u0627\u0644\u062C\u0628\u0646 \u0627\u0644\u0630\u0627\u0626\u0628."
           },
-          "price": "62",
+          "price": "58",
           "image": "images/crepe-sal-gc.webp"
+        },
+        {
+          "name": {
+            "fr": "Cr\xEApe BOLOGNAISE",
+            "en": "BOLOGNESE Cr\xEApe",
+            "de": "BOLOGNESE Cr\xEApe",
+            "ar": "\u0643\u0631\u064A\u0628 \u0645\u0627\u0644\u062D \u0628\u0635\u0644\u0635\u0629 \u0627\u0644\u0628\u0648\u0644\u0648\u0646\u064A\u0632"
+          },
+          "description": {
+            "fr": "Cr\xEApe sal\xE9e \xE0 la sauce bolognaise.",
+            "en": "Savory cr\xEApe with Bolognese sauce.",
+            "de": "Herzhafter Cr\xEApe mit Bolognese-So\xDFe.",
+            "ar": "\u0643\u0631\u064A\u0628 \u0645\u0627\u0644\u062D \u0645\u062D\u0634\u0648 \u0628\u0635\u0644\u0635\u0629 \u0627\u0644\u0628\u0648\u0644\u0648\u0646\u064A\u0632 \u0628\u0627\u0644\u0644\u062D\u0645 \u0627\u0644\u0645\u0641\u0631\u0648\u0645 \u0648\u0627\u0644\u062C\u0628\u0646 \u0627\u0644\u0630\u0627\u0626\u0628."
+          },
+          "price": "54",
+          "image": "images/crepe-sal-bologn.webp"
         },
         {
           "name": {
@@ -1886,7 +2225,7 @@
             "de": "Herzhafter Cr\xEApe mit H\xE4hnchen und Pilzen.",
             "ar": "\u0643\u0631\u064A\u0628 \u0645\u0627\u0644\u062D \u0645\u062D\u0634\u0648 \u0628\u0642\u0637\u0639 \u0627\u0644\u062F\u062C\u0627\u062C \u0648\u0627\u0644\u0641\u0637\u0631 \u0648\u0627\u0644\u0635\u0644\u0635\u0629 \u0627\u0644\u0643\u0631\u064A\u0645\u064A\u0629 \u0648\u062C\u0628\u0646 \u0627\u0644\u0645\u0648\u0632\u0627\u0631\u064A\u0644\u0627."
           },
-          "price": "50",
+          "price": "48",
           "image": "images/crepe-sal-poulet.webp"
         },
         {
@@ -1902,8 +2241,24 @@
             "de": "Herzhafter Cr\xEApe mit Aufschnitt.",
             "ar": "\u0643\u0631\u064A\u0628 \u0645\u0627\u0644\u062D \u0645\u062D\u0634\u0648 \u0628\u0627\u0644\u0634\u0627\u0631\u0643\u0648\u062A\u0631\u064A \u0648\u0627\u0644\u062C\u0628\u0646 \u0627\u0644\u0630\u0627\u0626\u0628 \u0648\u0627\u0644\u0635\u0644\u0635\u0629."
           },
-          "price": "48",
+          "price": "45",
           "image": "images/crepe-sal-charcut.webp"
+        },
+        {
+          "name": {
+            "fr": "Cr\xEApe FROMAGE",
+            "en": "CHEESE Cr\xEApe",
+            "de": "K\xC4SE Cr\xEApe",
+            "ar": "\u0643\u0631\u064A\u0628 \u0645\u0627\u0644\u062D \u0628\u0627\u0644\u0623\u062C\u0628\u0627\u0646 \u0627\u0644\u0645\u0634\u0643\u0644\u0629"
+          },
+          "description": {
+            "fr": "Cr\xEApe sal\xE9e au fromage.",
+            "en": "Savory cr\xEApe with cheese.",
+            "de": "Herzhafter Cr\xEApe mit K\xE4se.",
+            "ar": "\u0643\u0631\u064A\u0628 \u0645\u0627\u0644\u062D \u063A\u0646\u064A \u0628\u0645\u0632\u064A\u062C \u0645\u0646 \u0627\u0644\u0623\u062C\u0628\u0627\u0646 \u0627\u0644\u0630\u0627\u0626\u0628\u0629 \u0627\u0644\u0634\u0647\u064A\u0629."
+          },
+          "price": "45",
+          "image": "images/crepe-sal-fromage.webp"
         }
       ]
     },
@@ -1929,7 +2284,7 @@
             "de": "Geschmacksrichtungen: rote Fr\xFCchte, Karamell, Pistazie, dunkle Schokolade, Honig.",
             "ar": "\u0646\u0643\u0647\u0627\u062A \u062D\u0633\u0628 \u0627\u0644\u0627\u062E\u062A\u064A\u0627\u0631: \u0641\u0648\u0627\u0643\u0647 \u062D\u0645\u0631\u0627\u0621\u060C \u0643\u0631\u0627\u0645\u064A\u0644\u060C \u0641\u0633\u062A\u0642\u060C \u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0633\u0648\u062F\u0627\u0621\u060C \u0623\u0648 \u0639\u0633\u0644."
           },
-          "price": "47",
+          "price": "45",
           "image": "images/gateau-sanseb-vari.webp"
         },
         {
@@ -1945,7 +2300,7 @@
             "de": "Leckerer K\xE4sekuchen mit Schokolade-, Pistazien- und Himbeergeschmack.",
             "ar": "\u062A\u0634\u064A\u0632 \u0643\u064A\u0643 \u0643\u0631\u064A\u0645\u064A \u0641\u0627\u062E\u0631 \u0628\u0646\u0643\u0647\u0627\u062A \u0627\u0644\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0623\u0648 \u0627\u0644\u0641\u0633\u062A\u0642 \u0623\u0648 \u062A\u0648\u062A \u0627\u0644\u0639\u0644\u064A\u0642."
           },
-          "price": "47",
+          "price": "45",
           "image": "images/gateau-cheesecake-choco.webp"
         },
         {
@@ -1961,7 +2316,7 @@
             "de": "Serviert mit Vanillekugel.",
             "ar": "\u0643\u064A\u0643 \u0641\u0648\u0646\u062F\u0627\u0646 \u062F\u0627\u0641\u0626 \u0628\u0642\u0644\u0628 \u0627\u0644\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0627\u0644\u0630\u0627\u0626\u0628\u0629\u060C \u064A\u0642\u062F\u0645 \u0645\u0639 \u0643\u0631\u0629 \u0622\u064A\u0633 \u0643\u0631\u064A\u0645 \u0641\u0627\u0646\u064A\u0644\u064A\u0627."
           },
-          "price": "42",
+          "price": "40",
           "image": "images/gateau-fondant.webp"
         },
         {
@@ -1977,8 +2332,40 @@
             "de": "Baskischer K\xE4sekuchen mit Nutella.",
             "ar": "\u062A\u0634\u064A\u0632 \u0643\u064A\u0643 \u0628\u0627\u0633\u0643\u064A \u0645\u062E\u0628\u0648\u0632 \u0645\u063A\u0637\u0649 \u0628\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0646\u0648\u062A\u064A\u0644\u0627 \u0627\u0644\u0623\u0635\u0644\u064A\u0629."
           },
-          "price": "42",
+          "price": "40",
           "image": "images/gateau-sanseb-nutella.webp"
+        },
+        {
+          "name": {
+            "fr": "CHEESECAKE (Lotus, Citron)",
+            "en": "CHEESECAKE (Lotus, Lemon)",
+            "de": "CHEESECAKE (Lotus, Zitrone)",
+            "ar": "\u062A\u0634\u064A\u0632 \u0643\u064A\u0643 \u0628\u0627\u0631\u062F (\u0644\u0648\u062A\u0633 \u0623\u0648 \u0644\u064A\u0645\u0648\u0646)"
+          },
+          "description": {
+            "fr": "Cheesecake cr\xE9meux aux saveurs Lotus et Citron.",
+            "en": "Creamy cheesecake with Lotus and Lemon flavors.",
+            "de": "Cremiger K\xE4sekuchen mit Lotus- und Zitronengeschmack.",
+            "ar": "\u062A\u0634\u064A\u0632 \u0643\u064A\u0643 \u0646\u0627\u0639\u0645 \u0648\u0643\u0631\u064A\u0645\u064A \u0628\u0646\u0643\u0647\u0629 \u0628\u0633\u0643\u0648\u064A\u062A \u0644\u0648\u062A\u0633 \u0627\u0644\u0634\u0647\u064A\u0631 \u0623\u0648 \u0627\u0644\u0644\u064A\u0645\u0648\u0646 \u0627\u0644\u0645\u0646\u0639\u0634."
+          },
+          "price": "40",
+          "image": "images/gateau-cheesecake-lotus.webp"
+        },
+        {
+          "name": {
+            "fr": "TIRAMISU",
+            "en": "TIRAMISU",
+            "de": "TIRAMISU",
+            "ar": "\u062A\u064A\u0631\u0627\u0645\u064A\u0633\u0648 \u0625\u064A\u0637\u0627\u0644\u064A \u0643\u0644\u0627\u0633\u064A\u0643\u064A"
+          },
+          "description": {
+            "fr": "Dessert classique italien.",
+            "en": "Classic Italian dessert.",
+            "de": "Klassisches italienisches Dessert.",
+            "ar": "\u062D\u0644\u0648\u0649 \u0627\u0644\u062A\u064A\u0631\u0627\u0645\u064A\u0633\u0648 \u0627\u0644\u0625\u064A\u0637\u0627\u0644\u064A\u0629 \u0627\u0644\u0643\u0644\u0627\u0633\u064A\u0643\u064A\u0629 \u0628\u0627\u0644\u0642\u0647\u0648\u0629 \u0648\u0643\u0631\u064A\u0645\u0629 \u0627\u0644\u0645\u0627\u0633\u0643\u0627\u0631\u0628\u0648\u0646\u064A \u0627\u0644\u0641\u0627\u062E\u0631\u0629 \u0648\u0627\u0644\u0643\u0627\u0643\u0627\u0648."
+          },
+          "price": "38",
+          "image": "images/gateau-tiramisu.webp"
         }
       ]
     },
@@ -2003,7 +2390,7 @@
             "de": "Reiche geschmolzene Schokolade.",
             "ar": "\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0633\u0627\u062E\u0646\u0629 \u063A\u0646\u064A\u0629 \u0648\u0645\u0630\u0627\u0628\u0629 \u0628\u0642\u0648\u0627\u0645 \u0643\u0631\u064A\u0645\u064A \u0641\u0627\u062E\u0631."
           },
-          "price": "28",
+          "price": "26",
           "image": "images/boisson-choc-fondue.webp"
         },
         {
@@ -2019,7 +2406,7 @@
             "de": "Serviert mit einem 33 cl Mineralwasser.",
             "ar": "\u0642\u0647\u0648\u0629 \u0646\u0633\u0628\u0631\u064A\u0633\u0648 \u0641\u0627\u062E\u0631\u0629\u060C \u062A\u0642\u062F\u0645 \u0645\u0639 \u0642\u0646\u064A\u0646\u0629 \u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A 33 \u0633\u0646\u062A\u0644\u062A\u0631."
           },
-          "price": "23",
+          "price": "22",
           "image": "images/boisson-nespresso.webp"
         },
         {
@@ -2035,7 +2422,7 @@
             "de": "Serviert mit einem 33 cl Mineralwasser.",
             "ar": "\u0643\u0627\u0628\u062A\u0634\u064A\u0646\u0648 \u063A\u0646\u064A \u0645\u0639 \u0643\u0631\u064A\u0645\u0629 \u0627\u0644\u0634\u0627\u0646\u062A\u064A\u064A \u0627\u0644\u0645\u062E\u0641\u0648\u0642\u0629\u060C \u064A\u0642\u062F\u0645 \u0645\u0639 \u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A 33 \u0633\u0646\u062A\u0644\u062A\u0631."
           },
-          "price": "23",
+          "price": "22",
           "image": "images/boisson-cappu-chant.webp"
         },
         {
@@ -2051,7 +2438,7 @@
             "de": "Serviert mit einem 33 cl Mineralwasser.",
             "ar": "\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0633\u0627\u062E\u0646\u0629 \u0645\u0639 \u0643\u0631\u064A\u0645\u0629 \u0627\u0644\u0634\u0627\u0646\u062A\u064A\u064A\u060C \u062A\u0642\u062F\u0645 \u0645\u0639 \u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A 33 \u0633\u0646\u062A\u0644\u062A\u0631."
           },
-          "price": "23",
+          "price": "22",
           "image": "images/boisson-choc-chant.webp"
         },
         {
@@ -2067,7 +2454,7 @@
             "de": "Serviert mit einem 33 cl Mineralwasser.",
             "ar": "\u0642\u0647\u0648\u0629 \u0628\u0627\u0644\u062D\u0644\u064A\u0628 \u0645\u062A\u0648\u0627\u0632\u0646\u0629 \u0648\u063A\u0646\u064A\u0629\u060C \u062A\u0642\u062F\u0645 \u0645\u0639 \u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A 33 \u0633\u0646\u062A\u0644\u062A\u0631."
           },
-          "price": "20",
+          "price": "19",
           "image": "images/boisson-cafelait.webp"
         },
         {
@@ -2083,7 +2470,7 @@
             "de": "Serviert mit einem 33 cl Mineralwasser.",
             "ar": "\u0643\u0627\u0628\u062A\u0634\u064A\u0646\u0648 \u0625\u064A\u0637\u0627\u0644\u064A \u0643\u0644\u0627\u0633\u064A\u0643\u064A \u0628\u0631\u063A\u0648\u0629 \u0627\u0644\u062D\u0644\u064A\u0628 \u0627\u0644\u063A\u0646\u064A\u0629\u060C \u064A\u0642\u062F\u0645 \u0645\u0639 \u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A 33 \u0633\u0646\u062A\u0644\u062A\u0631."
           },
-          "price": "20",
+          "price": "19",
           "image": "images/boisson-cappu.webp"
         },
         {
@@ -2099,7 +2486,7 @@
             "de": "Serviert mit einem 33 cl Mineralwasser.",
             "ar": "\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0633\u0627\u062E\u0646\u0629 \u0628\u0627\u0644\u062D\u0644\u064A\u0628 \u0627\u0644\u0643\u0631\u064A\u0645\u064A \u0627\u0644\u0644\u0630\u064A\u0630\u060C \u062A\u0642\u062F\u0645 \u0645\u0639 \u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A 33 \u0633\u0646\u062A\u0644\u062A\u0631."
           },
-          "price": "20",
+          "price": "18",
           "image": "images/boisson-chocolat.webp"
         },
         {
@@ -2115,7 +2502,7 @@
             "de": "Serviert mit einem 33 cl Mineralwasser.",
             "ar": "\u0643\u0627\u0641\u064A\u0647 \u0644\u0627\u062A\u064A\u0647 \u0628\u062D\u0644\u064A\u0628 \u0645\u0628\u062E\u0631 \u0646\u0627\u0639\u0645 \u0648\u0637\u0628\u0642\u0629 \u0631\u063A\u0648\u0629 \u062E\u0641\u064A\u0641\u0629\u060C \u064A\u0642\u062F\u0645 \u0645\u0639 \u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A 33 \u0633\u0646\u062A\u0644\u062A\u0631."
           },
-          "price": "20",
+          "price": "19",
           "image": "images/boisson-cafelatte.webp"
         },
         {
@@ -2131,7 +2518,7 @@
             "de": "Schwarzer Tee serviert mit Milch.",
             "ar": "\u0634\u0627\u064A \u0623\u0633\u0648\u062F \u0645\u063A\u0644\u0649 \u064A\u0642\u062F\u0645 \u0645\u0639 \u0627\u0644\u062D\u0644\u064A\u0628 \u0627\u0644\u0633\u0627\u062E\u0646."
           },
-          "price": "19",
+          "price": "18",
           "image": "images/boisson-thenoir-lait.webp"
         },
         {
@@ -2147,8 +2534,24 @@
             "de": "Auswahl an Kr\xE4utertees.",
             "ar": "\u062A\u0634\u0643\u064A\u0644\u0629 \u0645\u062E\u062A\u0627\u0631\u0629 \u0645\u0646 \u0627\u0644\u0623\u0639\u0634\u0627\u0628 \u0627\u0644\u0637\u0628\u064A\u0639\u064A\u0629 \u0627\u0644\u0645\u0646\u0642\u0648\u0639\u0629 \u0648\u0627\u0644\u0645\u0631\u064A\u062D\u0629."
           },
-          "price": "19",
+          "price": "18",
           "image": "images/boisson-infusion.webp"
+        },
+        {
+          "name": {
+            "fr": "VERVEINE AROMATIS\xC9E",
+            "en": "FLAVORED VERBENA",
+            "de": "AROMATISIERTE VERBENA",
+            "ar": "\u0644\u0648\u064A\u0632\u0629 \u0645\u0646\u0643\u0647\u0629 \u0628\u0627\u0644\u0623\u0639\u0634\u0627\u0628"
+          },
+          "description": {
+            "fr": "Infusion de verveine aromatis\xE9e.",
+            "en": "Flavored verbena infusion.",
+            "de": "Aromatisierter Eisenkraut-Aufguss.",
+            "ar": "\u0645\u0646\u0642\u0648\u0639 \u0644\u0648\u064A\u0632\u0629 \u0637\u0628\u064A\u0639\u064A\u0629 \u0645\u0646\u0643\u0647\u0629 \u0628\u0627\u0644\u0623\u0639\u0634\u0627\u0628 \u0627\u0644\u0639\u0637\u0631\u064A\u0629."
+          },
+          "price": "18",
+          "image": "images/boisson-verveine-arom.webp"
         },
         {
           "name": {
@@ -2163,7 +2566,7 @@
             "de": "Serviert mit einem 33 cl Mineralwasser.",
             "ar": "\u0642\u0647\u0648\u0629 \u0623\u0645\u0631\u064A\u0643\u0627\u0646\u0648 \u062E\u0641\u064A\u0641\u0629 \u0648\u0645\u0642\u0637\u0631\u0629\u060C \u062A\u0642\u062F\u0645 \u0645\u0639 \u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A 33 \u0633\u0646\u062A\u0644\u062A\u0631."
           },
-          "price": "18",
+          "price": "17",
           "image": "images/boisson-americano.webp"
         },
         {
@@ -2179,7 +2582,7 @@
             "de": "Serviert mit einem 33 cl Mineralwasser.",
             "ar": "\u0642\u0647\u0648\u0629 \u0633\u0648\u062F\u0627\u0621 \u0645\u0631\u0643\u0632\u0629 \u0648\u0646\u0642\u064A\u0629 \u0628\u0631\u0627\u0626\u062D\u0629 \u063A\u0646\u064A\u0629\u060C \u062A\u0642\u062F\u0645 \u0645\u0639 \u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A 33 \u0633\u0646\u062A\u0644\u062A\u0631."
           },
-          "price": "17",
+          "price": "16",
           "image": "images/boisson-cafe.webp"
         },
         {
@@ -2195,7 +2598,7 @@
             "de": "Traditioneller Minztee.",
             "ar": "\u0634\u0627\u064A \u0645\u063A\u0631\u0628\u064A \u062A\u0642\u0644\u064A\u062F\u064A \u0645\u062D\u0636\u0631 \u0628\u0627\u0644\u0646\u0639\u0646\u0627\u0639 \u0627\u0644\u0637\u0627\u0632\u062C \u0627\u0644\u0645\u0646\u0639\u0634."
           },
-          "price": "17",
+          "price": "16",
           "image": "images/boisson-the.webp"
         },
         {
@@ -2211,7 +2614,7 @@
             "de": "Purer schwarzer Tee.",
             "ar": "\u0634\u0627\u064A \u0623\u0633\u0648\u062F \u0637\u0628\u064A\u0639\u064A \u0643\u0644\u0627\u0633\u064A\u0643\u064A \u0648\u062F\u0627\u0641\u0626."
           },
-          "price": "16",
+          "price": "15",
           "image": "images/boisson-thenoir.webp"
         },
         {
@@ -2227,7 +2630,7 @@
             "de": "Eisenkraut-Aufguss.",
             "ar": "\u0645\u0646\u0642\u0648\u0639 \u0646\u0628\u0627\u062A \u0627\u0644\u0644\u0648\u064A\u0632\u0629 \u0627\u0644\u0637\u0628\u064A\u0639\u064A\u0629 \u0627\u0644\u0645\u0647\u062F\u0626\u0629 \u0644\u0644\u0623\u0639\u0635\u0627\u0628."
           },
-          "price": "16",
+          "price": "15",
           "image": "images/boisson-verveine.webp"
         },
         {
@@ -2243,7 +2646,7 @@
             "de": "Normale Milch.",
             "ar": "\u062D\u0644\u064A\u0628 \u0637\u0628\u064A\u0639\u064A \u0637\u0627\u0632\u062C \u064A\u0642\u062F\u0645 \u0628\u0627\u0631\u062F\u0627\u064B \u0623\u0648 \u0633\u0627\u062E\u0646\u0627\u064B \u062D\u0633\u0628 \u0631\u063A\u0628\u062A\u0643."
           },
-          "price": "13",
+          "price": "12",
           "image": "images/boisson-lait.webp"
         }
       ]
@@ -2269,7 +2672,7 @@
             "de": "Energy-Drink.",
             "ar": "\u0645\u0634\u0631\u0648\u0628 \u0637\u0627\u0642\u0629 \u0645\u0646\u0639\u0634 \u0648\u062D\u064A\u0648\u064A \u064A\u0642\u062F\u0645 \u0628\u0627\u0631\u062F\u0627\u064B."
           },
-          "price": "29",
+          "price": "28",
           "image": "images/soda-redbull.webp"
         },
         {
@@ -2285,7 +2688,7 @@
             "de": "Sprudelgetr\xE4nk.",
             "ar": "\u0645\u0634\u0631\u0648\u0628 \u063A\u0627\u0632\u064A \u0643\u0644\u0627\u0633\u064A\u0643\u064A \u0645\u0646\u0639\u0634 \u0648\u0645\u062B\u0644\u062C."
           },
-          "price": "18",
+          "price": "17",
           "image": "images/soda-coca.webp"
         },
         {
@@ -2301,7 +2704,7 @@
             "de": "Zuckerfreies Sprudelgetr\xE4nk.",
             "ar": "\u0645\u0634\u0631\u0648\u0628 \u063A\u0627\u0632\u064A \u0643\u0648\u0643\u0627\u0643\u0648\u0644\u0627 \u0645\u0646\u0639\u0634 \u0628\u062F\u0648\u0646 \u0633\u0643\u0631 \u0648\u0628\u062F\u0648\u0646 \u0633\u0639\u0631\u0627\u062A \u062D\u0631\u0627\u0631\u064A\u0629."
           },
-          "price": "18",
+          "price": "17",
           "image": "images/soda-cocazero.webp"
         },
         {
@@ -2317,7 +2720,7 @@
             "de": "Sprudelgetr\xE4nk.",
             "ar": "\u0645\u0634\u0631\u0648\u0628 \u063A\u0627\u0632\u064A \u0628\u0646\u0643\u0647\u0629 \u0627\u0644\u0644\u064A\u0645\u0648\u0646 \u0627\u0644\u062D\u0627\u0645\u0636 \u0627\u0644\u0645\u0646\u0639\u0634."
           },
-          "price": "18",
+          "price": "17",
           "image": "images/soda-sprite.webp"
         },
         {
@@ -2333,7 +2736,7 @@
             "de": "Sprudelgetr\xE4nk.",
             "ar": "\u0645\u0634\u0631\u0648\u0628 \u063A\u0627\u0632\u064A \u0628\u0646\u0643\u0647\u0629 \u0627\u0644\u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u0627\u0633\u062A\u0648\u0627\u0626\u064A\u0629 \u0627\u0644\u0645\u0646\u0639\u0634\u0629."
           },
-          "price": "18",
+          "price": "17",
           "image": "images/soda-hawai.webp"
         },
         {
@@ -2349,7 +2752,7 @@
             "de": "Sprudelgetr\xE4nk.",
             "ar": "\u0645\u0634\u0631\u0648\u0628 \u063A\u0627\u0632\u064A \u0645\u063A\u0631\u0628\u064A \u0634\u0647\u064A\u0631 \u0628\u0646\u0643\u0647\u0629 \u0627\u0644\u062A\u0641\u0627\u062D \u0627\u0644\u0623\u062E\u0636\u0631 \u0627\u0644\u0644\u0630\u064A\u0630."
           },
-          "price": "18",
+          "price": "17",
           "image": "images/soda-poms.webp"
         },
         {
@@ -2365,7 +2768,7 @@
             "de": "Sprudelgetr\xE4nk.",
             "ar": "\u0645\u0634\u0631\u0648\u0628 \u063A\u0627\u0632\u064A \u0628\u0639\u0635\u064A\u0631 \u0648\u0644\u0628 \u0627\u0644\u0628\u0631\u062A\u0642\u0627\u0644 \u0627\u0644\u0637\u0628\u064A\u0639\u064A \u0627\u0644\u0645\u0646\u0639\u0634."
           },
-          "price": "18",
+          "price": "17",
           "image": "images/soda-orangina.webp"
         },
         {
@@ -2381,7 +2784,7 @@
             "de": "Sprudelgetr\xE4nk.",
             "ar": "\u0645\u0634\u0631\u0648\u0628 \u063A\u0627\u0632\u064A \u0634\u0648\u064A\u0628\u0633 \u0645\u0646\u0639\u0634 \u0628\u0646\u0643\u0647\u0629 \u0627\u0644\u0644\u064A\u0645\u0648\u0646 \u0623\u0648 \u0645\u0627\u0621 \u0627\u0644\u062A\u0648\u0646\u064A\u0643."
           },
-          "price": "18",
+          "price": "17",
           "image": "images/soda-schweppes.webp"
         }
       ]
@@ -2407,7 +2810,7 @@
             "de": "Sprudelndes Mineralwasser.",
             "ar": "\u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A \u063A\u0627\u0632\u064A \u0637\u0628\u064A\u0639\u064A \u0641\u0648\u0627\u0631 \u0645\u0646\u0639\u0634 \u0628\u062D\u062C\u0645 \u0643\u0628\u064A\u0631 75 \u0633\u0646\u062A\u0644\u062A\u0631."
           },
-          "price": "28",
+          "price": "26",
           "image": "images/eau-oulmes75cl.webp"
         },
         {
@@ -2423,7 +2826,7 @@
             "de": "75 cl Mineralwasserflasche.",
             "ar": "\u0642\u0646\u064A\u0646\u0629 \u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A \u0637\u0628\u064A\u0639\u064A \u0646\u0642\u064A \u0628\u062D\u062C\u0645 \u0643\u0628\u064A\u0631 75 \u0633\u0646\u062A\u0644\u062A\u0631."
           },
-          "price": "24",
+          "price": "22",
           "image": "images/eau-75.webp"
         },
         {
@@ -2439,7 +2842,7 @@
             "de": "Sprudelndes Mineralwasser.",
             "ar": "\u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A \u063A\u0627\u0632\u064A \u0637\u0628\u064A\u0639\u064A \u0641\u0648\u0627\u0631 \u0645\u0646\u0639\u0634 \u0628\u062D\u062C\u0645 \u0641\u0631\u062F\u064A 50 \u0633\u0646\u062A\u0644\u062A\u0631."
           },
-          "price": "17",
+          "price": "16",
           "image": "images/eau-oulmes.webp"
         },
         {
@@ -2471,6 +2874,22 @@
       "items": [
         {
           "name": {
+            "fr": "ZA3ZA3",
+            "en": "ZA3ZA3",
+            "de": "ZA3ZA3",
+            "ar": "\u0632\u0639\u0632\u0639 \u0641\u0627\u0633\u064A \u0641\u0627\u062E\u0631"
+          },
+          "description": {
+            "fr": "Cocktail marocain riche en fruits secs et lait.",
+            "en": "Rich Moroccan cocktail with dried fruits and milk.",
+            "de": "Reicher marokkanischer Cocktail mit Nussfr\xFCchten und Milch.",
+            "ar": "\u0643\u0648\u0643\u062A\u064A\u0644 \u0645\u063A\u0631\u0628\u064A \u063A\u0646\u064A \u0628\u0627\u0644\u0623\u0641\u0648\u0643\u0627\u062F\u0648 \u0648\u0627\u0644\u062D\u0644\u064A\u0628 \u0648\u0627\u0644\u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u062C\u0627\u0641\u0629 \u0648\u0627\u0644\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0648\u0642\u0637\u0639 \u0627\u0644\u0643\u064A\u0643."
+          },
+          "price": "46",
+          "image": "images/jus-za3za3.webp"
+        },
+        {
+          "name": {
             "fr": "COCKTAIL ORANGE",
             "en": "ORANGE COCKTAIL",
             "de": "ORANGEN-COCKTAIL",
@@ -2482,7 +2901,7 @@
             "de": "Cocktail auf Orangenbasis.",
             "ar": "\u0643\u0648\u0643\u062A\u064A\u0644 \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644 \u0637\u0628\u064A\u0639\u064A \u0645\u0646\u0639\u0634 \u0645\u0645\u0632\u0648\u062C \u0628\u0627\u0644\u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u0637\u0627\u0632\u062C\u0629."
           },
-          "price": "45",
+          "price": "42",
           "image": "images/jus-cocktailorange.webp"
         },
         {
@@ -2498,8 +2917,24 @@
             "de": "Mischung aus Avocado und Nussfr\xFCchten.",
             "ar": "\u0639\u0635\u064A\u0631 \u0623\u0641\u0648\u0643\u0627\u062F\u0648 \u0643\u0631\u064A\u0645\u064A \u0645\u0645\u0632\u0648\u062C \u0628\u0627\u0644\u062D\u0644\u064A\u0628 \u0648\u0627\u0644\u0645\u0643\u0633\u0631\u0627\u062A (\u0644\u0648\u0632\u060C \u062C\u0648\u0632) \u0648\u0627\u0644\u062A\u0645\u0648\u0631."
           },
-          "price": "40",
+          "price": "38",
           "image": "images/jus-avocatsec.webp"
+        },
+        {
+          "name": {
+            "fr": "PANACH\xC9 AU LAIT",
+            "en": "MILK PANACHE",
+            "de": "MILCH PANACHE",
+            "ar": "\u0639\u0635\u064A\u0631 \u0628\u0627\u0646\u0627\u0634\u064A \u0628\u0627\u0644\u062D\u0644\u064A\u0628"
+          },
+          "description": {
+            "fr": "M\xE9lange de jus de fruits au lait.",
+            "en": "Mix of fruit juices with milk.",
+            "de": "Mischung aus Fruchts\xE4ften mit Milch.",
+            "ar": "\u0645\u0632\u064A\u062C \u0645\u0634\u0643\u0644 \u0645\u0646 \u0639\u0635\u0627\u0626\u0631 \u0627\u0644\u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u0645\u0648\u0633\u0645\u064A\u0629 \u0627\u0644\u0637\u0627\u0632\u062C\u0629 \u0645\u062E\u0641\u0648\u0642\u0629 \u0645\u0639 \u0627\u0644\u062D\u0644\u064A\u0628."
+          },
+          "price": "38",
+          "image": "images/jus-panache.webp"
         },
         {
           "name": {
@@ -2514,7 +2949,7 @@
             "de": "Frischer Himbeersaft.",
             "ar": "\u0639\u0635\u064A\u0631 \u062A\u0648\u062A \u0627\u0644\u0639\u0644\u064A\u0642 (\u0627\u0644\u0641\u0631\u064A\u0632 \u0627\u0644\u0628\u0631\u064A) \u0627\u0644\u0637\u0627\u0632\u062C \u0627\u0644\u063A\u0646\u064A \u0648\u0627\u0644\u0645\u0646\u0639\u0634."
           },
-          "price": "38",
+          "price": "35",
           "image": "images/jus-framboise.webp"
         },
         {
@@ -2530,7 +2965,7 @@
             "de": "Frischer Avocadosaft.",
             "ar": "\u0639\u0635\u064A\u0631 \u0623\u0641\u0648\u0643\u0627\u062F\u0648 \u0637\u0627\u0632\u062C \u0628\u0642\u0648\u0627\u0645 \u0646\u0627\u0639\u0645 \u0648\u0643\u0631\u064A\u0645\u064A \u0628\u0627\u0644\u062D\u0644\u064A\u0628."
           },
-          "price": "35",
+          "price": "32",
           "image": "images/jus-avocat.webp"
         },
         {
@@ -2546,7 +2981,7 @@
             "de": "Frischer Ananassaft.",
             "ar": "\u0639\u0635\u064A\u0631 \u0623\u0646\u0627\u0646\u0627\u0633 \u0627\u0633\u062A\u0648\u0627\u0626\u064A \u0637\u0627\u0632\u062C \u0645\u0639\u0635\u0648\u0631 \u0648\u063A\u0646\u064A \u0628\u0627\u0644\u0627\u0646\u062A\u0639\u0627\u0634."
           },
-          "price": "34",
+          "price": "32",
           "image": "images/jus-ananas.webp"
         },
         {
@@ -2562,7 +2997,7 @@
             "de": "Frischer Mangosaft.",
             "ar": "\u0639\u0635\u064A\u0631 \u0645\u0627\u0646\u062C\u0648 \u0627\u0633\u062A\u0648\u0627\u0626\u064A \u0637\u0628\u064A\u0639\u064A \u063A\u0646\u064A \u0648\u0646\u0627\u0639\u0645."
           },
-          "price": "32",
+          "price": "30",
           "image": "images/jus-mangue.webp"
         },
         {
@@ -2578,7 +3013,7 @@
             "de": "Frischer Pfirsichsaft.",
             "ar": "\u0639\u0635\u064A\u0631 \u062E\u0648\u062E \u0637\u0628\u064A\u0639\u064A \u0637\u0627\u0632\u062C \u0628\u0645\u0630\u0627\u0642 \u062D\u0644\u0648 \u0648\u0645\u0646\u0639\u0634."
           },
-          "price": "32",
+          "price": "30",
           "image": "images/jus-peche.webp"
         },
         {
@@ -2594,7 +3029,7 @@
             "de": "Frischer Erdbeersaft.",
             "ar": "\u0639\u0635\u064A\u0631 \u0641\u0631\u0627\u0648\u0644\u0629 \u0637\u0628\u064A\u0639\u064A\u0629 \u0637\u0627\u0632\u062C\u0629 \u0645\u0639\u0635\u0648\u0631\u0629 \u0628\u0644\u0648\u0646\u0647\u0627 \u0648\u0645\u0630\u0627\u0642\u0647\u0627 \u0627\u0644\u0631\u0627\u0626\u0639."
           },
-          "price": "32",
+          "price": "30",
           "image": "images/jus-fraise.webp"
         },
         {
@@ -2610,7 +3045,7 @@
             "de": "Apfel- oder Bananensaft.",
             "ar": "\u0639\u0635\u064A\u0631 \u062A\u0641\u0627\u062D \u0637\u0627\u0632\u062C \u0623\u0648 \u0639\u0635\u064A\u0631 \u0645\u0648\u0632 \u0645\u063A\u0630\u064A \u0645\u062E\u0641\u0648\u0642 \u0645\u0639 \u0627\u0644\u062D\u0644\u064A\u0628 \u062D\u0633\u0628 \u0627\u062E\u062A\u064A\u0627\u0631\u0643."
           },
-          "price": "30",
+          "price": "28",
           "image": "images/jus-pomme-banane.webp"
         },
         {
@@ -2626,7 +3061,7 @@
             "de": "Frischer Zitronensaft.",
             "ar": "\u0639\u0635\u064A\u0631 \u0644\u064A\u0645\u0648\u0646 \u062D\u0627\u0645\u0636 \u0637\u0628\u064A\u0639\u064A \u0645\u0646\u0639\u0634 \u0648\u0645\u062B\u0644\u062C."
           },
-          "price": "27",
+          "price": "25",
           "image": "images/jus-citron.webp"
         },
         {
@@ -2642,7 +3077,7 @@
             "de": "Frischer Karottensaft.",
             "ar": "\u0639\u0635\u064A\u0631 \u062C\u0632\u0631 \u0637\u0628\u064A\u0639\u064A 100% \u0645\u0639\u0635\u0648\u0631 \u0641\u0648\u0631\u064A\u0627\u064B \u0648\u063A\u0646\u064A \u0628\u0627\u0644\u0641\u064A\u062A\u0627\u0645\u064A\u0646\u0627\u062A."
           },
-          "price": "26",
+          "price": "25",
           "image": "images/jus-carotte.webp"
         },
         {
@@ -2658,7 +3093,7 @@
             "de": "Frisch gepresster Orangensaft.",
             "ar": "\u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644 \u0645\u063A\u0631\u0628\u064A \u0637\u0627\u0632\u062C 100% \u0645\u0639\u0635\u0648\u0631 \u0641\u0648\u0631\u064A\u0627\u064B \u0648\u063A\u0646\u064A \u0628\u0641\u064A\u062A\u0627\u0645\u064A\u0646 \u0633\u064A."
           },
-          "price": "24",
+          "price": "22",
           "image": "images/jus-orange.webp"
         }
       ]
@@ -2684,7 +3119,7 @@
             "de": "Eistee mit Zitronengeschmack.",
             "ar": "\u0634\u0627\u064A \u0645\u062B\u0644\u062C \u0645\u0646\u0639\u0634 \u0628\u0646\u0643\u0647\u0629 \u0627\u0644\u0644\u064A\u0645\u0648\u0646 \u0627\u0644\u062D\u0627\u0645\u0636 \u0648\u0627\u0644\u062B\u0644\u062C \u0627\u0644\u0645\u062C\u0631\u0648\u0634."
           },
-          "price": "29",
+          "price": "28",
           "image": "images/icetea-citron.webp"
         },
         {
@@ -2700,7 +3135,7 @@
             "de": "Eistee mit Pfirsichgeschmack.",
             "ar": "\u0634\u0627\u064A \u0645\u062B\u0644\u062C \u0645\u0646\u0639\u0634 \u0648\u0645\u062D\u0644\u0649 \u0628\u0646\u0643\u0647\u0629 \u0627\u0644\u062E\u0648\u062E \u0627\u0644\u0637\u0628\u064A\u0639\u064A\u0629 \u0627\u0644\u0644\u0630\u064A\u0630\u0629."
           },
-          "price": "29",
+          "price": "28",
           "image": "images/icetea-peche.webp"
         },
         {
@@ -2716,7 +3151,7 @@
             "de": "Eistee mit Himbeergeschmack.",
             "ar": "\u0634\u0627\u064A \u0645\u062B\u0644\u062C \u0645\u0646\u0639\u0634 \u0628\u0646\u0643\u0647\u0629 \u062A\u0648\u062A \u0627\u0644\u0639\u0644\u064A\u0642 \u0627\u0644\u0623\u062D\u0645\u0631."
           },
-          "price": "29",
+          "price": "28",
           "image": "images/icetea-framboise.webp"
         }
       ]
@@ -2742,7 +3177,7 @@
             "de": "Eiskaffee mit Geschmack nach Wahl.",
             "ar": "\u0642\u0647\u0648\u0629 \u0645\u062B\u0644\u062C\u0629 \u0628\u0627\u0644\u062D\u0644\u064A\u0628 \u0648\u0627\u0644\u062B\u0644\u062C \u0645\u0639 \u0646\u0643\u0647\u0629 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643 (\u0643\u0631\u0627\u0645\u064A\u0644\u060C \u0641\u0627\u0646\u064A\u0644\u064A\u0627\u060C \u0623\u0648 \u0628\u0646\u062F\u0642)."
           },
-          "price": "24",
+          "price": "23",
           "image": "images/icecoffee-arom.webp"
         },
         {
@@ -2758,7 +3193,7 @@
             "de": "Traditioneller Eiskaffee.",
             "ar": "\u0642\u0647\u0648\u0629 \u0645\u062B\u0644\u062C\u0629 \u062A\u0642\u0644\u064A\u062F\u064A\u0629 \u0645\u0646\u0639\u0634\u0629 \u0645\u062D\u0636\u0631\u0629 \u0628\u0627\u0644\u0625\u0633\u0628\u0631\u064A\u0633\u0648 \u0648\u0627\u0644\u062D\u0644\u064A\u0628 \u0627\u0644\u0628\u0627\u0631\u062F \u0648\u0645\u0643\u0639\u0628\u0627\u062A \u0627\u0644\u062B\u0644\u062C."
           },
-          "price": "22",
+          "price": "20",
           "image": "images/icecoffee-class.webp"
         }
       ]
@@ -2784,7 +3219,7 @@
             "de": "Frappuccino mit Geschmack nach Wahl.",
             "ar": "\u0645\u0634\u0631\u0648\u0628 \u0641\u0631\u0627\u0628\u062A\u0634\u064A\u0646\u0648 \u0645\u062E\u0641\u0648\u0642 \u0628\u0627\u0644\u062B\u0644\u062C \u0648\u0627\u0644\u0642\u0647\u0648\u0629 \u0645\u0639 \u0646\u0643\u0647\u0629 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643 (\u0643\u0631\u0627\u0645\u064A\u0644\u060C \u0641\u0627\u0646\u064A\u0644\u064A\u0627\u060C \u0623\u0648 \u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629)."
           },
-          "price": "29",
+          "price": "28",
           "image": "images/frappu-arom.webp"
         },
         {
@@ -2800,7 +3235,7 @@
             "de": "Gemischtes Eiskaffeegetr\xE4nk, Frapp\xE9-Stil.",
             "ar": "\u0645\u0634\u0631\u0648\u0628 \u0642\u0647\u0648\u0629 \u0645\u062B\u0644\u062C\u0629 \u0645\u062E\u0641\u0648\u0642\u0629 \u0639\u0644\u0649 \u0637\u0631\u064A\u0642\u0629 \u0627\u0644\u0641\u0631\u0627\u0628\u064A \u0627\u0644\u0643\u0644\u0627\u0633\u064A\u0643\u064A\u0629 \u0645\u0639 \u0627\u0644\u0643\u0631\u064A\u0645\u0629."
           },
-          "price": "26",
+          "price": "25",
           "image": "images/frappu-class.webp"
         }
       ]
@@ -2815,6 +3250,22 @@
       "items": [
         {
           "name": {
+            "fr": "COCKTAIL GREY CORNER",
+            "en": "GREY CORNER COCKTAIL",
+            "de": "GREY CORNER COCKTAIL",
+            "ar": "\u0643\u0648\u0643\u062A\u064A\u0644 \u063A\u0631\u064A \u0643\u0648\u0631\u0646\u0631 \u0627\u0644\u062E\u0627\u0635"
+          },
+          "description": {
+            "fr": "Ananas, avocat, fruit de saison, sirop fruits de passion.",
+            "en": "Pineapple, avocado, seasonal fruit, passion fruit syrup.",
+            "de": "Ananas, Avocado, saisonale Frucht, Passionsfruchtsirup.",
+            "ar": "\u0623\u0646\u0627\u0646\u0627\u0633\u060C \u0623\u0641\u0648\u0643\u0627\u062F\u0648\u060C \u0641\u0648\u0627\u0643\u0647 \u0645\u0648\u0633\u0645\u064A\u0629 \u0637\u0627\u0632\u062C\u0629\u060C \u0648\u0633\u064A\u0631\u0648\u0628 \u0641\u0627\u0643\u0647\u0629 \u0627\u0644\u0639\u0627\u0637\u0641\u0629 (\u0628\u0627\u0634\u0646 \u0641\u0631\u0648\u062A)."
+          },
+          "price": "48",
+          "image": "images/cocktail-gc.webp"
+        },
+        {
+          "name": {
             "fr": "FRA\xCECHEUR",
             "en": "FRESHNESS",
             "de": "FRISCHE",
@@ -2826,7 +3277,7 @@
             "de": "Ananas, Birne, Zitrone, Minze.",
             "ar": "\u0623\u0646\u0627\u0646\u0627\u0633\u060C \u0625\u062C\u0627\u0635 (\u0628\u0648\u0639\u0648\u064A\u062F)\u060C \u0644\u064A\u0645\u0648\u0646 \u062D\u0627\u0645\u0636\u060C \u0648\u0623\u0648\u0631\u0627\u0642 \u0627\u0644\u0646\u0639\u0646\u0627\u0639 \u0627\u0644\u0637\u0627\u0632\u062C\u0629."
           },
-          "price": "44",
+          "price": "42",
           "image": "images/cocktail-fraicheur.webp"
         },
         {
@@ -2842,7 +3293,7 @@
             "de": "Mango, Banane, Orange, Hibiskus.",
             "ar": "\u0645\u0627\u0646\u062C\u0648\u060C \u0645\u0648\u0632\u060C \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0648\u0639\u0635\u064A\u0631 \u0627\u0644\u0643\u0631\u0643\u062F\u064A\u0647 (\u0628\u064A\u0633\u0627\u0628) \u0627\u0644\u0645\u0646\u0639\u0634."
           },
-          "price": "44",
+          "price": "42",
           "image": "images/cocktail-tropical.webp"
         },
         {
@@ -2858,7 +3309,7 @@
             "de": "Ananas, Kokosnuss.",
             "ar": "\u0639\u0635\u064A\u0631 \u0623\u0646\u0627\u0646\u0627\u0633 \u0637\u0628\u064A\u0639\u064A \u0645\u062E\u0641\u0648\u0642 \u0645\u0639 \u062D\u0644\u064A\u0628 \u0648\u0643\u0631\u064A\u0645\u0629 \u062C\u0648\u0632 \u0627\u0644\u0647\u0646\u062F \u0648\u0627\u0644\u062B\u0644\u062C."
           },
-          "price": "44",
+          "price": "42",
           "image": "images/cocktail-pinacolada.webp"
         },
         {
@@ -2874,7 +3325,7 @@
             "de": "Ingwer, Zitrone, Honig.",
             "ar": "\u0632\u0646\u062C\u0628\u064A\u0644 \u0637\u0627\u0632\u062C\u060C \u0639\u0635\u064A\u0631 \u0644\u064A\u0645\u0648\u0646 \u062D\u0627\u0645\u0636\u060C \u0648\u0639\u0633\u0644 \u0637\u0628\u064A\u0639\u064A \u0646\u0642\u064A."
           },
-          "price": "34",
+          "price": "32",
           "image": "images/cocktail-gingembre.webp"
         },
         {
@@ -2890,7 +3341,7 @@
             "de": "Ingwer, Hibiskus, Orange, Zitrone.",
             "ar": "\u0632\u0646\u062C\u0628\u064A\u0644\u060C \u0643\u0631\u0643\u062F\u064A\u0647 (\u0628\u064A\u0633\u0627\u0628)\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0648\u0639\u0635\u064A\u0631 \u0644\u064A\u0645\u0648\u0646 \u0645\u0646\u0639\u0634."
           },
-          "price": "35",
+          "price": "34",
           "image": "images/cocktail-sf.webp"
         }
       ]
@@ -2916,7 +3367,7 @@
             "de": "Belebender Mojito mit Redbull.",
             "ar": "\u0645\u0648\u0647\u064A\u062A\u0648 \u0645\u0646\u0639\u0634 \u0628\u0645\u0634\u0631\u0648\u0628 \u0627\u0644\u0637\u0627\u0642\u0629 \u0631\u064A\u062F \u0628\u0648\u0644\u060C \u0627\u0644\u0644\u064A\u0645\u0648\u0646 \u0627\u0644\u062D\u0627\u0645\u0636\u060C \u0648\u0627\u0644\u0646\u0639\u0646\u0627\u0639 \u0627\u0644\u0637\u0627\u0632\u062C \u0645\u0639 \u0627\u0644\u062B\u0644\u062C \u0627\u0644\u0645\u062C\u0631\u0648\u0634."
           },
-          "price": "46",
+          "price": "44",
           "image": "images/mojito-redbull.webp"
         },
         {
@@ -2932,7 +3383,7 @@
             "de": "Mojito mit tropischen Aromen.",
             "ar": "\u0645\u0648\u0647\u064A\u062A\u0648 \u0645\u0646\u0639\u0634 \u0628\u0646\u0643\u0647\u0627\u062A \u0627\u0644\u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u0627\u0633\u062A\u0648\u0627\u0626\u064A\u0629\u060C \u0627\u0644\u0644\u064A\u0645\u0648\u0646\u060C \u0648\u0627\u0644\u0646\u0639\u0646\u0627\u0639 \u0627\u0644\u0637\u0627\u0632\u062C."
           },
-          "price": "40",
+          "price": "38",
           "image": "images/mojito-tropical.webp"
         },
         {
@@ -2948,7 +3399,7 @@
             "de": "Klassischer Zitronen Mojito.",
             "ar": "\u0645\u0648\u0647\u064A\u062A\u0648 \u0643\u0644\u0627\u0633\u064A\u0643\u064A \u0645\u0646\u0639\u0634 \u0628\u0639\u0635\u064A\u0631 \u0627\u0644\u0644\u064A\u0645\u0648\u0646 \u0648\u0627\u0644\u0646\u0639\u0646\u0627\u0639 \u0627\u0644\u0637\u0627\u0632\u062C \u0648\u0627\u0644\u0635\u0648\u062F\u0627 \u0627\u0644\u0641\u0648\u0627\u0631\u0629."
           },
-          "price": "36",
+          "price": "34",
           "image": "images/mojito-citron.webp"
         }
       ]
@@ -2963,6 +3414,22 @@
       "items": [
         {
           "name": {
+            "fr": "JELLY ALMOND",
+            "en": "JELLY ALMOND",
+            "de": "JELLY ALMOND",
+            "ar": "\u0633\u0645\u0648\u0630\u064A \u062C\u064A\u0644\u064A \u0623\u0644\u0645\u0648\u0646\u062F"
+          },
+          "description": {
+            "fr": "Banane, amlou, framboise, myrtille.",
+            "en": "Banana, amlou, raspberry, blueberry.",
+            "de": "Banane, Amlou, Himbeere, Blaubeere.",
+            "ar": "\u0645\u0648\u0632\u060C \u0623\u0645\u0644\u0648 \u0628\u0627\u0644\u0644\u0648\u0632\u060C \u062A\u0648\u062A \u0627\u0644\u0639\u0644\u064A\u0642 (\u0641\u0648\u0627\u0632)\u060C \u0648\u0627\u0644\u062A\u0648\u062A \u0627\u0644\u0623\u0632\u0631\u0642 (\u0645\u064A\u0631\u062A\u064A\u0644)."
+          },
+          "price": "48",
+          "image": "images/smoothie-jelly.webp"
+        },
+        {
+          "name": {
             "fr": "PINK SMOOTHIE",
             "en": "PINK SMOOTHIE",
             "de": "PINK SMOOTHIE",
@@ -2974,7 +3441,7 @@
             "de": "Himbeere, Orange, Erdbeere.",
             "ar": "\u062A\u0648\u062A \u0627\u0644\u0639\u0644\u064A\u0642\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0648\u0641\u0631\u0627\u0648\u0644\u0629 \u0637\u0627\u0632\u062C\u0629 \u0645\u062E\u0641\u0648\u0642\u0629."
           },
-          "price": "50",
+          "price": "48",
           "image": "images/smoothie-pink.webp"
         },
         {
@@ -2990,7 +3457,7 @@
             "de": "Blaubeere, Himbeere, Erdbeere.",
             "ar": "\u062A\u0648\u062A \u0623\u0632\u0631\u0642\u060C \u062A\u0648\u062A \u0627\u0644\u0639\u0644\u064A\u0642\u060C \u0648\u0641\u0631\u0627\u0648\u0644\u0629 \u0637\u0627\u0632\u062C\u0629 \u0645\u0646\u0639\u0634\u0629."
           },
-          "price": "50",
+          "price": "48",
           "image": "images/smoothie-triple.webp"
         },
         {
@@ -3006,7 +3473,7 @@
             "de": "Banane, Ananas, Mango.",
             "ar": "\u0645\u0648\u0632\u060C \u0623\u0646\u0627\u0646\u0627\u0633 \u0627\u0633\u062A\u0648\u0627\u0626\u064A\u060C \u0648\u0645\u0627\u0646\u062C\u0648 \u0637\u0628\u064A\u0639\u064A \u063A\u0646\u064A \u0628\u0627\u0644\u0641\u064A\u062A\u0627\u0645\u064A\u0646\u0627\u062A."
           },
-          "price": "44",
+          "price": "42",
           "image": "images/smoothie-energetic.webp"
         },
         {
@@ -3022,7 +3489,7 @@
             "de": "Orange, Pfirsich, Karotte.",
             "ar": "\u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u062E\u0648\u062E \u0637\u0628\u064A\u0639\u064A\u060C \u0648\u062C\u0632\u0631 \u0637\u0627\u0632\u062C \u063A\u0646\u064A \u0628\u0627\u0644\u0641\u0648\u0627\u0626\u062F \u0627\u0644\u0635\u062D\u064A\u0629."
           },
-          "price": "44",
+          "price": "42",
           "image": "images/smoothie-multiv.webp"
         },
         {
@@ -3038,7 +3505,7 @@
             "de": "Erdbeere, Ananas, Kiwi, Avocado, Minze.",
             "ar": "\u0641\u0631\u0627\u0648\u0644\u0629\u060C \u0623\u0646\u0627\u0646\u0627\u0633\u060C \u0643\u064A\u0648\u064A\u060C \u0623\u0641\u0648\u0643\u0627\u062F\u0648 \u0643\u0631\u064A\u0645\u064A\u060C \u0648\u0623\u0648\u0631\u0627\u0642 \u0627\u0644\u0646\u0639\u0646\u0627\u0639 \u0627\u0644\u0637\u0627\u0632\u062C\u0629."
           },
-          "price": "44",
+          "price": "42",
           "image": "images/smoothie-hawai.webp"
         }
       ]
@@ -3064,7 +3531,7 @@
             "de": "Mango, Avocado, Banane, Zitrone, Erdbeere, Orange.",
             "ar": "\u0645\u0627\u0646\u062C\u0648\u060C \u0623\u0641\u0648\u0643\u0627\u062F\u0648\u060C \u0645\u0648\u0632\u060C \u0644\u064A\u0645\u0648\u0646\u060C \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u0648\u0628\u0631\u062A\u0642\u0627\u0644 \u0641\u064A \u0648\u0639\u0627\u0621 \u0633\u0645\u0648\u0630\u064A \u063A\u0646\u064A \u0648\u0645\u0632\u064A\u0646."
           },
-          "price": "50",
+          "price": "48",
           "image": "images/smoothiebowl-ultra.webp"
         },
         {
@@ -3080,7 +3547,7 @@
             "de": "Ananas, Pfirsich, Mango, Banane, Orange.",
             "ar": "\u0623\u0646\u0627\u0646\u0627\u0633\u060C \u062E\u0648\u062E\u060C \u0645\u0627\u0646\u062C\u0648\u060C \u0645\u0648\u0632\u060C \u0648\u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644 \u0641\u064A \u0648\u0639\u0627\u0621 \u0633\u0645\u0648\u0630\u064A \u0645\u0646\u0639\u0634 \u0628\u0627\u0644\u0641\u0648\u0627\u0643\u0647."
           },
-          "price": "50",
+          "price": "48",
           "image": "images/smoothiebowl-exotic.webp"
         }
       ]
@@ -3106,7 +3573,7 @@
             "de": "Milkshake mit Erdbeergeschmack.",
             "ar": "\u0645\u064A\u0644\u0643 \u0634\u064A\u0643 \u0643\u0631\u064A\u0645\u064A \u0645\u062E\u0641\u0648\u0642 \u0628\u0627\u0644\u062D\u0644\u064A\u0628 \u0648\u0622\u064A\u0633 \u0643\u0631\u064A\u0645 \u0627\u0644\u0641\u0631\u0627\u0648\u0644\u0629 \u0648\u0635\u0644\u0635\u0629 \u0627\u0644\u0641\u0631\u0627\u0648\u0644\u0629 \u0627\u0644\u0644\u0630\u064A\u0630\u0629."
           },
-          "price": "43",
+          "price": "42",
           "image": "images/milkshake-fraise.webp"
         },
         {
@@ -3122,7 +3589,7 @@
             "de": "Milkshake mit Karamellgeschmack.",
             "ar": "\u0645\u064A\u0644\u0643 \u0634\u064A\u0643 \u0643\u0631\u064A\u0645\u064A \u0645\u062E\u0641\u0648\u0642 \u0628\u0627\u0644\u062D\u0644\u064A\u0628 \u0648\u0622\u064A\u0633 \u0643\u0631\u064A\u0645 \u0627\u0644\u0643\u0631\u0627\u0645\u064A\u0644 \u0645\u0639 \u0635\u0644\u0635\u0629 \u0627\u0644\u062A\u0648\u0641\u064A \u0627\u0644\u063A\u0646\u064A\u0629."
           },
-          "price": "43",
+          "price": "42",
           "image": "images/milkshake-caramel.webp"
         },
         {
@@ -3138,7 +3605,7 @@
             "de": "Milkshake mit Schokoladengeschmack.",
             "ar": "\u0645\u064A\u0644\u0643 \u0634\u064A\u0643 \u0643\u0631\u064A\u0645\u064A \u0645\u062E\u0641\u0648\u0642 \u0628\u0627\u0644\u062D\u0644\u064A\u0628 \u0648\u0622\u064A\u0633 \u0643\u0631\u064A\u0645 \u0627\u0644\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0648\u0635\u0644\u0635\u0629 \u0627\u0644\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0627\u0644\u0628\u0644\u062C\u064A\u0643\u064A\u0629."
           },
-          "price": "43",
+          "price": "42",
           "image": "images/milkshake-choc.webp"
         },
         {
@@ -3154,8 +3621,56 @@
             "de": "Milkshake mit Vanillegeschmack.",
             "ar": "\u0645\u064A\u0644\u0643 \u0634\u064A\u0643 \u0643\u0631\u064A\u0645\u064A \u0643\u0644\u0627\u0633\u064A\u0643\u064A \u0645\u062E\u0641\u0648\u0642 \u0628\u0627\u0644\u062D\u0644\u064A\u0628 \u0627\u0644\u0637\u0628\u064A\u0639\u064A \u0648\u0622\u064A\u0633 \u0643\u0631\u064A\u0645 \u0627\u0644\u0641\u0627\u0646\u064A\u0644\u064A\u0627 \u0627\u0644\u0641\u0627\u062E\u0631\u0629."
           },
-          "price": "43",
+          "price": "42",
           "image": "images/milkshake-vanille.webp"
+        },
+        {
+          "name": {
+            "fr": "MILKSHAKE COOKIES",
+            "en": "COOKIES MILKSHAKE",
+            "de": "COOKIES MILKSHAKE",
+            "ar": "\u0645\u064A\u0644\u0643 \u0634\u064A\u0643 \u0643\u0648\u0643\u064A\u0632"
+          },
+          "description": {
+            "fr": "Milkshake aux cookies.",
+            "en": "Cookies flavored milkshake.",
+            "de": "Milkshake mit Cookies-Geschmack.",
+            "ar": "\u0645\u064A\u0644\u0643 \u0634\u064A\u0643 \u0643\u0631\u064A\u0645\u064A \u0645\u062E\u0641\u0648\u0642 \u0628\u0627\u0644\u062D\u0644\u064A\u0628 \u0648\u0642\u0637\u0639 \u0628\u0633\u0643\u0648\u064A\u062A \u0627\u0644\u0643\u0648\u0643\u064A\u0632 \u0627\u0644\u0645\u0642\u0631\u0645\u0634\u0629 \u0627\u0644\u0644\u0630\u064A\u0630\u0629."
+          },
+          "price": "42",
+          "image": "images/milkshake-cookies.webp"
+        },
+        {
+          "name": {
+            "fr": "MILKSHAKE KITKAT",
+            "en": "KITKAT MILKSHAKE",
+            "de": "KITKAT MILKSHAKE",
+            "ar": "\u0645\u064A\u0644\u0643 \u0634\u064A\u0643 \u0643\u064A\u062A \u0643\u0627\u062A"
+          },
+          "description": {
+            "fr": "Milkshake au Kitkat.",
+            "en": "Kitkat flavored milkshake.",
+            "de": "Milkshake mit Kitkat-Geschmack.",
+            "ar": "\u0645\u064A\u0644\u0643 \u0634\u064A\u0643 \u0643\u0631\u064A\u0645\u064A \u0645\u062E\u0641\u0648\u0642 \u0628\u0627\u0644\u062D\u0644\u064A\u0628 \u0645\u0639 \u0623\u0635\u0627\u0628\u0639 \u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0643\u064A\u062A \u0643\u0627\u062A \u0627\u0644\u0645\u0642\u0631\u0645\u0634\u0629."
+          },
+          "price": "42",
+          "image": "images/milkshake-kitkat.webp"
+        },
+        {
+          "name": {
+            "fr": "MILKSHAKE OREO",
+            "en": "OREO MILKSHAKE",
+            "de": "OREO MILKSHAKE",
+            "ar": "\u0645\u064A\u0644\u0643 \u0634\u064A\u0643 \u0623\u0648\u0631\u064A\u0648"
+          },
+          "description": {
+            "fr": "Milkshake aux Oreo.",
+            "en": "Oreo flavored milkshake.",
+            "de": "Milkshake mit Oreo-Geschmack.",
+            "ar": "\u0645\u064A\u0644\u0643 \u0634\u064A\u0643 \u0643\u0631\u064A\u0645\u064A \u0645\u062E\u0641\u0648\u0642 \u0628\u0627\u0644\u062D\u0644\u064A\u0628 \u0648\u0628\u0633\u0643\u0648\u064A\u062A \u0623\u0648\u0631\u064A\u0648 \u0627\u0644\u0634\u0647\u064A\u0631 \u0645\u0639 \u0627\u0644\u0643\u0631\u064A\u0645\u0629."
+          },
+          "price": "42",
+          "image": "images/milkshake-oreo.webp"
         },
         {
           "name": {
@@ -3170,7 +3685,7 @@
             "de": "Milkshake mit Nutella-Geschmack.",
             "ar": "\u0645\u064A\u0644\u0643 \u0634\u064A\u0643 \u0643\u0631\u064A\u0645\u064A \u0645\u062E\u0641\u0648\u0642 \u0628\u0627\u0644\u062D\u0644\u064A\u0628 \u0648\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0646\u0648\u062A\u064A\u0644\u0627 \u0627\u0644\u0623\u0635\u0644\u064A\u0629 \u0627\u0644\u063A\u0646\u064A\u0629 \u0628\u0627\u0644\u0628\u0646\u062F\u0642."
           },
-          "price": "43",
+          "price": "42",
           "image": "images/milkshake-nutella.webp"
         },
         {
@@ -3186,8 +3701,34 @@
             "de": "Zusatz von Schlagsahne.",
             "ar": "\u0625\u0636\u0627\u0641\u0629 \u0637\u0628\u0642\u0629 \u0648\u0641\u064A\u0631\u0629 \u0645\u0646 \u0643\u0631\u064A\u0645\u0629 \u0627\u0644\u0634\u0627\u0646\u062A\u064A\u064A \u0627\u0644\u0645\u062E\u0641\u0648\u0642\u0629 \u0627\u0644\u0637\u0627\u0632\u062C\u0629 \u0648\u0627\u0644\u0644\u0630\u064A\u0630\u0629."
           },
-          "price": "6",
+          "price": "05",
           "image": "images/milkshake-chant.webp"
+        }
+      ]
+    },
+    {
+      "category": {
+        "fr": "ORANGESHAKE",
+        "en": "ORANGESHAKE",
+        "de": "ORANGESHAKE",
+        "ar": "\u0623\u0648\u0631\u0627\u0646\u062C \u0634\u064A\u0643"
+      },
+      "items": [
+        {
+          "name": {
+            "fr": "ORANGESHAKE",
+            "en": "ORANGESHAKE",
+            "de": "ORANGESHAKE",
+            "ar": "\u0623\u0648\u0631\u0627\u0646\u062C \u0634\u064A\u0643 \u0627\u0644\u0645\u0646\u0639\u0634"
+          },
+          "description": {
+            "fr": "Milkshake \xE0 l'orange (Fraise, caramel, chocolat, vanille, oreo, nougat).",
+            "en": "Orange Milkshake (Strawberry, caramel, chocolate, vanilla, oreo, nougat).",
+            "de": "Orangen Milkshake (Erdbeere, Karamell, Schokolade, Vanille, Oreo, Nougat).",
+            "ar": "\u0645\u064A\u0644\u0643 \u0634\u064A\u0643 \u0628\u0627\u0644\u0628\u0631\u062A\u0642\u0627\u0644 \u0628\u0646\u0643\u0647\u062A\u0643 \u0627\u0644\u0645\u0641\u0636\u0644\u0629 (\u0641\u0631\u0627\u0648\u0644\u0629\u060C \u0643\u0631\u0627\u0645\u064A\u0644\u060C \u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629\u060C \u0641\u0627\u0646\u064A\u0644\u064A\u0627\u060C \u0623\u0648\u0631\u064A\u0648\u060C \u0623\u0648 \u0646\u0648\u063A\u0627)."
+          },
+          "price": "42",
+          "image": "images/orangshake.webp"
         }
       ]
     },
@@ -3213,8 +3754,24 @@
             "de": "Vanille, Nougat, Waldbeerjoghurt,pistazie.",
             "ar": "\u0641\u0627\u0646\u064A\u0644\u064A\u0627\u060C \u0646\u0648\u063A\u0627\u060C \u0632\u0628\u0627\u062F\u064A \u0628\u0627\u0644\u0641\u0648\u0627\u0643\u0647 (\u064A\u0627\u063A\u0648\u0631\u062A)\u060C \u0648\u0641\u0633\u062A\u0642 \u062D\u0644\u0628\u064A \u0645\u0639 \u0627\u0644\u062A\u0632\u064A\u064A\u0646 \u0627\u0644\u0631\u0627\u0642\u064A."
           },
-          "price": "69",
+          "price": "65",
           "image": "images/glace-gc.webp"
+        },
+        {
+          "name": {
+            "fr": "BANANA SPLIT",
+            "en": "BANANA SPLIT",
+            "de": "BANANA SPLIT",
+            "ar": "\u0628\u0646\u0627\u0646\u0627 \u0633\u0628\u0644\u064A\u062A \u0643\u0644\u0627\u0633\u064A\u0643"
+          },
+          "description": {
+            "fr": "Vanille, chocolat, fraise.",
+            "en": "Vanilla, chocolate, strawberry.",
+            "de": "Vanille, Schokolade, Erdbeere.",
+            "ar": "\u0645\u0648\u0632 \u0637\u0627\u0632\u062C \u0645\u0639 \u0645\u062B\u0644\u062C\u0627\u062A \u0627\u0644\u0641\u0627\u0646\u064A\u0644\u064A\u0627 \u0648\u0627\u0644\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0648\u0627\u0644\u0641\u0631\u0627\u0648\u0644\u0629 \u0645\u0639 \u0635\u0644\u0635\u0629 \u0627\u0644\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0648\u0627\u0644\u0634\u0627\u0646\u062A\u064A\u064A."
+          },
+          "price": "50",
+          "image": "images/glace-banana.webp"
         },
         {
           "name": {
@@ -3229,7 +3786,7 @@
             "de": "Erdbeere, Joghurt, nougat.",
             "ar": "\u0645\u062B\u0644\u062C\u0627\u062A \u0627\u0644\u0641\u0631\u0627\u0648\u0644\u0629\u060C \u0632\u0628\u0627\u062F\u064A\u060C\u0648\u0646\u0648\u063A\u0627 \u0645\u0639 \u0627\u0644\u062A\u0632\u064A\u064A\u0646 \u0648\u0635\u0644\u0635\u0629 \u0627\u0644\u0641\u0648\u0627\u0643\u0647."
           },
-          "price": "49",
+          "price": "45",
           "image": "images/glace-amor.webp"
         },
         {
@@ -3261,7 +3818,7 @@
             "de": "Geschmacksrichtungen nach Wahl: Vanille, Schokolade, Nougat, pistazie, Bubble, Waldbeerjoghurt, Erdbeere, Karamell.",
             "ar": "\u0646\u0643\u0647\u062A\u0627\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643: \u0641\u0627\u0646\u064A\u0644\u064A\u0627\u060C \u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629\u060C \u0646\u0648\u063A\u0627\u060C \u0641\u0633\u062A\u0642\u060C \u0628\u0627\u0628\u0644\u060C \u0632\u0628\u0627\u062F\u064A \u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u063A\u0627\u0628\u0629\u060C \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u0623\u0648 \u0643\u0631\u0627\u0645\u064A\u0644."
           },
-          "price": "32",
+          "price": "30",
           "image": "images/glace-2boules.webp"
         },
         {
@@ -3277,7 +3834,7 @@
             "de": "Geschmack nach Wahl: Vanille, Schokolade, Nougat, pistazie, Bubble, Waldbeerjoghurt, Erdbeere, Karamell.",
             "ar": "\u0646\u0643\u0647\u0629 \u0648\u0627\u062D\u062F\u0629 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643: \u0641\u0627\u0646\u064A\u0644\u064A\u0627\u060C \u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629\u060C \u0646\u0648\u063A\u0627\u060C \u0641\u0633\u062A\u0642\u060C \u0628\u0627\u0628\u0644\u060C \u0632\u0628\u0627\u062F\u064A \u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u063A\u0627\u0628\u0629\u060C \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u0623\u0648 \u0643\u0631\u0627\u0645\u064A\u0644."
           },
-          "price": "17",
+          "price": "16",
           "image": "images/glace-1boule.webp"
         }
       ]

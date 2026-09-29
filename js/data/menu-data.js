@@ -26,7 +26,7 @@ export const menuData = [
           "de": "Paniertes Hähnchen, Kroketten, hausgemachtes Croque, Käseomelett, Aufschnitt, Käse, Roggenbrot, Beldi (2 Mlaoui, 2 Harcha), Mesclun-Salat, Muffin, Waffel, 2 Orangensäfte, 2 Heißgetränke nach Wahl, 2 Desserts und 2 Mineralwasser.",
           "ar": "دجاج مقرمش، كروكيت، كروك منزلي، أومليت بالجبن، شاركوتري، جبن، خبز الشوفان، فطور بلدي (2 ملاوي، 2 حرشة)، سلطة ميسكلان، مافن، وافل، 2 عصير برتقال، 2 مشروب ساخن من اختيارك، 2 تحلية و2 ماء معدني."
         },
-        "price": "148",
+        "price": "144",
         "image": "images/petit-dej-duo.webp"
       },
       {
@@ -42,7 +42,7 @@ export const menuData = [
           "de": "Würstchen, Omelett, Käse, holländischer Toast, Käsekroketten, Aufschnitt, Roggenbrot, Mesclun-Salat, Waffel, Pfannkuchen, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser.",
           "ar": "نقانق، أومليت، جبن، توست هولندي، كروكيت جبن، شاركوتري، خبز الشوفان، سلطة ميسكلان، وافل، بانكيك، عصير برتقال، مشروب ساخن من اختيارك، تحلية وماء معدني."
         },
-        "price": "89",
+        "price": "85",
         "image": "images/petit-dej-gc.webp"
       },
       {
@@ -58,7 +58,7 @@ export const menuData = [
           "de": "Bacon, Avocado, 2 Eier,  Käse, Getreidebrot, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser.",
           "ar": "بيكون، أفوكادو، بيضتان، جبن، خبز الحبوب الكاملة، عصير برتقال، مشروب ساخن من اختيارك، تحلية وماء معدني."
         },
-        "price": "72",
+        "price": "68",
         "image": "images/petit-dej-americain.webp",
         "isNew": true
       },
@@ -75,7 +75,7 @@ export const menuData = [
           "de": "Lachs, Avocado, Käse, Getreidebrot, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser.",
           "ar": "سلمون مدخن، أفوكادو، جبن، خبز الحبوب الكاملة، عصير برتقال، مشروب ساخن من اختيارك، تحلية وماء معدني."
         },
-        "price": "72",
+        "price": "68",
         "image": "images/petit-dej-norvegien.webp"
       },
       {
@@ -91,8 +91,41 @@ export const menuData = [
           "de": "Tortilla, Kroketten, Tapenade, Thunfisch, frische Tomaten, Käse, Roggenbrot, Mesclun-Salat, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser.",
           "ar": "تورتيلا إسبانية، كروكيت، تابيناد، تونة، طماطم طازجة، جبن، خبز الشوفان وسلطة ميسكلان، عصير برتقال، مشروب ساخن من اختيارك، تحلية وماء معدني."
         },
-        "price": "68",
+        "price": "64",
         "image": "images/petit-dej-espagnol.webp"
+      },
+      {
+        "name": {
+          "fr": "MQUILA MERGUEZ",
+          "en": "MQUILA Merguez sausage ",
+          "de": "MQUILA Merguez-Wurst",
+          "ar": "مقيلة بالمرقاز والبيض البلدي"
+        },
+        "description": {
+          "fr": "Merguez, poivrons, oignons, tomates cerises, deux œufs, jus d'orange, boisson chaude au choix, dessert et eau minérale.",
+          "en": "Merguez, peppers, onions, cherry tomatoes, two eggs, orange juice, hot drink of choice, dessert, and mineral water.",
+          "de": "Merguez, Paprika, Zwiebeln, Kirschtomaten, zwei Eier, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser.",
+          "ar": "مرقاز، فلفل حلو، بصل، طماطم كرزية، بيضتان، عصير برتقال، مشروب ساخن من اختيارك، تحلية وماء معدني."
+        },
+        "price": "64",
+        "image": "images/petit-dej-mquila.webp"
+      },
+      {
+        "name": {
+          "fr": "MQUILA-fruits de mer",
+          "en": "MQUILA-SEAFOOD",
+          "de": "MQUILA-Meeresfrüchte",
+          "ar": "مقيلة فواكه البحر"
+        },
+        "description": {
+          "fr": "Crevette, calamar, moules, oignons, deux œufs, jus d'orange, boisson chaude au choix, dessert et eau minérale.",
+          "en": "Shrimp, squid, mussels, onions, two eggs, orange juice, hot drink of your choice, dessert, and mineral water.",
+          "de": "Garnelen, Tintenfisch, Muscheln, Zwiebeln, zwei Eier, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser.",
+          "ar": "جمبري، كلمار، بلح البحر، بصل، بيضتان، عصير برتقال، مشروب ساخن من اختيارك، تحلية وماء معدني."
+        },
+        "price": "78",
+        "image": "images/petit-dej-mquila-fruitmer.webp",
+        "isNew": true
       },
       {
         "name": {
@@ -107,7 +140,7 @@ export const menuData = [
           "de": "3-Eier-Omelett, Pilze, Spinat, Käse, Mesclun-Salat, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser (Zusatz Freilandeier 05 DH).",
           "ar": "أومليت 3 بيضات، فطر، سبانخ، جبن، سلطة ميسكلان، عصير برتقال، مشروب ساخن من اختيارك، تحلية وماء معدني (إضافة بيض بلدي 5 دراهم)."
         },
-        "price": "62",
+        "price": "58",
         "image": "images/petit-dej-chef.webp"
       },
       {
@@ -123,7 +156,7 @@ export const menuData = [
           "de": "Vollkorn-Toastbrot mit zwei Spiegeleiern, Käse, geräucherter Pute, Mesclun-Salat, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser.",
           "ar": "توست قمح كامل مع بيضتين مقليتين، جبن، ديك رومي مدخن، سلطة ميسكلان، عصير برتقال، مشروب ساخن من اختيارك، تحلية وماء معدني."
         },
-        "price": "55",
+        "price": "52",
         "image": "images/petit-dej-hollandais.webp"
       },
       {
@@ -139,7 +172,7 @@ export const menuData = [
           "de": "3-Eier-Omelett, Gemüse, Mesclun-Salat, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser (Zusatz Freilandeier 05 DH).",
           "ar": "أومليت 3 بيضات، خضار مشكلة، سلطة ميسكلان، عصير برتقال، مشروب ساخن من اختيارك، تحلية وماء معدني (إضافة بيض بلدي 5 دراهم)."
         },
-        "price": "55",
+        "price": "52",
         "image": "images/petit-dej-veg.webp"
       },
       {
@@ -155,7 +188,7 @@ export const menuData = [
           "de": "Baghrir, Amlou, Trockenfrüchte, Jben (Frischkäse), Honig, Banane, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser.",
           "ar": "بغرير، أملو باللوز، فواكه جافة، جبن بلدي، عسل حر، موز، عصير برتقال، مشروب ساخن من اختيارك، تحلية وماء معدني."
         },
-        "price": "57",
+        "price": "54",
         "image": "images/petit-dej-berbere.webp"
       },
       {
@@ -171,7 +204,7 @@ export const menuData = [
           "de": "3 Rühreier, 3 Sorten Aufschnitt, 2 Stücke Schokoladenkuchen, Roggenbrot, Olivenöl, schwarze Oliven , Mesclun-Salat, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser.",
           "ar": "3 بيضات مخفوقة، 3 أنواع شاركوتري، 2 بان كيك شوكولاتة، خبز الشوفان، زيت زيتون، زيتون، سلطة ميسكلان، عصير برتقال، مشروب ساخن من اختيارك، تحلية وماء معدني."
         },
-        "price": "56",
+        "price": "52",
         "image": "images/petit-dej-compagnard.webp",
         "isNew": true
       },
@@ -188,7 +221,7 @@ export const menuData = [
           "de": "Khli3 (Trockenfleisch), drei Spiegeleier, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser (Zusatz Freilandeier 5 DH).",
           "ar": "خليع فاسي، 3 بيضات مقلية، عصير برتقال، مشروب ساخن من اختيارك، تحلية وماء معدني (إضافة بيض بلدي 5 دراهم)."
         },
-        "price": "59",
+        "price": "55",
         "image": "images/petit-dej-fassi.webp"
       },
       {
@@ -204,7 +237,7 @@ export const menuData = [
           "de": "3-Eier-Omelett, Aufschnitt, Käse, Mesclun-Salat, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser (Zusatz Freilandeier 5 DH).",
           "ar": "أومليت 3 بيضات، شاركوتري، جبن، سلطة ميسكلان، عصير برتقال، مشروب ساخن من اختيارك، تحلية وماء معدني (إضافة بيض بلدي 5 دراهم)."
         },
-        "price": "55",
+        "price": "52",
         "image": "images/petit-dej-cont.webp"
       },
       {
@@ -220,7 +253,7 @@ export const menuData = [
           "de": "3-Ei-Omelett, Käse, gemischter Salat, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser",
           "ar": "أومليت 3 بيضات، جبن، سلطة ميسكلان، عصير برتقال، مشروب ساخن من اختيارك، تحلية وماء معدني."
         },
-        "price": "55",
+        "price": "52",
         "image": "images/omelette-fromage.webp"
       },
       {
@@ -236,7 +269,7 @@ export const menuData = [
           "de": "Zwei Mlaoui, zwei Harcha, ein Baghrir, Jben (Frischkäse), Olivenöl, Honig, schwarze Oliven, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser.",
           "ar": "اثنان ملاوي، اثنان حرشة، بغرير، جبن بلدي، زيت زيتون، عسل حر، زيتون أسود، عصير برتقال، مشروب ساخن من اختيارك، تحلية وماء معدني."
         },
-        "price": "46",
+        "price": "45",
         "image": "images/petit-dej-beldi.webp"
       },
       {
@@ -252,7 +285,7 @@ export const menuData = [
           "de": "3-Ei-Omelett, gemischter Salat, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser",
           "ar": "أومليت 3 بيضات سادة، سلطة ميسكلان، عصير برتقال، مشروب ساخن من اختيارك، تحلية وماء معدني."
         },
-        "price": "45",
+        "price": "42",
         "image": "images/omelette-nature.webp"
       },
       {
@@ -284,7 +317,7 @@ export const menuData = [
           "de": "Korb mit vier Gebäckstücken, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser.",
           "ar": "سلة من أربع قطع معجنات فرنسية، عصير برتقال، مشروب ساخن من اختيارك، تحلية وماء معدني."
         },
-        "price": "45",
+        "price": "44",
         "image": "images/petit-dej-express.webp"
       },
       {
@@ -300,7 +333,7 @@ export const menuData = [
           "de": "Käsetoast, oder Nutella Crêpe, oder Waffel, oder Pfannkuchen, Cornflakes, Schokomilch.",
           "ar": "توست بالجبن، أو كريب نوتيلا، أو وافل، أو بانكيك، كورن فليكس، وحليب بالشوكولاتة."
         },
-        "price": "42",
+        "price": "40",
         "image": "images/menu-enfant-pdj.webp"
       }
     ]
@@ -316,6 +349,22 @@ export const menuData = [
     "items": [
       {
         "name": {
+          "fr": "BURRATTA",
+          "en": "BURRATA",
+          "de": "BURRATA",
+          "ar": "سلطة البوراتا الإيطالية"
+        },
+        "description": {
+          "fr": "Burrata, tomate, noix, roquette, Vinaigre balsamique.",
+          "en": "Burrata, tomato, walnuts, arugula, balsamic vinegar.",
+          "de": "Burrata, Tomate, Walnüsse, Rucola, Balsamico-Essig.",
+          "ar": "جبنة بوراتا طازجة، طماطم، جوز (كركاع)، جرجير (روكا)، وخل البلسميك المركز."
+        },
+        "price": "98",
+        "image": "images/entree-burrata.webp"
+      },
+      {
+        "name": {
           "fr": "TERRE MER",
           "en": "SURF & TURF",
           "de": "SURF & TURF",
@@ -327,8 +376,25 @@ export const menuData = [
           "de": "Tintenfisch, Garnelen, paniertes Hähnchen, Salat, Mais, Kirschtomate, Soße des Chefkochs.",
           "ar": "كلمار، جمبري (قيمرون)، دجاج مقرمش، خس، ذرة، طماطم كرزية، وصلصة الشيف الخاصة."
         },
-        "price": "80",
+        "price": "78",
         "image": "images/entree-terremer.webp"
+      },
+      {
+        "name": {
+          "fr": "TARTARE SAUMON  ",
+          "en": "Salmon tartare",
+          "de": "Lachstatar",
+          "ar": "تارتار السلمون والأفوكادو"
+        },
+        "description": {
+          "fr": "Saumon frais, saumon fumée, avocat, , sauce tartare.",
+          "en": "Fresh salmon, smoked salmon, avocado, tartar sauce.",
+          "de": "Frischer Lachs, geräucherter Lachs, Avocado, Tartarsauce.",
+          "ar": "سلمون طازج، سلمون مدخن، أفوكادو، وصلصة التارتار اللذيذة."
+        },
+        "price": "88",
+        "image": "images/entree-tartare.webp",
+        "isNew": true
       },
       {
         "name": {
@@ -343,7 +409,7 @@ export const menuData = [
           "de": "Verschiedener Quinoa, Garnelen, Brunoise, Apfel, Kiwi, Mango, Ananas, Minze, Honig-Senf-Soße.",
           "ar": "كينوا مشكلة، جمبري، برونواز خضار، تفاح، كيوي، مانجو، أناناس، نعناع، وصلصة العسل والخردل."
         },
-        "price": "70",
+        "price": "68",
         "image": "images/entree-quinoa.webp"
       },
       {
@@ -359,8 +425,40 @@ export const menuData = [
           "de": "Hähnchenwurst, Parmesan, Kirschtomate, Crouton, Römersalat, Caesar-Soße.",
           "ar": "رول دجاج، جبنة بارميزان، طماطم كرزية، قطع خبز محمص (كروتون)، خس روماني، وصلصة سيزر الغنية."
         },
-        "price": "68",
+        "price": "65",
         "image": "images/entree-caesar.webp"
+      },
+      {
+        "name": {
+          "fr": "RUSSE",
+          "en": "RUSSIAN",
+          "de": "RUSSISCH",
+          "ar": "سلطة روسية كلاسيكية"
+        },
+        "description": {
+          "fr": "Pomme de terre, carotte, poulet, thon, petit pois, œuf de caille.",
+          "en": "Potato, carrot, chicken, tuna, peas, quail egg.",
+          "de": "Kartoffel, Karotte, Hähnchen, Thunfisch, Erbsen, Wachtelei.",
+          "ar": "بطاطس، جزر، دجاج، تونة، جلبانة (بازلاء)، وبيض السمان."
+        },
+        "price": "54",
+        "image": "images/entree-russe.webp"
+      },
+      {
+        "name": {
+          "fr": "CERCLE VEGGI",
+          "en": "VEGGI CIRCLE",
+          "de": "VEGGI KREIS",
+          "ar": "سلطة الخضار الطازجة (سيركل فيجي)"
+        },
+        "description": {
+          "fr": "Crudité du jour, thon, œuf, salade, mesclun.",
+          "en": "Raw vegetables of the day, tuna, egg, salad, mesclun.",
+          "de": "Rohkost des Tages, Thunfisch, Ei, Salat, Mesclun.",
+          "ar": "خضار طازجة موسمية، تونة، بيض مسلوق، خضر ورقية وسلطة ميسكلان."
+        },
+        "price": "48",
+        "image": "images/entree-veggi.webp"
       }
     ]
   },
@@ -386,7 +484,7 @@ export const menuData = [
           "de": "Kartoffelpüree, Garnelen paniert mit weißem Sesam.",
           "ar": "بطاطس مهروسة (بوريه)، جمبري بانيه مقرمش بالسمسم الأبيض."
         },
-        "price": "72",
+        "price": "68",
         "image": "images/entree-croustillon.webp"
       },
       {
@@ -402,7 +500,7 @@ export const menuData = [
           "de": "Garnelen, Olivenöl, scharfe Paprika, Schnittlauch, Kirschtomate.",
           "ar": "جمبري، زيت زيتون بكر، فلفل حار، ثوم قصبي (سيبوليت)، وطماطم كرزية."
         },
-        "price": "72",
+        "price": "68",
         "image": "images/entree-pilpil.webp"
       },
       {
@@ -418,7 +516,7 @@ export const menuData = [
           "de": "4 Gehackte Hähnchenbrust, Cheddar.",
           "ar": "4 كرات من صدر الدجاج المفروم مع جبنة الشيدر الذائبة."
         },
-        "price": "55",
+        "price": "52",
         "image": "images/entree-boulette-poulet.webp",
         "isNew": true
       }
@@ -446,7 +544,7 @@ export const menuData = [
           "de": "Kurz gebratenes Lachssteak, hausgemachte Vierge-Sauce mit knackigem Gemüse und frischen Kräutern.",
           "ar": "قطعة سلمون مشوية على البلانشا، صلصة فيرج متبلة بالخضار المقرمشة والأعشاب الطازجة."
         },
-        "price": "150",
+        "price": "145",
         "image": "images/plat-saumon.webp"
       },
       {
@@ -462,7 +560,7 @@ export const menuData = [
           "de": "Kurz gebratenes Rinderfiletherz, mit aromatischen Atlas-Kräutern verfeinert",
           "ar": "قلب فيليه لحم بقري طري مشوي، منكه بالأعشاب العطرية من جبال الأطلس."
         },
-        "price": "145",
+        "price": "135",
         "image": "images/plat-filet.webp"
       },
       {
@@ -478,7 +576,7 @@ export const menuData = [
           "de": "Rinderfiletherz, frische Champignons, cremige Sauce, feine Kräuter.",
           "ar": "قلب فيليه لحم بقري، فطر باريس طازج، كريمة ناعمة غنية، وأعشاب منسمة."
         },
-        "price": "124",
+        "price": "115",
         "image": "images/plat-eminceboeuf.webp"
       },
       {
@@ -494,7 +592,7 @@ export const menuData = [
           "de": "Goldbraune panierte Hähnchenschnitzel, samtige Sauce mit frischen Champignons",
           "ar": "إسكالوب دجاج مقرمش ذهبي، يقدم مع صلصة الفطر الطازج المخملية."
         },
-        "price": "90",
+        "price": "85",
         "image": "images/plat-milanaise.webp"
       },
       {
@@ -510,7 +608,7 @@ export const menuData = [
           "de": "Ausgewählte Hähnchenbrust, aromatische Marinade, gegrillt auf Spießen, Barbecue-Sauce",
           "ar": "صدر دجاج منتقى ومتبل بالأعشاب العطرية ومشوي على السيخ، يقدم مع صلصة الباربيكيو."
         },
-        "price": "88",
+        "price": "84",
         "image": "images/plat-brochette.webp"
       },
       {
@@ -526,7 +624,7 @@ export const menuData = [
           "de": "Kurz gebratene Hähnchenteile, samtige Sauce mit frischen Champignons.",
           "ar": "قطع دجاج طرية محمرة، مع صلصة كريمية غنية بفطر باريس الطازج."
         },
-        "price": "90",
+        "price": "88",
         "image": "images/plat-emincepoulet.webp"
       },
       {
@@ -542,7 +640,7 @@ export const menuData = [
           "de": "Natur-Pasta oder Mini-Pizza mit Getränk nach Wahl ODER Burger oder Nuggets + Pommes mit Getränk nach Wahl.",
           "ar": "باستا سادة أو ميني بيتزا مع مشروب من اختيارك، أو برجر / ناغتس وبطاطس مقلية مع مشروب من اختيارك."
         },
-        "price": "62",
+        "price": "58",
         "image": "images/menu-enfant-plat.webp"
       },
       {
@@ -584,7 +682,7 @@ export const menuData = [
           "de": "Traditionelles Gericht, das freitags serviert wird.",
           "ar": "كسكس مغربي تقليدي فاخر باللحم والخضار السبعة، يقدم مع اللبن الرائب كل يوم جمعة."
         },
-        "price": "69",
+        "price": "64",
         "image": "images/Couscous-poulet.webp"
       },
       {
@@ -600,7 +698,7 @@ export const menuData = [
           "de": "Traditionelles Gericht, das freitags serviert wird.",
           "ar": "كسكس مغربي تقليدي فاخر بالدجاج والخضار السبعة، يقدم مع اللبن الرائب كل يوم جمعة."
         },
-        "price": "59",
+        "price": "54",
         "image": "images/Couscous-poulet.webp"
       }
     ]
@@ -627,7 +725,7 @@ export const menuData = [
           "de": "Zartes gegrilltes Steak, Cheddar.",
           "ar": "شريحة ستيك بقري طرية مشوية، وجبنة شيدر ذائبة في خبز تشاباتا الإيطالي."
         },
-        "price": "68",
+        "price": "65",
         "image": "images/sand-cheesesteak.webp"
       },
       {
@@ -643,7 +741,7 @@ export const menuData = [
           "de": "Garnele, Tintenfisch, Soße des Chefkochs.",
           "ar": "جمبري، كلمار طري، وصلصة الشيف الخاصة في خبز تشاباتا."
         },
-        "price": "69",
+        "price": "65",
         "image": "images/sand-fruitsmer.webp"
       },
       {
@@ -659,7 +757,7 @@ export const menuData = [
           "de": "Geschnetzeltes Hähnchen, Cheddar, Champignons, weiße Soße.",
           "ar": "شرائح دجاج متبلة، جبنة شيدر، فطر طازج، وصلصة بيضاء كريمية."
         },
-        "price": "58",
+        "price": "54",
         "image": "images/sand-cheesesteak.webp",
         "isNew": true
       },
@@ -676,7 +774,7 @@ export const menuData = [
           "de": "Paniertes Hähnchenstäbchen, Cheddar, Salat.",
           "ar": "أصابع دجاج مقرمشة، جبنة شيدر، وخس طازج."
         },
-        "price": "60",
+        "price": "58",
         "image": "images/sand-crunchy.webp"
       },
       {
@@ -692,7 +790,7 @@ export const menuData = [
           "de": "Hackfleisch, Tomate, Salat, Spezialsoße, Cheddar.",
           "ar": "لحم مفروم (كفتة)، طماطم، سلطة خضراء، صلصة خاصة، وجبنة شيدر ذائبة."
         },
-        "price": "58",
+        "price": "54",
         "image": "images/sand-hache.webp"
       },
       {
@@ -708,7 +806,7 @@ export const menuData = [
           "de": "Hähnchenbrust, Cheddar, Salat, Tomate.",
           "ar": "صدر دجاج مشوي، جبنة شيدر، سلطة، وطماطم طازجة."
         },
-        "price": "50",
+        "price": "48",
         "image": "images/sand-poulet.webp"
       },
       {
@@ -724,7 +822,7 @@ export const menuData = [
           "de": "Thunfisch, Burgersoße, Zwiebel, Salat, Tomate, Cheddar.",
           "ar": "تونة ممتازة، صلصة البرجر، بصل، سلطة، طماطم، وجبنة شيدر."
         },
-        "price": "49",
+        "price": "48",
         "image": "images/sand-thon.webp"
       }
     ]
@@ -751,7 +849,7 @@ export const menuData = [
           "de": "Gewürztes Hähnchen, Cheddar, Salat, Tomate, Zwiebel, Gurke, Biggy-Sauce.",
           "ar": "دجاج متبل مقرمش، جبنة شيدر، خس، طماطم، بصل، خيار مخلل (كورنيشون)، وصلصة بيغي الشهيرة."
         },
-        "price": "52",
+        "price": "50",
         "image": "images/burger-cheese.webp",
         "isNew": true
       },
@@ -768,7 +866,7 @@ export const menuData = [
           "de": "Hackfleisch, paniertes Hähnchen, Cheddar, karamellisierte Zwiebeln, Salat, Tomate, Spezialsoße.",
           "ar": "لحم مفروم، دجاج بانيه مقرمش، جبنة شيدر، بصل مكرمل، خس، طماطم، وصلصة خاصة."
         },
-        "price": "74",
+        "price": "70",
         "image": "images/burger-royal.webp"
       },
       {
@@ -784,8 +882,24 @@ export const menuData = [
           "de": "2 Hackfleischpatties, Cheddar-Käse, Salat, Tomate, Zwiebel, Soße des Chefkochs.",
           "ar": "شريحتا لحم مفروم، جبنة شيدر، خس، طماطم، بصل، وصلصة الشيف الخاصة."
         },
-        "price": "72",
+        "price": "68",
         "image": "images/burger-big.webp"
+      },
+      {
+        "name": {
+          "fr": "EGG ET CHEESEBURGER",
+          "en": "EGG AND CHEESEBURGER",
+          "de": "EI UND CHEESEBURGER",
+          "ar": "برجر البيض والجبن"
+        },
+        "description": {
+          "fr": "Viande hachée, cheddar, champignon, œuf, laitue, tomate, oignon caramélisé.",
+          "en": "Minced meat, cheddar, mushroom, egg, lettuce, tomato, caramelized onion.",
+          "de": "Hackfleisch, Cheddar, Pilz, Ei, Salat, Tomate, karamellisierte Zwiebel.",
+          "ar": "لحم مفروم، جبنة شيدر، فطر، بيضة مقلية، خس، طماطم، وبصل مكرمل."
+        },
+        "price": "56",
+        "image": "images/burger-eggcheese.webp"
       },
       {
         "name": {
@@ -800,8 +914,24 @@ export const menuData = [
           "de": "Hackfleisch, Cheddar, Salat, Tomate, Zwiebel, Gurke, Burgersoße.",
           "ar": "لحم مفروم، جبنة شيدر، خس، طماطم، بصل، خيار مخلل، وصلصة البرجر."
         },
-        "price": "56",
+        "price": "54",
         "image": "images/burger-cheese.webp"
+      },
+      {
+        "name": {
+          "fr": "AVOCADO FORESTIER",
+          "en": "AVOCADO FORESTIER",
+          "de": "AVOCADO FORESTER",
+          "ar": "برجر أفوكادو فوريستيير"
+        },
+        "description": {
+          "fr": "Poulet, avocat, laitue, tomate, oignon caramélisé.",
+          "en": "Chicken, avocado, lettuce, tomato, caramelized onion.",
+          "de": "Hähnchen, Avocado, Salat, Tomate, karamellisierte Zwiebel.",
+          "ar": "دجاج مشوي، أفوكادو طازج، خس، طماطم، وبصل مكرمل لذيذ."
+        },
+        "price": "54",
+        "image": "images/burger-avocado.webp"
       }
     ]
   },
@@ -827,8 +957,24 @@ export const menuData = [
           "de": "Garnelen, Tintenfisch, Soße des Chefkochs.",
           "ar": "جمبري، كلمار، وصلصة الشيف في خبز بانيني محمص ومقرمش."
         },
-        "price": "68",
+        "price": "64",
         "image": "images/panini-fruitsmer.webp"
+      },
+      {
+        "name": {
+          "fr": "SAUMON",
+          "en": "SALMON",
+          "de": "LACHS",
+          "ar": "بانيني سلمون مدخن"
+        },
+        "description": {
+          "fr": "Saumon frais, capre, fromage, sauce du chef.",
+          "en": "Fresh salmon, caper, cheese, chef's sauce.",
+          "de": "Frischer Lachs, Kapern, Käse, Soße des Chefkochs.",
+          "ar": "سلمون طازج، كبر، جبن ذائب، وصلصة الشيف الخاصة."
+        },
+        "price": "64",
+        "image": "images/panini-saumon.webp"
       },
       {
         "name": {
@@ -843,7 +989,7 @@ export const menuData = [
           "de": "Mischung aus Hackfleisch und Hähnchen, Aufschnitt, Käse.",
           "ar": "مزيج لذيذ من اللحم المفروم والدجاج، شاركوتري، وجبن ذائب."
         },
-        "price": "60",
+        "price": "58",
         "image": "images/panini-mixte.webp"
       },
       {
@@ -859,8 +1005,24 @@ export const menuData = [
           "de": "Hackfleisch, Käse, Burgersoße.",
           "ar": "لحم مفروم متبل، جبن ذائب، وصلصة برجر مميزة."
         },
-        "price": "58",
+        "price": "54",
         "image": "images/panini-hache.webp"
+      },
+      {
+        "name": {
+          "fr": "CHARCUTERIE",
+          "en": "COLD CUTS",
+          "de": "AUFSCHNITT",
+          "ar": "بانيني شاركوتري وجبن"
+        },
+        "description": {
+          "fr": "3 Charcuteries, salami, fromage, sauce burger.",
+          "en": "3 Cold cuts, salami, cheese, burger sauce.",
+          "de": "3 Sorten Aufschnitt, Salami, Käse, Burgersoße.",
+          "ar": "3 أنواع شاركوتري، سلامي، جبن ذائب، وصلصة برجر."
+        },
+        "price": "40",
+        "image": "images/panini-charcuterie.webp"
       },
       {
         "name": {
@@ -875,7 +1037,7 @@ export const menuData = [
           "de": "Gegrilltes Hähnchen, Käse, Burgersoße.",
           "ar": "دجاج مشوي، جبن ذائب، وصلصة برجر."
         },
-        "price": "46",
+        "price": "44",
         "image": "images/panini-poulet.webp"
       },
       {
@@ -891,7 +1053,7 @@ export const menuData = [
           "de": "Panierter Hähnchen, Cheddar, Tomate, Salat, Sauce.",
           "ar": "دجاج مقرمش (بانيه)، جبنة شيدر، طماطم، خس طازج، وصلصة خاصة في خبز التورتيلا."
         },
-        "price": "60",
+        "price": "58",
         "image": "images/Wrap-poulet.webp",
         "isNew": true
       },
@@ -908,7 +1070,7 @@ export const menuData = [
           "de": "Hackfleisch, Cheddar, Tomate, Salat, Sauce.",
           "ar": "لحم مفروم متبل، جبنة شيدر، طماطم، خس طازج، وصلصة خاصة في خبز التورتيلا."
         },
-        "price": "64",
+        "price": "62",
         "image": "images/Wrap-viande-hachee.webp",
         "isNew": true
       },
@@ -925,7 +1087,7 @@ export const menuData = [
           "de": "Panierter Hähnchen, Wurstwaren, Cheddar, Tomate, Salat, Sauce.",
           "ar": "دجاج مقرمش، شاركوتري، جبنة شيدر، طماطم، خس، وصلصة في خبز التورتيلا المحمص."
         },
-        "price": "67",
+        "price": "64",
         "image": "images/Wrap-gourmand.webp",
         "isNew": true
       }
@@ -942,6 +1104,22 @@ export const menuData = [
     "items": [
       {
         "name": {
+          "fr": "SAUMON",
+          "en": "SALMON",
+          "de": "LACHS",
+          "ar": "بيتزا السلمون المدخن"
+        },
+        "description": {
+          "fr": "Saumon frais, Sauce blanche, roquette, câpre.",
+          "en": "Fresh salmon, white sauce, arugula, caper.",
+          "de": "Frischer Lachs, weiße Soße, Rucola, Kapern.",
+          "ar": "سلمون طازج، صلصة بيضاء، جرجير طازج (روكا)، وحبات الكبر."
+        },
+        "price": "94",
+        "image": "images/pizza-saumon.webp"
+      },
+      {
+        "name": {
           "fr": "FRUITS DE MER",
           "en": "SEAFOOD",
           "de": "MEERESFRÜCHTE",
@@ -953,7 +1131,7 @@ export const menuData = [
           "de": "Garnelen, Tintenfisch, Muscheln, Pilz, weiße Soße, Mozzarella.",
           "ar": "جمبري، كلمار، بلح البحر، فطر، صلصة بيضاء، وجبنة موزاريلا ذائبة."
         },
-        "price": "92",
+        "price": "88",
         "image": "images/pizza-fruitsmer.webp"
       },
       {
@@ -969,7 +1147,7 @@ export const menuData = [
           "de": "Meeresfrüchte, Hackfleisch, Hähnchen, Vegetarisch, Mozzarella.",
           "ar": "فواكه البحر، لحم مفروم، دجاج، خضار، وجبنة موزاريلا."
         },
-        "price": "92",
+        "price": "88",
         "image": "images/pizza-4saisons.webp"
       },
       {
@@ -985,8 +1163,24 @@ export const menuData = [
           "de": "Alles außer Meeresfrüchten und Lachs.",
           "ar": "نصفان بنكهتين مختلفتين من اختيارك (باستثناء فواكه البحر والسلمون)."
         },
-        "price": "92",
+        "price": "88",
         "image": "images/pizza-moitiemoitie.webp"
+      },
+      {
+        "name": {
+          "fr": "BURRATA",
+          "en": "BURRATA",
+          "de": "BURRATA",
+          "ar": "بيتزا البوراتا الإيطالية"
+        },
+        "description": {
+          "fr": "Sauce tomate, burrata, tomates cerises, roquette, vinaigre balsamique, noix.",
+          "en": "Tomato sauce, burrata, cherry tomatoes, arugula, balsamic vinegar, walnuts.",
+          "de": "Tomatensoße, Burrata, Kirschtomaten, Rucola, Balsamico-Essig, Walnüsse.",
+          "ar": "صلصة طماطم، جبنة بوراتا طازجة، طماطم كرزية، جرجير، خل بلسميك، وجوز (كركاع)."
+        },
+        "price": "110",
+        "image": "images/pizza-burrata.webp"
       },
       {
         "name": {
@@ -1001,7 +1195,7 @@ export const menuData = [
           "de": "Hähnchen, weiße Soße, Pilz, Mozzarella.",
           "ar": "دجاج، صلصة بيضاء كريمية، فطر طازج، وجبنة موزاريلا."
         },
-        "price": "80",
+        "price": "78",
         "image": "images/pizza-pouletblanche.webp"
       },
       {
@@ -1017,7 +1211,7 @@ export const menuData = [
           "de": "Tomatensoße, Mozzarella, Blauschimmelkäse, Parmesan, Gouda, Camembert.",
           "ar": "صلصة طماطم، موزاريلا، جبن أزرق (بلو)، بارميزان، غودا، وجبنة كاممبرت."
         },
-        "price": "82",
+        "price": "78",
         "image": "images/pizza-5fromages.webp"
       },
       {
@@ -1033,7 +1227,7 @@ export const menuData = [
           "de": "Hackfleisch, Kirschtomate, Tomatensoße, Mozzarella.",
           "ar": "لحم مفروم متبل، طماطم كرزية، صلصة طماطم، وجبنة موزاريلا."
         },
-        "price": "82",
+        "price": "78",
         "image": "images/pizza-hache.webp"
       },
       {
@@ -1049,7 +1243,7 @@ export const menuData = [
           "de": "Pepperoni, Tomatensoße, Mozzarella.",
           "ar": "بيبروني بقري، صلصة طماطم متبلة، وجبنة موزاريلا ذائبة."
         },
-        "price": "78",
+        "price": "74",
         "image": "images/pizza-pepperoni.webp"
       },
       {
@@ -1065,7 +1259,7 @@ export const menuData = [
           "de": "Geräucherte Pute, frischer Pilz, Mozzarella, weiße Soße.",
           "ar": "ديك رومي مدخن، فطر طازج، جبنة موزاريلا، وصلصة بيضاء."
         },
-        "price": "72",
+        "price": "68",
         "image": "images/pizza-regina.webp"
       },
       {
@@ -1081,7 +1275,7 @@ export const menuData = [
           "de": "Thunfisch, Zwiebeln, schwarze Oliven, Mozzarella.",
           "ar": "تونة، بصل، زيتون أسود، وجبنة موزاريلا."
         },
-        "price": "68",
+        "price": "65",
         "image": "images/pizza-thon.webp"
       },
       {
@@ -1097,7 +1291,7 @@ export const menuData = [
           "de": "Verschiedenes Gemüse (Paprika, Pilze, Zucchini), Pesto-Soße, Mozzarella.",
           "ar": "خضار مشكلة (فلفل، فطر، بصل، قرع أخضر)، صلصة بيستو، وجبنة موزاريلا."
         },
-        "price": "65",
+        "price": "62",
         "image": "images/pizza-veggie.webp"
       },
       {
@@ -1113,7 +1307,7 @@ export const menuData = [
           "de": "Tomatensoße, Basilikum, schwarze Oliven, Mozzarella.",
           "ar": "صلصة طماطم إيطالية، ريحان طازج، زيتون أسود، وجبنة موزاريلا."
         },
-        "price": "55",
+        "price": "52",
         "image": "images/pizza-margherita.webp"
       }
     ]
@@ -1140,7 +1334,7 @@ export const menuData = [
           "de": "Pasta, frischer Lachs, Dill, Parmesan.",
           "ar": "مكرونة، سلمون طازج، شبت (أنبت)، وجبنة بارميزان إيطالية."
         },
-        "price": "99",
+        "price": "98",
         "image": "images/pasta-saumon.webp"
       },
       {
@@ -1156,7 +1350,7 @@ export const menuData = [
           "de": "Pasta, Garnelen, Tintenfisch, Muscheln, weiße Soße.",
           "ar": "مكرونة، جمبري، كلمار، بلح البحر، وصلصة بيضاء كريمية."
         },
-        "price": "92",
+        "price": "88",
         "image": "images/pasta-fruitsmer.webp"
       },
       {
@@ -1172,8 +1366,24 @@ export const menuData = [
           "de": "Pasta, Hähnchen, Pilz, Spinat, Parmesan.",
           "ar": "مكرونة، دجاج متبل، فطر طازج، سبانخ، وجبنة بارميزان."
         },
-        "price": "78",
+        "price": "75",
         "image": "images/pasta-poulet.webp"
+      },
+      {
+        "name": {
+          "fr": "REGATONI RICOTTA",
+          "en": "RICOTTA REGATONI",
+          "de": "RICOTTA REGATONI",
+          "ar": "ريغاتوني بجبنة الريكوتا والسبانخ"
+        },
+        "description": {
+          "fr": "Ricotta, épinard, parmesan, courgette, sauce blanche.",
+          "en": "Ricotta, spinach, parmesan, zucchini, white sauce.",
+          "de": "Ricotta, Spinat, Parmesan, Zucchini, weiße Soße.",
+          "ar": "جبنة ريكوتا، سبانخ، بارميزان، قرع أخضر، وصلصة بيضاء ناعمة."
+        },
+        "price": "68",
+        "image": "images/pasta-ricotta.webp"
       },
       {
         "name": {
@@ -1188,7 +1398,7 @@ export const menuData = [
           "de": "Pasta, Bolognese-Soße mit Hackfleisch, Kirschtomate.",
           "ar": "مكرونة، صلصة بولونيز غنية باللحم المفروم، وطماطم كرزية."
         },
-        "price": "78",
+        "price": "75",
         "image": "images/pasta-bolognaise.webp"
       },
       {
@@ -1204,7 +1414,7 @@ export const menuData = [
           "de": "Pasta, Putenschinken, Parmesan.",
           "ar": "مكرونة، جامبون ديك رومي، وجبنة بارميزان إيطالية مع الصلصة الكريمية."
         },
-        "price": "68",
+        "price": "65",
         "image": "images/pasta-carbonara.webp"
       },
       {
@@ -1220,7 +1430,7 @@ export const menuData = [
           "de": "Pasta, Mischung aus fünf Käsesorten (Parmesan, Blau, Mozzarella, Cheddar, Gouda).",
           "ar": "مكرونة بصلصة خمسة أجبان فاخرة (بارميزان، جبن أزرق، موزاريلا، شيدر، وغودا)."
         },
-        "price": "75",
+        "price": "70",
         "image": "images/pasta-5fromages.webp"
       },
       {
@@ -1236,8 +1446,24 @@ export const menuData = [
           "de": "Pasta, verschiedenes Gemüse (Zucchini, Paprika, Tomaten), Pesto-Soße, Olivenöl.",
           "ar": "مكرونة، خضار مشكلة (قرع أخضر، فلفل، طماطم)، صلصة بيستو، وزيت زيتون بكر."
         },
-        "price": "63",
+        "price": "60",
         "image": "images/pasta-veg.webp"
+      },
+      {
+        "name": {
+          "fr": "SPAGHETTIS NOIRS",
+          "en": "BLACK SPAGHETTI",
+          "de": "SCHWARZE SPAGHETTI",
+          "ar": "سباغيتي سوداء بحبر الحبار"
+        },
+        "description": {
+          "fr": "Supplément pour pâtes noires à l'encre de seiche.",
+          "en": "Supplement for black pasta with squid ink.",
+          "de": "Zuschlag für schwarze Pasta mit Tintenfischtinte.",
+          "ar": "إضافة اختيارية لباستا سوداء مميزة بحبر الحبار (سيبيا)."
+        },
+        "price": "5",
+        "image": "images/pasta-noir.webp"
       },
       {
         "name": {
@@ -1252,7 +1478,7 @@ export const menuData = [
           "de": "Hähnchen, Lasagne-Nudeln, weiße Sauce, Béchamelsauce, Käse",
           "ar": "طبقات لازانيا بالدجاج، فطر طازج، صلصة بيضاء، بيشاميل، وجبن محمر في الفرن."
         },
-        "price": "64",
+        "price": "60",
         "image": "images/lasagne-poulet.webp",
         "isNew": true
       },
@@ -1269,8 +1495,25 @@ export const menuData = [
           "de": "Hackfleisch, Lasagne-Nudeln, Bolognese-Sauce, Béchamelsauce, Käse.",
           "ar": "طبقات لازانيا باللحم المفروم، صلصة بولونيز، بيشاميل، وجبن غني محمر في الفرن."
         },
-        "price": "75",
+        "price": "72",
         "image": "images/lasagne-viande.webp",
+        "isNew": true
+      },
+      {
+        "name": {
+          "fr": "LASAGNE FRUIT DE MER ",
+          "en": "Seafood lasagne",
+          "de": "Meeresfrüchte-Lasagne",
+          "ar": "لازانيا فواكه البحر المشكلة"
+        },
+        "description": {
+          "fr": "Crevette, calamars, , Pâtes lasagne, Sauce blanche, Béchamel, fromage",
+          "en": "Shrimp, squid, lasagne pasta, white sauce, béchamel, cheese.",
+          "de": "Garnelen, Kalmar, Lasagne-Nudeln, weiße Sauce, Béchamelsauce, Käse",
+          "ar": "طبقات لازانيا بالجمبري والكلمار، صلصة بيضاء، بيشاميل، وجبن محمر في الفرن."
+        },
+        "price": "78",
+        "image": "images/Lasagnes-de-fruits-de-mer.webp",
         "isNew": true
       }
     ]
@@ -1286,6 +1529,38 @@ export const menuData = [
     "items": [
       {
         "name": {
+          "fr": "GREY CORNER (variétés gourmandises)",
+          "en": "GREY CORNER (gourmet varieties)",
+          "de": "GREY CORNER (Gourmet-Sorten)",
+          "ar": "كريب أو وافل غري كورنر المشكل الفاخر"
+        },
+        "description": {
+          "fr": "Crêpe ou gaufre avec des variétés gourmandes.",
+          "en": "Crêpe or waffle with gourmet varieties.",
+          "de": "Crêpe oder Waffel mit Gourmet-Sorten.",
+          "ar": "كريب أو وافل مشكل بتشكيلة لذيذة من الشوكولاتة والمكسرات والفواكه."
+        },
+        "price": "52",
+        "image": "images/crepe-gc.webp"
+      },
+      {
+        "name": {
+          "fr": "EXOTIQUE (fruits saisons)",
+          "en": "EXOTIC (seasonal fruits)",
+          "de": "EXOTISCH (saisonale Früchte)",
+          "ar": "كريب أو وافل بالفواكه الموسمية"
+        },
+        "description": {
+          "fr": "Crêpe ou gaufre aux fruits de saison.",
+          "en": "Crêpe or waffle with seasonal fruits.",
+          "de": "Crêpe oder Waffel mit saisonalen Früchten.",
+          "ar": "كريب أو وافل مزين بتشكيلة منعشة من الفواكه الموسمية الطازجة والصلصة."
+        },
+        "price": "48",
+        "image": "images/crepe-exotique.webp"
+      },
+      {
+        "name": {
           "fr": "KUNAFA PISTACHE",
           "en": "PISTACHIO KUNAFA",
           "de": "PISTAZIEN KUNAFA",
@@ -1297,7 +1572,7 @@ export const menuData = [
           "de": "Crêpe oder Waffel mit Kunafa Pistazien-Geschmack.",
           "ar": "كريب أو وافل مميز بنكهة الكنافة المقرمشة مع الفستق الحلبي الغني."
         },
-        "price": "52",
+        "price": "48",
         "image": "images/crepe-kunafa.webp"
       },
       {
@@ -1313,8 +1588,40 @@ export const menuData = [
           "de": "Crêpe oder Waffel mit Banane und Nutella.",
           "ar": "كريب أو وافل محشو بشرائح الموز الطازج وشوكولاتة نوتيلا الأصلية."
         },
-        "price": "45",
+        "price": "42",
         "image": "images/crepe-bananenutella.webp"
+      },
+      {
+        "name": {
+          "fr": "POMME CARAMELISÉE",
+          "en": "CARAMELIZED APPLE",
+          "de": "KARAMELLISIERTER APFEL",
+          "ar": "كريب أو وافل تفاح مكرمل"
+        },
+        "description": {
+          "fr": "Crêpe ou gaufre à la pomme caramélisée.",
+          "en": "Crêpe or waffle with caramelized apple.",
+          "de": "Crêpe oder Waffel mit karamellisiertem Apfel.",
+          "ar": "كريب أو وافل مع قطع التفاح المكرمل بنكهة القرفة اللذيذة."
+        },
+        "price": "40",
+        "image": "images/crepe-pomme.webp"
+      },
+      {
+        "name": {
+          "fr": "CHOCOLAT NOISETTE",
+          "en": "HAZELNUT CHOCOLATE",
+          "de": "HASELNUSS-SCHOKOLADE",
+          "ar": "كريب أو وافل شوكولاتة بالبندق"
+        },
+        "description": {
+          "fr": "Crêpe ou gaufre au chocolat noisette.",
+          "en": "Crêpe or waffle with hazelnut chocolate.",
+          "de": "Crêpe oder Waffel mit Haselnuss-Schokolade.",
+          "ar": "كريب أو وافل مغطى بشوكولاتة البندق الفاخرة المقرمشة."
+        },
+        "price": "42",
+        "image": "images/crepe-noisette.webp"
       },
       {
         "name": {
@@ -1329,7 +1636,7 @@ export const menuData = [
           "de": "Crêpe oder Waffel mit Nutella.",
           "ar": "كريب أو وافل مع طبقة وفيرة من شوكولاتة نوتيلا اللذيذة."
         },
-        "price": "40",
+        "price": "38",
         "image": "images/crepe-nutella.webp"
       }
     ]
@@ -1355,8 +1662,24 @@ export const menuData = [
           "de": "Herzhafter Crêpe mit Meeresfrüchten.",
           "ar": "كريب مالح محشو بالجمبري والكلمار وفواكه البحر والصلصة البيضاء والجبن."
         },
-        "price": "62",
+        "price": "58",
         "image": "images/crepe-sal-pecheur.webp"
+      },
+      {
+        "name": {
+          "fr": "Crêpe NORVÉGIENNE",
+          "en": "NORWEGIAN Crêpe",
+          "de": "NORWEGISCHER Crêpe",
+          "ar": "كريب مالح نرويجي بالسلمون"
+        },
+        "description": {
+          "fr": "Crêpe salée au saumon.",
+          "en": "Savory crêpe with salmon.",
+          "de": "Herzhafter Crêpe mit Lachs.",
+          "ar": "كريب مالح محشو بالسلمون المدخن والجبن والصلصة الكريمية."
+        },
+        "price": "58",
+        "image": "images/crepe-sal-norve.webp"
       },
       {
         "name": {
@@ -1371,8 +1694,24 @@ export const menuData = [
           "de": "Gemischter herzhafter Crêpe (Fleisch und Käse).",
           "ar": "كريب مالح مشكل يجمع بين اللحم والدجاج والجبن الذائب."
         },
-        "price": "62",
+        "price": "58",
         "image": "images/crepe-sal-gc.webp"
+      },
+      {
+        "name": {
+          "fr": "Crêpe BOLOGNAISE",
+          "en": "BOLOGNESE Crêpe",
+          "de": "BOLOGNESE Crêpe",
+          "ar": "كريب مالح بصلصة البولونيز"
+        },
+        "description": {
+          "fr": "Crêpe salée à la sauce bolognaise.",
+          "en": "Savory crêpe with Bolognese sauce.",
+          "de": "Herzhafter Crêpe mit Bolognese-Soße.",
+          "ar": "كريب مالح محشو بصلصة البولونيز باللحم المفروم والجبن الذائب."
+        },
+        "price": "54",
+        "image": "images/crepe-sal-bologn.webp"
       },
       {
         "name": {
@@ -1387,7 +1726,7 @@ export const menuData = [
           "de": "Herzhafter Crêpe mit Hähnchen und Pilzen.",
           "ar": "كريب مالح محشو بقطع الدجاج والفطر والصلصة الكريمية وجبن الموزاريلا."
         },
-        "price": "50",
+        "price": "48",
         "image": "images/crepe-sal-poulet.webp"
       },
       {
@@ -1403,8 +1742,24 @@ export const menuData = [
           "de": "Herzhafter Crêpe mit Aufschnitt.",
           "ar": "كريب مالح محشو بالشاركوتري والجبن الذائب والصلصة."
         },
-        "price": "48",
+        "price": "45",
         "image": "images/crepe-sal-charcut.webp"
+      },
+      {
+        "name": {
+          "fr": "Crêpe FROMAGE",
+          "en": "CHEESE Crêpe",
+          "de": "KÄSE Crêpe",
+          "ar": "كريب مالح بالأجبان المشكلة"
+        },
+        "description": {
+          "fr": "Crêpe salée au fromage.",
+          "en": "Savory crêpe with cheese.",
+          "de": "Herzhafter Crêpe mit Käse.",
+          "ar": "كريب مالح غني بمزيج من الأجبان الذائبة الشهية."
+        },
+        "price": "45",
+        "image": "images/crepe-sal-fromage.webp"
       }
     ]
   },
@@ -1430,7 +1785,7 @@ export const menuData = [
           "de": "Geschmacksrichtungen: rote Früchte, Karamell, Pistazie, dunkle Schokolade, Honig.",
           "ar": "نكهات حسب الاختيار: فواكه حمراء، كراميل، فستق، شوكولاتة سوداء، أو عسل."
         },
-        "price": "47",
+        "price": "45",
         "image": "images/gateau-sanseb-vari.webp"
       },
       {
@@ -1446,7 +1801,7 @@ export const menuData = [
           "de": "Leckerer Käsekuchen mit Schokolade-, Pistazien- und Himbeergeschmack.",
           "ar": "تشيز كيك كريمي فاخر بنكهات الشوكولاتة أو الفستق أو توت العليق."
         },
-        "price": "47",
+        "price": "45",
         "image": "images/gateau-cheesecake-choco.webp"
       },
       {
@@ -1462,7 +1817,7 @@ export const menuData = [
           "de": "Serviert mit Vanillekugel.",
           "ar": "كيك فوندان دافئ بقلب الشوكولاتة الذائبة، يقدم مع كرة آيس كريم فانيليا."
         },
-        "price": "42",
+        "price": "40",
         "image": "images/gateau-fondant.webp"
       },
       {
@@ -1478,8 +1833,40 @@ export const menuData = [
           "de": "Baskischer Käsekuchen mit Nutella.",
           "ar": "تشيز كيك باسكي مخبوز مغطى بشوكولاتة نوتيلا الأصلية."
         },
-        "price": "42",
+        "price": "40",
         "image": "images/gateau-sanseb-nutella.webp"
+      },
+      {
+        "name": {
+          "fr": "CHEESECAKE (Lotus, Citron)",
+          "en": "CHEESECAKE (Lotus, Lemon)",
+          "de": "CHEESECAKE (Lotus, Zitrone)",
+          "ar": "تشيز كيك بارد (لوتس أو ليمون)"
+        },
+        "description": {
+          "fr": "Cheesecake crémeux aux saveurs Lotus et Citron.",
+          "en": "Creamy cheesecake with Lotus and Lemon flavors.",
+          "de": "Cremiger Käsekuchen mit Lotus- und Zitronengeschmack.",
+          "ar": "تشيز كيك ناعم وكريمي بنكهة بسكويت لوتس الشهير أو الليمون المنعش."
+        },
+        "price": "40",
+        "image": "images/gateau-cheesecake-lotus.webp"
+      },
+      {
+        "name": {
+          "fr": "TIRAMISU",
+          "en": "TIRAMISU",
+          "de": "TIRAMISU",
+          "ar": "تيراميسو إيطالي كلاسيكي"
+        },
+        "description": {
+          "fr": "Dessert classique italien.",
+          "en": "Classic Italian dessert.",
+          "de": "Klassisches italienisches Dessert.",
+          "ar": "حلوى التيراميسو الإيطالية الكلاسيكية بالقهوة وكريمة الماسكاربوني الفاخرة والكاكاو."
+        },
+        "price": "38",
+        "image": "images/gateau-tiramisu.webp"
       }
     ]
   },
@@ -1504,7 +1891,7 @@ export const menuData = [
           "de": "Reiche geschmolzene Schokolade.",
           "ar": "شوكولاتة ساخنة غنية ومذابة بقوام كريمي فاخر."
         },
-        "price": "28",
+        "price": "26",
         "image": "images/boisson-choc-fondue.webp"
       },
       {
@@ -1520,7 +1907,7 @@ export const menuData = [
           "de": "Serviert mit einem 33 cl Mineralwasser.",
           "ar": "قهوة نسبريسو فاخرة، تقدم مع قنينة ماء معدني 33 سنتلتر."
         },
-        "price": "23",
+        "price": "22",
         "image": "images/boisson-nespresso.webp"
       },
       {
@@ -1536,7 +1923,7 @@ export const menuData = [
           "de": "Serviert mit einem 33 cl Mineralwasser.",
           "ar": "كابتشينو غني مع كريمة الشانتيي المخفوقة، يقدم مع ماء معدني 33 سنتلتر."
         },
-        "price": "23",
+        "price": "22",
         "image": "images/boisson-cappu-chant.webp"
       },
       {
@@ -1552,7 +1939,7 @@ export const menuData = [
           "de": "Serviert mit einem 33 cl Mineralwasser.",
           "ar": "شوكولاتة ساخنة مع كريمة الشانتيي، تقدم مع ماء معدني 33 سنتلتر."
         },
-        "price": "23",
+        "price": "22",
         "image": "images/boisson-choc-chant.webp"
       },
       {
@@ -1568,7 +1955,7 @@ export const menuData = [
           "de": "Serviert mit einem 33 cl Mineralwasser.",
           "ar": "قهوة بالحليب متوازنة وغنية، تقدم مع ماء معدني 33 سنتلتر."
         },
-        "price": "20",
+        "price": "19",
         "image": "images/boisson-cafelait.webp"
       },
       {
@@ -1584,7 +1971,7 @@ export const menuData = [
           "de": "Serviert mit einem 33 cl Mineralwasser.",
           "ar": "كابتشينو إيطالي كلاسيكي برغوة الحليب الغنية، يقدم مع ماء معدني 33 سنتلتر."
         },
-        "price": "20",
+        "price": "19",
         "image": "images/boisson-cappu.webp"
       },
       {
@@ -1600,7 +1987,7 @@ export const menuData = [
           "de": "Serviert mit einem 33 cl Mineralwasser.",
           "ar": "شوكولاتة ساخنة بالحليب الكريمي اللذيذ، تقدم مع ماء معدني 33 سنتلتر."
         },
-        "price": "20",
+        "price": "18",
         "image": "images/boisson-chocolat.webp"
       },
       {
@@ -1616,7 +2003,7 @@ export const menuData = [
           "de": "Serviert mit einem 33 cl Mineralwasser.",
           "ar": "كافيه لاتيه بحليب مبخر ناعم وطبقة رغوة خفيفة، يقدم مع ماء معدني 33 سنتلتر."
         },
-        "price": "20",
+        "price": "19",
         "image": "images/boisson-cafelatte.webp"
       },
       {
@@ -1632,7 +2019,7 @@ export const menuData = [
           "de": "Schwarzer Tee serviert mit Milch.",
           "ar": "شاي أسود مغلى يقدم مع الحليب الساخن."
         },
-        "price": "19",
+        "price": "18",
         "image": "images/boisson-thenoir-lait.webp"
       },
       {
@@ -1648,8 +2035,24 @@ export const menuData = [
           "de": "Auswahl an Kräutertees.",
           "ar": "تشكيلة مختارة من الأعشاب الطبيعية المنقوعة والمريحة."
         },
-        "price": "19",
+        "price": "18",
         "image": "images/boisson-infusion.webp"
+      },
+      {
+        "name": {
+          "fr": "VERVEINE AROMATISÉE",
+          "en": "FLAVORED VERBENA",
+          "de": "AROMATISIERTE VERBENA",
+          "ar": "لويزة منكهة بالأعشاب"
+        },
+        "description": {
+          "fr": "Infusion de verveine aromatisée.",
+          "en": "Flavored verbena infusion.",
+          "de": "Aromatisierter Eisenkraut-Aufguss.",
+          "ar": "منقوع لويزة طبيعية منكهة بالأعشاب العطرية."
+        },
+        "price": "18",
+        "image": "images/boisson-verveine-arom.webp"
       },
       {
         "name": {
@@ -1664,7 +2067,7 @@ export const menuData = [
           "de": "Serviert mit einem 33 cl Mineralwasser.",
           "ar": "قهوة أمريكانو خفيفة ومقطرة، تقدم مع ماء معدني 33 سنتلتر."
         },
-        "price": "18",
+        "price": "17",
         "image": "images/boisson-americano.webp"
       },
       {
@@ -1680,7 +2083,7 @@ export const menuData = [
           "de": "Serviert mit einem 33 cl Mineralwasser.",
           "ar": "قهوة سوداء مركزة ونقية برائحة غنية، تقدم مع ماء معدني 33 سنتلتر."
         },
-        "price": "17",
+        "price": "16",
         "image": "images/boisson-cafe.webp"
       },
       {
@@ -1696,7 +2099,7 @@ export const menuData = [
           "de": "Traditioneller Minztee.",
           "ar": "شاي مغربي تقليدي محضر بالنعناع الطازج المنعش."
         },
-        "price": "17",
+        "price": "16",
         "image": "images/boisson-the.webp"
       },
       {
@@ -1712,7 +2115,7 @@ export const menuData = [
           "de": "Purer schwarzer Tee.",
           "ar": "شاي أسود طبيعي كلاسيكي ودافئ."
         },
-        "price": "16",
+        "price": "15",
         "image": "images/boisson-thenoir.webp"
       },
       {
@@ -1728,7 +2131,7 @@ export const menuData = [
           "de": "Eisenkraut-Aufguss.",
           "ar": "منقوع نبات اللويزة الطبيعية المهدئة للأعصاب."
         },
-        "price": "16",
+        "price": "15",
         "image": "images/boisson-verveine.webp"
       },
       {
@@ -1744,7 +2147,7 @@ export const menuData = [
           "de": "Normale Milch.",
           "ar": "حليب طبيعي طازج يقدم بارداً أو ساخناً حسب رغبتك."
         },
-        "price": "13",
+        "price": "12",
         "image": "images/boisson-lait.webp"
       }
     ]
@@ -1770,7 +2173,7 @@ export const menuData = [
           "de": "Energy-Drink.",
           "ar": "مشروب طاقة منعش وحيوي يقدم بارداً."
         },
-        "price": "29",
+        "price": "28",
         "image": "images/soda-redbull.webp"
       },
       {
@@ -1786,7 +2189,7 @@ export const menuData = [
           "de": "Sprudelgetränk.",
           "ar": "مشروب غازي كلاسيكي منعش ومثلج."
         },
-        "price": "18",
+        "price": "17",
         "image": "images/soda-coca.webp"
       },
       {
@@ -1802,7 +2205,7 @@ export const menuData = [
           "de": "Zuckerfreies Sprudelgetränk.",
           "ar": "مشروب غازي كوكاكولا منعش بدون سكر وبدون سعرات حرارية."
         },
-        "price": "18",
+        "price": "17",
         "image": "images/soda-cocazero.webp"
       },
       {
@@ -1818,7 +2221,7 @@ export const menuData = [
           "de": "Sprudelgetränk.",
           "ar": "مشروب غازي بنكهة الليمون الحامض المنعش."
         },
-        "price": "18",
+        "price": "17",
         "image": "images/soda-sprite.webp"
       },
       {
@@ -1834,7 +2237,7 @@ export const menuData = [
           "de": "Sprudelgetränk.",
           "ar": "مشروب غازي بنكهة الفواكه الاستوائية المنعشة."
         },
-        "price": "18",
+        "price": "17",
         "image": "images/soda-hawai.webp"
       },
       {
@@ -1850,7 +2253,7 @@ export const menuData = [
           "de": "Sprudelgetränk.",
           "ar": "مشروب غازي مغربي شهير بنكهة التفاح الأخضر اللذيذ."
         },
-        "price": "18",
+        "price": "17",
         "image": "images/soda-poms.webp"
       },
       {
@@ -1866,7 +2269,7 @@ export const menuData = [
           "de": "Sprudelgetränk.",
           "ar": "مشروب غازي بعصير ولب البرتقال الطبيعي المنعش."
         },
-        "price": "18",
+        "price": "17",
         "image": "images/soda-orangina.webp"
       },
       {
@@ -1882,7 +2285,7 @@ export const menuData = [
           "de": "Sprudelgetränk.",
           "ar": "مشروب غازي شويبس منعش بنكهة الليمون أو ماء التونيك."
         },
-        "price": "18",
+        "price": "17",
         "image": "images/soda-schweppes.webp"
       }
     ]
@@ -1908,7 +2311,7 @@ export const menuData = [
           "de": "Sprudelndes Mineralwasser.",
           "ar": "ماء معدني غازي طبيعي فوار منعش بحجم كبير 75 سنتلتر."
         },
-        "price": "28",
+        "price": "26",
         "image": "images/eau-oulmes75cl.webp"
       },
       {
@@ -1924,7 +2327,7 @@ export const menuData = [
           "de": "75 cl Mineralwasserflasche.",
           "ar": "قنينة ماء معدني طبيعي نقي بحجم كبير 75 سنتلتر."
         },
-        "price": "24",
+        "price": "22",
         "image": "images/eau-75.webp"
       },
       {
@@ -1940,7 +2343,7 @@ export const menuData = [
           "de": "Sprudelndes Mineralwasser.",
           "ar": "ماء معدني غازي طبيعي فوار منعش بحجم فردي 50 سنتلتر."
         },
-        "price": "17",
+        "price": "16",
         "image": "images/eau-oulmes.webp"
       },
       {
@@ -1972,6 +2375,22 @@ export const menuData = [
     "items": [
       {
         "name": {
+          "fr": "ZA3ZA3",
+          "en": "ZA3ZA3",
+          "de": "ZA3ZA3",
+          "ar": "زعزع فاسي فاخر"
+        },
+        "description": {
+          "fr": "Cocktail marocain riche en fruits secs et lait.",
+          "en": "Rich Moroccan cocktail with dried fruits and milk.",
+          "de": "Reicher marokkanischer Cocktail mit Nussfrüchten und Milch.",
+          "ar": "كوكتيل مغربي غني بالأفوكادو والحليب والفواكه الجافة والشوكولاتة وقطع الكيك."
+        },
+        "price": "46",
+        "image": "images/jus-za3za3.webp"
+      },
+      {
+        "name": {
           "fr": "COCKTAIL ORANGE",
           "en": "ORANGE COCKTAIL",
           "de": "ORANGEN-COCKTAIL",
@@ -1983,7 +2402,7 @@ export const menuData = [
           "de": "Cocktail auf Orangenbasis.",
           "ar": "كوكتيل عصير برتقال طبيعي منعش ممزوج بالفواكه الطازجة."
         },
-        "price": "45",
+        "price": "42",
         "image": "images/jus-cocktailorange.webp"
       },
       {
@@ -1999,8 +2418,24 @@ export const menuData = [
           "de": "Mischung aus Avocado und Nussfrüchten.",
           "ar": "عصير أفوكادو كريمي ممزوج بالحليب والمكسرات (لوز، جوز) والتمور."
         },
-        "price": "40",
+        "price": "38",
         "image": "images/jus-avocatsec.webp"
+      },
+      {
+        "name": {
+          "fr": "PANACHÉ AU LAIT",
+          "en": "MILK PANACHE",
+          "de": "MILCH PANACHE",
+          "ar": "عصير باناشي بالحليب"
+        },
+        "description": {
+          "fr": "Mélange de jus de fruits au lait.",
+          "en": "Mix of fruit juices with milk.",
+          "de": "Mischung aus Fruchtsäften mit Milch.",
+          "ar": "مزيج مشكل من عصائر الفواكه الموسمية الطازجة مخفوقة مع الحليب."
+        },
+        "price": "38",
+        "image": "images/jus-panache.webp"
       },
       {
         "name": {
@@ -2015,7 +2450,7 @@ export const menuData = [
           "de": "Frischer Himbeersaft.",
           "ar": "عصير توت العليق (الفريز البري) الطازج الغني والمنعش."
         },
-        "price": "38",
+        "price": "35",
         "image": "images/jus-framboise.webp"
       },
       {
@@ -2031,7 +2466,7 @@ export const menuData = [
           "de": "Frischer Avocadosaft.",
           "ar": "عصير أفوكادو طازج بقوام ناعم وكريمي بالحليب."
         },
-        "price": "35",
+        "price": "32",
         "image": "images/jus-avocat.webp"
       },
       {
@@ -2047,7 +2482,7 @@ export const menuData = [
           "de": "Frischer Ananassaft.",
           "ar": "عصير أناناس استوائي طازج معصور وغني بالانتعاش."
         },
-        "price": "34",
+        "price": "32",
         "image": "images/jus-ananas.webp"
       },
       {
@@ -2063,7 +2498,7 @@ export const menuData = [
           "de": "Frischer Mangosaft.",
           "ar": "عصير مانجو استوائي طبيعي غني وناعم."
         },
-        "price": "32",
+        "price": "30",
         "image": "images/jus-mangue.webp"
       },
       {
@@ -2079,7 +2514,7 @@ export const menuData = [
           "de": "Frischer Pfirsichsaft.",
           "ar": "عصير خوخ طبيعي طازج بمذاق حلو ومنعش."
         },
-        "price": "32",
+        "price": "30",
         "image": "images/jus-peche.webp"
       },
       {
@@ -2095,7 +2530,7 @@ export const menuData = [
           "de": "Frischer Erdbeersaft.",
           "ar": "عصير فراولة طبيعية طازجة معصورة بلونها ومذاقها الرائع."
         },
-        "price": "32",
+        "price": "30",
         "image": "images/jus-fraise.webp"
       },
       {
@@ -2111,7 +2546,7 @@ export const menuData = [
           "de": "Apfel- oder Bananensaft.",
           "ar": "عصير تفاح طازج أو عصير موز مغذي مخفوق مع الحليب حسب اختيارك."
         },
-        "price": "30",
+        "price": "28",
         "image": "images/jus-pomme-banane.webp"
       },
       {
@@ -2127,7 +2562,7 @@ export const menuData = [
           "de": "Frischer Zitronensaft.",
           "ar": "عصير ليمون حامض طبيعي منعش ومثلج."
         },
-        "price": "27",
+        "price": "25",
         "image": "images/jus-citron.webp"
       },
       {
@@ -2143,7 +2578,7 @@ export const menuData = [
           "de": "Frischer Karottensaft.",
           "ar": "عصير جزر طبيعي 100% معصور فورياً وغني بالفيتامينات."
         },
-        "price": "26",
+        "price": "25",
         "image": "images/jus-carotte.webp"
       },
       {
@@ -2159,7 +2594,7 @@ export const menuData = [
           "de": "Frisch gepresster Orangensaft.",
           "ar": "عصير برتقال مغربي طازج 100% معصور فورياً وغني بفيتامين سي."
         },
-        "price": "24",
+        "price": "22",
         "image": "images/jus-orange.webp"
       }
     ]
@@ -2185,7 +2620,7 @@ export const menuData = [
           "de": "Eistee mit Zitronengeschmack.",
           "ar": "شاي مثلج منعش بنكهة الليمون الحامض والثلج المجروش."
         },
-        "price": "29",
+        "price": "28",
         "image": "images/icetea-citron.webp"
       },
       {
@@ -2201,7 +2636,7 @@ export const menuData = [
           "de": "Eistee mit Pfirsichgeschmack.",
           "ar": "شاي مثلج منعش ومحلى بنكهة الخوخ الطبيعية اللذيذة."
         },
-        "price": "29",
+        "price": "28",
         "image": "images/icetea-peche.webp"
       },
       {
@@ -2217,7 +2652,7 @@ export const menuData = [
           "de": "Eistee mit Himbeergeschmack.",
           "ar": "شاي مثلج منعش بنكهة توت العليق الأحمر."
         },
-        "price": "29",
+        "price": "28",
         "image": "images/icetea-framboise.webp"
       }
     ]
@@ -2243,7 +2678,7 @@ export const menuData = [
           "de": "Eiskaffee mit Geschmack nach Wahl.",
           "ar": "قهوة مثلجة بالحليب والثلج مع نكهة من اختيارك (كراميل، فانيليا، أو بندق)."
         },
-        "price": "24",
+        "price": "23",
         "image": "images/icecoffee-arom.webp"
       },
       {
@@ -2259,7 +2694,7 @@ export const menuData = [
           "de": "Traditioneller Eiskaffee.",
           "ar": "قهوة مثلجة تقليدية منعشة محضرة بالإسبريسو والحليب البارد ومكعبات الثلج."
         },
-        "price": "22",
+        "price": "20",
         "image": "images/icecoffee-class.webp"
       }
     ]
@@ -2285,7 +2720,7 @@ export const menuData = [
           "de": "Frappuccino mit Geschmack nach Wahl.",
           "ar": "مشروب فرابتشينو مخفوق بالثلج والقهوة مع نكهة من اختيارك (كراميل، فانيليا، أو شوكولاتة)."
         },
-        "price": "29",
+        "price": "28",
         "image": "images/frappu-arom.webp"
       },
       {
@@ -2301,7 +2736,7 @@ export const menuData = [
           "de": "Gemischtes Eiskaffeegetränk, Frappé-Stil.",
           "ar": "مشروب قهوة مثلجة مخفوقة على طريقة الفرابي الكلاسيكية مع الكريمة."
         },
-        "price": "26",
+        "price": "25",
         "image": "images/frappu-class.webp"
       }
     ]
@@ -2316,6 +2751,22 @@ export const menuData = [
     "items": [
       {
         "name": {
+          "fr": "COCKTAIL GREY CORNER",
+          "en": "GREY CORNER COCKTAIL",
+          "de": "GREY CORNER COCKTAIL",
+          "ar": "كوكتيل غري كورنر الخاص"
+        },
+        "description": {
+          "fr": "Ananas, avocat, fruit de saison, sirop fruits de passion.",
+          "en": "Pineapple, avocado, seasonal fruit, passion fruit syrup.",
+          "de": "Ananas, Avocado, saisonale Frucht, Passionsfruchtsirup.",
+          "ar": "أناناس، أفوكادو، فواكه موسمية طازجة، وسيروب فاكهة العاطفة (باشن فروت)."
+        },
+        "price": "48",
+        "image": "images/cocktail-gc.webp"
+      },
+      {
+        "name": {
           "fr": "FRAÎCHEUR",
           "en": "FRESHNESS",
           "de": "FRISCHE",
@@ -2327,7 +2778,7 @@ export const menuData = [
           "de": "Ananas, Birne, Zitrone, Minze.",
           "ar": "أناناس، إجاص (بوعويد)، ليمون حامض، وأوراق النعناع الطازجة."
         },
-        "price": "44",
+        "price": "42",
         "image": "images/cocktail-fraicheur.webp"
       },
       {
@@ -2343,7 +2794,7 @@ export const menuData = [
           "de": "Mango, Banane, Orange, Hibiskus.",
           "ar": "مانجو، موز، برتقال، وعصير الكركديه (بيساب) المنعش."
         },
-        "price": "44",
+        "price": "42",
         "image": "images/cocktail-tropical.webp"
       },
       {
@@ -2359,7 +2810,7 @@ export const menuData = [
           "de": "Ananas, Kokosnuss.",
           "ar": "عصير أناناس طبيعي مخفوق مع حليب وكريمة جوز الهند والثلج."
         },
-        "price": "44",
+        "price": "42",
         "image": "images/cocktail-pinacolada.webp"
       },
       {
@@ -2375,7 +2826,7 @@ export const menuData = [
           "de": "Ingwer, Zitrone, Honig.",
           "ar": "زنجبيل طازج، عصير ليمون حامض، وعسل طبيعي نقي."
         },
-        "price": "34",
+        "price": "32",
         "image": "images/cocktail-gingembre.webp"
       },
       {
@@ -2391,7 +2842,7 @@ export const menuData = [
           "de": "Ingwer, Hibiskus, Orange, Zitrone.",
           "ar": "زنجبيل، كركديه (بيساب)، عصير برتقال، وعصير ليمون منعش."
         },
-        "price": "35",
+        "price": "34",
         "image": "images/cocktail-sf.webp"
       }
     ]
@@ -2417,7 +2868,7 @@ export const menuData = [
           "de": "Belebender Mojito mit Redbull.",
           "ar": "موهيتو منعش بمشروب الطاقة ريد بول، الليمون الحامض، والنعناع الطازج مع الثلج المجروش."
         },
-        "price": "46",
+        "price": "44",
         "image": "images/mojito-redbull.webp"
       },
       {
@@ -2433,7 +2884,7 @@ export const menuData = [
           "de": "Mojito mit tropischen Aromen.",
           "ar": "موهيتو منعش بنكهات الفواكه الاستوائية، الليمون، والنعناع الطازج."
         },
-        "price": "40",
+        "price": "38",
         "image": "images/mojito-tropical.webp"
       },
       {
@@ -2449,7 +2900,7 @@ export const menuData = [
           "de": "Klassischer Zitronen Mojito.",
           "ar": "موهيتو كلاسيكي منعش بعصير الليمون والنعناع الطازج والصودا الفوارة."
         },
-        "price": "36",
+        "price": "34",
         "image": "images/mojito-citron.webp"
       }
     ]
@@ -2464,6 +2915,22 @@ export const menuData = [
     "items": [
       {
         "name": {
+          "fr": "JELLY ALMOND",
+          "en": "JELLY ALMOND",
+          "de": "JELLY ALMOND",
+          "ar": "سموذي جيلي ألموند"
+        },
+        "description": {
+          "fr": "Banane, amlou, framboise, myrtille.",
+          "en": "Banana, amlou, raspberry, blueberry.",
+          "de": "Banane, Amlou, Himbeere, Blaubeere.",
+          "ar": "موز، أملو باللوز، توت العليق (فواز)، والتوت الأزرق (ميرتيل)."
+        },
+        "price": "48",
+        "image": "images/smoothie-jelly.webp"
+      },
+      {
+        "name": {
           "fr": "PINK SMOOTHIE",
           "en": "PINK SMOOTHIE",
           "de": "PINK SMOOTHIE",
@@ -2475,7 +2942,7 @@ export const menuData = [
           "de": "Himbeere, Orange, Erdbeere.",
           "ar": "توت العليق، عصير برتقال، وفراولة طازجة مخفوقة."
         },
-        "price": "50",
+        "price": "48",
         "image": "images/smoothie-pink.webp"
       },
       {
@@ -2491,7 +2958,7 @@ export const menuData = [
           "de": "Blaubeere, Himbeere, Erdbeere.",
           "ar": "توت أزرق، توت العليق، وفراولة طازجة منعشة."
         },
-        "price": "50",
+        "price": "48",
         "image": "images/smoothie-triple.webp"
       },
       {
@@ -2507,7 +2974,7 @@ export const menuData = [
           "de": "Banane, Ananas, Mango.",
           "ar": "موز، أناناس استوائي، ومانجو طبيعي غني بالفيتامينات."
         },
-        "price": "44",
+        "price": "42",
         "image": "images/smoothie-energetic.webp"
       },
       {
@@ -2523,7 +2990,7 @@ export const menuData = [
           "de": "Orange, Pfirsich, Karotte.",
           "ar": "عصير برتقال، خوخ طبيعي، وجزر طازج غني بالفوائد الصحية."
         },
-        "price": "44",
+        "price": "42",
         "image": "images/smoothie-multiv.webp"
       },
       {
@@ -2539,7 +3006,7 @@ export const menuData = [
           "de": "Erdbeere, Ananas, Kiwi, Avocado, Minze.",
           "ar": "فراولة، أناناس، كيوي، أفوكادو كريمي، وأوراق النعناع الطازجة."
         },
-        "price": "44",
+        "price": "42",
         "image": "images/smoothie-hawai.webp"
       }
     ]
@@ -2565,7 +3032,7 @@ export const menuData = [
           "de": "Mango, Avocado, Banane, Zitrone, Erdbeere, Orange.",
           "ar": "مانجو، أفوكادو، موز، ليمون، فراولة، وبرتقال في وعاء سموذي غني ومزين."
         },
-        "price": "50",
+        "price": "48",
         "image": "images/smoothiebowl-ultra.webp"
       },
       {
@@ -2581,7 +3048,7 @@ export const menuData = [
           "de": "Ananas, Pfirsich, Mango, Banane, Orange.",
           "ar": "أناناس، خوخ، مانجو، موز، وعصير برتقال في وعاء سموذي منعش بالفواكه."
         },
-        "price": "50",
+        "price": "48",
         "image": "images/smoothiebowl-exotic.webp"
       }
     ]
@@ -2607,7 +3074,7 @@ export const menuData = [
           "de": "Milkshake mit Erdbeergeschmack.",
           "ar": "ميلك شيك كريمي مخفوق بالحليب وآيس كريم الفراولة وصلصة الفراولة اللذيذة."
         },
-        "price": "43",
+        "price": "42",
         "image": "images/milkshake-fraise.webp"
       },
       {
@@ -2623,7 +3090,7 @@ export const menuData = [
           "de": "Milkshake mit Karamellgeschmack.",
           "ar": "ميلك شيك كريمي مخفوق بالحليب وآيس كريم الكراميل مع صلصة التوفي الغنية."
         },
-        "price": "43",
+        "price": "42",
         "image": "images/milkshake-caramel.webp"
       },
       {
@@ -2639,7 +3106,7 @@ export const menuData = [
           "de": "Milkshake mit Schokoladengeschmack.",
           "ar": "ميلك شيك كريمي مخفوق بالحليب وآيس كريم الشوكولاتة وصلصة الشوكولاتة البلجيكية."
         },
-        "price": "43",
+        "price": "42",
         "image": "images/milkshake-choc.webp"
       },
       {
@@ -2655,8 +3122,56 @@ export const menuData = [
           "de": "Milkshake mit Vanillegeschmack.",
           "ar": "ميلك شيك كريمي كلاسيكي مخفوق بالحليب الطبيعي وآيس كريم الفانيليا الفاخرة."
         },
-        "price": "43",
+        "price": "42",
         "image": "images/milkshake-vanille.webp"
+      },
+      {
+        "name": {
+          "fr": "MILKSHAKE COOKIES",
+          "en": "COOKIES MILKSHAKE",
+          "de": "COOKIES MILKSHAKE",
+          "ar": "ميلك شيك كوكيز"
+        },
+        "description": {
+          "fr": "Milkshake aux cookies.",
+          "en": "Cookies flavored milkshake.",
+          "de": "Milkshake mit Cookies-Geschmack.",
+          "ar": "ميلك شيك كريمي مخفوق بالحليب وقطع بسكويت الكوكيز المقرمشة اللذيذة."
+        },
+        "price": "42",
+        "image": "images/milkshake-cookies.webp"
+      },
+      {
+        "name": {
+          "fr": "MILKSHAKE KITKAT",
+          "en": "KITKAT MILKSHAKE",
+          "de": "KITKAT MILKSHAKE",
+          "ar": "ميلك شيك كيت كات"
+        },
+        "description": {
+          "fr": "Milkshake au Kitkat.",
+          "en": "Kitkat flavored milkshake.",
+          "de": "Milkshake mit Kitkat-Geschmack.",
+          "ar": "ميلك شيك كريمي مخفوق بالحليب مع أصابع شوكولاتة كيت كات المقرمشة."
+        },
+        "price": "42",
+        "image": "images/milkshake-kitkat.webp"
+      },
+      {
+        "name": {
+          "fr": "MILKSHAKE OREO",
+          "en": "OREO MILKSHAKE",
+          "de": "OREO MILKSHAKE",
+          "ar": "ميلك شيك أوريو"
+        },
+        "description": {
+          "fr": "Milkshake aux Oreo.",
+          "en": "Oreo flavored milkshake.",
+          "de": "Milkshake mit Oreo-Geschmack.",
+          "ar": "ميلك شيك كريمي مخفوق بالحليب وبسكويت أوريو الشهير مع الكريمة."
+        },
+        "price": "42",
+        "image": "images/milkshake-oreo.webp"
       },
       {
         "name": {
@@ -2671,7 +3186,7 @@ export const menuData = [
           "de": "Milkshake mit Nutella-Geschmack.",
           "ar": "ميلك شيك كريمي مخفوق بالحليب وشوكولاتة نوتيلا الأصلية الغنية بالبندق."
         },
-        "price": "43",
+        "price": "42",
         "image": "images/milkshake-nutella.webp"
       },
       {
@@ -2687,8 +3202,34 @@ export const menuData = [
           "de": "Zusatz von Schlagsahne.",
           "ar": "إضافة طبقة وفيرة من كريمة الشانتيي المخفوقة الطازجة واللذيذة."
         },
-        "price": "6",
+        "price": "05",
         "image": "images/milkshake-chant.webp"
+      }
+    ]
+  },
+  {
+    "category": {
+      "fr": "ORANGESHAKE",
+      "en": "ORANGESHAKE",
+      "de": "ORANGESHAKE",
+      "ar": "أورانج شيك"
+    },
+    "items": [
+      {
+        "name": {
+          "fr": "ORANGESHAKE",
+          "en": "ORANGESHAKE",
+          "de": "ORANGESHAKE",
+          "ar": "أورانج شيك المنعش"
+        },
+        "description": {
+          "fr": "Milkshake à l'orange (Fraise, caramel, chocolat, vanille, oreo, nougat).",
+          "en": "Orange Milkshake (Strawberry, caramel, chocolate, vanilla, oreo, nougat).",
+          "de": "Orangen Milkshake (Erdbeere, Karamell, Schokolade, Vanille, Oreo, Nougat).",
+          "ar": "ميلك شيك بالبرتقال بنكهتك المفضلة (فراولة، كراميل، شوكولاتة، فانيليا، أوريو، أو نوغا)."
+        },
+        "price": "42",
+        "image": "images/orangshake.webp"
       }
     ]
   },
@@ -2714,8 +3255,24 @@ export const menuData = [
           "de": "Vanille, Nougat, Waldbeerjoghurt,pistazie.",
           "ar": "فانيليا، نوغا، زبادي بالفواكه (ياغورت)، وفستق حلبي مع التزيين الراقي."
         },
-        "price": "69",
+        "price": "65",
         "image": "images/glace-gc.webp"
+      },
+      {
+        "name": {
+          "fr": "BANANA SPLIT",
+          "en": "BANANA SPLIT",
+          "de": "BANANA SPLIT",
+          "ar": "بنانا سبليت كلاسيك"
+        },
+        "description": {
+          "fr": "Vanille, chocolat, fraise.",
+          "en": "Vanilla, chocolate, strawberry.",
+          "de": "Vanille, Schokolade, Erdbeere.",
+          "ar": "موز طازج مع مثلجات الفانيليا والشوكولاتة والفراولة مع صلصة الشوكولاتة والشانتيي."
+        },
+        "price": "50",
+        "image": "images/glace-banana.webp"
       },
       {
         "name": {
@@ -2730,7 +3287,7 @@ export const menuData = [
           "de": "Erdbeere, Joghurt, nougat.",
           "ar": "مثلجات الفراولة، زبادي،ونوغا مع التزيين وصلصة الفواكه."
         },
-        "price": "49",
+        "price": "45",
         "image": "images/glace-amor.webp"
       },
       {
@@ -2762,7 +3319,7 @@ export const menuData = [
           "de": "Geschmacksrichtungen nach Wahl: Vanille, Schokolade, Nougat, pistazie, Bubble, Waldbeerjoghurt, Erdbeere, Karamell.",
           "ar": "نكهتان من اختيارك: فانيليا، شوكولاتة، نوغا، فستق، بابل، زبادي فواكه الغابة، فراولة، أو كراميل."
         },
-        "price": "32",
+        "price": "30",
         "image": "images/glace-2boules.webp"
       },
       {
@@ -2778,7 +3335,7 @@ export const menuData = [
           "de": "Geschmack nach Wahl: Vanille, Schokolade, Nougat, pistazie, Bubble, Waldbeerjoghurt, Erdbeere, Karamell.",
           "ar": "نكهة واحدة من اختيارك: فانيليا، شوكولاتة، نوغا، فستق، بابل، زبادي فواكه الغابة، فراولة، أو كراميل."
         },
-        "price": "17",
+        "price": "16",
         "image": "images/glace-1boule.webp"
       }
     ]
