@@ -80,7 +80,7 @@ export function t(key) {
     cart: { fr: "Mon Panier", en: "My Cart", de: "Mein Warenkorb", ar: "سلتي" },
     emptyCart: { fr: "Votre panier est vide", en: "Your cart is empty", de: "Ihr Warenkorb ist leer", ar: "سلتك فارغة" },
     total: { fr: "Total", en: "Total", de: "Gesamt", ar: "المجموع" },
-    order: { fr: "Commander", en: "Order", de: "Bestellen", ar: "طلب" },
+    order: { fr: "Commander", en: "Order", de: "Bestellen", ar: "اطلب" },
     table: { fr: "Table", en: "Table", de: "Tisch", ar: "طاولة" },
     callWaiter: { fr: "Appeler serveur", en: "Call waiter", de: "Kellner rufen", ar: "نداء النادل" },
     requestWater: { fr: "Demander de l'eau", en: "Request water", de: "Wasser bestellen", ar: "طلب الماء" },

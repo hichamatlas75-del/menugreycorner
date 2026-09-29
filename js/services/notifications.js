@@ -209,14 +209,9 @@ export function addNotificationToHistory(message, tableId) {
     memoryNotifications.shift();
   }
 
-  const bellBtn = document.getElementById("notificationBellBtn");
-  if (bellBtn) {
-    bellBtn.style.display = "flex";
-  }
-
-  const bellBadge = document.getElementById("bellBadge");
-  if (bellBadge) {
-    bellBadge.style.display = "block";
+  const callBadge = document.getElementById("cabCallBadge");
+  if (callBadge) {
+    callBadge.style.display = "block";
   }
 }
 
