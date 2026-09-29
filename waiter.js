@@ -112,20 +112,90 @@ let globalWaiters = [];
 let isReconnecting = false;
 
 // ============================================================================
-// AUDIO & VIBRATION
+// ============================================================================
+// AUDIO & VIBRATION (Synthesizer + Audio element + Haptic)
 // ============================================================================
 
 const alertChime = new Audio("https://assets.mixkit.co/active_storage/sfx/911/911-200.wav");
-alertChime.volume = 0.55;
+alertChime.volume = 1.0;
+
+let waiterAudioCtx = null;
+function getWaiterAudioContext() {
+    if (!waiterAudioCtx && typeof window !== "undefined") {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+            waiterAudioCtx = new AudioContextClass();
+        }
+    }
+    if (waiterAudioCtx && waiterAudioCtx.state === "suspended") {
+        waiterAudioCtx.resume().catch(() => {});
+    }
+    return waiterAudioCtx;
+}
+
+function playSynthesizedChime() {
+    try {
+        const ctx = getWaiterAudioContext();
+        if (!ctx) return false;
+
+        const now = ctx.currentTime;
+        // Bip 1 (880 Hz - La 5)
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.type = "sine";
+        osc1.frequency.setValueAtTime(880, now);
+        gain1.gain.setValueAtTime(1.0, now);
+        gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+        osc1.connect(gain1);
+        gain1.connect(ctx.destination);
+        osc1.start(now);
+        osc1.stop(now + 0.35);
+
+        // Bip 2 (1320 Hz - Mi 6)
+        const osc2 = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.type = "sine";
+        osc2.frequency.setValueAtTime(1320, now + 0.18);
+        gain2.gain.setValueAtTime(1.0, now + 0.18);
+        gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
+        osc2.connect(gain2);
+        gain2.connect(ctx.destination);
+        osc2.start(now + 0.18);
+        osc2.stop(now + 0.65);
+
+        return true;
+    } catch (e) {
+        console.warn("⚠️ Synthesizer audio error:", e);
+        return false;
+    }
+}
 
 let audioUnlocked = false;
 function unlockWaiterAudio() {
     if (audioUnlocked) return;
+    try {
+        const ctx = getWaiterAudioContext();
+        if (ctx && ctx.state === "suspended") {
+            ctx.resume().catch(() => {});
+        }
+    } catch (e) {}
     alertChime.play().then(() => {
         alertChime.pause();
         alertChime.currentTime = 0;
         audioUnlocked = true;
     }).catch(() => {});
+
+    // Notification permission & Screen Wake Lock
+    if (typeof Notification !== "undefined" && Notification.permission === "default") {
+        Notification.requestPermission().catch(() => {});
+    }
+    requestScreenWakeLock();
+
+    const ai = (typeof AndroidInterface !== "undefined") ? AndroidInterface : (typeof window !== "undefined" ? window.AndroidInterface : null);
+    if (ai && typeof ai.keepAlive === "function") {
+        ai.keepAlive();
+    }
+
     document.removeEventListener("touchstart", unlockWaiterAudio);
     document.removeEventListener("click", unlockWaiterAudio);
 }
@@ -137,48 +207,115 @@ if (typeof window !== "undefined") {
 
 function triggerHapticVibrate() {
     if (typeof navigator !== "undefined" && navigator.vibrate) {
-        navigator.vibrate([200, 100, 200]);
+        navigator.vibrate([400, 150, 400, 150, 800]);
     }
 }
 
 function playAlertSound() {
+    const synthPlayed = playSynthesizedChime();
     alertChime.currentTime = 0;
-    alertChime.play().catch(() => {
-        console.warn("🔊 Autoplay bloqué par le navigateur.");
+    alertChime.play().catch((e) => {
+        if (!synthPlayed) console.warn("🔊 Autoplay bloqué par le navigateur:", e);
     });
 }
 
 // ============================================================================
-// ANDROID NATIVE BRIDGE — Helpers sécurisés
+// SCREEN WAKE LOCK API (Maintien de l'écran allumé)
+// ============================================================================
+
+let screenWakeLock = null;
+async function requestScreenWakeLock() {
+    if (typeof navigator !== "undefined" && "wakeLock" in navigator) {
+        try {
+            screenWakeLock = await navigator.wakeLock.request("screen");
+            console.log("💡 Screen Wake Lock acquis — l'écran restera allumé.");
+            screenWakeLock.addEventListener("release", () => {
+                screenWakeLock = null;
+                console.log("💡 Screen Wake Lock relâché.");
+            });
+        } catch (err) {
+            console.warn("⚠️ Wake Lock error:", err);
+        }
+    }
+}
+
+// ============================================================================
+// ANDROID NATIVE BRIDGE — Helpers sécurisés & Keep-Alive continu
 // ============================================================================
 
 function triggerAndroidAlert(id, type, title, message) {
-    if (typeof AndroidInterface === "undefined") return;
-    try {
-        if (typeof AndroidInterface.triggerActionAlert === "function") {
-            AndroidInterface.triggerActionAlert(id, type, title, message);
-        } else if (typeof AndroidInterface.triggerNativeAlert === "function") {
-            AndroidInterface.triggerNativeAlert(title, message);
+    const ai = (typeof AndroidInterface !== "undefined")
+        ? AndroidInterface
+        : ((typeof window !== "undefined" && window.AndroidInterface) ? window.AndroidInterface : null);
+
+    if (ai) {
+        try {
+            if (typeof ai.triggerActionAlert === "function") {
+                ai.triggerActionAlert(id, type, title, message);
+            } else if (typeof ai.triggerNativeAlert === "function") {
+                ai.triggerNativeAlert(title, message);
+            }
+            if (typeof ai.keepAlive === "function") {
+                ai.keepAlive();
+            }
+            console.log("📲 AndroidInterface alert envoyée avec succès.");
+        } catch (e) {
+            console.error("❌ Android bridge error:", e);
         }
-    } catch (e) {
-        console.error("❌ Android bridge error:", e);
+    }
+
+    // Web Notification API fallback (si Chrome / PWA / standalone sans AndroidInterface)
+    if (typeof Notification !== "undefined" && Notification.permission === "granted") {
+        try {
+            if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+                navigator.serviceWorker.ready.then(reg => {
+                    reg.showNotification(title, {
+                        body: message,
+                        icon: "images/logo-gold.png",
+                        badge: "images/logo-gold.png",
+                        vibrate: [400, 150, 400, 150, 800],
+                        tag: id,
+                        renotify: true,
+                        requireInteraction: true
+                    });
+                }).catch(() => {});
+            } else {
+                new Notification(title, {
+                    body: message,
+                    icon: "images/logo-gold.png",
+                    vibrate: [400, 150, 400, 150, 800],
+                    tag: id,
+                    requireInteraction: true
+                });
+            }
+        } catch (e) {
+            console.warn("⚠️ Web Notification error:", e);
+        }
     }
 }
 
 function startAndroidKeepAlive() {
-    const INTERVAL_MS = 20 * 60 * 1000;
+    const ai = (typeof AndroidInterface !== "undefined")
+        ? AndroidInterface
+        : ((typeof window !== "undefined" && window.AndroidInterface) ? window.AndroidInterface : null);
 
-    setInterval(() => {
-        if (typeof AndroidInterface === "undefined") return;
+    const ping = () => {
+        if (!ai) return;
         try {
-            if (typeof AndroidInterface.keepAlive === "function") {
-                AndroidInterface.keepAlive();
+            if (typeof ai.keepAlive === "function") {
+                ai.keepAlive();
                 console.log("💓 Keep-alive envoyé au service Android.");
             }
         } catch (e) {
             console.warn("⚠️ Keep-alive bridge error:", e);
         }
-    }, INTERVAL_MS);
+    };
+
+    // Ping initial immédiat
+    ping();
+
+    // Répéter toutes les 25 secondes pour maintenir le ForegroundService actif en Doze Mode
+    setInterval(ping, 25000);
 }
 
 // ============================================================================
@@ -324,7 +461,9 @@ function processCallsFeed(calls) {
             myActiveCallsCount++;
             if (!knownCallIds.has(call.id)) {
                 knownCallIds.add(call.id);
-                if (!isCallsInitialLoad) {
+                const callAgeMs = call.createdAt ? (Date.now() - parseSafeDate(call.createdAt).getTime()) : 0;
+                const isRecentPending = callAgeMs >= 0 && callAgeMs < 10 * 60 * 1000;
+                if (!isCallsInitialLoad || isRecentPending) {
                     newPendingDetected = true;
                     const zoneName    = getTableZoneName(call.table);
                     const typeLabels  = { waiter: "Appel Serveur", water: "Besoin d'Eau", bill: "L'Addition" };
@@ -438,7 +577,9 @@ function processPreOrdersFeed(orders) {
             myActiveOrdersCount++;
             if (!knownOrderIds.has(order.id)) {
                 knownOrderIds.add(order.id);
-                if (!isOrdersInitialLoad) {
+                const orderAgeMs = order.createdAt ? (Date.now() - parseSafeDate(order.createdAt).getTime()) : 0;
+                const isRecentPending = orderAgeMs >= 0 && orderAgeMs < 15 * 60 * 1000;
+                if (!isOrdersInitialLoad || isRecentPending) {
                     newOrderDetected = true;
                     const zoneName   = getTableZoneName(order.table);
                     const alertTitle = `👨‍🍳 Nouvelle Précommande : ${zoneName} ${order.table}`;
@@ -684,7 +825,19 @@ document.addEventListener("visibilitychange", () => {
         hiddenAt = Date.now();
     } else {
         const hiddenDuration = hiddenAt ? Date.now() - hiddenAt : 0;
-        if (hiddenDuration > 3 * 60 * 1000) {
+        // Réactivation immédiate de l'écran, du contexte audio et du keep-alive
+        requestScreenWakeLock();
+        if (waiterAudioCtx && waiterAudioCtx.state === "suspended") {
+            waiterAudioCtx.resume().catch(() => {});
+        }
+        const ai = (typeof AndroidInterface !== "undefined")
+            ? AndroidInterface
+            : ((typeof window !== "undefined" && window.AndroidInterface) ? window.AndroidInterface : null);
+        if (ai && typeof ai.keepAlive === "function") {
+            ai.keepAlive();
+        }
+
+        if (hiddenDuration > 30 * 1000) {
             console.log(`🔄 Page cachée ${Math.round(hiddenDuration / 1000)}s → reconnexion préventive.`);
             reconnectHub();
         }
@@ -702,14 +855,7 @@ window.addEventListener("beforeunload", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
     initTabNavigation();
-
-    document.addEventListener("click", () => {
-        alertChime.play().then(() => {
-            alertChime.pause();
-            alertChime.currentTime = 0;
-        }).catch(() => { });
-    }, { once: true });
-
+    requestScreenWakeLock();
     startAndroidKeepAlive();
 
     function startWaiterApp() {

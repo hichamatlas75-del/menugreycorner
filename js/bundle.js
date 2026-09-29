@@ -240,10 +240,15 @@
           };
           if (isFirebaseActive) {
             db.collection("waiters_calls").add(data).then((docRef) => {
-              const zoneName = getTableZoneName(tableId);
-              const typeLabels = { waiter: "Appel Serveur", water: "Besoin d'Eau", bill: "L'Addition" };
-              const typeLabel = typeLabels[type] || "Appel";
-              sendFcmToWaiters("WAITER_CALL", `\u{1F514} Nouveau Appel : ${zoneName}`, `Demande : ${typeLabel}`, tableId, docRef.id);
+              try {
+                db.collection("waiter_calls").doc(docRef.id).set({
+                  ...data,
+                  id: docRef.id
+                }).catch(() => {
+                });
+              } catch (e) {
+                console.warn("Mirroring call to waiter_calls failed:", e);
+              }
               if (callback) callback(true, docRef.id);
             }).catch((e) => {
               console.error(e);
@@ -269,18 +274,46 @@
     },
     onCallsChange(callback) {
       if (isFirebaseActive) {
-        return db.collection("waiters_calls").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
-          const calls = [];
+        const activeCallsMap = /* @__PURE__ */ new Map();
+        const emit = () => {
+          const calls = Array.from(activeCallsMap.values());
+          calls.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          callback(calls);
+        };
+        const unsubWaiters = db.collection("waiters_calls").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
           snapshot.forEach((doc) => {
             const data = doc.data();
-            calls.push({
+            activeCallsMap.set(doc.id, {
               id: doc.id,
               ...data,
               createdAt: data.createdAt ? typeof data.createdAt.toDate === "function" ? data.createdAt.toDate().toISOString() : data.createdAt : (/* @__PURE__ */ new Date()).toISOString()
             });
           });
-          callback(calls);
-        }, (err) => console.error("\u274C Calls stream error:", err));
+          emit();
+        }, (err) => console.error("\u274C Calls stream error (waiters_calls):", err));
+        const unsubNative = db.collection("waiter_calls").onSnapshot((snapshot) => {
+          let hasChange = false;
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            const existing = activeCallsMap.get(doc.id);
+            if (existing && existing.status !== data.status) {
+              existing.status = data.status;
+              if (data.assignedTo) existing.assignedTo = data.assignedTo;
+              hasChange = true;
+              db.collection("waiters_calls").doc(doc.id).update({
+                status: data.status,
+                assignedTo: data.assignedTo || existing.assignedTo || ""
+              }).catch(() => {
+              });
+            }
+          });
+          if (hasChange) emit();
+        }, () => {
+        });
+        return () => {
+          unsubWaiters();
+          unsubNative();
+        };
       } else {
         const trigger = () => {
           const calls = getLocalCollection("calls");
@@ -308,6 +341,11 @@
       if (waiterId) updateData.assignedTo = waiterId;
       if (isFirebaseActive) {
         db.collection("waiters_calls").doc(callId).update(updateData).then(() => {
+          try {
+            db.collection("waiter_calls").doc(callId).update(updateData).catch(() => {
+            });
+          } catch (e) {
+          }
           if (callback) callback(true);
         }).catch((e) => {
           console.error(e);
@@ -461,6 +499,10 @@
       const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1e3);
       if (isFirebaseActive) {
         db.collection("waiters_calls").where("createdAt", "<", cutoff).get().then((snapshot) => {
+          const batch = db.batch();
+          snapshot.forEach((doc) => batch.delete(doc.ref));
+          return batch.commit();
+        }).then(() => db.collection("waiter_calls").where("createdAt", "<", cutoff).get()).then((snapshot) => {
           const batch = db.batch();
           snapshot.forEach((doc) => batch.delete(doc.ref));
           return batch.commit();
