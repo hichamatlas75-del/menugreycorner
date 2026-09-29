@@ -1,5 +1,7 @@
 /**
- * GREY CORNER — MENU RENDERING, NAVIGATION & DRAWER UI COMPONENT (ES Module)
+ * GREY CORNER — TACTILE HUB MENU RENDERING & UI COMPONENT (ES Module)
+ * Modèle HUB Tactile : Grandes pastilles catégories & Plats imposants
+ * 100% Mobile First, Black & Gold Luxury Style
  */
 
 import { menuData } from '../data/menu-data.js';
@@ -7,212 +9,411 @@ import { currentLang } from '../services/i18n.js';
 import { addToCart } from '../services/cart.js';
 import { closeBurgerMenu, checkItemOptionsAndAdd } from './modals.js';
 
+export let activeCategoryId = null;
+export let isViewAllMode = false;
 let imagesProtected = false;
+let activeLightboxItem = null;
 
-export function updateFloatingButtons() {
-  const openDrawerElement = document.querySelector(".category-drawer.open");
-  const floatingCloseCategory = document.getElementById("floatingCloseCategory");
-  const backToTop = document.getElementById("backToTop");
-
-  if (openDrawerElement) {
-    if (floatingCloseCategory) floatingCloseCategory.classList.add("show");
-    if (backToTop) backToTop.classList.remove("show");
-  } else {
-    if (floatingCloseCategory) floatingCloseCategory.classList.remove("show");
-    if (backToTop) {
-      backToTop.classList.toggle("show", window.scrollY > 400);
-    }
-  }
-}
-
-export function openDrawer(drawer, scrollToFirst = false) {
-  const body = drawer.querySelector(".category-drawer-body");
-  if (!body) return;
-
-  drawer.classList.add("open");
-  body.style.maxHeight = body.scrollHeight + "px";
-
-  const onTransitionEnd = () => {
-    if (drawer.classList.contains("open")) {
-      body.style.maxHeight = "none";
-    }
-    body.removeEventListener("transitionend", onTransitionEnd);
+/**
+ * SVG Icons for Category Pastille Badges
+ */
+function getCategorySvgIcon(categoryId) {
+  const icons = {
+    "petit-dejeuner": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>`,
+    "entrees": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>`,
+    "entrees-chaudes": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>`,
+    "plats": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1z"></path><path d="M4 18a8 8 0 0 1 16 0"></path><line x1="12" y1="6" x2="12" y2="3"></line></svg>`,
+    "couscous-vendredi": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 5H9l3-5z"></path><path d="M5 14a7 7 0 0 0 14 0H5z"></path><path d="M3 18h18v2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-2z"></path></svg>`,
+    "sandwichs": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="6" rx="3"></rect><path d="M5 11a7 7 0 0 1 14 0"></path><line x1="3" y1="14" x2="21" y2="14"></line></svg>`,
+    "burgers": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a8 8 0 0 1 16 0H4z"></path><rect x="3" y="15" width="18" height="4" rx="2"></rect><line x1="5" y1="13" x2="19" y2="13"></line></svg>`,
+    "panini": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="9" ry="5"></ellipse><line x1="8" y1="10" x2="10" y2="14"></line><line x1="12" y1="10" x2="14" y2="14"></line></svg>`,
+    "pizza": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 16a2 2 0 0 1-1.7 3H4.7A2 2 0 0 1 3 18L12 2z"></path><circle cx="12" cy="12" r="1.5" fill="currentColor"></circle><circle cx="9" cy="16" r="1" fill="currentColor"></circle><circle cx="15" cy="15" r="1" fill="currentColor"></circle></svg>`,
+    "pasta": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v10"></path><path d="M9 8c1.5 2 4.5 2 6 0"></path><path d="M9 16c1.5-2 4.5-2 6 0"></path></svg>`,
+    "crepes": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="8" rx="8" ry="4"></ellipse><path d="M4 8v4c0 2.2 3.6 4 8 4s8-1.8 8-4V8"></path><path d="M4 12v4c0 2.2 3.6 4 8 4s8-1.8 8-4v-4"></path></svg>`,
+    "crepes-salees": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V6s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>`,
+    "gateaux": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"></path><path d="M4 16s2-1 4-1 4 1 4 1 2-1 4-1 4 1 4 1"></path><path d="M2 21h20"></path><circle cx="12" cy="5" r="2"></circle></svg>`,
+    "boissons-chaudes": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><path d="M6 2v3"></path><path d="M10 2v3"></path><path d="M14 2v3"></path></svg>`,
+    "soda": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="16" rx="3"></rect><line x1="6" y1="8" x2="18" y2="8"></line><line x1="10" y1="2" x2="14" y2="2"></line></svg>`,
+    "eau-minerale": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>`,
+    "boissons": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8"></path><path d="M12 15v6"></path><path d="M17 3l3 8H4l3-8h10z"></path></svg>`,
+    "ice-tea": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l-1.5 16a2 2 0 0 1-2 2h-5a2 2 0 0 1-2-2L6 3z"></path><line x1="6" y1="8" x2="18" y2="8"></line><line x1="14" y1="2" x2="16" y2="12"></line></svg>`,
+    "ice-coffee": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12l-1.5 16a2 2 0 0 1-2 2h-5a2 2 0 0 1-2-2L6 4z"></path><rect x="9" y="10" width="3" height="3" rx="0.5"></rect><rect x="12" y="13" width="3" height="3" rx="0.5"></rect></svg>`,
+    "frappuccino": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8h10l-1.2 13a2 2 0 0 1-2 1.8H10.2a2 2 0 0 1-2-1.8L7 8z"></path><path d="M7 8a5 5 0 0 1 10 0"></path><line x1="12" y1="2" x2="15" y2="12"></line></svg>`,
+    "cocktails": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"></path><path d="M12 15v7"></path><path d="M5 3l7 8 7-8H5z"></path></svg>`,
+    "mojito": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="16" rx="2"></rect><circle cx="12" cy="11" r="3"></circle><line x1="12" y1="2" x2="12" y2="4"></line></svg>`,
+    "smoothies": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 6h10l-1.5 14a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2L7 6z"></path><path d="M12 6c-2-3 2-4 0-6"></path><path d="M16 3l-2 3"></path></svg>`,
+    "smoothie-bowl": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12a10 10 0 0 0 20 0H2z"></path><circle cx="8" cy="8" r="1.5"></circle><circle cx="12" cy="6" r="1.5"></circle><circle cx="16" cy="8" r="1.5"></circle></svg>`,
+    "milkshakes": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8h8l-1.2 12a2 2 0 0 1-2 2h-1.6a2 2 0 0 1-2-2L8 8z"></path><path d="M8 8a4 4 0 0 1 8 0"></path><line x1="12" y1="2" x2="14" y2="10"></line></svg>`,
+    "glace": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10a6 6 0 0 1 12 0c0 4-3 6-6 6s-6-2-6-6z"></path><path d="M12 16v5"></path><path d="M8 21h8"></path></svg>`
   };
-  body.addEventListener("transitionend", onTransitionEnd);
 
-  updateFloatingButtons();
+  return icons[categoryId] || `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v8"></path><path d="M8 12h8"></path></svg>`;
+}
 
-  if (scrollToFirst) {
-    const firstItem = drawer.querySelector(".menu-item");
-    if (firstItem) {
-      setTimeout(() => {
-        firstItem.scrollIntoView({ behavior: "smooth", block: "center" });
-      }, 200);
-    } else {
-      setTimeout(() => {
-        drawer.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 200);
+/**
+ * Normalise or generate Category ID
+ */
+function getCatId(category) {
+  if (category.id) return category.id;
+  const fr = (category.category && category.category.fr) ? category.category.fr : "";
+  return fr.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
+
+/**
+ * Get category representative image
+ */
+function getCatImage(category) {
+  if (category.items && category.items.length > 0 && category.items[0].image) {
+    return category.items[0].image;
+  }
+  return "images/logo-gold.webp";
+}
+
+/**
+ * Render the Category Pastilles Hub
+ */
+export function renderCategoryPastilles() {
+  const container = document.getElementById("hubCategories");
+  if (!container || !menuData || !Array.isArray(menuData)) return;
+
+  container.innerHTML = "";
+
+  menuData.forEach((category) => {
+    const catId = getCatId(category);
+    const catName = (category.category && (category.category[currentLang] || category.category.fr)) || catId;
+    const catImg = getCatImage(category);
+    const iconSvg = getCategorySvgIcon(catId);
+    const isActive = (catId === activeCategoryId && !isViewAllMode);
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = `hub-cat-item ${isActive ? "active" : ""}`;
+    btn.dataset.catId = catId;
+    btn.setAttribute("aria-label", catName);
+
+    btn.innerHTML = `
+      <div class="hub-cat-circle">
+        <img src="${catImg}" alt="${catName}" class="hub-cat-img" loading="lazy" />
+        <div class="hub-cat-overlay"></div>
+        <div class="hub-cat-icon">${iconSvg}</div>
+      </div>
+      <span class="hub-cat-label">${catName}</span>
+    `;
+
+    btn.addEventListener("click", () => {
+      selectCategory(catId);
+    });
+
+    container.appendChild(btn);
+  });
+}
+
+/**
+ * Select a category and display its dishes
+ */
+export function selectCategory(catId, smoothScroll = true) {
+  activeCategoryId = catId;
+  isViewAllMode = false;
+
+  // Clear search input
+  const searchInput = document.getElementById("searchInput");
+  const clearBtn = document.getElementById("searchClearBtn");
+  if (searchInput && searchInput.value) {
+    searchInput.value = "";
+    if (clearBtn) clearBtn.style.display = "none";
+  }
+
+  // Update active pastille UI
+  const pastilles = document.querySelectorAll(".hub-cat-item");
+  pastilles.forEach(p => {
+    const isThis = p.dataset.catId === catId;
+    p.classList.toggle("active", isThis);
+    if (isThis) {
+      p.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
     }
-  }
-}
-
-export function closeDrawer(drawer) {
-  const body = drawer.querySelector(".category-drawer-body");
-  if (!body) return;
-
-  body.style.maxHeight = body.scrollHeight + "px";
-  body.offsetHeight; // force reflow
-
-  drawer.classList.remove("open");
-  body.style.maxHeight = "0";
-
-  updateFloatingButtons();
-}
-
-export function toggleCategoryDrawer(drawerIdOrElement) {
-  const drawer = typeof drawerIdOrElement === "string"
-    ? document.getElementById(drawerIdOrElement)
-    : drawerIdOrElement;
-  if (!drawer) return;
-
-  const isOpen = drawer.classList.contains("open");
-
-  if (!isOpen) {
-    document.querySelectorAll(".category-drawer.open").forEach(other => {
-      if (other !== drawer) {
-        closeDrawer(other);
-      }
-    });
-    openDrawer(drawer, true);
-  } else {
-    closeDrawer(drawer);
-  }
-}
-
-export function handleHashNavigation() {
-  const hash = window.location.hash;
-  if (!hash) return;
-
-  const targetId = hash.substring(1);
-  const targetDrawer = document.getElementById(targetId);
-  if (targetDrawer && targetDrawer.classList.contains("category-drawer")) {
-    if (targetDrawer.classList.contains("open")) return;
-
-    document.querySelectorAll(".category-drawer.open").forEach(other => {
-      if (other !== targetDrawer) {
-        closeDrawer(other);
-      }
-    });
-
-    openDrawer(targetDrawer, true);
-  }
-}
-
-export function setupNavigationListeners() {
-  window.addEventListener("hashchange", handleHashNavigation);
-
-  // Bind category navigation links (both horizontal scrollbar & burger menu links)
-  const navLinks = document.querySelectorAll(".categories-horizontal a, #burgerNav a");
-  navLinks.forEach(link => {
-    link.addEventListener("click", (e) => {
-      const href = link.getAttribute("href");
-      if (href && href.startsWith("#")) {
-        const targetId = href.substring(1);
-        const targetDrawer = document.getElementById(targetId);
-        if (targetDrawer && targetDrawer.classList.contains("category-drawer")) {
-          e.preventDefault();
-
-          // Close burger menu if open
-          closeBurgerMenu();
-
-          // Accordion: close other drawers
-          document.querySelectorAll(".category-drawer.open").forEach(other => {
-            if (other !== targetDrawer) {
-              closeDrawer(other);
-            }
-          });
-
-          openDrawer(targetDrawer, true);
-
-          if (window.location.hash !== href) {
-            history.pushState(null, "", href);
-          }
-        }
-      }
-    });
   });
 
-  if (window.location.hash) {
-    setTimeout(handleHashNavigation, 300);
+  // Render dishes for this category
+  renderDishes();
+
+  // Scroll to dishes area smoothly if user is scrolled past
+  if (smoothScroll) {
+    const hubNav = document.querySelector(".hub-categories-wrap");
+    const offset = hubNav ? hubNav.offsetHeight + 10 : 120;
+    const menuGrid = document.getElementById("menu-grid");
+    if (menuGrid) {
+      const targetY = menuGrid.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({
+        top: Math.max(0, targetY),
+        behavior: "smooth"
+      });
+    }
   }
+
+  closeBurgerMenu();
 }
 
-export function setupFloatingButtons() {
-  window.addEventListener("scroll", updateFloatingButtons, { passive: true });
-
-  const backToTop = document.getElementById("backToTop");
-  if (backToTop) {
-    backToTop.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  }
-
-  const floatingCloseCategory = document.getElementById("floatingCloseCategory");
-  if (floatingCloseCategory) {
-    floatingCloseCategory.addEventListener("click", () => {
-      const openDrawerElement = document.querySelector(".category-drawer.open");
-      if (openDrawerElement) {
-        closeDrawer(openDrawerElement);
-        setTimeout(() => {
-          openDrawerElement.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 50);
-      }
-    });
-  }
+/**
+ * Switch to View All Mode (Tous les plats)
+ */
+export function showAllDishes() {
+  isViewAllMode = true;
+  document.querySelectorAll(".hub-cat-item").forEach(p => p.classList.remove("active"));
+  renderDishes();
 }
 
+/**
+ * Render Dish Cards
+ */
+export function renderDishes(filterTerm = "") {
+  const menuGrid = document.getElementById("menu-grid");
+  if (!menuGrid || !menuData) return;
+
+  const term = (filterTerm || "").toLowerCase().trim();
+
+  // 1. SEARCH MODE: filter across all dishes
+  if (term) {
+    menuGrid.innerHTML = "";
+    const resultsWrap = document.createElement("div");
+    resultsWrap.className = "hub-results-wrap";
+
+    const titleTexts = {
+      fr: `Résultats pour "${filterTerm}"`,
+      en: `Results for "${filterTerm}"`,
+      de: `Ergebnisse für "${filterTerm}"`,
+      ar: `نتائج البحث عن "${filterTerm}"`
+    };
+
+    resultsWrap.innerHTML = `
+      <div class="hub-section-header">
+        <div class="hub-header-left">
+          <h2 class="hub-section-title">${titleTexts[currentLang] || titleTexts.fr}</h2>
+        </div>
+      </div>
+      <div class="hub-dishes-grid"></div>
+    `;
+
+    const grid = resultsWrap.querySelector(".hub-dishes-grid");
+    let matchCount = 0;
+
+    menuData.forEach(cat => {
+      const catId = getCatId(cat);
+      const catName = cat.category[currentLang] || cat.category.fr;
+
+      (cat.items || []).forEach((item, idx) => {
+        const name = (item.name[currentLang] || item.name.fr || "").toLowerCase();
+        const desc = (item.description[currentLang] || item.description.fr || "").toLowerCase();
+
+        if (name.includes(term) || desc.includes(term)) {
+          matchCount++;
+          item.categoryId = catId;
+          item.categoryNameFr = cat.category.fr;
+          grid.appendChild(createDishCard(item, catId, idx, catName));
+        }
+      });
+    });
+
+    if (matchCount === 0) {
+      const noResultsTexts = {
+        fr: "Aucun plat trouvé pour cette recherche.",
+        en: "No dish found for this search.",
+        de: "Kein Gericht für diese Suche gefunden.",
+        ar: "لم يتم العثور على أي طبق لهذا البحث."
+      };
+      grid.innerHTML = `<div class="hub-no-results">${noResultsTexts[currentLang] || noResultsTexts.fr}</div>`;
+    }
+
+    menuGrid.appendChild(resultsWrap);
+    return;
+  }
+
+  // 2. VIEW ALL MODE: all categories in succession
+  if (isViewAllMode) {
+    menuGrid.innerHTML = "";
+    const allWrap = document.createElement("div");
+    allWrap.className = "hub-view-all-wrap";
+
+    const viewAllTitle = {
+      fr: "Tous nos plats & spécialités",
+      en: "All our dishes & specialties",
+      de: "Alle unsere Gerichte & Spezialitäten",
+      ar: "جميع الأطباق والمشروبات"
+    };
+
+    allWrap.innerHTML = `
+      <div class="hub-section-header hub-view-all-header">
+        <h2 class="hub-section-title">${viewAllTitle[currentLang] || viewAllTitle.fr}</h2>
+      </div>
+    `;
+
+    menuData.forEach(cat => {
+      const catId = getCatId(cat);
+      const catName = cat.category[currentLang] || cat.category.fr;
+      const catSection = document.createElement("section");
+      catSection.className = "hub-category-section";
+      catSection.id = `cat-section-${catId}`;
+
+      catSection.innerHTML = `
+        <div class="hub-section-header">
+          <div class="hub-header-left">
+            <h3 class="hub-section-title">${catName}</h3>
+            <span class="hub-section-count">${cat.items?.length || 0}</span>
+          </div>
+        </div>
+        <div class="hub-dishes-grid"></div>
+      `;
+
+      const grid = catSection.querySelector(".hub-dishes-grid");
+      (cat.items || []).forEach((item, idx) => {
+        item.categoryId = catId;
+        item.categoryNameFr = cat.category.fr;
+        grid.appendChild(createDishCard(item, catId, idx));
+      });
+
+      allWrap.appendChild(catSection);
+    });
+
+    menuGrid.appendChild(allWrap);
+    return;
+  }
+
+  // 3. SINGLE CATEGORY MODE (DEFAULT HUB TACTILE)
+  if (!activeCategoryId && menuData.length > 0) {
+    activeCategoryId = getCatId(menuData[0]);
+  }
+
+  const activeCategory = menuData.find(c => getCatId(c) === activeCategoryId) || menuData[0];
+  if (!activeCategory) return;
+
+  const currentCatId = getCatId(activeCategory);
+  const catTitle = activeCategory.category[currentLang] || activeCategory.category.fr;
+  const items = activeCategory.items || [];
+
+  const voirToutTexts = {
+    fr: "Voir tout",
+    en: "View all",
+    de: "Alle ansehen",
+    ar: "عرض الكل"
+  };
+
+  const countTexts = {
+    fr: `${items.length} plats`,
+    en: `${items.length} items`,
+    de: `${items.length} Gerichte`,
+    ar: `${items.length} أطباق`
+  };
+
+  menuGrid.innerHTML = `
+    <div class="hub-single-category-wrap">
+      <div class="hub-section-header">
+        <div class="hub-header-left">
+          <h2 class="hub-section-title">${catTitle}</h2>
+          <span class="hub-section-count">${countTexts[currentLang] || countTexts.fr}</span>
+        </div>
+        <button type="button" class="hub-view-all-btn" id="hubViewAllBtn" aria-label="Voir tout le menu">
+          <span>${voirToutTexts[currentLang] || voirToutTexts.fr}</span>
+          <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+        </button>
+      </div>
+      <div class="hub-dishes-grid"></div>
+    </div>
+  `;
+
+  const btnViewAll = menuGrid.querySelector("#hubViewAllBtn");
+  if (btnViewAll) {
+    btnViewAll.addEventListener("click", showAllDishes);
+  }
+
+  const grid = menuGrid.querySelector(".hub-dishes-grid");
+  items.forEach((item, idx) => {
+    item.categoryId = currentCatId;
+    item.categoryNameFr = activeCategory.category.fr;
+    grid.appendChild(createDishCard(item, currentCatId, idx));
+  });
+}
+
+/**
+ * Create a single dish card with prominent image
+ */
+function createDishCard(item, categoryId, itemIndex, categoryBadge = "") {
+  const card = document.createElement("article");
+  card.className = "hub-card menu-item";
+  card.id = `item-${categoryId}-${itemIndex}`;
+  card.style.setProperty("--item-index", itemIndex);
+  card._menuItem = item;
+  card.dataset.img = item.image;
+
+  const itemName = item.name[currentLang] || item.name.fr || "";
+  const itemDesc = item.description[currentLang] || item.description.fr || "";
+
+  const badgeNewText = currentLang === "en" ? "NEW"
+    : currentLang === "de" ? "NEU"
+      : currentLang === "ar" ? "جديد"
+        : "NOUVEAU";
+
+  const orderBtnText = currentLang === "en" ? "Order"
+    : currentLang === "de" ? "Bestellen"
+      : currentLang === "ar" ? "اطلب"
+        : "Commander";
+
+  card.innerHTML = `
+    <div class="hub-card-media">
+      <img src="${item.image}" alt="${itemName}" class="hub-card-img" loading="lazy" />
+      <div class="hub-card-gradient"></div>
+      ${item.isNew ? `<span class="hub-badge-new">${badgeNewText}</span>` : ""}
+      ${categoryBadge ? `<span class="hub-badge-cat">${categoryBadge}</span>` : ""}
+      <div class="hub-card-zoom-hint" title="Agrandir">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          <line x1="11" y1="8" x2="11" y2="14"></line>
+          <line x1="8" y1="11" x2="14" y2="11"></line>
+        </svg>
+      </div>
+    </div>
+    <div class="hub-card-content">
+      <div class="hub-card-header">
+        <h3 class="hub-card-name item-name">${itemName}</h3>
+      </div>
+      ${itemDesc ? `<p class="hub-card-desc item-desc">${itemDesc}</p>` : ""}
+      <div class="hub-card-footer">
+        <div class="hub-card-price-wrap">
+          <span class="hub-card-price item-price">${item.price}</span>
+        </div>
+        <button type="button" class="hub-order-btn add-to-cart-btn" aria-label="${orderBtnText}">
+          <span class="hub-order-btn-label">${orderBtnText}</span>
+          <svg class="hub-order-btn-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  `;
+
+  return card;
+}
+
+/**
+ * Apply Search Filter
+ */
 export function applySearchFilter() {
   const input = document.getElementById("searchInput");
   const clearBtn = document.getElementById("searchClearBtn");
   if (!input) return;
 
-  const term = (input.value || "").toLowerCase().trim();
+  const term = (input.value || "").trim();
   if (clearBtn) {
     clearBtn.style.display = term ? "flex" : "none";
   }
 
-  const cards = document.querySelectorAll(".menu-item");
-
-  cards.forEach(card => {
-    const title = (card.querySelector(".item-name")?.textContent || "").toLowerCase();
-    const desc = (card.querySelector(".item-desc")?.textContent || "").toLowerCase();
-    const match = !term || title.includes(term) || desc.includes(term);
-    card.style.display = match ? "" : "none";
-  });
-
-  const drawers = document.querySelectorAll(".category-drawer");
-  drawers.forEach(drawer => {
-    const body = drawer.querySelector(".category-drawer-body");
-    const visibles = drawer.querySelectorAll(".menu-item:not([style*='display: none'])");
-
-    if (term) {
-      if (visibles.length > 0) {
-        drawer.style.display = "";
-        drawer.classList.add("open");
-        if (body) body.style.maxHeight = "none";
-      } else {
-        drawer.style.display = "none";
-        drawer.classList.remove("open");
-        if (body) body.style.maxHeight = "0";
-      }
-    } else {
-      drawer.style.display = "";
-      drawer.classList.remove("open");
-      if (body) body.style.maxHeight = "0";
-    }
-  });
+  renderDishes(term);
 }
 
+/**
+ * Activate live search
+ */
 export function activateSearch() {
   const searchInput = document.getElementById("searchInput");
   const clearBtn = document.getElementById("searchClearBtn");
@@ -231,6 +432,9 @@ export function activateSearch() {
   }
 }
 
+/**
+ * Setup Lightbox
+ */
 export function closeLightbox() {
   const secureLightbox = document.getElementById("secureLightbox");
   const secureLightboxContent = document.querySelector(".secure-lightbox-content");
@@ -249,8 +453,6 @@ export function closeLightbox() {
   document.documentElement.classList.remove("no-scroll");
 }
 
-let activeLightboxItem = null;
-
 export function openLightboxForItem(item, imgUrl) {
   const secureLightbox = document.getElementById("secureLightbox");
   const secureLightboxContent = document.querySelector(".secure-lightbox-content");
@@ -263,17 +465,18 @@ export function openLightboxForItem(item, imgUrl) {
   secureLightboxContent.style.backgroundImage = `url("${imgUrl}")`;
 
   if (item && lbCaption) {
-    lbCaption.textContent = `${item.name[currentLang] || item.name.fr} — ${item.price}`;
+    const name = item.name[currentLang] || item.name.fr;
+    lbCaption.textContent = `${name} — ${item.price}`;
   } else if (lbCaption) {
     lbCaption.textContent = "";
   }
 
   if (item && lbAddBtn) {
     lbAddBtn.style.display = "block";
-    const btnText = currentLang === "en" ? "+ Add to cart"
-      : currentLang === "de" ? "+ In den Warenkorb"
-        : currentLang === "ar" ? "+ أضف إلى السلة"
-          : "+ Ajouter au panier";
+    const btnText = currentLang === "en" ? "Order"
+      : currentLang === "de" ? "Bestellen"
+        : currentLang === "ar" ? "اطلب"
+          : "Commander";
     lbAddBtn.textContent = btnText;
   } else if (lbAddBtn) {
     lbAddBtn.style.display = "none";
@@ -290,147 +493,100 @@ export function enableSecureLightbox() {
   if (!secureLightbox || !secureLightboxContent) return;
 
   const lbAddBtn = document.getElementById("secureLightboxAddBtn");
-
-  if (lbAddBtn && !lbAddBtn._hasClickListener) {
-    lbAddBtn._hasClickListener = true;
-    lbAddBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
+  if (lbAddBtn && !lbAddBtn._hasListener) {
+    lbAddBtn._hasListener = true;
+    lbAddBtn.addEventListener("click", () => {
       if (activeLightboxItem) {
-        closeLightbox();
         checkItemOptionsAndAdd(activeLightboxItem);
+        closeLightbox();
       }
     });
   }
 
-  if (!secureLightbox._hasCloseListeners) {
-    secureLightbox._hasCloseListeners = true;
-    secureLightbox.addEventListener("click", e => {
-      if (e.target === secureLightbox) closeLightbox();
-    });
+  const closeBtn = secureLightbox.querySelector(".close-btn");
+  if (closeBtn && !closeBtn._hasListener) {
+    closeBtn._hasListener = true;
+    closeBtn.addEventListener("click", closeLightbox);
+  }
 
-    const closeBtn = secureLightboxContent.querySelector(".close-btn");
-    if (closeBtn) {
-      closeBtn.addEventListener("click", closeLightbox);
-    }
-
-    document.addEventListener("keydown", e => {
-      if (e.key === "Escape" && secureLightbox.classList.contains("active")) {
+  if (!secureLightbox._hasClickListener) {
+    secureLightbox._hasClickListener = true;
+    secureLightbox.addEventListener("click", (e) => {
+      if (e.target === secureLightbox) {
         closeLightbox();
       }
     });
   }
 }
 
+/**
+ * Protect images against right-click / drag
+ */
 export function protectImages() {
   if (imagesProtected) return;
+  document.addEventListener("contextmenu", (e) => {
+    if (e.target.tagName === "IMG" || e.target.classList.contains("hub-card-media") || e.target.classList.contains("hub-cat-circle")) {
+      e.preventDefault();
+    }
+  });
   imagesProtected = true;
-
-  document.addEventListener("contextmenu", e => e.preventDefault());
-  document.body.style.userSelect = "none";
-  document.body.style.webkitUserSelect = "none";
-  document.body.style.webkitTouchCallout = "none";
 }
 
+/**
+ * Setup Burger Menu Category Navigation Links
+ */
+export function setupNavigationListeners() {
+  const burgerLinks = document.querySelectorAll("#burgerNav a");
+  burgerLinks.forEach(link => {
+    link.addEventListener("click", (e) => {
+      const href = link.getAttribute("href");
+      if (href && href.startsWith("#")) {
+        e.preventDefault();
+        const targetId = href.substring(1);
+        selectCategory(targetId);
+      }
+    });
+  });
+}
+
+/**
+ * Main Entry: Render the entire Hub Tactile UI
+ */
 export function renderMenu() {
   const menuGrid = document.getElementById("menu-grid");
   if (!menuData || !Array.isArray(menuData) || !menuGrid) {
     return;
   }
 
-  menuGrid.innerHTML = "";
+  // Set default active category if none
+  if (!activeCategoryId && menuData.length > 0) {
+    activeCategoryId = getCatId(menuData[0]);
+  }
 
-  menuData.forEach((category, catIndex) => {
-    const categoryId = category.id || category.category.fr.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-    const bannerImg = (category.items && category.items.length > 0)
-        ? category.items[0].image
-        : "images/logo-gold.webp";
+  // Render Category Pastilles
+  renderCategoryPastilles();
 
-    const drawer = document.createElement("div");
-    drawer.className = "category-drawer";
-    drawer.id = categoryId;
+  // Render Dishes
+  renderDishes();
 
-    drawer.innerHTML = `
-      <div class="category-drawer-header">
-        <div class="category-drawer-header-bg" style="background-image: url('${bannerImg}')"></div>
-        <div class="category-drawer-header-overlay"></div>
-        <div class="category-drawer-header-content">
-          <h2 class="category-drawer-title">${category.category[currentLang] || category.category.fr}</h2>
-          <span class="category-drawer-chevron">
-            <svg viewBox="0 0 24 24">
-              <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
-            </svg>
-          </span>
-        </div>
-      </div>
-      <div class="category-drawer-body">
-        <div class="category-drawer-grid items"></div>
-      </div>
-    `;
-
-    const header = drawer.querySelector(".category-drawer-header");
-    header.addEventListener("click", () => {
-      toggleCategoryDrawer(drawer);
-    });
-
-    const itemsContainer = drawer.querySelector(".items");
-
-    category.items.forEach((item, itemIndex) => {
-      item.categoryId = categoryId;
-      item.categoryNameFr = category.category.fr;
-      const card = document.createElement("article");
-      card.className = "menu-item";
-      card.id = `item-${categoryId}-${itemIndex}`;
-      card.style.setProperty("--item-index", itemIndex);
-      card._menuItem = item;
-
-      if (item.isNew === true) {
-        card.classList.add("nouveau-flash");
-        const badgeText = currentLang === "en" ? "NEW"
-          : currentLang === "de" ? "NEU"
-            : currentLang === "ar" ? "جديد"
-              : "NOUVEAU";
-        card.setAttribute("data-badge", badgeText);
-      }
-
-      card.dataset.img = item.image;
-      card.dataset.alt = item.name[currentLang] || item.name.fr;
-
-      const btnText = currentLang === "en" ? "+ Add"
-        : currentLang === "de" ? "+ Hinzufügen"
-          : currentLang === "ar" ? "+ أضف"
-            : "+ Ajouter";
-
-      card.innerHTML = `
-        <div class="item-img-wrapper" style="background-image: url('${item.image}')"></div>
-        <div class="item-info">
-            <div class="item-price-line">
-                <h3 class="item-name">${item.name[currentLang] || item.name.fr}</h3>
-                <span class="item-price">${item.price}</span>
-            </div>
-            <p class="item-desc">${item.description[currentLang] || item.description.fr}</p>
-            <button class="add-to-cart-btn" aria-label="Ajouter au panier">${btnText}</button>
-        </div>
-      `;
-
-      itemsContainer.appendChild(card);
-    });
-
-    menuGrid.appendChild(drawer);
-  });
-
+  // Setup Delegated Click Listener on Menu Grid
   if (!menuGrid._hasDelegatedListener) {
     menuGrid._hasDelegatedListener = true;
     menuGrid.addEventListener("click", (e) => {
-      const addBtn = e.target.closest(".add-to-cart-btn");
+      const addBtn = e.target.closest(".hub-order-btn, .hub-add-btn, .add-to-cart-btn");
       if (addBtn) {
         e.stopPropagation();
-        const card = addBtn.closest(".menu-item");
+        const card = addBtn.closest(".hub-card");
         if (card && card._menuItem) {
           checkItemOptionsAndAdd(card._menuItem);
+          // Quick tap animation
+          addBtn.style.transform = "scale(0.92)";
+          setTimeout(() => { addBtn.style.transform = ""; }, 180);
         }
         return;
       }
-      const card = e.target.closest(".menu-item");
+
+      const card = e.target.closest(".hub-card");
       if (card && card._menuItem) {
         openLightboxForItem(card._menuItem, card.dataset.img);
       }
@@ -443,12 +599,21 @@ export function renderMenu() {
   protectImages();
 }
 
-// Bind to window for backwards compatibility
+// Window global bindings & backward compatibility stubs
+export function toggleCategoryDrawer(drawerIdOrElement) {
+  if (typeof drawerIdOrElement === "string") {
+    selectCategory(drawerIdOrElement);
+  }
+}
+export function openDrawer() {}
+export function closeDrawer() {}
+export function updateFloatingButtons() {}
+export function setupFloatingButtons() {}
+
 window.renderMenu = renderMenu;
-window.toggleCategoryDrawer = toggleCategoryDrawer;
-window.openDrawer = openDrawer;
-window.closeDrawer = closeDrawer;
-window.updateFloatingButtons = updateFloatingButtons;
-window.enableSecureLightbox = enableSecureLightbox;
+window.selectCategory = selectCategory;
+window.showAllDishes = showAllDishes;
 window.closeLightbox = closeLightbox;
 window.setupNavigationListeners = setupNavigationListeners;
+window.toggleCategoryDrawer = toggleCategoryDrawer;
+

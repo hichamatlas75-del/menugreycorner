@@ -319,8 +319,8 @@ export function updateTableUI() {
     ndTableBadge.textContent = clientTable ? getTableZoneName(clientTable) : "Table non définie";
   }
   const bellBtn = document.getElementById("notificationBellBtn");
-  if (bellBtn && clientTable) {
-    bellBtn.style.display = "flex";
+  if (bellBtn) {
+    bellBtn.style.display = "none";
   }
 }
 
