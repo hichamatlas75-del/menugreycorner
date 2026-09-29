@@ -112,23 +112,6 @@ export const menuData = [
       },
       {
         "name": {
-          "fr": "MQUILA-fruits de mer",
-          "en": "MQUILA-SEAFOOD",
-          "de": "MQUILA-Meeresfrüchte",
-          "ar": "مقيلة فواكه البحر"
-        },
-        "description": {
-          "fr": "Crevette, calamar, moules, oignons, deux œufs, jus d'orange, boisson chaude au choix, dessert et eau minérale.",
-          "en": "Shrimp, squid, mussels, onions, two eggs, orange juice, hot drink of your choice, dessert, and mineral water.",
-          "de": "Garnelen, Tintenfisch, Muscheln, Zwiebeln, zwei Eier, Orangensaft, Heißgetränk nach Wahl, Dessert und Mineralwasser.",
-          "ar": "جمبري، كلمار، بلح البحر، بصل، بيضتان، عصير برتقال، مشروب ساخن من اختيارك، تحلية وماء معدني."
-        },
-        "price": "78",
-        "image": "images/petit-dej-mquila-fruitmer.webp",
-        "isNew": true
-      },
-      {
-        "name": {
           "fr": "OMELETTE DU CHEF",
           "en": "CHEF'S OMELETTE",
           "de": "OMELETT DES CHEFKOCHS",
@@ -349,22 +332,6 @@ export const menuData = [
     "items": [
       {
         "name": {
-          "fr": "BURRATTA",
-          "en": "BURRATA",
-          "de": "BURRATA",
-          "ar": "سلطة البوراتا الإيطالية"
-        },
-        "description": {
-          "fr": "Burrata, tomate, noix, roquette, Vinaigre balsamique.",
-          "en": "Burrata, tomato, walnuts, arugula, balsamic vinegar.",
-          "de": "Burrata, Tomate, Walnüsse, Rucola, Balsamico-Essig.",
-          "ar": "جبنة بوراتا طازجة، طماطم، جوز (كركاع)، جرجير (روكا)، وخل البلسميك المركز."
-        },
-        "price": "98",
-        "image": "images/entree-burrata.webp"
-      },
-      {
-        "name": {
           "fr": "TERRE MER",
           "en": "SURF & TURF",
           "de": "SURF & TURF",
@@ -378,23 +345,6 @@ export const menuData = [
         },
         "price": "78",
         "image": "images/entree-terremer.webp"
-      },
-      {
-        "name": {
-          "fr": "TARTARE SAUMON  ",
-          "en": "Salmon tartare",
-          "de": "Lachstatar",
-          "ar": "تارتار السلمون والأفوكادو"
-        },
-        "description": {
-          "fr": "Saumon frais, saumon fumée, avocat, , sauce tartare.",
-          "en": "Fresh salmon, smoked salmon, avocado, tartar sauce.",
-          "de": "Frischer Lachs, geräucherter Lachs, Avocado, Tartarsauce.",
-          "ar": "سلمون طازج، سلمون مدخن، أفوكادو، وصلصة التارتار اللذيذة."
-        },
-        "price": "88",
-        "image": "images/entree-tartare.webp",
-        "isNew": true
       },
       {
         "name": {
@@ -427,38 +377,6 @@ export const menuData = [
         },
         "price": "65",
         "image": "images/entree-caesar.webp"
-      },
-      {
-        "name": {
-          "fr": "RUSSE",
-          "en": "RUSSIAN",
-          "de": "RUSSISCH",
-          "ar": "سلطة روسية كلاسيكية"
-        },
-        "description": {
-          "fr": "Pomme de terre, carotte, poulet, thon, petit pois, œuf de caille.",
-          "en": "Potato, carrot, chicken, tuna, peas, quail egg.",
-          "de": "Kartoffel, Karotte, Hähnchen, Thunfisch, Erbsen, Wachtelei.",
-          "ar": "بطاطس، جزر، دجاج، تونة، جلبانة (بازلاء)، وبيض السمان."
-        },
-        "price": "54",
-        "image": "images/entree-russe.webp"
-      },
-      {
-        "name": {
-          "fr": "CERCLE VEGGI",
-          "en": "VEGGI CIRCLE",
-          "de": "VEGGI KREIS",
-          "ar": "سلطة الخضار الطازجة (سيركل فيجي)"
-        },
-        "description": {
-          "fr": "Crudité du jour, thon, œuf, salade, mesclun.",
-          "en": "Raw vegetables of the day, tuna, egg, salad, mesclun.",
-          "de": "Rohkost des Tages, Thunfisch, Ei, Salat, Mesclun.",
-          "ar": "خضار طازجة موسمية، تونة، بيض مسلوق، خضر ورقية وسلطة ميسكلان."
-        },
-        "price": "48",
-        "image": "images/entree-veggi.webp"
       }
     ]
   },
@@ -887,22 +805,6 @@ export const menuData = [
       },
       {
         "name": {
-          "fr": "EGG ET CHEESEBURGER",
-          "en": "EGG AND CHEESEBURGER",
-          "de": "EI UND CHEESEBURGER",
-          "ar": "برجر البيض والجبن"
-        },
-        "description": {
-          "fr": "Viande hachée, cheddar, champignon, œuf, laitue, tomate, oignon caramélisé.",
-          "en": "Minced meat, cheddar, mushroom, egg, lettuce, tomato, caramelized onion.",
-          "de": "Hackfleisch, Cheddar, Pilz, Ei, Salat, Tomate, karamellisierte Zwiebel.",
-          "ar": "لحم مفروم، جبنة شيدر، فطر، بيضة مقلية، خس، طماطم، وبصل مكرمل."
-        },
-        "price": "56",
-        "image": "images/burger-eggcheese.webp"
-      },
-      {
-        "name": {
           "fr": "CHEESE BURGER",
           "en": "CHEESE BURGER",
           "de": "CHEESE BURGER",
@@ -916,22 +818,6 @@ export const menuData = [
         },
         "price": "54",
         "image": "images/burger-cheese.webp"
-      },
-      {
-        "name": {
-          "fr": "AVOCADO FORESTIER",
-          "en": "AVOCADO FORESTIER",
-          "de": "AVOCADO FORESTER",
-          "ar": "برجر أفوكادو فوريستيير"
-        },
-        "description": {
-          "fr": "Poulet, avocat, laitue, tomate, oignon caramélisé.",
-          "en": "Chicken, avocado, lettuce, tomato, caramelized onion.",
-          "de": "Hähnchen, Avocado, Salat, Tomate, karamellisierte Zwiebel.",
-          "ar": "دجاج مشوي، أفوكادو طازج، خس، طماطم، وبصل مكرمل لذيذ."
-        },
-        "price": "54",
-        "image": "images/burger-avocado.webp"
       }
     ]
   },
@@ -959,22 +845,6 @@ export const menuData = [
         },
         "price": "64",
         "image": "images/panini-fruitsmer.webp"
-      },
-      {
-        "name": {
-          "fr": "SAUMON",
-          "en": "SALMON",
-          "de": "LACHS",
-          "ar": "بانيني سلمون مدخن"
-        },
-        "description": {
-          "fr": "Saumon frais, capre, fromage, sauce du chef.",
-          "en": "Fresh salmon, caper, cheese, chef's sauce.",
-          "de": "Frischer Lachs, Kapern, Käse, Soße des Chefkochs.",
-          "ar": "سلمون طازج، كبر، جبن ذائب، وصلصة الشيف الخاصة."
-        },
-        "price": "64",
-        "image": "images/panini-saumon.webp"
       },
       {
         "name": {
@@ -1007,22 +877,6 @@ export const menuData = [
         },
         "price": "54",
         "image": "images/panini-hache.webp"
-      },
-      {
-        "name": {
-          "fr": "CHARCUTERIE",
-          "en": "COLD CUTS",
-          "de": "AUFSCHNITT",
-          "ar": "بانيني شاركوتري وجبن"
-        },
-        "description": {
-          "fr": "3 Charcuteries, salami, fromage, sauce burger.",
-          "en": "3 Cold cuts, salami, cheese, burger sauce.",
-          "de": "3 Sorten Aufschnitt, Salami, Käse, Burgersoße.",
-          "ar": "3 أنواع شاركوتري، سلامي، جبن ذائب، وصلصة برجر."
-        },
-        "price": "40",
-        "image": "images/panini-charcuterie.webp"
       },
       {
         "name": {
@@ -1104,22 +958,6 @@ export const menuData = [
     "items": [
       {
         "name": {
-          "fr": "SAUMON",
-          "en": "SALMON",
-          "de": "LACHS",
-          "ar": "بيتزا السلمون المدخن"
-        },
-        "description": {
-          "fr": "Saumon frais, Sauce blanche, roquette, câpre.",
-          "en": "Fresh salmon, white sauce, arugula, caper.",
-          "de": "Frischer Lachs, weiße Soße, Rucola, Kapern.",
-          "ar": "سلمون طازج، صلصة بيضاء، جرجير طازج (روكا)، وحبات الكبر."
-        },
-        "price": "94",
-        "image": "images/pizza-saumon.webp"
-      },
-      {
-        "name": {
           "fr": "FRUITS DE MER",
           "en": "SEAFOOD",
           "de": "MEERESFRÜCHTE",
@@ -1165,22 +1003,6 @@ export const menuData = [
         },
         "price": "88",
         "image": "images/pizza-moitiemoitie.webp"
-      },
-      {
-        "name": {
-          "fr": "BURRATA",
-          "en": "BURRATA",
-          "de": "BURRATA",
-          "ar": "بيتزا البوراتا الإيطالية"
-        },
-        "description": {
-          "fr": "Sauce tomate, burrata, tomates cerises, roquette, vinaigre balsamique, noix.",
-          "en": "Tomato sauce, burrata, cherry tomatoes, arugula, balsamic vinegar, walnuts.",
-          "de": "Tomatensoße, Burrata, Kirschtomaten, Rucola, Balsamico-Essig, Walnüsse.",
-          "ar": "صلصة طماطم، جبنة بوراتا طازجة، طماطم كرزية، جرجير، خل بلسميك، وجوز (كركاع)."
-        },
-        "price": "110",
-        "image": "images/pizza-burrata.webp"
       },
       {
         "name": {
@@ -1371,22 +1193,6 @@ export const menuData = [
       },
       {
         "name": {
-          "fr": "REGATONI RICOTTA",
-          "en": "RICOTTA REGATONI",
-          "de": "RICOTTA REGATONI",
-          "ar": "ريغاتوني بجبنة الريكوتا والسبانخ"
-        },
-        "description": {
-          "fr": "Ricotta, épinard, parmesan, courgette, sauce blanche.",
-          "en": "Ricotta, spinach, parmesan, zucchini, white sauce.",
-          "de": "Ricotta, Spinat, Parmesan, Zucchini, weiße Soße.",
-          "ar": "جبنة ريكوتا، سبانخ، بارميزان، قرع أخضر، وصلصة بيضاء ناعمة."
-        },
-        "price": "68",
-        "image": "images/pasta-ricotta.webp"
-      },
-      {
-        "name": {
           "fr": "BOLOGNAISE",
           "en": "BOLOGNESE",
           "de": "BOLOGNESE",
@@ -1451,22 +1257,6 @@ export const menuData = [
       },
       {
         "name": {
-          "fr": "SPAGHETTIS NOIRS",
-          "en": "BLACK SPAGHETTI",
-          "de": "SCHWARZE SPAGHETTI",
-          "ar": "سباغيتي سوداء بحبر الحبار"
-        },
-        "description": {
-          "fr": "Supplément pour pâtes noires à l'encre de seiche.",
-          "en": "Supplement for black pasta with squid ink.",
-          "de": "Zuschlag für schwarze Pasta mit Tintenfischtinte.",
-          "ar": "إضافة اختيارية لباستا سوداء مميزة بحبر الحبار (سيبيا)."
-        },
-        "price": "5",
-        "image": "images/pasta-noir.webp"
-      },
-      {
-        "name": {
           "fr": "LASAGNE POULET CHAMPIGNON ",
           "en": "CHICKEN MUSHROOM LASAGNE",
           "de": "Lasagne mit Hähnchen und Champignons ",
@@ -1498,23 +1288,6 @@ export const menuData = [
         "price": "72",
         "image": "images/lasagne-viande.webp",
         "isNew": true
-      },
-      {
-        "name": {
-          "fr": "LASAGNE FRUIT DE MER ",
-          "en": "Seafood lasagne",
-          "de": "Meeresfrüchte-Lasagne",
-          "ar": "لازانيا فواكه البحر المشكلة"
-        },
-        "description": {
-          "fr": "Crevette, calamars, , Pâtes lasagne, Sauce blanche, Béchamel, fromage",
-          "en": "Shrimp, squid, lasagne pasta, white sauce, béchamel, cheese.",
-          "de": "Garnelen, Kalmar, Lasagne-Nudeln, weiße Sauce, Béchamelsauce, Käse",
-          "ar": "طبقات لازانيا بالجمبري والكلمار، صلصة بيضاء، بيشاميل، وجبن محمر في الفرن."
-        },
-        "price": "78",
-        "image": "images/Lasagnes-de-fruits-de-mer.webp",
-        "isNew": true
       }
     ]
   },
@@ -1527,38 +1300,6 @@ export const menuData = [
     },
     "id": "crepes",
     "items": [
-      {
-        "name": {
-          "fr": "GREY CORNER (variétés gourmandises)",
-          "en": "GREY CORNER (gourmet varieties)",
-          "de": "GREY CORNER (Gourmet-Sorten)",
-          "ar": "كريب أو وافل غري كورنر المشكل الفاخر"
-        },
-        "description": {
-          "fr": "Crêpe ou gaufre avec des variétés gourmandes.",
-          "en": "Crêpe or waffle with gourmet varieties.",
-          "de": "Crêpe oder Waffel mit Gourmet-Sorten.",
-          "ar": "كريب أو وافل مشكل بتشكيلة لذيذة من الشوكولاتة والمكسرات والفواكه."
-        },
-        "price": "52",
-        "image": "images/crepe-gc.webp"
-      },
-      {
-        "name": {
-          "fr": "EXOTIQUE (fruits saisons)",
-          "en": "EXOTIC (seasonal fruits)",
-          "de": "EXOTISCH (saisonale Früchte)",
-          "ar": "كريب أو وافل بالفواكه الموسمية"
-        },
-        "description": {
-          "fr": "Crêpe ou gaufre aux fruits de saison.",
-          "en": "Crêpe or waffle with seasonal fruits.",
-          "de": "Crêpe oder Waffel mit saisonalen Früchten.",
-          "ar": "كريب أو وافل مزين بتشكيلة منعشة من الفواكه الموسمية الطازجة والصلصة."
-        },
-        "price": "48",
-        "image": "images/crepe-exotique.webp"
-      },
       {
         "name": {
           "fr": "KUNAFA PISTACHE",
@@ -1590,38 +1331,6 @@ export const menuData = [
         },
         "price": "42",
         "image": "images/crepe-bananenutella.webp"
-      },
-      {
-        "name": {
-          "fr": "POMME CARAMELISÉE",
-          "en": "CARAMELIZED APPLE",
-          "de": "KARAMELLISIERTER APFEL",
-          "ar": "كريب أو وافل تفاح مكرمل"
-        },
-        "description": {
-          "fr": "Crêpe ou gaufre à la pomme caramélisée.",
-          "en": "Crêpe or waffle with caramelized apple.",
-          "de": "Crêpe oder Waffel mit karamellisiertem Apfel.",
-          "ar": "كريب أو وافل مع قطع التفاح المكرمل بنكهة القرفة اللذيذة."
-        },
-        "price": "40",
-        "image": "images/crepe-pomme.webp"
-      },
-      {
-        "name": {
-          "fr": "CHOCOLAT NOISETTE",
-          "en": "HAZELNUT CHOCOLATE",
-          "de": "HASELNUSS-SCHOKOLADE",
-          "ar": "كريب أو وافل شوكولاتة بالبندق"
-        },
-        "description": {
-          "fr": "Crêpe ou gaufre au chocolat noisette.",
-          "en": "Crêpe or waffle with hazelnut chocolate.",
-          "de": "Crêpe oder Waffel mit Haselnuss-Schokolade.",
-          "ar": "كريب أو وافل مغطى بشوكولاتة البندق الفاخرة المقرمشة."
-        },
-        "price": "42",
-        "image": "images/crepe-noisette.webp"
       },
       {
         "name": {
@@ -1667,22 +1376,6 @@ export const menuData = [
       },
       {
         "name": {
-          "fr": "Crêpe NORVÉGIENNE",
-          "en": "NORWEGIAN Crêpe",
-          "de": "NORWEGISCHER Crêpe",
-          "ar": "كريب مالح نرويجي بالسلمون"
-        },
-        "description": {
-          "fr": "Crêpe salée au saumon.",
-          "en": "Savory crêpe with salmon.",
-          "de": "Herzhafter Crêpe mit Lachs.",
-          "ar": "كريب مالح محشو بالسلمون المدخن والجبن والصلصة الكريمية."
-        },
-        "price": "58",
-        "image": "images/crepe-sal-norve.webp"
-      },
-      {
-        "name": {
           "fr": "Crêpe GREY CORNER (MIXTE)",
           "en": "GREY CORNER Crêpe (MIXED)",
           "de": "GREY CORNER Crêpe (GEMISCHT)",
@@ -1696,22 +1389,6 @@ export const menuData = [
         },
         "price": "58",
         "image": "images/crepe-sal-gc.webp"
-      },
-      {
-        "name": {
-          "fr": "Crêpe BOLOGNAISE",
-          "en": "BOLOGNESE Crêpe",
-          "de": "BOLOGNESE Crêpe",
-          "ar": "كريب مالح بصلصة البولونيز"
-        },
-        "description": {
-          "fr": "Crêpe salée à la sauce bolognaise.",
-          "en": "Savory crêpe with Bolognese sauce.",
-          "de": "Herzhafter Crêpe mit Bolognese-Soße.",
-          "ar": "كريب مالح محشو بصلصة البولونيز باللحم المفروم والجبن الذائب."
-        },
-        "price": "54",
-        "image": "images/crepe-sal-bologn.webp"
       },
       {
         "name": {
@@ -1744,22 +1421,6 @@ export const menuData = [
         },
         "price": "45",
         "image": "images/crepe-sal-charcut.webp"
-      },
-      {
-        "name": {
-          "fr": "Crêpe FROMAGE",
-          "en": "CHEESE Crêpe",
-          "de": "KÄSE Crêpe",
-          "ar": "كريب مالح بالأجبان المشكلة"
-        },
-        "description": {
-          "fr": "Crêpe salée au fromage.",
-          "en": "Savory crêpe with cheese.",
-          "de": "Herzhafter Crêpe mit Käse.",
-          "ar": "كريب مالح غني بمزيج من الأجبان الذائبة الشهية."
-        },
-        "price": "45",
-        "image": "images/crepe-sal-fromage.webp"
       }
     ]
   },
@@ -1835,38 +1496,6 @@ export const menuData = [
         },
         "price": "40",
         "image": "images/gateau-sanseb-nutella.webp"
-      },
-      {
-        "name": {
-          "fr": "CHEESECAKE (Lotus, Citron)",
-          "en": "CHEESECAKE (Lotus, Lemon)",
-          "de": "CHEESECAKE (Lotus, Zitrone)",
-          "ar": "تشيز كيك بارد (لوتس أو ليمون)"
-        },
-        "description": {
-          "fr": "Cheesecake crémeux aux saveurs Lotus et Citron.",
-          "en": "Creamy cheesecake with Lotus and Lemon flavors.",
-          "de": "Cremiger Käsekuchen mit Lotus- und Zitronengeschmack.",
-          "ar": "تشيز كيك ناعم وكريمي بنكهة بسكويت لوتس الشهير أو الليمون المنعش."
-        },
-        "price": "40",
-        "image": "images/gateau-cheesecake-lotus.webp"
-      },
-      {
-        "name": {
-          "fr": "TIRAMISU",
-          "en": "TIRAMISU",
-          "de": "TIRAMISU",
-          "ar": "تيراميسو إيطالي كلاسيكي"
-        },
-        "description": {
-          "fr": "Dessert classique italien.",
-          "en": "Classic Italian dessert.",
-          "de": "Klassisches italienisches Dessert.",
-          "ar": "حلوى التيراميسو الإيطالية الكلاسيكية بالقهوة وكريمة الماسكاربوني الفاخرة والكاكاو."
-        },
-        "price": "38",
-        "image": "images/gateau-tiramisu.webp"
       }
     ]
   },
@@ -2037,22 +1666,6 @@ export const menuData = [
         },
         "price": "18",
         "image": "images/boisson-infusion.webp"
-      },
-      {
-        "name": {
-          "fr": "VERVEINE AROMATISÉE",
-          "en": "FLAVORED VERBENA",
-          "de": "AROMATISIERTE VERBENA",
-          "ar": "لويزة منكهة بالأعشاب"
-        },
-        "description": {
-          "fr": "Infusion de verveine aromatisée.",
-          "en": "Flavored verbena infusion.",
-          "de": "Aromatisierter Eisenkraut-Aufguss.",
-          "ar": "منقوع لويزة طبيعية منكهة بالأعشاب العطرية."
-        },
-        "price": "18",
-        "image": "images/boisson-verveine-arom.webp"
       },
       {
         "name": {
@@ -2375,22 +1988,6 @@ export const menuData = [
     "items": [
       {
         "name": {
-          "fr": "ZA3ZA3",
-          "en": "ZA3ZA3",
-          "de": "ZA3ZA3",
-          "ar": "زعزع فاسي فاخر"
-        },
-        "description": {
-          "fr": "Cocktail marocain riche en fruits secs et lait.",
-          "en": "Rich Moroccan cocktail with dried fruits and milk.",
-          "de": "Reicher marokkanischer Cocktail mit Nussfrüchten und Milch.",
-          "ar": "كوكتيل مغربي غني بالأفوكادو والحليب والفواكه الجافة والشوكولاتة وقطع الكيك."
-        },
-        "price": "46",
-        "image": "images/jus-za3za3.webp"
-      },
-      {
-        "name": {
           "fr": "COCKTAIL ORANGE",
           "en": "ORANGE COCKTAIL",
           "de": "ORANGEN-COCKTAIL",
@@ -2420,22 +2017,6 @@ export const menuData = [
         },
         "price": "38",
         "image": "images/jus-avocatsec.webp"
-      },
-      {
-        "name": {
-          "fr": "PANACHÉ AU LAIT",
-          "en": "MILK PANACHE",
-          "de": "MILCH PANACHE",
-          "ar": "عصير باناشي بالحليب"
-        },
-        "description": {
-          "fr": "Mélange de jus de fruits au lait.",
-          "en": "Mix of fruit juices with milk.",
-          "de": "Mischung aus Fruchtsäften mit Milch.",
-          "ar": "مزيج مشكل من عصائر الفواكه الموسمية الطازجة مخفوقة مع الحليب."
-        },
-        "price": "38",
-        "image": "images/jus-panache.webp"
       },
       {
         "name": {
@@ -2751,22 +2332,6 @@ export const menuData = [
     "items": [
       {
         "name": {
-          "fr": "COCKTAIL GREY CORNER",
-          "en": "GREY CORNER COCKTAIL",
-          "de": "GREY CORNER COCKTAIL",
-          "ar": "كوكتيل غري كورنر الخاص"
-        },
-        "description": {
-          "fr": "Ananas, avocat, fruit de saison, sirop fruits de passion.",
-          "en": "Pineapple, avocado, seasonal fruit, passion fruit syrup.",
-          "de": "Ananas, Avocado, saisonale Frucht, Passionsfruchtsirup.",
-          "ar": "أناناس، أفوكادو، فواكه موسمية طازجة، وسيروب فاكهة العاطفة (باشن فروت)."
-        },
-        "price": "48",
-        "image": "images/cocktail-gc.webp"
-      },
-      {
-        "name": {
           "fr": "FRAÎCHEUR",
           "en": "FRESHNESS",
           "de": "FRISCHE",
@@ -2913,22 +2478,6 @@ export const menuData = [
       "ar": "سموذي"
     },
     "items": [
-      {
-        "name": {
-          "fr": "JELLY ALMOND",
-          "en": "JELLY ALMOND",
-          "de": "JELLY ALMOND",
-          "ar": "سموذي جيلي ألموند"
-        },
-        "description": {
-          "fr": "Banane, amlou, framboise, myrtille.",
-          "en": "Banana, amlou, raspberry, blueberry.",
-          "de": "Banane, Amlou, Himbeere, Blaubeere.",
-          "ar": "موز، أملو باللوز، توت العليق (فواز)، والتوت الأزرق (ميرتيل)."
-        },
-        "price": "48",
-        "image": "images/smoothie-jelly.webp"
-      },
       {
         "name": {
           "fr": "PINK SMOOTHIE",
@@ -3127,54 +2676,6 @@ export const menuData = [
       },
       {
         "name": {
-          "fr": "MILKSHAKE COOKIES",
-          "en": "COOKIES MILKSHAKE",
-          "de": "COOKIES MILKSHAKE",
-          "ar": "ميلك شيك كوكيز"
-        },
-        "description": {
-          "fr": "Milkshake aux cookies.",
-          "en": "Cookies flavored milkshake.",
-          "de": "Milkshake mit Cookies-Geschmack.",
-          "ar": "ميلك شيك كريمي مخفوق بالحليب وقطع بسكويت الكوكيز المقرمشة اللذيذة."
-        },
-        "price": "42",
-        "image": "images/milkshake-cookies.webp"
-      },
-      {
-        "name": {
-          "fr": "MILKSHAKE KITKAT",
-          "en": "KITKAT MILKSHAKE",
-          "de": "KITKAT MILKSHAKE",
-          "ar": "ميلك شيك كيت كات"
-        },
-        "description": {
-          "fr": "Milkshake au Kitkat.",
-          "en": "Kitkat flavored milkshake.",
-          "de": "Milkshake mit Kitkat-Geschmack.",
-          "ar": "ميلك شيك كريمي مخفوق بالحليب مع أصابع شوكولاتة كيت كات المقرمشة."
-        },
-        "price": "42",
-        "image": "images/milkshake-kitkat.webp"
-      },
-      {
-        "name": {
-          "fr": "MILKSHAKE OREO",
-          "en": "OREO MILKSHAKE",
-          "de": "OREO MILKSHAKE",
-          "ar": "ميلك شيك أوريو"
-        },
-        "description": {
-          "fr": "Milkshake aux Oreo.",
-          "en": "Oreo flavored milkshake.",
-          "de": "Milkshake mit Oreo-Geschmack.",
-          "ar": "ميلك شيك كريمي مخفوق بالحليب وبسكويت أوريو الشهير مع الكريمة."
-        },
-        "price": "42",
-        "image": "images/milkshake-oreo.webp"
-      },
-      {
-        "name": {
           "fr": "MILKSHAKE NUTELLA",
           "en": "NUTELLA MILKSHAKE",
           "de": "NUTELLA MILKSHAKE",
@@ -3209,32 +2710,6 @@ export const menuData = [
   },
   {
     "category": {
-      "fr": "ORANGESHAKE",
-      "en": "ORANGESHAKE",
-      "de": "ORANGESHAKE",
-      "ar": "أورانج شيك"
-    },
-    "items": [
-      {
-        "name": {
-          "fr": "ORANGESHAKE",
-          "en": "ORANGESHAKE",
-          "de": "ORANGESHAKE",
-          "ar": "أورانج شيك المنعش"
-        },
-        "description": {
-          "fr": "Milkshake à l'orange (Fraise, caramel, chocolat, vanille, oreo, nougat).",
-          "en": "Orange Milkshake (Strawberry, caramel, chocolate, vanilla, oreo, nougat).",
-          "de": "Orangen Milkshake (Erdbeere, Karamell, Schokolade, Vanille, Oreo, Nougat).",
-          "ar": "ميلك شيك بالبرتقال بنكهتك المفضلة (فراولة، كراميل، شوكولاتة، فانيليا، أوريو، أو نوغا)."
-        },
-        "price": "42",
-        "image": "images/orangshake.webp"
-      }
-    ]
-  },
-  {
-    "category": {
       "fr": "COUPE DE GLACE",
       "en": "ICE CREAM CUPS",
       "de": "EISBECHER",
@@ -3257,22 +2732,6 @@ export const menuData = [
         },
         "price": "65",
         "image": "images/glace-gc.webp"
-      },
-      {
-        "name": {
-          "fr": "BANANA SPLIT",
-          "en": "BANANA SPLIT",
-          "de": "BANANA SPLIT",
-          "ar": "بنانا سبليت كلاسيك"
-        },
-        "description": {
-          "fr": "Vanille, chocolat, fraise.",
-          "en": "Vanilla, chocolate, strawberry.",
-          "de": "Vanille, Schokolade, Erdbeere.",
-          "ar": "موز طازج مع مثلجات الفانيليا والشوكولاتة والفراولة مع صلصة الشوكولاتة والشانتيي."
-        },
-        "price": "50",
-        "image": "images/glace-banana.webp"
       },
       {
         "name": {

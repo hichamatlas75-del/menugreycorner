@@ -611,23 +611,6 @@
         },
         {
           "name": {
-            "fr": "MQUILA-fruits de mer",
-            "en": "MQUILA-SEAFOOD",
-            "de": "MQUILA-Meeresfr\xFCchte",
-            "ar": "\u0645\u0642\u064A\u0644\u0629 \u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u0628\u062D\u0631"
-          },
-          "description": {
-            "fr": "Crevette, calamar, moules, oignons, deux \u0153ufs, jus d'orange, boisson chaude au choix, dessert et eau min\xE9rale.",
-            "en": "Shrimp, squid, mussels, onions, two eggs, orange juice, hot drink of your choice, dessert, and mineral water.",
-            "de": "Garnelen, Tintenfisch, Muscheln, Zwiebeln, zwei Eier, Orangensaft, Hei\xDFgetr\xE4nk nach Wahl, Dessert und Mineralwasser.",
-            "ar": "\u062C\u0645\u0628\u0631\u064A\u060C \u0643\u0644\u0645\u0627\u0631\u060C \u0628\u0644\u062D \u0627\u0644\u0628\u062D\u0631\u060C \u0628\u0635\u0644\u060C \u0628\u064A\u0636\u062A\u0627\u0646\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0645\u0634\u0631\u0648\u0628 \u0633\u0627\u062E\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643\u060C \u062A\u062D\u0644\u064A\u0629 \u0648\u0645\u0627\u0621 \u0645\u0639\u062F\u0646\u064A."
-          },
-          "price": "78",
-          "image": "images/petit-dej-mquila-fruitmer.webp",
-          "isNew": true
-        },
-        {
-          "name": {
             "fr": "OMELETTE DU CHEF",
             "en": "CHEF'S OMELETTE",
             "de": "OMELETT DES CHEFKOCHS",
@@ -848,22 +831,6 @@
       "items": [
         {
           "name": {
-            "fr": "BURRATTA",
-            "en": "BURRATA",
-            "de": "BURRATA",
-            "ar": "\u0633\u0644\u0637\u0629 \u0627\u0644\u0628\u0648\u0631\u0627\u062A\u0627 \u0627\u0644\u0625\u064A\u0637\u0627\u0644\u064A\u0629"
-          },
-          "description": {
-            "fr": "Burrata, tomate, noix, roquette, Vinaigre balsamique.",
-            "en": "Burrata, tomato, walnuts, arugula, balsamic vinegar.",
-            "de": "Burrata, Tomate, Waln\xFCsse, Rucola, Balsamico-Essig.",
-            "ar": "\u062C\u0628\u0646\u0629 \u0628\u0648\u0631\u0627\u062A\u0627 \u0637\u0627\u0632\u062C\u0629\u060C \u0637\u0645\u0627\u0637\u0645\u060C \u062C\u0648\u0632 (\u0643\u0631\u0643\u0627\u0639)\u060C \u062C\u0631\u062C\u064A\u0631 (\u0631\u0648\u0643\u0627)\u060C \u0648\u062E\u0644 \u0627\u0644\u0628\u0644\u0633\u0645\u064A\u0643 \u0627\u0644\u0645\u0631\u0643\u0632."
-          },
-          "price": "98",
-          "image": "images/entree-burrata.webp"
-        },
-        {
-          "name": {
             "fr": "TERRE MER",
             "en": "SURF & TURF",
             "de": "SURF & TURF",
@@ -877,23 +844,6 @@
           },
           "price": "78",
           "image": "images/entree-terremer.webp"
-        },
-        {
-          "name": {
-            "fr": "TARTARE SAUMON  ",
-            "en": "Salmon tartare",
-            "de": "Lachstatar",
-            "ar": "\u062A\u0627\u0631\u062A\u0627\u0631 \u0627\u0644\u0633\u0644\u0645\u0648\u0646 \u0648\u0627\u0644\u0623\u0641\u0648\u0643\u0627\u062F\u0648"
-          },
-          "description": {
-            "fr": "Saumon frais, saumon fum\xE9e, avocat, , sauce tartare.",
-            "en": "Fresh salmon, smoked salmon, avocado, tartar sauce.",
-            "de": "Frischer Lachs, ger\xE4ucherter Lachs, Avocado, Tartarsauce.",
-            "ar": "\u0633\u0644\u0645\u0648\u0646 \u0637\u0627\u0632\u062C\u060C \u0633\u0644\u0645\u0648\u0646 \u0645\u062F\u062E\u0646\u060C \u0623\u0641\u0648\u0643\u0627\u062F\u0648\u060C \u0648\u0635\u0644\u0635\u0629 \u0627\u0644\u062A\u0627\u0631\u062A\u0627\u0631 \u0627\u0644\u0644\u0630\u064A\u0630\u0629."
-          },
-          "price": "88",
-          "image": "images/entree-tartare.webp",
-          "isNew": true
         },
         {
           "name": {
@@ -926,38 +876,6 @@
           },
           "price": "65",
           "image": "images/entree-caesar.webp"
-        },
-        {
-          "name": {
-            "fr": "RUSSE",
-            "en": "RUSSIAN",
-            "de": "RUSSISCH",
-            "ar": "\u0633\u0644\u0637\u0629 \u0631\u0648\u0633\u064A\u0629 \u0643\u0644\u0627\u0633\u064A\u0643\u064A\u0629"
-          },
-          "description": {
-            "fr": "Pomme de terre, carotte, poulet, thon, petit pois, \u0153uf de caille.",
-            "en": "Potato, carrot, chicken, tuna, peas, quail egg.",
-            "de": "Kartoffel, Karotte, H\xE4hnchen, Thunfisch, Erbsen, Wachtelei.",
-            "ar": "\u0628\u0637\u0627\u0637\u0633\u060C \u062C\u0632\u0631\u060C \u062F\u062C\u0627\u062C\u060C \u062A\u0648\u0646\u0629\u060C \u062C\u0644\u0628\u0627\u0646\u0629 (\u0628\u0627\u0632\u0644\u0627\u0621)\u060C \u0648\u0628\u064A\u0636 \u0627\u0644\u0633\u0645\u0627\u0646."
-          },
-          "price": "54",
-          "image": "images/entree-russe.webp"
-        },
-        {
-          "name": {
-            "fr": "CERCLE VEGGI",
-            "en": "VEGGI CIRCLE",
-            "de": "VEGGI KREIS",
-            "ar": "\u0633\u0644\u0637\u0629 \u0627\u0644\u062E\u0636\u0627\u0631 \u0627\u0644\u0637\u0627\u0632\u062C\u0629 (\u0633\u064A\u0631\u0643\u0644 \u0641\u064A\u062C\u064A)"
-          },
-          "description": {
-            "fr": "Crudit\xE9 du jour, thon, \u0153uf, salade, mesclun.",
-            "en": "Raw vegetables of the day, tuna, egg, salad, mesclun.",
-            "de": "Rohkost des Tages, Thunfisch, Ei, Salat, Mesclun.",
-            "ar": "\u062E\u0636\u0627\u0631 \u0637\u0627\u0632\u062C\u0629 \u0645\u0648\u0633\u0645\u064A\u0629\u060C \u062A\u0648\u0646\u0629\u060C \u0628\u064A\u0636 \u0645\u0633\u0644\u0648\u0642\u060C \u062E\u0636\u0631 \u0648\u0631\u0642\u064A\u0629 \u0648\u0633\u0644\u0637\u0629 \u0645\u064A\u0633\u0643\u0644\u0627\u0646."
-          },
-          "price": "48",
-          "image": "images/entree-veggi.webp"
         }
       ]
     },
@@ -1386,22 +1304,6 @@
         },
         {
           "name": {
-            "fr": "EGG ET CHEESEBURGER",
-            "en": "EGG AND CHEESEBURGER",
-            "de": "EI UND CHEESEBURGER",
-            "ar": "\u0628\u0631\u062C\u0631 \u0627\u0644\u0628\u064A\u0636 \u0648\u0627\u0644\u062C\u0628\u0646"
-          },
-          "description": {
-            "fr": "Viande hach\xE9e, cheddar, champignon, \u0153uf, laitue, tomate, oignon caram\xE9lis\xE9.",
-            "en": "Minced meat, cheddar, mushroom, egg, lettuce, tomato, caramelized onion.",
-            "de": "Hackfleisch, Cheddar, Pilz, Ei, Salat, Tomate, karamellisierte Zwiebel.",
-            "ar": "\u0644\u062D\u0645 \u0645\u0641\u0631\u0648\u0645\u060C \u062C\u0628\u0646\u0629 \u0634\u064A\u062F\u0631\u060C \u0641\u0637\u0631\u060C \u0628\u064A\u0636\u0629 \u0645\u0642\u0644\u064A\u0629\u060C \u062E\u0633\u060C \u0637\u0645\u0627\u0637\u0645\u060C \u0648\u0628\u0635\u0644 \u0645\u0643\u0631\u0645\u0644."
-          },
-          "price": "56",
-          "image": "images/burger-eggcheese.webp"
-        },
-        {
-          "name": {
             "fr": "CHEESE BURGER",
             "en": "CHEESE BURGER",
             "de": "CHEESE BURGER",
@@ -1415,22 +1317,6 @@
           },
           "price": "54",
           "image": "images/burger-cheese.webp"
-        },
-        {
-          "name": {
-            "fr": "AVOCADO FORESTIER",
-            "en": "AVOCADO FORESTIER",
-            "de": "AVOCADO FORESTER",
-            "ar": "\u0628\u0631\u062C\u0631 \u0623\u0641\u0648\u0643\u0627\u062F\u0648 \u0641\u0648\u0631\u064A\u0633\u062A\u064A\u064A\u0631"
-          },
-          "description": {
-            "fr": "Poulet, avocat, laitue, tomate, oignon caram\xE9lis\xE9.",
-            "en": "Chicken, avocado, lettuce, tomato, caramelized onion.",
-            "de": "H\xE4hnchen, Avocado, Salat, Tomate, karamellisierte Zwiebel.",
-            "ar": "\u062F\u062C\u0627\u062C \u0645\u0634\u0648\u064A\u060C \u0623\u0641\u0648\u0643\u0627\u062F\u0648 \u0637\u0627\u0632\u062C\u060C \u062E\u0633\u060C \u0637\u0645\u0627\u0637\u0645\u060C \u0648\u0628\u0635\u0644 \u0645\u0643\u0631\u0645\u0644 \u0644\u0630\u064A\u0630."
-          },
-          "price": "54",
-          "image": "images/burger-avocado.webp"
         }
       ]
     },
@@ -1458,22 +1344,6 @@
           },
           "price": "64",
           "image": "images/panini-fruitsmer.webp"
-        },
-        {
-          "name": {
-            "fr": "SAUMON",
-            "en": "SALMON",
-            "de": "LACHS",
-            "ar": "\u0628\u0627\u0646\u064A\u0646\u064A \u0633\u0644\u0645\u0648\u0646 \u0645\u062F\u062E\u0646"
-          },
-          "description": {
-            "fr": "Saumon frais, capre, fromage, sauce du chef.",
-            "en": "Fresh salmon, caper, cheese, chef's sauce.",
-            "de": "Frischer Lachs, Kapern, K\xE4se, So\xDFe des Chefkochs.",
-            "ar": "\u0633\u0644\u0645\u0648\u0646 \u0637\u0627\u0632\u062C\u060C \u0643\u0628\u0631\u060C \u062C\u0628\u0646 \u0630\u0627\u0626\u0628\u060C \u0648\u0635\u0644\u0635\u0629 \u0627\u0644\u0634\u064A\u0641 \u0627\u0644\u062E\u0627\u0635\u0629."
-          },
-          "price": "64",
-          "image": "images/panini-saumon.webp"
         },
         {
           "name": {
@@ -1506,22 +1376,6 @@
           },
           "price": "54",
           "image": "images/panini-hache.webp"
-        },
-        {
-          "name": {
-            "fr": "CHARCUTERIE",
-            "en": "COLD CUTS",
-            "de": "AUFSCHNITT",
-            "ar": "\u0628\u0627\u0646\u064A\u0646\u064A \u0634\u0627\u0631\u0643\u0648\u062A\u0631\u064A \u0648\u062C\u0628\u0646"
-          },
-          "description": {
-            "fr": "3 Charcuteries, salami, fromage, sauce burger.",
-            "en": "3 Cold cuts, salami, cheese, burger sauce.",
-            "de": "3 Sorten Aufschnitt, Salami, K\xE4se, Burgerso\xDFe.",
-            "ar": "3 \u0623\u0646\u0648\u0627\u0639 \u0634\u0627\u0631\u0643\u0648\u062A\u0631\u064A\u060C \u0633\u0644\u0627\u0645\u064A\u060C \u062C\u0628\u0646 \u0630\u0627\u0626\u0628\u060C \u0648\u0635\u0644\u0635\u0629 \u0628\u0631\u062C\u0631."
-          },
-          "price": "40",
-          "image": "images/panini-charcuterie.webp"
         },
         {
           "name": {
@@ -1603,22 +1457,6 @@
       "items": [
         {
           "name": {
-            "fr": "SAUMON",
-            "en": "SALMON",
-            "de": "LACHS",
-            "ar": "\u0628\u064A\u062A\u0632\u0627 \u0627\u0644\u0633\u0644\u0645\u0648\u0646 \u0627\u0644\u0645\u062F\u062E\u0646"
-          },
-          "description": {
-            "fr": "Saumon frais, Sauce blanche, roquette, c\xE2pre.",
-            "en": "Fresh salmon, white sauce, arugula, caper.",
-            "de": "Frischer Lachs, wei\xDFe So\xDFe, Rucola, Kapern.",
-            "ar": "\u0633\u0644\u0645\u0648\u0646 \u0637\u0627\u0632\u062C\u060C \u0635\u0644\u0635\u0629 \u0628\u064A\u0636\u0627\u0621\u060C \u062C\u0631\u062C\u064A\u0631 \u0637\u0627\u0632\u062C (\u0631\u0648\u0643\u0627)\u060C \u0648\u062D\u0628\u0627\u062A \u0627\u0644\u0643\u0628\u0631."
-          },
-          "price": "94",
-          "image": "images/pizza-saumon.webp"
-        },
-        {
-          "name": {
             "fr": "FRUITS DE MER",
             "en": "SEAFOOD",
             "de": "MEERESFR\xDCCHTE",
@@ -1664,22 +1502,6 @@
           },
           "price": "88",
           "image": "images/pizza-moitiemoitie.webp"
-        },
-        {
-          "name": {
-            "fr": "BURRATA",
-            "en": "BURRATA",
-            "de": "BURRATA",
-            "ar": "\u0628\u064A\u062A\u0632\u0627 \u0627\u0644\u0628\u0648\u0631\u0627\u062A\u0627 \u0627\u0644\u0625\u064A\u0637\u0627\u0644\u064A\u0629"
-          },
-          "description": {
-            "fr": "Sauce tomate, burrata, tomates cerises, roquette, vinaigre balsamique, noix.",
-            "en": "Tomato sauce, burrata, cherry tomatoes, arugula, balsamic vinegar, walnuts.",
-            "de": "Tomatenso\xDFe, Burrata, Kirschtomaten, Rucola, Balsamico-Essig, Waln\xFCsse.",
-            "ar": "\u0635\u0644\u0635\u0629 \u0637\u0645\u0627\u0637\u0645\u060C \u062C\u0628\u0646\u0629 \u0628\u0648\u0631\u0627\u062A\u0627 \u0637\u0627\u0632\u062C\u0629\u060C \u0637\u0645\u0627\u0637\u0645 \u0643\u0631\u0632\u064A\u0629\u060C \u062C\u0631\u062C\u064A\u0631\u060C \u062E\u0644 \u0628\u0644\u0633\u0645\u064A\u0643\u060C \u0648\u062C\u0648\u0632 (\u0643\u0631\u0643\u0627\u0639)."
-          },
-          "price": "110",
-          "image": "images/pizza-burrata.webp"
         },
         {
           "name": {
@@ -1870,22 +1692,6 @@
         },
         {
           "name": {
-            "fr": "REGATONI RICOTTA",
-            "en": "RICOTTA REGATONI",
-            "de": "RICOTTA REGATONI",
-            "ar": "\u0631\u064A\u063A\u0627\u062A\u0648\u0646\u064A \u0628\u062C\u0628\u0646\u0629 \u0627\u0644\u0631\u064A\u0643\u0648\u062A\u0627 \u0648\u0627\u0644\u0633\u0628\u0627\u0646\u062E"
-          },
-          "description": {
-            "fr": "Ricotta, \xE9pinard, parmesan, courgette, sauce blanche.",
-            "en": "Ricotta, spinach, parmesan, zucchini, white sauce.",
-            "de": "Ricotta, Spinat, Parmesan, Zucchini, wei\xDFe So\xDFe.",
-            "ar": "\u062C\u0628\u0646\u0629 \u0631\u064A\u0643\u0648\u062A\u0627\u060C \u0633\u0628\u0627\u0646\u062E\u060C \u0628\u0627\u0631\u0645\u064A\u0632\u0627\u0646\u060C \u0642\u0631\u0639 \u0623\u062E\u0636\u0631\u060C \u0648\u0635\u0644\u0635\u0629 \u0628\u064A\u0636\u0627\u0621 \u0646\u0627\u0639\u0645\u0629."
-          },
-          "price": "68",
-          "image": "images/pasta-ricotta.webp"
-        },
-        {
-          "name": {
             "fr": "BOLOGNAISE",
             "en": "BOLOGNESE",
             "de": "BOLOGNESE",
@@ -1950,22 +1756,6 @@
         },
         {
           "name": {
-            "fr": "SPAGHETTIS NOIRS",
-            "en": "BLACK SPAGHETTI",
-            "de": "SCHWARZE SPAGHETTI",
-            "ar": "\u0633\u0628\u0627\u063A\u064A\u062A\u064A \u0633\u0648\u062F\u0627\u0621 \u0628\u062D\u0628\u0631 \u0627\u0644\u062D\u0628\u0627\u0631"
-          },
-          "description": {
-            "fr": "Suppl\xE9ment pour p\xE2tes noires \xE0 l'encre de seiche.",
-            "en": "Supplement for black pasta with squid ink.",
-            "de": "Zuschlag f\xFCr schwarze Pasta mit Tintenfischtinte.",
-            "ar": "\u0625\u0636\u0627\u0641\u0629 \u0627\u062E\u062A\u064A\u0627\u0631\u064A\u0629 \u0644\u0628\u0627\u0633\u062A\u0627 \u0633\u0648\u062F\u0627\u0621 \u0645\u0645\u064A\u0632\u0629 \u0628\u062D\u0628\u0631 \u0627\u0644\u062D\u0628\u0627\u0631 (\u0633\u064A\u0628\u064A\u0627)."
-          },
-          "price": "5",
-          "image": "images/pasta-noir.webp"
-        },
-        {
-          "name": {
             "fr": "LASAGNE POULET CHAMPIGNON ",
             "en": "CHICKEN MUSHROOM LASAGNE",
             "de": "Lasagne mit H\xE4hnchen und Champignons ",
@@ -1997,23 +1787,6 @@
           "price": "72",
           "image": "images/lasagne-viande.webp",
           "isNew": true
-        },
-        {
-          "name": {
-            "fr": "LASAGNE FRUIT DE MER ",
-            "en": "Seafood lasagne",
-            "de": "Meeresfr\xFCchte-Lasagne",
-            "ar": "\u0644\u0627\u0632\u0627\u0646\u064A\u0627 \u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u0628\u062D\u0631 \u0627\u0644\u0645\u0634\u0643\u0644\u0629"
-          },
-          "description": {
-            "fr": "Crevette, calamars, , P\xE2tes lasagne, Sauce blanche, B\xE9chamel, fromage",
-            "en": "Shrimp, squid, lasagne pasta, white sauce, b\xE9chamel, cheese.",
-            "de": "Garnelen, Kalmar, Lasagne-Nudeln, wei\xDFe Sauce, B\xE9chamelsauce, K\xE4se",
-            "ar": "\u0637\u0628\u0642\u0627\u062A \u0644\u0627\u0632\u0627\u0646\u064A\u0627 \u0628\u0627\u0644\u062C\u0645\u0628\u0631\u064A \u0648\u0627\u0644\u0643\u0644\u0645\u0627\u0631\u060C \u0635\u0644\u0635\u0629 \u0628\u064A\u0636\u0627\u0621\u060C \u0628\u064A\u0634\u0627\u0645\u064A\u0644\u060C \u0648\u062C\u0628\u0646 \u0645\u062D\u0645\u0631 \u0641\u064A \u0627\u0644\u0641\u0631\u0646."
-          },
-          "price": "78",
-          "image": "images/Lasagnes-de-fruits-de-mer.webp",
-          "isNew": true
         }
       ]
     },
@@ -2026,38 +1799,6 @@
       },
       "id": "crepes",
       "items": [
-        {
-          "name": {
-            "fr": "GREY CORNER (vari\xE9t\xE9s gourmandises)",
-            "en": "GREY CORNER (gourmet varieties)",
-            "de": "GREY CORNER (Gourmet-Sorten)",
-            "ar": "\u0643\u0631\u064A\u0628 \u0623\u0648 \u0648\u0627\u0641\u0644 \u063A\u0631\u064A \u0643\u0648\u0631\u0646\u0631 \u0627\u0644\u0645\u0634\u0643\u0644 \u0627\u0644\u0641\u0627\u062E\u0631"
-          },
-          "description": {
-            "fr": "Cr\xEApe ou gaufre avec des vari\xE9t\xE9s gourmandes.",
-            "en": "Cr\xEApe or waffle with gourmet varieties.",
-            "de": "Cr\xEApe oder Waffel mit Gourmet-Sorten.",
-            "ar": "\u0643\u0631\u064A\u0628 \u0623\u0648 \u0648\u0627\u0641\u0644 \u0645\u0634\u0643\u0644 \u0628\u062A\u0634\u0643\u064A\u0644\u0629 \u0644\u0630\u064A\u0630\u0629 \u0645\u0646 \u0627\u0644\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0648\u0627\u0644\u0645\u0643\u0633\u0631\u0627\u062A \u0648\u0627\u0644\u0641\u0648\u0627\u0643\u0647."
-          },
-          "price": "52",
-          "image": "images/crepe-gc.webp"
-        },
-        {
-          "name": {
-            "fr": "EXOTIQUE (fruits saisons)",
-            "en": "EXOTIC (seasonal fruits)",
-            "de": "EXOTISCH (saisonale Fr\xFCchte)",
-            "ar": "\u0643\u0631\u064A\u0628 \u0623\u0648 \u0648\u0627\u0641\u0644 \u0628\u0627\u0644\u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u0645\u0648\u0633\u0645\u064A\u0629"
-          },
-          "description": {
-            "fr": "Cr\xEApe ou gaufre aux fruits de saison.",
-            "en": "Cr\xEApe or waffle with seasonal fruits.",
-            "de": "Cr\xEApe oder Waffel mit saisonalen Fr\xFCchten.",
-            "ar": "\u0643\u0631\u064A\u0628 \u0623\u0648 \u0648\u0627\u0641\u0644 \u0645\u0632\u064A\u0646 \u0628\u062A\u0634\u0643\u064A\u0644\u0629 \u0645\u0646\u0639\u0634\u0629 \u0645\u0646 \u0627\u0644\u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u0645\u0648\u0633\u0645\u064A\u0629 \u0627\u0644\u0637\u0627\u0632\u062C\u0629 \u0648\u0627\u0644\u0635\u0644\u0635\u0629."
-          },
-          "price": "48",
-          "image": "images/crepe-exotique.webp"
-        },
         {
           "name": {
             "fr": "KUNAFA PISTACHE",
@@ -2089,38 +1830,6 @@
           },
           "price": "42",
           "image": "images/crepe-bananenutella.webp"
-        },
-        {
-          "name": {
-            "fr": "POMME CARAMELIS\xC9E",
-            "en": "CARAMELIZED APPLE",
-            "de": "KARAMELLISIERTER APFEL",
-            "ar": "\u0643\u0631\u064A\u0628 \u0623\u0648 \u0648\u0627\u0641\u0644 \u062A\u0641\u0627\u062D \u0645\u0643\u0631\u0645\u0644"
-          },
-          "description": {
-            "fr": "Cr\xEApe ou gaufre \xE0 la pomme caram\xE9lis\xE9e.",
-            "en": "Cr\xEApe or waffle with caramelized apple.",
-            "de": "Cr\xEApe oder Waffel mit karamellisiertem Apfel.",
-            "ar": "\u0643\u0631\u064A\u0628 \u0623\u0648 \u0648\u0627\u0641\u0644 \u0645\u0639 \u0642\u0637\u0639 \u0627\u0644\u062A\u0641\u0627\u062D \u0627\u0644\u0645\u0643\u0631\u0645\u0644 \u0628\u0646\u0643\u0647\u0629 \u0627\u0644\u0642\u0631\u0641\u0629 \u0627\u0644\u0644\u0630\u064A\u0630\u0629."
-          },
-          "price": "40",
-          "image": "images/crepe-pomme.webp"
-        },
-        {
-          "name": {
-            "fr": "CHOCOLAT NOISETTE",
-            "en": "HAZELNUT CHOCOLATE",
-            "de": "HASELNUSS-SCHOKOLADE",
-            "ar": "\u0643\u0631\u064A\u0628 \u0623\u0648 \u0648\u0627\u0641\u0644 \u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0628\u0627\u0644\u0628\u0646\u062F\u0642"
-          },
-          "description": {
-            "fr": "Cr\xEApe ou gaufre au chocolat noisette.",
-            "en": "Cr\xEApe or waffle with hazelnut chocolate.",
-            "de": "Cr\xEApe oder Waffel mit Haselnuss-Schokolade.",
-            "ar": "\u0643\u0631\u064A\u0628 \u0623\u0648 \u0648\u0627\u0641\u0644 \u0645\u063A\u0637\u0649 \u0628\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0627\u0644\u0628\u0646\u062F\u0642 \u0627\u0644\u0641\u0627\u062E\u0631\u0629 \u0627\u0644\u0645\u0642\u0631\u0645\u0634\u0629."
-          },
-          "price": "42",
-          "image": "images/crepe-noisette.webp"
         },
         {
           "name": {
@@ -2166,22 +1875,6 @@
         },
         {
           "name": {
-            "fr": "Cr\xEApe NORV\xC9GIENNE",
-            "en": "NORWEGIAN Cr\xEApe",
-            "de": "NORWEGISCHER Cr\xEApe",
-            "ar": "\u0643\u0631\u064A\u0628 \u0645\u0627\u0644\u062D \u0646\u0631\u0648\u064A\u062C\u064A \u0628\u0627\u0644\u0633\u0644\u0645\u0648\u0646"
-          },
-          "description": {
-            "fr": "Cr\xEApe sal\xE9e au saumon.",
-            "en": "Savory cr\xEApe with salmon.",
-            "de": "Herzhafter Cr\xEApe mit Lachs.",
-            "ar": "\u0643\u0631\u064A\u0628 \u0645\u0627\u0644\u062D \u0645\u062D\u0634\u0648 \u0628\u0627\u0644\u0633\u0644\u0645\u0648\u0646 \u0627\u0644\u0645\u062F\u062E\u0646 \u0648\u0627\u0644\u062C\u0628\u0646 \u0648\u0627\u0644\u0635\u0644\u0635\u0629 \u0627\u0644\u0643\u0631\u064A\u0645\u064A\u0629."
-          },
-          "price": "58",
-          "image": "images/crepe-sal-norve.webp"
-        },
-        {
-          "name": {
             "fr": "Cr\xEApe GREY CORNER (MIXTE)",
             "en": "GREY CORNER Cr\xEApe (MIXED)",
             "de": "GREY CORNER Cr\xEApe (GEMISCHT)",
@@ -2195,22 +1888,6 @@
           },
           "price": "58",
           "image": "images/crepe-sal-gc.webp"
-        },
-        {
-          "name": {
-            "fr": "Cr\xEApe BOLOGNAISE",
-            "en": "BOLOGNESE Cr\xEApe",
-            "de": "BOLOGNESE Cr\xEApe",
-            "ar": "\u0643\u0631\u064A\u0628 \u0645\u0627\u0644\u062D \u0628\u0635\u0644\u0635\u0629 \u0627\u0644\u0628\u0648\u0644\u0648\u0646\u064A\u0632"
-          },
-          "description": {
-            "fr": "Cr\xEApe sal\xE9e \xE0 la sauce bolognaise.",
-            "en": "Savory cr\xEApe with Bolognese sauce.",
-            "de": "Herzhafter Cr\xEApe mit Bolognese-So\xDFe.",
-            "ar": "\u0643\u0631\u064A\u0628 \u0645\u0627\u0644\u062D \u0645\u062D\u0634\u0648 \u0628\u0635\u0644\u0635\u0629 \u0627\u0644\u0628\u0648\u0644\u0648\u0646\u064A\u0632 \u0628\u0627\u0644\u0644\u062D\u0645 \u0627\u0644\u0645\u0641\u0631\u0648\u0645 \u0648\u0627\u0644\u062C\u0628\u0646 \u0627\u0644\u0630\u0627\u0626\u0628."
-          },
-          "price": "54",
-          "image": "images/crepe-sal-bologn.webp"
         },
         {
           "name": {
@@ -2243,22 +1920,6 @@
           },
           "price": "45",
           "image": "images/crepe-sal-charcut.webp"
-        },
-        {
-          "name": {
-            "fr": "Cr\xEApe FROMAGE",
-            "en": "CHEESE Cr\xEApe",
-            "de": "K\xC4SE Cr\xEApe",
-            "ar": "\u0643\u0631\u064A\u0628 \u0645\u0627\u0644\u062D \u0628\u0627\u0644\u0623\u062C\u0628\u0627\u0646 \u0627\u0644\u0645\u0634\u0643\u0644\u0629"
-          },
-          "description": {
-            "fr": "Cr\xEApe sal\xE9e au fromage.",
-            "en": "Savory cr\xEApe with cheese.",
-            "de": "Herzhafter Cr\xEApe mit K\xE4se.",
-            "ar": "\u0643\u0631\u064A\u0628 \u0645\u0627\u0644\u062D \u063A\u0646\u064A \u0628\u0645\u0632\u064A\u062C \u0645\u0646 \u0627\u0644\u0623\u062C\u0628\u0627\u0646 \u0627\u0644\u0630\u0627\u0626\u0628\u0629 \u0627\u0644\u0634\u0647\u064A\u0629."
-          },
-          "price": "45",
-          "image": "images/crepe-sal-fromage.webp"
         }
       ]
     },
@@ -2334,38 +1995,6 @@
           },
           "price": "40",
           "image": "images/gateau-sanseb-nutella.webp"
-        },
-        {
-          "name": {
-            "fr": "CHEESECAKE (Lotus, Citron)",
-            "en": "CHEESECAKE (Lotus, Lemon)",
-            "de": "CHEESECAKE (Lotus, Zitrone)",
-            "ar": "\u062A\u0634\u064A\u0632 \u0643\u064A\u0643 \u0628\u0627\u0631\u062F (\u0644\u0648\u062A\u0633 \u0623\u0648 \u0644\u064A\u0645\u0648\u0646)"
-          },
-          "description": {
-            "fr": "Cheesecake cr\xE9meux aux saveurs Lotus et Citron.",
-            "en": "Creamy cheesecake with Lotus and Lemon flavors.",
-            "de": "Cremiger K\xE4sekuchen mit Lotus- und Zitronengeschmack.",
-            "ar": "\u062A\u0634\u064A\u0632 \u0643\u064A\u0643 \u0646\u0627\u0639\u0645 \u0648\u0643\u0631\u064A\u0645\u064A \u0628\u0646\u0643\u0647\u0629 \u0628\u0633\u0643\u0648\u064A\u062A \u0644\u0648\u062A\u0633 \u0627\u0644\u0634\u0647\u064A\u0631 \u0623\u0648 \u0627\u0644\u0644\u064A\u0645\u0648\u0646 \u0627\u0644\u0645\u0646\u0639\u0634."
-          },
-          "price": "40",
-          "image": "images/gateau-cheesecake-lotus.webp"
-        },
-        {
-          "name": {
-            "fr": "TIRAMISU",
-            "en": "TIRAMISU",
-            "de": "TIRAMISU",
-            "ar": "\u062A\u064A\u0631\u0627\u0645\u064A\u0633\u0648 \u0625\u064A\u0637\u0627\u0644\u064A \u0643\u0644\u0627\u0633\u064A\u0643\u064A"
-          },
-          "description": {
-            "fr": "Dessert classique italien.",
-            "en": "Classic Italian dessert.",
-            "de": "Klassisches italienisches Dessert.",
-            "ar": "\u062D\u0644\u0648\u0649 \u0627\u0644\u062A\u064A\u0631\u0627\u0645\u064A\u0633\u0648 \u0627\u0644\u0625\u064A\u0637\u0627\u0644\u064A\u0629 \u0627\u0644\u0643\u0644\u0627\u0633\u064A\u0643\u064A\u0629 \u0628\u0627\u0644\u0642\u0647\u0648\u0629 \u0648\u0643\u0631\u064A\u0645\u0629 \u0627\u0644\u0645\u0627\u0633\u0643\u0627\u0631\u0628\u0648\u0646\u064A \u0627\u0644\u0641\u0627\u062E\u0631\u0629 \u0648\u0627\u0644\u0643\u0627\u0643\u0627\u0648."
-          },
-          "price": "38",
-          "image": "images/gateau-tiramisu.webp"
         }
       ]
     },
@@ -2536,22 +2165,6 @@
           },
           "price": "18",
           "image": "images/boisson-infusion.webp"
-        },
-        {
-          "name": {
-            "fr": "VERVEINE AROMATIS\xC9E",
-            "en": "FLAVORED VERBENA",
-            "de": "AROMATISIERTE VERBENA",
-            "ar": "\u0644\u0648\u064A\u0632\u0629 \u0645\u0646\u0643\u0647\u0629 \u0628\u0627\u0644\u0623\u0639\u0634\u0627\u0628"
-          },
-          "description": {
-            "fr": "Infusion de verveine aromatis\xE9e.",
-            "en": "Flavored verbena infusion.",
-            "de": "Aromatisierter Eisenkraut-Aufguss.",
-            "ar": "\u0645\u0646\u0642\u0648\u0639 \u0644\u0648\u064A\u0632\u0629 \u0637\u0628\u064A\u0639\u064A\u0629 \u0645\u0646\u0643\u0647\u0629 \u0628\u0627\u0644\u0623\u0639\u0634\u0627\u0628 \u0627\u0644\u0639\u0637\u0631\u064A\u0629."
-          },
-          "price": "18",
-          "image": "images/boisson-verveine-arom.webp"
         },
         {
           "name": {
@@ -2874,22 +2487,6 @@
       "items": [
         {
           "name": {
-            "fr": "ZA3ZA3",
-            "en": "ZA3ZA3",
-            "de": "ZA3ZA3",
-            "ar": "\u0632\u0639\u0632\u0639 \u0641\u0627\u0633\u064A \u0641\u0627\u062E\u0631"
-          },
-          "description": {
-            "fr": "Cocktail marocain riche en fruits secs et lait.",
-            "en": "Rich Moroccan cocktail with dried fruits and milk.",
-            "de": "Reicher marokkanischer Cocktail mit Nussfr\xFCchten und Milch.",
-            "ar": "\u0643\u0648\u0643\u062A\u064A\u0644 \u0645\u063A\u0631\u0628\u064A \u063A\u0646\u064A \u0628\u0627\u0644\u0623\u0641\u0648\u0643\u0627\u062F\u0648 \u0648\u0627\u0644\u062D\u0644\u064A\u0628 \u0648\u0627\u0644\u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u062C\u0627\u0641\u0629 \u0648\u0627\u0644\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0648\u0642\u0637\u0639 \u0627\u0644\u0643\u064A\u0643."
-          },
-          "price": "46",
-          "image": "images/jus-za3za3.webp"
-        },
-        {
-          "name": {
             "fr": "COCKTAIL ORANGE",
             "en": "ORANGE COCKTAIL",
             "de": "ORANGEN-COCKTAIL",
@@ -2919,22 +2516,6 @@
           },
           "price": "38",
           "image": "images/jus-avocatsec.webp"
-        },
-        {
-          "name": {
-            "fr": "PANACH\xC9 AU LAIT",
-            "en": "MILK PANACHE",
-            "de": "MILCH PANACHE",
-            "ar": "\u0639\u0635\u064A\u0631 \u0628\u0627\u0646\u0627\u0634\u064A \u0628\u0627\u0644\u062D\u0644\u064A\u0628"
-          },
-          "description": {
-            "fr": "M\xE9lange de jus de fruits au lait.",
-            "en": "Mix of fruit juices with milk.",
-            "de": "Mischung aus Fruchts\xE4ften mit Milch.",
-            "ar": "\u0645\u0632\u064A\u062C \u0645\u0634\u0643\u0644 \u0645\u0646 \u0639\u0635\u0627\u0626\u0631 \u0627\u0644\u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u0645\u0648\u0633\u0645\u064A\u0629 \u0627\u0644\u0637\u0627\u0632\u062C\u0629 \u0645\u062E\u0641\u0648\u0642\u0629 \u0645\u0639 \u0627\u0644\u062D\u0644\u064A\u0628."
-          },
-          "price": "38",
-          "image": "images/jus-panache.webp"
         },
         {
           "name": {
@@ -3250,22 +2831,6 @@
       "items": [
         {
           "name": {
-            "fr": "COCKTAIL GREY CORNER",
-            "en": "GREY CORNER COCKTAIL",
-            "de": "GREY CORNER COCKTAIL",
-            "ar": "\u0643\u0648\u0643\u062A\u064A\u0644 \u063A\u0631\u064A \u0643\u0648\u0631\u0646\u0631 \u0627\u0644\u062E\u0627\u0635"
-          },
-          "description": {
-            "fr": "Ananas, avocat, fruit de saison, sirop fruits de passion.",
-            "en": "Pineapple, avocado, seasonal fruit, passion fruit syrup.",
-            "de": "Ananas, Avocado, saisonale Frucht, Passionsfruchtsirup.",
-            "ar": "\u0623\u0646\u0627\u0646\u0627\u0633\u060C \u0623\u0641\u0648\u0643\u0627\u062F\u0648\u060C \u0641\u0648\u0627\u0643\u0647 \u0645\u0648\u0633\u0645\u064A\u0629 \u0637\u0627\u0632\u062C\u0629\u060C \u0648\u0633\u064A\u0631\u0648\u0628 \u0641\u0627\u0643\u0647\u0629 \u0627\u0644\u0639\u0627\u0637\u0641\u0629 (\u0628\u0627\u0634\u0646 \u0641\u0631\u0648\u062A)."
-          },
-          "price": "48",
-          "image": "images/cocktail-gc.webp"
-        },
-        {
-          "name": {
             "fr": "FRA\xCECHEUR",
             "en": "FRESHNESS",
             "de": "FRISCHE",
@@ -3412,22 +2977,6 @@
         "ar": "\u0633\u0645\u0648\u0630\u064A"
       },
       "items": [
-        {
-          "name": {
-            "fr": "JELLY ALMOND",
-            "en": "JELLY ALMOND",
-            "de": "JELLY ALMOND",
-            "ar": "\u0633\u0645\u0648\u0630\u064A \u062C\u064A\u0644\u064A \u0623\u0644\u0645\u0648\u0646\u062F"
-          },
-          "description": {
-            "fr": "Banane, amlou, framboise, myrtille.",
-            "en": "Banana, amlou, raspberry, blueberry.",
-            "de": "Banane, Amlou, Himbeere, Blaubeere.",
-            "ar": "\u0645\u0648\u0632\u060C \u0623\u0645\u0644\u0648 \u0628\u0627\u0644\u0644\u0648\u0632\u060C \u062A\u0648\u062A \u0627\u0644\u0639\u0644\u064A\u0642 (\u0641\u0648\u0627\u0632)\u060C \u0648\u0627\u0644\u062A\u0648\u062A \u0627\u0644\u0623\u0632\u0631\u0642 (\u0645\u064A\u0631\u062A\u064A\u0644)."
-          },
-          "price": "48",
-          "image": "images/smoothie-jelly.webp"
-        },
         {
           "name": {
             "fr": "PINK SMOOTHIE",
@@ -3626,54 +3175,6 @@
         },
         {
           "name": {
-            "fr": "MILKSHAKE COOKIES",
-            "en": "COOKIES MILKSHAKE",
-            "de": "COOKIES MILKSHAKE",
-            "ar": "\u0645\u064A\u0644\u0643 \u0634\u064A\u0643 \u0643\u0648\u0643\u064A\u0632"
-          },
-          "description": {
-            "fr": "Milkshake aux cookies.",
-            "en": "Cookies flavored milkshake.",
-            "de": "Milkshake mit Cookies-Geschmack.",
-            "ar": "\u0645\u064A\u0644\u0643 \u0634\u064A\u0643 \u0643\u0631\u064A\u0645\u064A \u0645\u062E\u0641\u0648\u0642 \u0628\u0627\u0644\u062D\u0644\u064A\u0628 \u0648\u0642\u0637\u0639 \u0628\u0633\u0643\u0648\u064A\u062A \u0627\u0644\u0643\u0648\u0643\u064A\u0632 \u0627\u0644\u0645\u0642\u0631\u0645\u0634\u0629 \u0627\u0644\u0644\u0630\u064A\u0630\u0629."
-          },
-          "price": "42",
-          "image": "images/milkshake-cookies.webp"
-        },
-        {
-          "name": {
-            "fr": "MILKSHAKE KITKAT",
-            "en": "KITKAT MILKSHAKE",
-            "de": "KITKAT MILKSHAKE",
-            "ar": "\u0645\u064A\u0644\u0643 \u0634\u064A\u0643 \u0643\u064A\u062A \u0643\u0627\u062A"
-          },
-          "description": {
-            "fr": "Milkshake au Kitkat.",
-            "en": "Kitkat flavored milkshake.",
-            "de": "Milkshake mit Kitkat-Geschmack.",
-            "ar": "\u0645\u064A\u0644\u0643 \u0634\u064A\u0643 \u0643\u0631\u064A\u0645\u064A \u0645\u062E\u0641\u0648\u0642 \u0628\u0627\u0644\u062D\u0644\u064A\u0628 \u0645\u0639 \u0623\u0635\u0627\u0628\u0639 \u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0643\u064A\u062A \u0643\u0627\u062A \u0627\u0644\u0645\u0642\u0631\u0645\u0634\u0629."
-          },
-          "price": "42",
-          "image": "images/milkshake-kitkat.webp"
-        },
-        {
-          "name": {
-            "fr": "MILKSHAKE OREO",
-            "en": "OREO MILKSHAKE",
-            "de": "OREO MILKSHAKE",
-            "ar": "\u0645\u064A\u0644\u0643 \u0634\u064A\u0643 \u0623\u0648\u0631\u064A\u0648"
-          },
-          "description": {
-            "fr": "Milkshake aux Oreo.",
-            "en": "Oreo flavored milkshake.",
-            "de": "Milkshake mit Oreo-Geschmack.",
-            "ar": "\u0645\u064A\u0644\u0643 \u0634\u064A\u0643 \u0643\u0631\u064A\u0645\u064A \u0645\u062E\u0641\u0648\u0642 \u0628\u0627\u0644\u062D\u0644\u064A\u0628 \u0648\u0628\u0633\u0643\u0648\u064A\u062A \u0623\u0648\u0631\u064A\u0648 \u0627\u0644\u0634\u0647\u064A\u0631 \u0645\u0639 \u0627\u0644\u0643\u0631\u064A\u0645\u0629."
-          },
-          "price": "42",
-          "image": "images/milkshake-oreo.webp"
-        },
-        {
-          "name": {
             "fr": "MILKSHAKE NUTELLA",
             "en": "NUTELLA MILKSHAKE",
             "de": "NUTELLA MILKSHAKE",
@@ -3708,32 +3209,6 @@
     },
     {
       "category": {
-        "fr": "ORANGESHAKE",
-        "en": "ORANGESHAKE",
-        "de": "ORANGESHAKE",
-        "ar": "\u0623\u0648\u0631\u0627\u0646\u062C \u0634\u064A\u0643"
-      },
-      "items": [
-        {
-          "name": {
-            "fr": "ORANGESHAKE",
-            "en": "ORANGESHAKE",
-            "de": "ORANGESHAKE",
-            "ar": "\u0623\u0648\u0631\u0627\u0646\u062C \u0634\u064A\u0643 \u0627\u0644\u0645\u0646\u0639\u0634"
-          },
-          "description": {
-            "fr": "Milkshake \xE0 l'orange (Fraise, caramel, chocolat, vanille, oreo, nougat).",
-            "en": "Orange Milkshake (Strawberry, caramel, chocolate, vanilla, oreo, nougat).",
-            "de": "Orangen Milkshake (Erdbeere, Karamell, Schokolade, Vanille, Oreo, Nougat).",
-            "ar": "\u0645\u064A\u0644\u0643 \u0634\u064A\u0643 \u0628\u0627\u0644\u0628\u0631\u062A\u0642\u0627\u0644 \u0628\u0646\u0643\u0647\u062A\u0643 \u0627\u0644\u0645\u0641\u0636\u0644\u0629 (\u0641\u0631\u0627\u0648\u0644\u0629\u060C \u0643\u0631\u0627\u0645\u064A\u0644\u060C \u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629\u060C \u0641\u0627\u0646\u064A\u0644\u064A\u0627\u060C \u0623\u0648\u0631\u064A\u0648\u060C \u0623\u0648 \u0646\u0648\u063A\u0627)."
-          },
-          "price": "42",
-          "image": "images/orangshake.webp"
-        }
-      ]
-    },
-    {
-      "category": {
         "fr": "COUPE DE GLACE",
         "en": "ICE CREAM CUPS",
         "de": "EISBECHER",
@@ -3756,22 +3231,6 @@
           },
           "price": "65",
           "image": "images/glace-gc.webp"
-        },
-        {
-          "name": {
-            "fr": "BANANA SPLIT",
-            "en": "BANANA SPLIT",
-            "de": "BANANA SPLIT",
-            "ar": "\u0628\u0646\u0627\u0646\u0627 \u0633\u0628\u0644\u064A\u062A \u0643\u0644\u0627\u0633\u064A\u0643"
-          },
-          "description": {
-            "fr": "Vanille, chocolat, fraise.",
-            "en": "Vanilla, chocolate, strawberry.",
-            "de": "Vanille, Schokolade, Erdbeere.",
-            "ar": "\u0645\u0648\u0632 \u0637\u0627\u0632\u062C \u0645\u0639 \u0645\u062B\u0644\u062C\u0627\u062A \u0627\u0644\u0641\u0627\u0646\u064A\u0644\u064A\u0627 \u0648\u0627\u0644\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0648\u0627\u0644\u0641\u0631\u0627\u0648\u0644\u0629 \u0645\u0639 \u0635\u0644\u0635\u0629 \u0627\u0644\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0648\u0627\u0644\u0634\u0627\u0646\u062A\u064A\u064A."
-          },
-          "price": "50",
-          "image": "images/glace-banana.webp"
         },
         {
           "name": {
