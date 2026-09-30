@@ -2576,10 +2576,10 @@ export const menuData = [
           "ar": "سموذي بول ألترا فيتامينات"
         },
         "description": {
-          "fr": "🥭 Mangue, 🥑 Avocat, 🍌 Banane, 🍓 Fraise, 🍊 Orange, 🍯 Miel, 🌴 Datte.",
-          "en": "🥭 Mango, 🥑 Avocado, 🍌 Banana, 🍓 Strawberry, 🍊 Orange, 🍯 Honey, 🌴 Date.",
-          "de": "🥭 Mango, 🥑 Avocado, 🍌 Banane, 🍓 Erdbeere, 🍊 Orange, 🍯 Honig, 🌴 Dattel.",
-          "ar": "🥭 مانجو، 🥑 أفوكادو، 🍌 موز، 🍓 فراولة، 🍊 برتقال، 🍯 عسل، 🌴 تمر."
+          "fr": "🥭 Mangue, 🥑 Avocat, 🍌 Banane, 🍓 Fraise, 🍊 Orange, 🌰 Fruits secs, 🍯 Miel, 🌴 Datte.",
+          "en": "🥭 Mango, 🥑 Avocado, 🍌 Banana, 🍓 Strawberry, 🍊 Orange, 🌰 Dried fruits, 🍯 Honey, 🌴 Date.",
+          "de": "🥭 Mango, 🥑 Avocado, 🍌 Banane, 🍓 Erdbeere, 🍊 Orange, 🌰 Trockenfrüchte, 🍯 Honig, 🌴 Dattel.",
+          "ar": "🥭 مانجو، 🥑 أفوكادو، 🍌 موز، 🍓 فراولة، 🍊 برتقال، 🌰 فواكه جافة، 🍯 عسل، 🌴 تمر."
         },
         "price": "48",
         "image": "images/smoothiebowl-ultra.webp"

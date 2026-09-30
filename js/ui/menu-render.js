@@ -453,6 +453,7 @@ const INGREDIENT_EMOJI_MAP = {
   "citron": "🍋", "lemon": "🍋", "zitrone": "🍋",
   "noix de coco": "🥥", "coconut": "🥥", "kokosnuss": "🥥",
   "datte": "🌴", "date": "🌴", "dattel": "🌴",
+  "fruits secs": "🌰", "fruits sec": "🌰", "dried fruits": "🌰", "trockenfrüchte": "🌰", "فواكه جافة": "🌰",
   // Légumes
   "carotte": "🥕", "carrot": "🥕", "karotte": "🥕",
   // Condiments & aromates

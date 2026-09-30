@@ -3108,10 +3108,10 @@
             "ar": "\u0633\u0645\u0648\u0630\u064A \u0628\u0648\u0644 \u0623\u0644\u062A\u0631\u0627 \u0641\u064A\u062A\u0627\u0645\u064A\u0646\u0627\u062A"
           },
           "description": {
-            "fr": "\u{1F96D} Mangue, \u{1F951} Avocat, \u{1F34C} Banane, \u{1F353} Fraise, \u{1F34A} Orange, \u{1F36F} Miel, \u{1F334} Datte.",
-            "en": "\u{1F96D} Mango, \u{1F951} Avocado, \u{1F34C} Banana, \u{1F353} Strawberry, \u{1F34A} Orange, \u{1F36F} Honey, \u{1F334} Date.",
-            "de": "\u{1F96D} Mango, \u{1F951} Avocado, \u{1F34C} Banane, \u{1F353} Erdbeere, \u{1F34A} Orange, \u{1F36F} Honig, \u{1F334} Dattel.",
-            "ar": "\u{1F96D} \u0645\u0627\u0646\u062C\u0648\u060C \u{1F951} \u0623\u0641\u0648\u0643\u0627\u062F\u0648\u060C \u{1F34C} \u0645\u0648\u0632\u060C \u{1F353} \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u{1F34A} \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u{1F36F} \u0639\u0633\u0644\u060C \u{1F334} \u062A\u0645\u0631."
+            "fr": "\u{1F96D} Mangue, \u{1F951} Avocat, \u{1F34C} Banane, \u{1F353} Fraise, \u{1F34A} Orange, \u{1F330} Fruits secs, \u{1F36F} Miel, \u{1F334} Datte.",
+            "en": "\u{1F96D} Mango, \u{1F951} Avocado, \u{1F34C} Banana, \u{1F353} Strawberry, \u{1F34A} Orange, \u{1F330} Dried fruits, \u{1F36F} Honey, \u{1F334} Date.",
+            "de": "\u{1F96D} Mango, \u{1F951} Avocado, \u{1F34C} Banane, \u{1F353} Erdbeere, \u{1F34A} Orange, \u{1F330} Trockenfr\xFCchte, \u{1F36F} Honig, \u{1F334} Dattel.",
+            "ar": "\u{1F96D} \u0645\u0627\u0646\u062C\u0648\u060C \u{1F951} \u0623\u0641\u0648\u0643\u0627\u062F\u0648\u060C \u{1F34C} \u0645\u0648\u0632\u060C \u{1F353} \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u{1F34A} \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u{1F330} \u0641\u0648\u0627\u0643\u0647 \u062C\u0627\u0641\u0629\u060C \u{1F36F} \u0639\u0633\u0644\u060C \u{1F334} \u062A\u0645\u0631."
           },
           "price": "48",
           "image": "images/smoothiebowl-ultra.webp"
@@ -5286,6 +5286,11 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     "datte": "\u{1F334}",
     "date": "\u{1F334}",
     "dattel": "\u{1F334}",
+    "fruits secs": "\u{1F330}",
+    "fruits sec": "\u{1F330}",
+    "dried fruits": "\u{1F330}",
+    "trockenfr\xFCchte": "\u{1F330}",
+    "\u0641\u0648\u0627\u0643\u0647 \u062C\u0627\u0641\u0629": "\u{1F330}",
     // Légumes
     "carotte": "\u{1F955}",
     "carrot": "\u{1F955}",
