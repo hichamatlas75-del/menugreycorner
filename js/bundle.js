@@ -3108,10 +3108,10 @@
             "ar": "\u0633\u0645\u0648\u0630\u064A \u0628\u0648\u0644 \u0623\u0644\u062A\u0631\u0627 \u0641\u064A\u062A\u0627\u0645\u064A\u0646\u0627\u062A"
           },
           "description": {
-            "fr": "\u{1F96D} Mangue, \u{1F951} Avocat, \u{1F34C} Banane, \u{1F353} Fraise, \u{1F34A} Orange, \u{1F330} Fruits secs, \u{1F36F} Miel, \u{1F334} Datte.",
-            "en": "\u{1F96D} Mango, \u{1F951} Avocado, \u{1F34C} Banana, \u{1F353} Strawberry, \u{1F34A} Orange, \u{1F330} Dried fruits, \u{1F36F} Honey, \u{1F334} Date.",
-            "de": "\u{1F96D} Mango, \u{1F951} Avocado, \u{1F34C} Banane, \u{1F353} Erdbeere, \u{1F34A} Orange, \u{1F330} Trockenfr\xFCchte, \u{1F36F} Honig, \u{1F334} Dattel.",
-            "ar": "\u{1F96D} \u0645\u0627\u0646\u062C\u0648\u060C \u{1F951} \u0623\u0641\u0648\u0643\u0627\u062F\u0648\u060C \u{1F34C} \u0645\u0648\u0632\u060C \u{1F353} \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u{1F34A} \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u{1F330} \u0641\u0648\u0627\u0643\u0647 \u062C\u0627\u0641\u0629\u060C \u{1F36F} \u0639\u0633\u0644\u060C \u{1F334} \u062A\u0645\u0631."
+            "fr": "\u{1F96D} Mangue, \u{1F951} Avocat, \u{1F34C} Banane, \u{1F353} Fraise, \u{1F34A} Orange, \u{1F330} Fruits secs, \u{1F36F} Miel, \u{1F334} Datte, \u{1F95D} Fruits de saison en d\xE9coration.",
+            "en": "\u{1F96D} Mango, \u{1F951} Avocado, \u{1F34C} Banana, \u{1F353} Strawberry, \u{1F34A} Orange, \u{1F330} Dried fruits, \u{1F36F} Honey, \u{1F334} Date, \u{1F95D} Seasonal fruit topping.",
+            "de": "\u{1F96D} Mango, \u{1F951} Avocado, \u{1F34C} Banane, \u{1F353} Erdbeere, \u{1F34A} Orange, \u{1F330} Trockenfr\xFCchte, \u{1F36F} Honig, \u{1F334} Dattel, \u{1F95D} Saisonfr\xFCchte zur Dekoration.",
+            "ar": "\u{1F96D} \u0645\u0627\u0646\u062C\u0648\u060C \u{1F951} \u0623\u0641\u0648\u0643\u0627\u062F\u0648\u060C \u{1F34C} \u0645\u0648\u0632\u060C \u{1F353} \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u{1F34A} \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u{1F330} \u0641\u0648\u0627\u0643\u0647 \u062C\u0627\u0641\u0629\u060C \u{1F36F} \u0639\u0633\u0644\u060C \u{1F334} \u062A\u0645\u0631\u060C \u{1F95D} \u0641\u0648\u0627\u0643\u0647 \u0645\u0648\u0633\u0645\u064A\u0629 \u0644\u0644\u062A\u0632\u064A\u064A\u0646."
           },
           "price": "48",
           "image": "images/smoothiebowl-ultra.webp"
@@ -3124,10 +3124,10 @@
             "ar": "\u0633\u0645\u0648\u0630\u064A \u0628\u0648\u0644 \u0627\u0633\u062A\u0648\u0627\u0626\u064A (\u0625\u0643\u0632\u0648\u062A\u064A\u0643)"
           },
           "description": {
-            "fr": "\u{1F34D} Ananas, \u{1F351} P\xEAche, \u{1F96D} Mangue, \u{1F34C} Banane, \u{1F34A} Orange, \u{1F334} Datte, \u{1F36F} Miel.",
-            "en": "\u{1F34D} Pineapple, \u{1F351} Peach, \u{1F96D} Mango, \u{1F34C} Banana, \u{1F34A} Orange, \u{1F36F} Honey, \u{1F334} Date.",
-            "de": "\u{1F34D} Ananas, \u{1F351} Pfirsich, \u{1F96D} Mango, \u{1F34C} Banane, \u{1F34A} Orange, \u{1F36F} Honig, \u{1F334} Dattel.",
-            "ar": "\u{1F34D} \u0623\u0646\u0627\u0646\u0627\u0633\u060C \u{1F351} \u062E\u0648\u062E\u060C \u{1F96D} \u0645\u0627\u0646\u062C\u0648\u060C \u{1F34C} \u0645\u0648\u0632\u060C \u{1F34A} \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u{1F36F} \u0639\u0633\u0644\u060C \u{1F334} \u062A\u0645\u0631."
+            "fr": "\u{1F34D} Ananas, \u{1F351} P\xEAche, \u{1F96D} Mangue, \u{1F34C} Banane, \u{1F34A} Orange, \u{1F334} Datte, \u{1F36F} Miel, \u{1F95D} Fruits de saison en d\xE9coration.",
+            "en": "\u{1F34D} Pineapple, \u{1F351} Peach, \u{1F96D} Mango, \u{1F34C} Banana, \u{1F34A} Orange, \u{1F36F} Honey, \u{1F334} Date, \u{1F95D} Seasonal fruit topping.",
+            "de": "\u{1F34D} Ananas, \u{1F351} Pfirsich, \u{1F96D} Mango, \u{1F34C} Banane, \u{1F34A} Orange, \u{1F36F} Honig, \u{1F334} Dattel, \u{1F95D} Saisonfr\xFCchte zur Dekoration.",
+            "ar": "\u{1F34D} \u0623\u0646\u0627\u0646\u0627\u0633\u060C \u{1F351} \u062E\u0648\u062E\u060C \u{1F96D} \u0645\u0627\u0646\u062C\u0648\u060C \u{1F34C} \u0645\u0648\u0632\u060C \u{1F34A} \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u{1F36F} \u0639\u0633\u0644\u060C \u{1F334} \u062A\u0645\u0631\u060C \u{1F95D} \u0641\u0648\u0627\u0643\u0647 \u0645\u0648\u0633\u0645\u064A\u0629 \u0644\u0644\u062A\u0632\u064A\u064A\u0646."
           },
           "price": "48",
           "image": "images/smoothiebowl-exotic.webp"
@@ -5291,6 +5291,11 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     "dried fruits": "\u{1F330}",
     "trockenfr\xFCchte": "\u{1F330}",
     "\u0641\u0648\u0627\u0643\u0647 \u062C\u0627\u0641\u0629": "\u{1F330}",
+    "fruits de saison": "\u{1F95D}",
+    "fruits de saison en d\xE9coration": "\u{1F95D}",
+    "seasonal fruit": "\u{1F95D}",
+    "saisonfr\xFCchte": "\u{1F95D}",
+    "\u0641\u0648\u0627\u0643\u0647 \u0645\u0648\u0633\u0645\u064A\u0629": "\u{1F95D}",
     // Légumes
     "carotte": "\u{1F955}",
     "carrot": "\u{1F955}",
@@ -5319,7 +5324,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     if (!item) return "";
     const descFr = item.description && item.description.fr ? item.description.fr : "";
     const descLang = item.description && item.description[lang] ? item.description[lang] : descFr;
-    const looksLikeIngredients = descFr.length <= 120 && descFr.includes(",");
+    const looksLikeIngredients = descFr.length <= 180 && descFr.includes(",");
     if (!looksLikeIngredients) return "";
     const rawIngredients = descLang.split(",").map((s) => s.replace(/\.$/, "").trim()).filter(Boolean);
     const ingredientItems = rawIngredients.map((ing) => {
@@ -5381,7 +5386,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       const name = item.name[currentLang] || item.name.fr;
       const descFr = item.description && item.description.fr || "";
       const descLang = item.description && item.description[currentLang] || descFr;
-      const looksLikeIngredients = descFr.length <= 120 && descFr.includes(",");
+      const looksLikeIngredients = descFr.length <= 180 && descFr.includes(",");
       if (looksLikeIngredients) {
         lbCaption.innerHTML = `<span class="lb-caption-name">${name}</span><span class="lb-caption-price">${item.price} MAD</span>`;
       } else {

@@ -454,6 +454,7 @@ const INGREDIENT_EMOJI_MAP = {
   "noix de coco": "🥥", "coconut": "🥥", "kokosnuss": "🥥",
   "datte": "🌴", "date": "🌴", "dattel": "🌴",
   "fruits secs": "🌰", "fruits sec": "🌰", "dried fruits": "🌰", "trockenfrüchte": "🌰", "فواكه جافة": "🌰",
+  "fruits de saison": "🥝", "fruits de saison en décoration": "🥝", "seasonal fruit": "🥝", "saisonfrüchte": "🥝", "فواكه موسمية": "🥝",
   // Légumes
   "carotte": "🥕", "carrot": "🥕", "karotte": "🥕",
   // Condiments & aromates
@@ -486,8 +487,8 @@ function buildIngredientSticker(item, lang) {
   const descFr = (item.description && item.description.fr) ? item.description.fr : "";
   const descLang = (item.description && item.description[lang]) ? item.description[lang] : descFr;
 
-  // Heuristique : si la description FR est courte (<= 100 chars) et contient des virgules → c'est une liste d'ingrédients
-  const looksLikeIngredients = descFr.length <= 120 && descFr.includes(",");
+  // Heuristique : si la description FR est une liste d'ingrédients séparés par des virgules
+  const looksLikeIngredients = descFr.length <= 180 && descFr.includes(",");
   if (!looksLikeIngredients) return "";
 
   // Parser les ingrédients depuis la description en langue courante
@@ -569,7 +570,7 @@ export function openLightboxForItem(item, imgUrl) {
     const name = item.name[currentLang] || item.name.fr;
     const descFr = (item.description && item.description.fr) || "";
     const descLang = (item.description && item.description[currentLang]) || descFr;
-    const looksLikeIngredients = descFr.length <= 120 && descFr.includes(",");
+    const looksLikeIngredients = descFr.length <= 180 && descFr.includes(",");
 
     if (looksLikeIngredients) {
       // Pour les boissons : afficher le nom + prix uniquement (les ingrédients sont dans le sticker)

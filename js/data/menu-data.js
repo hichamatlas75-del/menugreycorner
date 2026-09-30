@@ -2576,10 +2576,10 @@ export const menuData = [
           "ar": "سموذي بول ألترا فيتامينات"
         },
         "description": {
-          "fr": "🥭 Mangue, 🥑 Avocat, 🍌 Banane, 🍓 Fraise, 🍊 Orange, 🌰 Fruits secs, 🍯 Miel, 🌴 Datte.",
-          "en": "🥭 Mango, 🥑 Avocado, 🍌 Banana, 🍓 Strawberry, 🍊 Orange, 🌰 Dried fruits, 🍯 Honey, 🌴 Date.",
-          "de": "🥭 Mango, 🥑 Avocado, 🍌 Banane, 🍓 Erdbeere, 🍊 Orange, 🌰 Trockenfrüchte, 🍯 Honig, 🌴 Dattel.",
-          "ar": "🥭 مانجو، 🥑 أفوكادو، 🍌 موز، 🍓 فراولة، 🍊 برتقال، 🌰 فواكه جافة، 🍯 عسل، 🌴 تمر."
+          "fr": "🥭 Mangue, 🥑 Avocat, 🍌 Banane, 🍓 Fraise, 🍊 Orange, 🌰 Fruits secs, 🍯 Miel, 🌴 Datte, 🥝 Fruits de saison en décoration.",
+          "en": "🥭 Mango, 🥑 Avocado, 🍌 Banana, 🍓 Strawberry, 🍊 Orange, 🌰 Dried fruits, 🍯 Honey, 🌴 Date, 🥝 Seasonal fruit topping.",
+          "de": "🥭 Mango, 🥑 Avocado, 🍌 Banane, 🍓 Erdbeere, 🍊 Orange, 🌰 Trockenfrüchte, 🍯 Honig, 🌴 Dattel, 🥝 Saisonfrüchte zur Dekoration.",
+          "ar": "🥭 مانجو، 🥑 أفوكادو، 🍌 موز، 🍓 فراولة، 🍊 برتقال، 🌰 فواكه جافة، 🍯 عسل، 🌴 تمر، 🥝 فواكه موسمية للتزيين."
         },
         "price": "48",
         "image": "images/smoothiebowl-ultra.webp"
@@ -2592,10 +2592,10 @@ export const menuData = [
           "ar": "سموذي بول استوائي (إكزوتيك)"
         },
         "description": {
-          "fr": "🍍 Ananas, 🍑 Pêche, 🥭 Mangue, 🍌 Banane, 🍊 Orange, 🌴 Datte, 🍯 Miel.",
-          "en": "🍍 Pineapple, 🍑 Peach, 🥭 Mango, 🍌 Banana, 🍊 Orange, 🍯 Honey, 🌴 Date.",
-          "de": "🍍 Ananas, 🍑 Pfirsich, 🥭 Mango, 🍌 Banane, 🍊 Orange, 🍯 Honig, 🌴 Dattel.",
-          "ar": "🍍 أناناس، 🍑 خوخ، 🥭 مانجو، 🍌 موز، 🍊 برتقال، 🍯 عسل، 🌴 تمر."
+          "fr": "🍍 Ananas, 🍑 Pêche, 🥭 Mangue, 🍌 Banane, 🍊 Orange, 🌴 Datte, 🍯 Miel, 🥝 Fruits de saison en décoration.",
+          "en": "🍍 Pineapple, 🍑 Peach, 🥭 Mango, 🍌 Banana, 🍊 Orange, 🍯 Honey, 🌴 Date, 🥝 Seasonal fruit topping.",
+          "de": "🍍 Ananas, 🍑 Pfirsich, 🥭 Mango, 🍌 Banane, 🍊 Orange, 🍯 Honig, 🌴 Dattel, 🥝 Saisonfrüchte zur Dekoration.",
+          "ar": "🍍 أناناس، 🍑 خوخ، 🥭 مانجو، 🍌 موز، 🍊 برتقال، 🍯 عسل، 🌴 تمر، 🥝 فواكه موسمية للتزيين."
         },
         "price": "48",
         "image": "images/smoothiebowl-exotic.webp"
