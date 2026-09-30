@@ -3568,14 +3568,28 @@ header {
     color: #FAF8F5 !important;
 }
 
-/* Masquage des boutons flottants qui gênent l'affichage des pastilles de catégories */
+/* Masquage des anciens boutons flottants obsolètes */
 .burger-btn,
 #burger,
-.bell-btn,
-#notificationBellBtn {
+.floating-close-category {
     display: none !important;
     visibility: hidden !important;
     pointer-events: none !important;
+}
+
+/* Badge de notification sur la cloche du Header */
+#notificationBellBtn .bell-badge {
+    position: absolute !important;
+    top: 4px !important;
+    right: 6px !important;
+    width: 9px !important;
+    height: 9px !important;
+    border-radius: 50% !important;
+    background: #2ecc71 !important;
+    box-shadow: 0 0 10px #2ecc71 !important;
+    border: 1.5px solid #FFFFFF !important;
+    animation: bellPulse 1.8s infinite !important;
+    z-index: 5 !important;
 }
 
 /* 1. CONTENEUR HUB TACTILE : GRANDES PASTILLES CATÉGORIES */

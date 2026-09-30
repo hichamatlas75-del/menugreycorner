@@ -213,6 +213,10 @@ export function addNotificationToHistory(message, tableId) {
   if (callBadge) {
     callBadge.style.display = "block";
   }
+  const bellBadge = document.getElementById("bellBadge");
+  if (bellBadge) {
+    bellBadge.style.display = "block";
+  }
 }
 
 export function subscribeToActiveWaiterEvents(clientTable) {
@@ -331,12 +335,20 @@ export function renderNotificationHistory(clientTable) {
   if (!ndContentFeed) return;
   ndContentFeed.innerHTML = "";
 
-  const tableNotifications = memoryNotifications.filter(n => String(n.table) === String(clientTable));
+  const tableNotifications = clientTable
+    ? memoryNotifications.filter(n => !n.table || String(n.table) === String(clientTable))
+    : memoryNotifications;
 
   if (tableNotifications.length === 0) {
+    const emptyMsgs = {
+      fr: "Aucune notification récente.<br><span style='font-size:0.75rem;opacity:0.7;'>Vos appels serveur et suivis de commande apparaîtront ici.</span>",
+      en: "No recent notifications.<br><span style='font-size:0.75rem;opacity:0.7;'>Your waiter calls and order updates will appear here.</span>",
+      de: "Keine aktuellen Benachrichtigungen.<br><span style='font-size:0.75rem;opacity:0.7;'>Ihre Kellnerrufe und Bestellaktualisierungen werden hier angezeigt.</span>",
+      ar: "لا توجد إشعارات حديثة.<br><span style='font-size:0.75rem;opacity:0.7;'>ستظهر هنا طلبات النادل ومتابعة طلباتك.</span>"
+    };
     ndContentFeed.innerHTML = `
-      <div style="text-align: center; color: rgba(240, 234, 216, 0.4); padding: 40px 20px; font-size: 0.85rem;">
-        Aucune notification récente
+      <div style="text-align: center; color: rgba(240, 234, 216, 0.6); padding: 40px 20px; font-size: 0.85rem; line-height: 1.6;">
+        🔔<br>${emptyMsgs[currentLang] || emptyMsgs.fr}
       </div>
     `;
     return;
@@ -367,6 +379,10 @@ export function setupNotificationDrawer(getClientTable) {
       if (bellBadge) bellBadge.style.display = "none";
       if (ndOverlay) ndOverlay.classList.add("active");
       const currentTable = typeof getClientTable === "function" ? getClientTable() : getClientTable;
+      const tableBadge = document.getElementById("ndTableBadge");
+      if (tableBadge) {
+        tableBadge.textContent = currentTable ? `Table ${currentTable}` : (currentLang === "ar" ? "طاولة" : "Table");
+      }
       renderNotificationHistory(currentTable);
     };
   }

@@ -73,15 +73,6 @@
         <span class="burger-label">Menu</span>
     </button>
 
-    <!-- Notification Bell Button (masqué pour libérer l'affichage des pastilles de catégories) -->
-    <button id="notificationBellBtn" class="bell-btn" aria-label="Notifications" style="display: none !important;">
-        <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-        </svg>
-        <span class="bell-badge" id="bellBadge" style="display: none;"></span>
-    </button>
-
     <!-- Floating GPS Status Badge -->
     <div class="gps-status-badge gps-locating" id="gpsStatusBadge">
         <span class="gps-dot"></span>
@@ -116,6 +107,16 @@
 
             <!-- SHORTCUT ICONS — SVG INLINE PREMIUM -->
             <div class="shortcut-icons">
+
+                <!-- Suivi Commande & Notifications -->
+                <button class="sc-btn" id="notificationBellBtn" aria-label="Suivi de commande & notifications">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                    <span class="bell-badge" id="bellBadge" style="display: none;"></span>
+                    <span class="sc-label" data-i18n data-fr="Suivi" data-en="Tracking" data-de="Status" data-ar="متابعة">Suivi</span>
+                </button>
 
                 <!-- Téléphone -->
                 <a href="tel:+212535940168" class="sc-btn" aria-label="Appeler Grey Corner">
