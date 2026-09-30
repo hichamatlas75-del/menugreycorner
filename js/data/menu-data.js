@@ -370,10 +370,10 @@ export const menuData = [
           "ar": "سلطة سيزر بالدجاج المشوي"
         },
         "description": {
-          "fr": "Boudin de poulet, parmesan, tomate cerise, crouton, laitue romaine, sauce césar.",
-          "en": "Chicken sausage, parmesan, cherry tomato, crouton, romaine lettuce, Caesar sauce.",
-          "de": "Hähnchenwurst, Parmesan, Kirschtomate, Crouton, Römersalat, Caesar-Soße.",
-          "ar": "رول دجاج، جبنة بارميزان، طماطم كرزية، قطع خبز محمص (كروتون)، خس روماني، وصلصة سيزر الغنية."
+          "fr": "poulet pané, parmesan, tomate cerise, crouton, laitue romaine, sauce césar.",
+          "en": "Crispy chicken, parmesan, cherry tomato, crouton, romaine lettuce, Caesar sauce.",
+          "de": "oder Paniertes Huhn, Parmesan, Kirschtomate, Crouton, Römersalat, Caesar-Soße.",
+          "ar": "دجاج مقرمش، جبنة بارميزان، طماطم كرزية، قطع خبز محمص (كروتون)، خس روماني، وصلصة سيزر الغنية."
         },
         "price": "65",
         "image": "images/entree-caesar.webp"
@@ -2370,10 +2370,10 @@ export const menuData = [
           "ar": "بينا كولادا استوائية"
         },
         "description": {
-          "fr": "Ananas, noix de coco.",
-          "en": "Pineapple, coconut.",
-          "de": "Ananas, Kokosnuss.",
-          "ar": "عصير أناناس طبيعي مخفوق مع حليب وكريمة جوز الهند والثلج."
+          "fr": "Ananas, noix de coco, sirop bleu curaçao.",
+          "en": "Pineapple, coconut, Blue Curaçao syrup.",
+          "de": "Ananas, Kokosnuss, oder Blue-Curaçao-Sirup.",
+          "ar": "عصير أناناس طبيعي مخفوق مع حليب شراب الكوراكاو الأزرق وكريمة جوز الهند والثلج."
         },
         "price": "42",
         "image": "images/cocktail-pinacolada.webp"
@@ -2486,10 +2486,10 @@ export const menuData = [
           "ar": "بينك سموذي الوردي"
         },
         "description": {
-          "fr": "Framboise, orange, fraise.",
-          "en": "Raspberry, orange, strawberry.",
-          "de": "Himbeere, Orange, Erdbeere.",
-          "ar": "توت العليق، عصير برتقال، وفراولة طازجة مخفوقة."
+          "fr": "Framboise, orange, fraise, miel, datte.",
+          "en": "Raspberry, orange, strawberry, honey, date.",
+          "de": "Himbeere, Orange, Erdbeere, honig, dattel.",
+          "ar": "توت العليق، عصير برتقال، عسل, تمر وفراولة طازجة مخفوقة."
         },
         "price": "48",
         "image": "images/smoothie-pink.webp"
@@ -2502,10 +2502,10 @@ export const menuData = [
           "ar": "سموذي تريبل بيري (التوت الثلاثي)"
         },
         "description": {
-          "fr": "Myrtille, framboise, fraise.",
-          "en": "Blueberry, raspberry, strawberry.",
-          "de": "Blaubeere, Himbeere, Erdbeere.",
-          "ar": "توت أزرق، توت العليق، وفراولة طازجة منعشة."
+          "fr": "Myrtille, framboise, fraise, miel, datte.",
+          "en": "Blueberry, raspberry, strawberry, honey, date.",
+          "de": "Blaubeere, Himbeere, Erdbeere, honig, dattel.",
+          "ar": "توت أزرق، توت العليق، عسل, تمر وفراولة طازجة منعشة."
         },
         "price": "48",
         "image": "images/smoothie-triple.webp"
@@ -2518,10 +2518,10 @@ export const menuData = [
           "ar": "سموذي الطاقة والنشاط"
         },
         "description": {
-          "fr": "Banane, ananas, mangue.",
-          "en": "Banana, pineapple, mango.",
-          "de": "Banane, Ananas, Mango.",
-          "ar": "موز، أناناس استوائي، ومانجو طبيعي غني بالفيتامينات."
+          "fr": "Banane, ananas, mangue, miel, datte.",
+          "en": "Banana, pineapple, mango, honey, date.",
+          "de": "Banane, Ananas, Mango, honig, dattel.",
+          "ar": "موز، أناناس استوائي،  عسل, تمر ومانجو طبيعي غني بالفيتامينات."
         },
         "price": "42",
         "image": "images/smoothie-energetic.webp"
@@ -2534,10 +2534,10 @@ export const menuData = [
           "ar": "سموذي متعدد الفيتامينات"
         },
         "description": {
-          "fr": "Orange, pêche, carotte.",
-          "en": "Orange, peach, carrot.",
-          "de": "Orange, Pfirsich, Karotte.",
-          "ar": "عصير برتقال، خوخ طبيعي، وجزر طازج غني بالفوائد الصحية."
+          "fr": "Orange, pêche, carotte, miel, datte.",
+          "en": "Orange, peach, carrot, honey, date.",
+          "de": "Orange, Pfirsich, Karotte, honig, dattel.",
+          "ar": "عصير برتقال، خوخ طبيعي،  عسل, تمر, وجزر طازج غني بالفوائد الصحية."
         },
         "price": "42",
         "image": "images/smoothie-multiv.webp"
@@ -2576,10 +2576,10 @@ export const menuData = [
           "ar": "سموذي بول ألترا فيتامينات"
         },
         "description": {
-          "fr": "Mangue, avocat, banane, citron, fraise, orange.",
-          "en": "Mango, avocado, banana, lemon, strawberry, orange.",
-          "de": "Mango, Avocado, Banane, Zitrone, Erdbeere, Orange.",
-          "ar": "مانجو، أفوكادو، موز، ليمون، فراولة، وبرتقال في وعاء سموذي غني ومزين."
+          "fr": "Mangue, avocat, banane, fraise, orange, miel, datte.",
+          "en": "Mango, avocado, banana, strawberry, orange, honey, date.",
+          "de": "Mango, Avocado, Banane, Erdbeere, Orange, honig, dattel.",
+          "ar": "مانجو، أفوكادو، موز، فراولة، عسل, تمر, وبرتقال في وعاء سموذي غني ومزين."
         },
         "price": "48",
         "image": "images/smoothiebowl-ultra.webp"
@@ -2592,10 +2592,10 @@ export const menuData = [
           "ar": "سموذي بول استوائي (إكزوتيك)"
         },
         "description": {
-          "fr": "Ananas, pêche, mangue, banane, orange.",
-          "en": "Pineapple, peach, mango, banana, orange.",
-          "de": "Ananas, Pfirsich, Mango, Banane, Orange.",
-          "ar": "أناناس، خوخ، مانجو، موز، وعصير برتقال في وعاء سموذي منعش بالفواكه."
+          "fr": "Ananas, pêche, mangue, banane, orange, datte, miel.",
+          "en": "Pineapple, peach, mango, banana, orange, honey, date.",
+          "de": "Ananas, Pfirsich, Mango, Banane, Orange, honig, dattel.",
+          "ar": "أناناس، خوخ، مانجو، موز، وعصير برتقال  عسل, تمر ."
         },
         "price": "48",
         "image": "images/smoothiebowl-exotic.webp"
@@ -2757,10 +2757,10 @@ export const menuData = [
           "ar": "كأس مثلجات الأطفال"
         },
         "description": {
-          "fr": "chocolat, bubble, Chantilly.",
-          "en": "chocolate, bubble, whipped cream.",
-          "de": "schokolade, Bubble, Schlagsahne.",
-          "ar": "مثلجات الشوكولاتة، بابل غام، وكريمة الشانتيي مع حلوى ملونة."
+          "fr": "chocolat, fraise, Chantilly.",
+          "en": "chocolate, Strawberry, whipped cream.",
+          "de": "schokolade, Erdbeere, Schlagsahne.",
+          "ar": "مثلجات الشوكولاتة، فراولة، وكريمة الشانتيي مع حلوى ملونة."
         },
         "price": "40",
         "image": "images/glace-enfant.webp"
@@ -2775,7 +2775,7 @@ export const menuData = [
         "description": {
           "fr": "Parfums au choix : Vanille, chocolat, nougat, pistache, bubble, yaourt fruit des bois, fraise, caramel.",
           "en": "Flavors of choice: Vanilla, chocolate, nougat, pitachio, bubble, forest fruit yogurt, strawberry, caramel.",
-          "de": "Geschmacksrichtungen nach Wahl: Vanille, Schokolade, Nougat, pistazie, Bubble, Waldbeerjoghurt, Erdbeere, Karamell.",
+          "de": "Geschmacksrichtungen nach Wahl: Vanille, Schokolade, Nougat, pistazie, bubble, Waldbeerjoghurt, Erdbeere, Karamell.",
           "ar": "نكهتان من اختيارك: فانيليا، شوكولاتة، نوغا، فستق، بابل، زبادي فواكه الغابة، فراولة، أو كراميل."
         },
         "price": "30",
