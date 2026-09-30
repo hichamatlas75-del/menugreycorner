@@ -2886,10 +2886,10 @@
             "ar": "\u0643\u0648\u0643\u062A\u064A\u0644 \u062A\u0631\u0648\u0628\u064A\u0643\u0627\u0644 \u0627\u0633\u062A\u0648\u0627\u0626\u064A"
           },
           "description": {
-            "fr": "\u{1F96D} Mangue, \u{1F34C} Banane, \u{1F34A} Orange, \u{1F33A} Bissap, \u{1F36F} Miel, \u{1F334} Datte .",
-            "en": "\u{1F96D} Mango, \u{1F34C} Banana, \u{1F34A} Orange, \u{1F33A} Hibiscus, \u{1F36F} Honey, \u{1F334} Date .",
-            "de": "\u{1F96D} Mango, \u{1F34C} Banane, \u{1F34A} Orange, \u{1F33A} Hibiskus, \u{1F36F} Honig, \u{1F334} Dattel .",
-            "ar": "\u{1F96D}   \u0639\u0633\u0644\u060C \u{1F334} \u062A\u0645\u0631, \u0645\u0627\u0646\u062C\u0648\u060C \u{1F34C} \u0645\u0648\u0632\u060C \u{1F34A} \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u{1F33A} \u0643\u0631\u0643\u062F\u064A\u0647 (\u0628\u064A\u0633\u0627\u0628)."
+            "fr": "\u{1F96D} Mangue, \u{1F34C} Banane, \u{1F34A} Orange, \u{1F33A} Bissap, \u{1F36F} Miel, \u{1F334} Datte.",
+            "en": "\u{1F96D} Mango, \u{1F34C} Banana, \u{1F34A} Orange, \u{1F33A} Hibiscus, \u{1F36F} Honey, \u{1F334} Date.",
+            "de": "\u{1F96D} Mango, \u{1F34C} Banane, \u{1F34A} Orange, \u{1F33A} Hibiskus, \u{1F36F} Honig, \u{1F334} Dattel.",
+            "ar": "\u{1F96D} \u0645\u0627\u0646\u062C\u0648\u060C \u{1F34C} \u0645\u0648\u0632\u060C \u{1F34A} \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u{1F33A} \u0643\u0631\u0643\u062F\u064A\u0647 (\u0628\u064A\u0633\u0627\u0628)\u060C \u{1F36F} \u0639\u0633\u0644\u060C \u{1F334} \u062A\u0645\u0631."
           },
           "price": "42",
           "image": "images/cocktail-tropical.webp"

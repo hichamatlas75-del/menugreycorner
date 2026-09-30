@@ -2354,10 +2354,10 @@ export const menuData = [
           "ar": "كوكتيل تروبيكال استوائي"
         },
         "description": {
-          "fr": "🥭 Mangue, 🍌 Banane, 🍊 Orange, 🌺 Bissap, 🍯 Miel, 🌴 Datte .",
-          "en": "🥭 Mango, 🍌 Banana, 🍊 Orange, 🌺 Hibiscus, 🍯 Honey, 🌴 Date .",
-          "de": "🥭 Mango, 🍌 Banane, 🍊 Orange, 🌺 Hibiskus, 🍯 Honig, 🌴 Dattel .", 
-          "ar": "🥭   عسل، 🌴 تمر, مانجو، 🍌 موز، 🍊 برتقال، 🌺 كركديه (بيساب)."
+          "fr": "🥭 Mangue, 🍌 Banane, 🍊 Orange, 🌺 Bissap, 🍯 Miel, 🌴 Datte.",
+          "en": "🥭 Mango, 🍌 Banana, 🍊 Orange, 🌺 Hibiscus, 🍯 Honey, 🌴 Date.",
+          "de": "🥭 Mango, 🍌 Banane, 🍊 Orange, 🌺 Hibiskus, 🍯 Honig, 🌴 Dattel.",
+          "ar": "🥭 مانجو، 🍌 موز، 🍊 برتقال، 🌺 كركديه (بيساب)، 🍯 عسل، 🌴 تمر."
         },
         "price": "42",
         "image": "images/cocktail-tropical.webp"
