@@ -5304,6 +5304,10 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     if (!looksLikeIngredients) return "";
     const rawIngredients = descLang.split(",").map((s) => s.replace(/\.$/, "").trim()).filter(Boolean);
     const ingredientItems = rawIngredients.map((ing) => {
+      const hasEmoji = /\p{Extended_Pictographic}/u.test(ing);
+      if (hasEmoji) {
+        return `<span class="lb-ingr-item">${ing}</span>`;
+      }
       const ingLower = ing.toLowerCase();
       let emoji = "\u2728";
       for (const [key, em] of Object.entries(INGREDIENT_EMOJI_MAP)) {
