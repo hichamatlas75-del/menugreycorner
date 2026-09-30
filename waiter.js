@@ -1,4 +1,39 @@
 // ============================================================================
+// SERVICE WORKER — Enregistrement pour push background & offline cache
+// ============================================================================
+
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/waiter-sw.js", { scope: "/" })
+            .then((reg) => {
+                console.log("✅ Service Worker waiter enregistré:", reg.scope);
+
+                // Vérifier si une mise à jour est disponible
+                reg.addEventListener("updatefound", () => {
+                    const newWorker = reg.installing;
+                    if (newWorker) {
+                        newWorker.addEventListener("statechange", () => {
+                            if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
+                                newWorker.postMessage({ type: "SKIP_WAITING" });
+                            }
+                        });
+                    }
+                });
+            })
+            .catch((err) => {
+                console.warn("⚠️ Service Worker registration failed:", err);
+            });
+
+        // Ping keep-alive vers le Service Worker toutes les 25 secondes
+        setInterval(() => {
+            if (navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({ type: "KEEP_ALIVE" });
+            }
+        }, 25000);
+    });
+}
+
+// ============================================================================
 // DEVICE IDENTITY — ID anonyme persistant pour le verrouillage coopératif
 // ============================================================================
 

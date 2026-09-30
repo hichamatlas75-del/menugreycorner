@@ -902,10 +902,10 @@
             "ar": "\u0633\u0644\u0637\u0629 \u0633\u064A\u0632\u0631 \u0628\u0627\u0644\u062F\u062C\u0627\u062C \u0627\u0644\u0645\u0634\u0648\u064A"
           },
           "description": {
-            "fr": "Boudin de poulet, parmesan, tomate cerise, crouton, laitue romaine, sauce c\xE9sar.",
-            "en": "Chicken sausage, parmesan, cherry tomato, crouton, romaine lettuce, Caesar sauce.",
-            "de": "H\xE4hnchenwurst, Parmesan, Kirschtomate, Crouton, R\xF6mersalat, Caesar-So\xDFe.",
-            "ar": "\u0631\u0648\u0644 \u062F\u062C\u0627\u062C\u060C \u062C\u0628\u0646\u0629 \u0628\u0627\u0631\u0645\u064A\u0632\u0627\u0646\u060C \u0637\u0645\u0627\u0637\u0645 \u0643\u0631\u0632\u064A\u0629\u060C \u0642\u0637\u0639 \u062E\u0628\u0632 \u0645\u062D\u0645\u0635 (\u0643\u0631\u0648\u062A\u0648\u0646)\u060C \u062E\u0633 \u0631\u0648\u0645\u0627\u0646\u064A\u060C \u0648\u0635\u0644\u0635\u0629 \u0633\u064A\u0632\u0631 \u0627\u0644\u063A\u0646\u064A\u0629."
+            "fr": "poulet pan\xE9, parmesan, tomate cerise, crouton, laitue romaine, sauce c\xE9sar.",
+            "en": "Crispy chicken, parmesan, cherry tomato, crouton, romaine lettuce, Caesar sauce.",
+            "de": "oder Paniertes Huhn, Parmesan, Kirschtomate, Crouton, R\xF6mersalat, Caesar-So\xDFe.",
+            "ar": "\u062F\u062C\u0627\u062C \u0645\u0642\u0631\u0645\u0634\u060C \u062C\u0628\u0646\u0629 \u0628\u0627\u0631\u0645\u064A\u0632\u0627\u0646\u060C \u0637\u0645\u0627\u0637\u0645 \u0643\u0631\u0632\u064A\u0629\u060C \u0642\u0637\u0639 \u062E\u0628\u0632 \u0645\u062D\u0645\u0635 (\u0643\u0631\u0648\u062A\u0648\u0646)\u060C \u062E\u0633 \u0631\u0648\u0645\u0627\u0646\u064A\u060C \u0648\u0635\u0644\u0635\u0629 \u0633\u064A\u0632\u0631 \u0627\u0644\u063A\u0646\u064A\u0629."
           },
           "price": "65",
           "image": "images/entree-caesar.webp"
@@ -2902,10 +2902,10 @@
             "ar": "\u0628\u064A\u0646\u0627 \u0643\u0648\u0644\u0627\u062F\u0627 \u0627\u0633\u062A\u0648\u0627\u0626\u064A\u0629"
           },
           "description": {
-            "fr": "Ananas, noix de coco.",
-            "en": "Pineapple, coconut.",
-            "de": "Ananas, Kokosnuss.",
-            "ar": "\u0639\u0635\u064A\u0631 \u0623\u0646\u0627\u0646\u0627\u0633 \u0637\u0628\u064A\u0639\u064A \u0645\u062E\u0641\u0648\u0642 \u0645\u0639 \u062D\u0644\u064A\u0628 \u0648\u0643\u0631\u064A\u0645\u0629 \u062C\u0648\u0632 \u0627\u0644\u0647\u0646\u062F \u0648\u0627\u0644\u062B\u0644\u062C."
+            "fr": "Ananas, noix de coco, sirop bleu cura\xE7ao.",
+            "en": "Pineapple, coconut, Blue Cura\xE7ao syrup.",
+            "de": "Ananas, Kokosnuss, oder Blue-Cura\xE7ao-Sirup.",
+            "ar": "\u0639\u0635\u064A\u0631 \u0623\u0646\u0627\u0646\u0627\u0633 \u0637\u0628\u064A\u0639\u064A \u0645\u062E\u0641\u0648\u0642 \u0645\u0639 \u062D\u0644\u064A\u0628 \u0634\u0631\u0627\u0628 \u0627\u0644\u0643\u0648\u0631\u0627\u0643\u0627\u0648 \u0627\u0644\u0623\u0632\u0631\u0642 \u0648\u0643\u0631\u064A\u0645\u0629 \u062C\u0648\u0632 \u0627\u0644\u0647\u0646\u062F \u0648\u0627\u0644\u062B\u0644\u062C."
           },
           "price": "42",
           "image": "images/cocktail-pinacolada.webp"
@@ -3018,10 +3018,10 @@
             "ar": "\u0628\u064A\u0646\u0643 \u0633\u0645\u0648\u0630\u064A \u0627\u0644\u0648\u0631\u062F\u064A"
           },
           "description": {
-            "fr": "Framboise, orange, fraise.",
-            "en": "Raspberry, orange, strawberry.",
-            "de": "Himbeere, Orange, Erdbeere.",
-            "ar": "\u062A\u0648\u062A \u0627\u0644\u0639\u0644\u064A\u0642\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0648\u0641\u0631\u0627\u0648\u0644\u0629 \u0637\u0627\u0632\u062C\u0629 \u0645\u062E\u0641\u0648\u0642\u0629."
+            "fr": "Framboise, orange, fraise, miel, datte.",
+            "en": "Raspberry, orange, strawberry, honey, date.",
+            "de": "Himbeere, Orange, Erdbeere, honig, dattel.",
+            "ar": "\u062A\u0648\u062A \u0627\u0644\u0639\u0644\u064A\u0642\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0639\u0633\u0644, \u062A\u0645\u0631 \u0648\u0641\u0631\u0627\u0648\u0644\u0629 \u0637\u0627\u0632\u062C\u0629 \u0645\u062E\u0641\u0648\u0642\u0629."
           },
           "price": "48",
           "image": "images/smoothie-pink.webp"
@@ -3034,10 +3034,10 @@
             "ar": "\u0633\u0645\u0648\u0630\u064A \u062A\u0631\u064A\u0628\u0644 \u0628\u064A\u0631\u064A (\u0627\u0644\u062A\u0648\u062A \u0627\u0644\u062B\u0644\u0627\u062B\u064A)"
           },
           "description": {
-            "fr": "Myrtille, framboise, fraise.",
-            "en": "Blueberry, raspberry, strawberry.",
-            "de": "Blaubeere, Himbeere, Erdbeere.",
-            "ar": "\u062A\u0648\u062A \u0623\u0632\u0631\u0642\u060C \u062A\u0648\u062A \u0627\u0644\u0639\u0644\u064A\u0642\u060C \u0648\u0641\u0631\u0627\u0648\u0644\u0629 \u0637\u0627\u0632\u062C\u0629 \u0645\u0646\u0639\u0634\u0629."
+            "fr": "Myrtille, framboise, fraise, miel, datte.",
+            "en": "Blueberry, raspberry, strawberry, honey, date.",
+            "de": "Blaubeere, Himbeere, Erdbeere, honig, dattel.",
+            "ar": "\u062A\u0648\u062A \u0623\u0632\u0631\u0642\u060C \u062A\u0648\u062A \u0627\u0644\u0639\u0644\u064A\u0642\u060C \u0639\u0633\u0644, \u062A\u0645\u0631 \u0648\u0641\u0631\u0627\u0648\u0644\u0629 \u0637\u0627\u0632\u062C\u0629 \u0645\u0646\u0639\u0634\u0629."
           },
           "price": "48",
           "image": "images/smoothie-triple.webp"
@@ -3050,10 +3050,10 @@
             "ar": "\u0633\u0645\u0648\u0630\u064A \u0627\u0644\u0637\u0627\u0642\u0629 \u0648\u0627\u0644\u0646\u0634\u0627\u0637"
           },
           "description": {
-            "fr": "Banane, ananas, mangue.",
-            "en": "Banana, pineapple, mango.",
-            "de": "Banane, Ananas, Mango.",
-            "ar": "\u0645\u0648\u0632\u060C \u0623\u0646\u0627\u0646\u0627\u0633 \u0627\u0633\u062A\u0648\u0627\u0626\u064A\u060C \u0648\u0645\u0627\u0646\u062C\u0648 \u0637\u0628\u064A\u0639\u064A \u063A\u0646\u064A \u0628\u0627\u0644\u0641\u064A\u062A\u0627\u0645\u064A\u0646\u0627\u062A."
+            "fr": "Banane, ananas, mangue, miel, datte.",
+            "en": "Banana, pineapple, mango, honey, date.",
+            "de": "Banane, Ananas, Mango, honig, dattel.",
+            "ar": "\u0645\u0648\u0632\u060C \u0623\u0646\u0627\u0646\u0627\u0633 \u0627\u0633\u062A\u0648\u0627\u0626\u064A\u060C  \u0639\u0633\u0644, \u062A\u0645\u0631 \u0648\u0645\u0627\u0646\u062C\u0648 \u0637\u0628\u064A\u0639\u064A \u063A\u0646\u064A \u0628\u0627\u0644\u0641\u064A\u062A\u0627\u0645\u064A\u0646\u0627\u062A."
           },
           "price": "42",
           "image": "images/smoothie-energetic.webp"
@@ -3066,10 +3066,10 @@
             "ar": "\u0633\u0645\u0648\u0630\u064A \u0645\u062A\u0639\u062F\u062F \u0627\u0644\u0641\u064A\u062A\u0627\u0645\u064A\u0646\u0627\u062A"
           },
           "description": {
-            "fr": "Orange, p\xEAche, carotte.",
-            "en": "Orange, peach, carrot.",
-            "de": "Orange, Pfirsich, Karotte.",
-            "ar": "\u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u062E\u0648\u062E \u0637\u0628\u064A\u0639\u064A\u060C \u0648\u062C\u0632\u0631 \u0637\u0627\u0632\u062C \u063A\u0646\u064A \u0628\u0627\u0644\u0641\u0648\u0627\u0626\u062F \u0627\u0644\u0635\u062D\u064A\u0629."
+            "fr": "Orange, p\xEAche, carotte, miel, datte.",
+            "en": "Orange, peach, carrot, honey, date.",
+            "de": "Orange, Pfirsich, Karotte, honig, dattel.",
+            "ar": "\u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u062E\u0648\u062E \u0637\u0628\u064A\u0639\u064A\u060C  \u0639\u0633\u0644, \u062A\u0645\u0631, \u0648\u062C\u0632\u0631 \u0637\u0627\u0632\u062C \u063A\u0646\u064A \u0628\u0627\u0644\u0641\u0648\u0627\u0626\u062F \u0627\u0644\u0635\u062D\u064A\u0629."
           },
           "price": "42",
           "image": "images/smoothie-multiv.webp"
@@ -3108,10 +3108,10 @@
             "ar": "\u0633\u0645\u0648\u0630\u064A \u0628\u0648\u0644 \u0623\u0644\u062A\u0631\u0627 \u0641\u064A\u062A\u0627\u0645\u064A\u0646\u0627\u062A"
           },
           "description": {
-            "fr": "Mangue, avocat, banane, citron, fraise, orange.",
-            "en": "Mango, avocado, banana, lemon, strawberry, orange.",
-            "de": "Mango, Avocado, Banane, Zitrone, Erdbeere, Orange.",
-            "ar": "\u0645\u0627\u0646\u062C\u0648\u060C \u0623\u0641\u0648\u0643\u0627\u062F\u0648\u060C \u0645\u0648\u0632\u060C \u0644\u064A\u0645\u0648\u0646\u060C \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u0648\u0628\u0631\u062A\u0642\u0627\u0644 \u0641\u064A \u0648\u0639\u0627\u0621 \u0633\u0645\u0648\u0630\u064A \u063A\u0646\u064A \u0648\u0645\u0632\u064A\u0646."
+            "fr": "Mangue, avocat, banane, fraise, orange, miel, datte.",
+            "en": "Mango, avocado, banana, strawberry, orange, honey, date.",
+            "de": "Mango, Avocado, Banane, Erdbeere, Orange, honig, dattel.",
+            "ar": "\u0645\u0627\u0646\u062C\u0648\u060C \u0623\u0641\u0648\u0643\u0627\u062F\u0648\u060C \u0645\u0648\u0632\u060C \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u0639\u0633\u0644, \u062A\u0645\u0631, \u0648\u0628\u0631\u062A\u0642\u0627\u0644 \u0641\u064A \u0648\u0639\u0627\u0621 \u0633\u0645\u0648\u0630\u064A \u063A\u0646\u064A \u0648\u0645\u0632\u064A\u0646."
           },
           "price": "48",
           "image": "images/smoothiebowl-ultra.webp"
@@ -3124,10 +3124,10 @@
             "ar": "\u0633\u0645\u0648\u0630\u064A \u0628\u0648\u0644 \u0627\u0633\u062A\u0648\u0627\u0626\u064A (\u0625\u0643\u0632\u0648\u062A\u064A\u0643)"
           },
           "description": {
-            "fr": "Ananas, p\xEAche, mangue, banane, orange.",
-            "en": "Pineapple, peach, mango, banana, orange.",
-            "de": "Ananas, Pfirsich, Mango, Banane, Orange.",
-            "ar": "\u0623\u0646\u0627\u0646\u0627\u0633\u060C \u062E\u0648\u062E\u060C \u0645\u0627\u0646\u062C\u0648\u060C \u0645\u0648\u0632\u060C \u0648\u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644 \u0641\u064A \u0648\u0639\u0627\u0621 \u0633\u0645\u0648\u0630\u064A \u0645\u0646\u0639\u0634 \u0628\u0627\u0644\u0641\u0648\u0627\u0643\u0647."
+            "fr": "Ananas, p\xEAche, mangue, banane, orange, datte, miel.",
+            "en": "Pineapple, peach, mango, banana, orange, honey, date.",
+            "de": "Ananas, Pfirsich, Mango, Banane, Orange, honig, dattel.",
+            "ar": "\u0623\u0646\u0627\u0646\u0627\u0633\u060C \u062E\u0648\u062E\u060C \u0645\u0627\u0646\u062C\u0648\u060C \u0645\u0648\u0632\u060C \u0648\u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644  \u0639\u0633\u0644, \u062A\u0645\u0631 ."
           },
           "price": "48",
           "image": "images/smoothiebowl-exotic.webp"
@@ -3289,10 +3289,10 @@
             "ar": "\u0643\u0623\u0633 \u0645\u062B\u0644\u062C\u0627\u062A \u0627\u0644\u0623\u0637\u0641\u0627\u0644"
           },
           "description": {
-            "fr": "chocolat, bubble, Chantilly.",
-            "en": "chocolate, bubble, whipped cream.",
-            "de": "schokolade, Bubble, Schlagsahne.",
-            "ar": "\u0645\u062B\u0644\u062C\u0627\u062A \u0627\u0644\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629\u060C \u0628\u0627\u0628\u0644 \u063A\u0627\u0645\u060C \u0648\u0643\u0631\u064A\u0645\u0629 \u0627\u0644\u0634\u0627\u0646\u062A\u064A\u064A \u0645\u0639 \u062D\u0644\u0648\u0649 \u0645\u0644\u0648\u0646\u0629."
+            "fr": "chocolat, fraise, Chantilly.",
+            "en": "chocolate, Strawberry, whipped cream.",
+            "de": "schokolade, Erdbeere, Schlagsahne.",
+            "ar": "\u0645\u062B\u0644\u062C\u0627\u062A \u0627\u0644\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629\u060C \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u0648\u0643\u0631\u064A\u0645\u0629 \u0627\u0644\u0634\u0627\u0646\u062A\u064A\u064A \u0645\u0639 \u062D\u0644\u0648\u0649 \u0645\u0644\u0648\u0646\u0629."
           },
           "price": "40",
           "image": "images/glace-enfant.webp"
@@ -3307,7 +3307,7 @@
           "description": {
             "fr": "Parfums au choix : Vanille, chocolat, nougat, pistache, bubble, yaourt fruit des bois, fraise, caramel.",
             "en": "Flavors of choice: Vanilla, chocolate, nougat, pitachio, bubble, forest fruit yogurt, strawberry, caramel.",
-            "de": "Geschmacksrichtungen nach Wahl: Vanille, Schokolade, Nougat, pistazie, Bubble, Waldbeerjoghurt, Erdbeere, Karamell.",
+            "de": "Geschmacksrichtungen nach Wahl: Vanille, Schokolade, Nougat, pistazie, bubble, Waldbeerjoghurt, Erdbeere, Karamell.",
             "ar": "\u0646\u0643\u0647\u062A\u0627\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643: \u0641\u0627\u0646\u064A\u0644\u064A\u0627\u060C \u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629\u060C \u0646\u0648\u063A\u0627\u060C \u0641\u0633\u062A\u0642\u060C \u0628\u0627\u0628\u0644\u060C \u0632\u0628\u0627\u062F\u064A \u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u063A\u0627\u0628\u0629\u060C \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u0623\u0648 \u0643\u0631\u0627\u0645\u064A\u0644."
           },
           "price": "30",
