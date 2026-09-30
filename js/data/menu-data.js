@@ -2338,10 +2338,10 @@ export const menuData = [
           "ar": "كوكتيل الانتعاش (فريشور)"
         },
         "description": {
-          "fr": "Ananas, poire, citron, menthe.",
-          "en": "Pineapple, pear, lemon, mint.",
-          "de": "Ananas, Birne, Zitrone, Minze.",
-          "ar": "أناناس، إجاص (بوعويد)، ليمون حامض، وأوراق النعناع الطازجة."
+          "fr": "🍍 Ananas, 🍐 Poire, 🍋 Citron, 🌿 Menthe.",
+          "en": "🍍 Pineapple, 🍐 Pear, 🍋 Lemon, 🌿 Mint.",
+          "de": "🍍 Ananas, 🍐 Birne, 🍋 Zitrone, 🌿 Minze.",
+          "ar": "🍍 أناناس، 🍐 إجاص، 🍋 ليمون حامض، 🌿 نعناع طازج."
         },
         "price": "42",
         "image": "images/cocktail-fraicheur.webp"
@@ -2354,10 +2354,10 @@ export const menuData = [
           "ar": "كوكتيل تروبيكال استوائي"
         },
         "description": {
-          "fr": "Mangue, banane, orange, bissap.",
-          "en": "Mango, banana, orange, hibiscus.",
-          "de": "Mango, Banane, Orange, Hibiskus.",
-          "ar": "مانجو، موز، برتقال، وعصير الكركديه (بيساب) المنعش."
+          "fr": "🥭 Mangue, 🍌 Banane, 🍊 Orange, 🌺 Bissap.",
+          "en": "🥭 Mango, 🍌 Banana, 🍊 Orange, 🌺 Hibiscus.",
+          "de": "🥭 Mango, 🍌 Banane, 🍊 Orange, 🌺 Hibiskus.",
+          "ar": "🥭 مانجو، 🍌 موز، 🍊 برتقال، 🌺 كركديه (بيساب)."
         },
         "price": "42",
         "image": "images/cocktail-tropical.webp"
@@ -2370,10 +2370,10 @@ export const menuData = [
           "ar": "بينا كولادا استوائية"
         },
         "description": {
-          "fr": "Ananas, noix de coco, sirop bleu curaçao.",
-          "en": "Pineapple, coconut, Blue Curaçao syrup.",
-          "de": "Ananas, Kokosnuss, oder Blue-Curaçao-Sirup.",
-          "ar": "عصير أناناس طبيعي مخفوق مع حليب شراب الكوراكاو الأزرق وكريمة جوز الهند والثلج."
+          "fr": "🍍 Ananas, 🥥 Noix de coco, 💙 Sirop bleu curaçao.",
+          "en": "🍍 Pineapple, 🥥 Coconut, 💙 Blue Curaçao syrup.",
+          "de": "🍍 Ananas, 🥥 Kokosnuss, 💙 Blue-Curaçao-Sirup.",
+          "ar": "🍍 أناناس، 🥥 جوز الهند، 💙 شراب الكوراكاو الأزرق."
         },
         "price": "42",
         "image": "images/cocktail-pinacolada.webp"
@@ -2386,10 +2386,10 @@ export const menuData = [
           "ar": "كوكتيل الزنجبيل المنعش"
         },
         "description": {
-          "fr": "Gingembre, citron, miel.",
-          "en": "Ginger, lemon, honey.",
-          "de": "Ingwer, Zitrone, Honig.",
-          "ar": "زنجبيل طازج، عصير ليمون حامض، وعسل طبيعي نقي."
+          "fr": "🫚 Gingembre, 🍋 Citron, 🍯 Miel.",
+          "en": "🫚 Ginger, 🍋 Lemon, 🍯 Honey.",
+          "de": "🫚 Ingwer, 🍋 Zitrone, 🍯 Honig.",
+          "ar": "🫚 زنجبيل طازج، 🍋 ليمون حامض، 🍯 عسل طبيعي."
         },
         "price": "32",
         "image": "images/cocktail-gingembre.webp"
@@ -2402,10 +2402,10 @@ export const menuData = [
           "ar": "كوكتيل سان فرانسيسكو"
         },
         "description": {
-          "fr": "Gingembre, bissap, orange, citron.",
-          "en": "Ginger, hibiscus, orange, lemon.",
-          "de": "Ingwer, Hibiskus, Orange, Zitrone.",
-          "ar": "زنجبيل، كركديه (بيساب)، عصير برتقال، وعصير ليمون منعش."
+          "fr": "🫚 Gingembre, 🌺 Bissap, 🍊 Orange, 🍋 Citron.",
+          "en": "🫚 Ginger, 🌺 Hibiscus, 🍊 Orange, 🍋 Lemon.",
+          "de": "🫚 Ingwer, 🌺 Hibiskus, 🍊 Orange, 🍋 Zitrone.",
+          "ar": "🫚 زنجبيل، 🌺 كركديه (بيساب)، 🍊 برتقال، 🍋 ليمون."
         },
         "price": "34",
         "image": "images/cocktail-sf.webp"
@@ -2486,10 +2486,10 @@ export const menuData = [
           "ar": "بينك سموذي الوردي"
         },
         "description": {
-          "fr": "Framboise, orange, fraise, miel, datte.",
-          "en": "Raspberry, orange, strawberry, honey, date.",
-          "de": "Himbeere, Orange, Erdbeere, honig, dattel.",
-          "ar": "توت العليق، عصير برتقال، عسل, تمر وفراولة طازجة مخفوقة."
+          "fr": "🫐 Framboise, 🍊 Orange, 🍓 Fraise, 🍯 Miel, 🌴 Datte.",
+          "en": "🫐 Raspberry, 🍊 Orange, 🍓 Strawberry, 🍯 Honey, 🌴 Date.",
+          "de": "🫐 Himbeere, 🍊 Orange, 🍓 Erdbeere, 🍯 Honig, 🌴 Dattel.",
+          "ar": "🫐 توت العليق، 🍊 برتقال، 🍓 فراولة، 🍯 عسل، 🌴 تمر."
         },
         "price": "48",
         "image": "images/smoothie-pink.webp"
@@ -2502,10 +2502,10 @@ export const menuData = [
           "ar": "سموذي تريبل بيري (التوت الثلاثي)"
         },
         "description": {
-          "fr": "Myrtille, framboise, fraise, miel, datte.",
-          "en": "Blueberry, raspberry, strawberry, honey, date.",
-          "de": "Blaubeere, Himbeere, Erdbeere, honig, dattel.",
-          "ar": "توت أزرق، توت العليق، عسل, تمر وفراولة طازجة منعشة."
+          "fr": "🫐 Myrtille, 🫐 Framboise, 🍓 Fraise, 🍯 Miel, 🌴 Datte.",
+          "en": "🫐 Blueberry, 🫐 Raspberry, 🍓 Strawberry, 🍯 Honey, 🌴 Date.",
+          "de": "🫐 Blaubeere, 🫐 Himbeere, 🍓 Erdbeere, 🍯 Honig, 🌴 Dattel.",
+          "ar": "🫐 توت أزرق، 🫐 توت العليق، 🍓 فراولة، 🍯 عسل، 🌴 تمر."
         },
         "price": "48",
         "image": "images/smoothie-triple.webp"
@@ -2518,10 +2518,10 @@ export const menuData = [
           "ar": "سموذي الطاقة والنشاط"
         },
         "description": {
-          "fr": "Banane, ananas, mangue, miel, datte.",
-          "en": "Banana, pineapple, mango, honey, date.",
-          "de": "Banane, Ananas, Mango, honig, dattel.",
-          "ar": "موز، أناناس استوائي،  عسل, تمر ومانجو طبيعي غني بالفيتامينات."
+          "fr": "🍌 Banane, 🍍 Ananas, 🥭 Mangue, 🍯 Miel, 🌴 Datte.",
+          "en": "🍌 Banana, 🍍 Pineapple, 🥭 Mango, 🍯 Honey, 🌴 Date.",
+          "de": "🍌 Banane, 🍍 Ananas, 🥭 Mango, 🍯 Honig, 🌴 Dattel.",
+          "ar": "🍌 موز، 🍍 أناناس، 🥭 مانجو، 🍯 عسل، 🌴 تمر."
         },
         "price": "42",
         "image": "images/smoothie-energetic.webp"
@@ -2534,10 +2534,10 @@ export const menuData = [
           "ar": "سموذي متعدد الفيتامينات"
         },
         "description": {
-          "fr": "Orange, pêche, carotte, miel, datte.",
-          "en": "Orange, peach, carrot, honey, date.",
-          "de": "Orange, Pfirsich, Karotte, honig, dattel.",
-          "ar": "عصير برتقال، خوخ طبيعي،  عسل, تمر, وجزر طازج غني بالفوائد الصحية."
+          "fr": "🍊 Orange, 🍑 Pêche, 🥕 Carotte, 🍯 Miel, 🌴 Datte.",
+          "en": "🍊 Orange, 🍑 Peach, 🥕 Carrot, 🍯 Honey, 🌴 Date.",
+          "de": "🍊 Orange, 🍑 Pfirsich, 🥕 Karotte, 🍯 Honig, 🌴 Dattel.",
+          "ar": "🍊 برتقال، 🍑 خوخ، 🥕 جزر، 🍯 عسل، 🌴 تمر."
         },
         "price": "42",
         "image": "images/smoothie-multiv.webp"
@@ -2550,10 +2550,10 @@ export const menuData = [
           "ar": "سموذي هاواي المنعش"
         },
         "description": {
-          "fr": "Fraise, ananas, kiwi, avocat, menthe.",
-          "en": "Strawberry, pineapple, kiwi, avocado, mint.",
-          "de": "Erdbeere, Ananas, Kiwi, Avocado, Minze.",
-          "ar": "فراولة، أناناس، كيوي، أفوكادو كريمي، وأوراق النعناع الطازجة."
+          "fr": "🍓 Fraise, 🍍 Ananas, 🥝 Kiwi, 🥑 Avocat, 🌿 Menthe.",
+          "en": "🍓 Strawberry, 🍍 Pineapple, 🥝 Kiwi, 🥑 Avocado, 🌿 Mint.",
+          "de": "🍓 Erdbeere, 🍍 Ananas, 🥝 Kiwi, 🥑 Avocado, 🌿 Minze.",
+          "ar": "🍓 فراولة، 🍍 أناناس، 🥝 كيوي، 🥑 أفوكادو، 🌿 نعناع."
         },
         "price": "42",
         "image": "images/smoothie-hawai.webp"
@@ -2576,10 +2576,10 @@ export const menuData = [
           "ar": "سموذي بول ألترا فيتامينات"
         },
         "description": {
-          "fr": "Mangue, avocat, banane, fraise, orange, miel, datte.",
-          "en": "Mango, avocado, banana, strawberry, orange, honey, date.",
-          "de": "Mango, Avocado, Banane, Erdbeere, Orange, honig, dattel.",
-          "ar": "مانجو، أفوكادو، موز، فراولة، عسل, تمر, وبرتقال في وعاء سموذي غني ومزين."
+          "fr": "🥭 Mangue, 🥑 Avocat, 🍌 Banane, 🍓 Fraise, 🍊 Orange, 🍯 Miel, 🌴 Datte.",
+          "en": "🥭 Mango, 🥑 Avocado, 🍌 Banana, 🍓 Strawberry, 🍊 Orange, 🍯 Honey, 🌴 Date.",
+          "de": "🥭 Mango, 🥑 Avocado, 🍌 Banane, 🍓 Erdbeere, 🍊 Orange, 🍯 Honig, 🌴 Dattel.",
+          "ar": "🥭 مانجو، 🥑 أفوكادو، 🍌 موز، 🍓 فراولة، 🍊 برتقال، 🍯 عسل، 🌴 تمر."
         },
         "price": "48",
         "image": "images/smoothiebowl-ultra.webp"
@@ -2592,10 +2592,10 @@ export const menuData = [
           "ar": "سموذي بول استوائي (إكزوتيك)"
         },
         "description": {
-          "fr": "Ananas, pêche, mangue, banane, orange, datte, miel.",
-          "en": "Pineapple, peach, mango, banana, orange, honey, date.",
-          "de": "Ananas, Pfirsich, Mango, Banane, Orange, honig, dattel.",
-          "ar": "أناناس، خوخ، مانجو، موز، وعصير برتقال  عسل, تمر ."
+          "fr": "🍍 Ananas, 🍑 Pêche, 🥭 Mangue, 🍌 Banane, 🍊 Orange, 🌴 Datte, 🍯 Miel.",
+          "en": "🍍 Pineapple, 🍑 Peach, 🥭 Mango, 🍌 Banana, 🍊 Orange, 🍯 Honey, 🌴 Date.",
+          "de": "🍍 Ananas, 🍑 Pfirsich, 🥭 Mango, 🍌 Banane, 🍊 Orange, 🍯 Honig, 🌴 Dattel.",
+          "ar": "🍍 أناناس، 🍑 خوخ، 🥭 مانجو، 🍌 موز، 🍊 برتقال، 🍯 عسل، 🌴 تمر."
         },
         "price": "48",
         "image": "images/smoothiebowl-exotic.webp"

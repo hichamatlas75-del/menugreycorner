@@ -2870,10 +2870,10 @@
             "ar": "\u0643\u0648\u0643\u062A\u064A\u0644 \u0627\u0644\u0627\u0646\u062A\u0639\u0627\u0634 (\u0641\u0631\u064A\u0634\u0648\u0631)"
           },
           "description": {
-            "fr": "Ananas, poire, citron, menthe.",
-            "en": "Pineapple, pear, lemon, mint.",
-            "de": "Ananas, Birne, Zitrone, Minze.",
-            "ar": "\u0623\u0646\u0627\u0646\u0627\u0633\u060C \u0625\u062C\u0627\u0635 (\u0628\u0648\u0639\u0648\u064A\u062F)\u060C \u0644\u064A\u0645\u0648\u0646 \u062D\u0627\u0645\u0636\u060C \u0648\u0623\u0648\u0631\u0627\u0642 \u0627\u0644\u0646\u0639\u0646\u0627\u0639 \u0627\u0644\u0637\u0627\u0632\u062C\u0629."
+            "fr": "\u{1F34D} Ananas, \u{1F350} Poire, \u{1F34B} Citron, \u{1F33F} Menthe.",
+            "en": "\u{1F34D} Pineapple, \u{1F350} Pear, \u{1F34B} Lemon, \u{1F33F} Mint.",
+            "de": "\u{1F34D} Ananas, \u{1F350} Birne, \u{1F34B} Zitrone, \u{1F33F} Minze.",
+            "ar": "\u{1F34D} \u0623\u0646\u0627\u0646\u0627\u0633\u060C \u{1F350} \u0625\u062C\u0627\u0635\u060C \u{1F34B} \u0644\u064A\u0645\u0648\u0646 \u062D\u0627\u0645\u0636\u060C \u{1F33F} \u0646\u0639\u0646\u0627\u0639 \u0637\u0627\u0632\u062C."
           },
           "price": "42",
           "image": "images/cocktail-fraicheur.webp"
@@ -2886,10 +2886,10 @@
             "ar": "\u0643\u0648\u0643\u062A\u064A\u0644 \u062A\u0631\u0648\u0628\u064A\u0643\u0627\u0644 \u0627\u0633\u062A\u0648\u0627\u0626\u064A"
           },
           "description": {
-            "fr": "Mangue, banane, orange, bissap.",
-            "en": "Mango, banana, orange, hibiscus.",
-            "de": "Mango, Banane, Orange, Hibiskus.",
-            "ar": "\u0645\u0627\u0646\u062C\u0648\u060C \u0645\u0648\u0632\u060C \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0648\u0639\u0635\u064A\u0631 \u0627\u0644\u0643\u0631\u0643\u062F\u064A\u0647 (\u0628\u064A\u0633\u0627\u0628) \u0627\u0644\u0645\u0646\u0639\u0634."
+            "fr": "\u{1F96D} Mangue, \u{1F34C} Banane, \u{1F34A} Orange, \u{1F33A} Bissap.",
+            "en": "\u{1F96D} Mango, \u{1F34C} Banana, \u{1F34A} Orange, \u{1F33A} Hibiscus.",
+            "de": "\u{1F96D} Mango, \u{1F34C} Banane, \u{1F34A} Orange, \u{1F33A} Hibiskus.",
+            "ar": "\u{1F96D} \u0645\u0627\u0646\u062C\u0648\u060C \u{1F34C} \u0645\u0648\u0632\u060C \u{1F34A} \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u{1F33A} \u0643\u0631\u0643\u062F\u064A\u0647 (\u0628\u064A\u0633\u0627\u0628)."
           },
           "price": "42",
           "image": "images/cocktail-tropical.webp"
@@ -2902,10 +2902,10 @@
             "ar": "\u0628\u064A\u0646\u0627 \u0643\u0648\u0644\u0627\u062F\u0627 \u0627\u0633\u062A\u0648\u0627\u0626\u064A\u0629"
           },
           "description": {
-            "fr": "Ananas, noix de coco, sirop bleu cura\xE7ao.",
-            "en": "Pineapple, coconut, Blue Cura\xE7ao syrup.",
-            "de": "Ananas, Kokosnuss, oder Blue-Cura\xE7ao-Sirup.",
-            "ar": "\u0639\u0635\u064A\u0631 \u0623\u0646\u0627\u0646\u0627\u0633 \u0637\u0628\u064A\u0639\u064A \u0645\u062E\u0641\u0648\u0642 \u0645\u0639 \u062D\u0644\u064A\u0628 \u0634\u0631\u0627\u0628 \u0627\u0644\u0643\u0648\u0631\u0627\u0643\u0627\u0648 \u0627\u0644\u0623\u0632\u0631\u0642 \u0648\u0643\u0631\u064A\u0645\u0629 \u062C\u0648\u0632 \u0627\u0644\u0647\u0646\u062F \u0648\u0627\u0644\u062B\u0644\u062C."
+            "fr": "\u{1F34D} Ananas, \u{1F965} Noix de coco, \u{1F499} Sirop bleu cura\xE7ao.",
+            "en": "\u{1F34D} Pineapple, \u{1F965} Coconut, \u{1F499} Blue Cura\xE7ao syrup.",
+            "de": "\u{1F34D} Ananas, \u{1F965} Kokosnuss, \u{1F499} Blue-Cura\xE7ao-Sirup.",
+            "ar": "\u{1F34D} \u0623\u0646\u0627\u0646\u0627\u0633\u060C \u{1F965} \u062C\u0648\u0632 \u0627\u0644\u0647\u0646\u062F\u060C \u{1F499} \u0634\u0631\u0627\u0628 \u0627\u0644\u0643\u0648\u0631\u0627\u0643\u0627\u0648 \u0627\u0644\u0623\u0632\u0631\u0642."
           },
           "price": "42",
           "image": "images/cocktail-pinacolada.webp"
@@ -2918,10 +2918,10 @@
             "ar": "\u0643\u0648\u0643\u062A\u064A\u0644 \u0627\u0644\u0632\u0646\u062C\u0628\u064A\u0644 \u0627\u0644\u0645\u0646\u0639\u0634"
           },
           "description": {
-            "fr": "Gingembre, citron, miel.",
-            "en": "Ginger, lemon, honey.",
-            "de": "Ingwer, Zitrone, Honig.",
-            "ar": "\u0632\u0646\u062C\u0628\u064A\u0644 \u0637\u0627\u0632\u062C\u060C \u0639\u0635\u064A\u0631 \u0644\u064A\u0645\u0648\u0646 \u062D\u0627\u0645\u0636\u060C \u0648\u0639\u0633\u0644 \u0637\u0628\u064A\u0639\u064A \u0646\u0642\u064A."
+            "fr": "\u{1FADA} Gingembre, \u{1F34B} Citron, \u{1F36F} Miel.",
+            "en": "\u{1FADA} Ginger, \u{1F34B} Lemon, \u{1F36F} Honey.",
+            "de": "\u{1FADA} Ingwer, \u{1F34B} Zitrone, \u{1F36F} Honig.",
+            "ar": "\u{1FADA} \u0632\u0646\u062C\u0628\u064A\u0644 \u0637\u0627\u0632\u062C\u060C \u{1F34B} \u0644\u064A\u0645\u0648\u0646 \u062D\u0627\u0645\u0636\u060C \u{1F36F} \u0639\u0633\u0644 \u0637\u0628\u064A\u0639\u064A."
           },
           "price": "32",
           "image": "images/cocktail-gingembre.webp"
@@ -2934,10 +2934,10 @@
             "ar": "\u0643\u0648\u0643\u062A\u064A\u0644 \u0633\u0627\u0646 \u0641\u0631\u0627\u0646\u0633\u064A\u0633\u0643\u0648"
           },
           "description": {
-            "fr": "Gingembre, bissap, orange, citron.",
-            "en": "Ginger, hibiscus, orange, lemon.",
-            "de": "Ingwer, Hibiskus, Orange, Zitrone.",
-            "ar": "\u0632\u0646\u062C\u0628\u064A\u0644\u060C \u0643\u0631\u0643\u062F\u064A\u0647 (\u0628\u064A\u0633\u0627\u0628)\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0648\u0639\u0635\u064A\u0631 \u0644\u064A\u0645\u0648\u0646 \u0645\u0646\u0639\u0634."
+            "fr": "\u{1FADA} Gingembre, \u{1F33A} Bissap, \u{1F34A} Orange, \u{1F34B} Citron.",
+            "en": "\u{1FADA} Ginger, \u{1F33A} Hibiscus, \u{1F34A} Orange, \u{1F34B} Lemon.",
+            "de": "\u{1FADA} Ingwer, \u{1F33A} Hibiskus, \u{1F34A} Orange, \u{1F34B} Zitrone.",
+            "ar": "\u{1FADA} \u0632\u0646\u062C\u0628\u064A\u0644\u060C \u{1F33A} \u0643\u0631\u0643\u062F\u064A\u0647 (\u0628\u064A\u0633\u0627\u0628)\u060C \u{1F34A} \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u{1F34B} \u0644\u064A\u0645\u0648\u0646."
           },
           "price": "34",
           "image": "images/cocktail-sf.webp"
@@ -3018,10 +3018,10 @@
             "ar": "\u0628\u064A\u0646\u0643 \u0633\u0645\u0648\u0630\u064A \u0627\u0644\u0648\u0631\u062F\u064A"
           },
           "description": {
-            "fr": "Framboise, orange, fraise, miel, datte.",
-            "en": "Raspberry, orange, strawberry, honey, date.",
-            "de": "Himbeere, Orange, Erdbeere, honig, dattel.",
-            "ar": "\u062A\u0648\u062A \u0627\u0644\u0639\u0644\u064A\u0642\u060C \u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u0639\u0633\u0644, \u062A\u0645\u0631 \u0648\u0641\u0631\u0627\u0648\u0644\u0629 \u0637\u0627\u0632\u062C\u0629 \u0645\u062E\u0641\u0648\u0642\u0629."
+            "fr": "\u{1FAD0} Framboise, \u{1F34A} Orange, \u{1F353} Fraise, \u{1F36F} Miel, \u{1F334} Datte.",
+            "en": "\u{1FAD0} Raspberry, \u{1F34A} Orange, \u{1F353} Strawberry, \u{1F36F} Honey, \u{1F334} Date.",
+            "de": "\u{1FAD0} Himbeere, \u{1F34A} Orange, \u{1F353} Erdbeere, \u{1F36F} Honig, \u{1F334} Dattel.",
+            "ar": "\u{1FAD0} \u062A\u0648\u062A \u0627\u0644\u0639\u0644\u064A\u0642\u060C \u{1F34A} \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u{1F353} \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u{1F36F} \u0639\u0633\u0644\u060C \u{1F334} \u062A\u0645\u0631."
           },
           "price": "48",
           "image": "images/smoothie-pink.webp"
@@ -3034,10 +3034,10 @@
             "ar": "\u0633\u0645\u0648\u0630\u064A \u062A\u0631\u064A\u0628\u0644 \u0628\u064A\u0631\u064A (\u0627\u0644\u062A\u0648\u062A \u0627\u0644\u062B\u0644\u0627\u062B\u064A)"
           },
           "description": {
-            "fr": "Myrtille, framboise, fraise, miel, datte.",
-            "en": "Blueberry, raspberry, strawberry, honey, date.",
-            "de": "Blaubeere, Himbeere, Erdbeere, honig, dattel.",
-            "ar": "\u062A\u0648\u062A \u0623\u0632\u0631\u0642\u060C \u062A\u0648\u062A \u0627\u0644\u0639\u0644\u064A\u0642\u060C \u0639\u0633\u0644, \u062A\u0645\u0631 \u0648\u0641\u0631\u0627\u0648\u0644\u0629 \u0637\u0627\u0632\u062C\u0629 \u0645\u0646\u0639\u0634\u0629."
+            "fr": "\u{1FAD0} Myrtille, \u{1FAD0} Framboise, \u{1F353} Fraise, \u{1F36F} Miel, \u{1F334} Datte.",
+            "en": "\u{1FAD0} Blueberry, \u{1FAD0} Raspberry, \u{1F353} Strawberry, \u{1F36F} Honey, \u{1F334} Date.",
+            "de": "\u{1FAD0} Blaubeere, \u{1FAD0} Himbeere, \u{1F353} Erdbeere, \u{1F36F} Honig, \u{1F334} Dattel.",
+            "ar": "\u{1FAD0} \u062A\u0648\u062A \u0623\u0632\u0631\u0642\u060C \u{1FAD0} \u062A\u0648\u062A \u0627\u0644\u0639\u0644\u064A\u0642\u060C \u{1F353} \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u{1F36F} \u0639\u0633\u0644\u060C \u{1F334} \u062A\u0645\u0631."
           },
           "price": "48",
           "image": "images/smoothie-triple.webp"
@@ -3050,10 +3050,10 @@
             "ar": "\u0633\u0645\u0648\u0630\u064A \u0627\u0644\u0637\u0627\u0642\u0629 \u0648\u0627\u0644\u0646\u0634\u0627\u0637"
           },
           "description": {
-            "fr": "Banane, ananas, mangue, miel, datte.",
-            "en": "Banana, pineapple, mango, honey, date.",
-            "de": "Banane, Ananas, Mango, honig, dattel.",
-            "ar": "\u0645\u0648\u0632\u060C \u0623\u0646\u0627\u0646\u0627\u0633 \u0627\u0633\u062A\u0648\u0627\u0626\u064A\u060C  \u0639\u0633\u0644, \u062A\u0645\u0631 \u0648\u0645\u0627\u0646\u062C\u0648 \u0637\u0628\u064A\u0639\u064A \u063A\u0646\u064A \u0628\u0627\u0644\u0641\u064A\u062A\u0627\u0645\u064A\u0646\u0627\u062A."
+            "fr": "\u{1F34C} Banane, \u{1F34D} Ananas, \u{1F96D} Mangue, \u{1F36F} Miel, \u{1F334} Datte.",
+            "en": "\u{1F34C} Banana, \u{1F34D} Pineapple, \u{1F96D} Mango, \u{1F36F} Honey, \u{1F334} Date.",
+            "de": "\u{1F34C} Banane, \u{1F34D} Ananas, \u{1F96D} Mango, \u{1F36F} Honig, \u{1F334} Dattel.",
+            "ar": "\u{1F34C} \u0645\u0648\u0632\u060C \u{1F34D} \u0623\u0646\u0627\u0646\u0627\u0633\u060C \u{1F96D} \u0645\u0627\u0646\u062C\u0648\u060C \u{1F36F} \u0639\u0633\u0644\u060C \u{1F334} \u062A\u0645\u0631."
           },
           "price": "42",
           "image": "images/smoothie-energetic.webp"
@@ -3066,10 +3066,10 @@
             "ar": "\u0633\u0645\u0648\u0630\u064A \u0645\u062A\u0639\u062F\u062F \u0627\u0644\u0641\u064A\u062A\u0627\u0645\u064A\u0646\u0627\u062A"
           },
           "description": {
-            "fr": "Orange, p\xEAche, carotte, miel, datte.",
-            "en": "Orange, peach, carrot, honey, date.",
-            "de": "Orange, Pfirsich, Karotte, honig, dattel.",
-            "ar": "\u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u062E\u0648\u062E \u0637\u0628\u064A\u0639\u064A\u060C  \u0639\u0633\u0644, \u062A\u0645\u0631, \u0648\u062C\u0632\u0631 \u0637\u0627\u0632\u062C \u063A\u0646\u064A \u0628\u0627\u0644\u0641\u0648\u0627\u0626\u062F \u0627\u0644\u0635\u062D\u064A\u0629."
+            "fr": "\u{1F34A} Orange, \u{1F351} P\xEAche, \u{1F955} Carotte, \u{1F36F} Miel, \u{1F334} Datte.",
+            "en": "\u{1F34A} Orange, \u{1F351} Peach, \u{1F955} Carrot, \u{1F36F} Honey, \u{1F334} Date.",
+            "de": "\u{1F34A} Orange, \u{1F351} Pfirsich, \u{1F955} Karotte, \u{1F36F} Honig, \u{1F334} Dattel.",
+            "ar": "\u{1F34A} \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u{1F351} \u062E\u0648\u062E\u060C \u{1F955} \u062C\u0632\u0631\u060C \u{1F36F} \u0639\u0633\u0644\u060C \u{1F334} \u062A\u0645\u0631."
           },
           "price": "42",
           "image": "images/smoothie-multiv.webp"
@@ -3082,10 +3082,10 @@
             "ar": "\u0633\u0645\u0648\u0630\u064A \u0647\u0627\u0648\u0627\u064A \u0627\u0644\u0645\u0646\u0639\u0634"
           },
           "description": {
-            "fr": "Fraise, ananas, kiwi, avocat, menthe.",
-            "en": "Strawberry, pineapple, kiwi, avocado, mint.",
-            "de": "Erdbeere, Ananas, Kiwi, Avocado, Minze.",
-            "ar": "\u0641\u0631\u0627\u0648\u0644\u0629\u060C \u0623\u0646\u0627\u0646\u0627\u0633\u060C \u0643\u064A\u0648\u064A\u060C \u0623\u0641\u0648\u0643\u0627\u062F\u0648 \u0643\u0631\u064A\u0645\u064A\u060C \u0648\u0623\u0648\u0631\u0627\u0642 \u0627\u0644\u0646\u0639\u0646\u0627\u0639 \u0627\u0644\u0637\u0627\u0632\u062C\u0629."
+            "fr": "\u{1F353} Fraise, \u{1F34D} Ananas, \u{1F95D} Kiwi, \u{1F951} Avocat, \u{1F33F} Menthe.",
+            "en": "\u{1F353} Strawberry, \u{1F34D} Pineapple, \u{1F95D} Kiwi, \u{1F951} Avocado, \u{1F33F} Mint.",
+            "de": "\u{1F353} Erdbeere, \u{1F34D} Ananas, \u{1F95D} Kiwi, \u{1F951} Avocado, \u{1F33F} Minze.",
+            "ar": "\u{1F353} \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u{1F34D} \u0623\u0646\u0627\u0646\u0627\u0633\u060C \u{1F95D} \u0643\u064A\u0648\u064A\u060C \u{1F951} \u0623\u0641\u0648\u0643\u0627\u062F\u0648\u060C \u{1F33F} \u0646\u0639\u0646\u0627\u0639."
           },
           "price": "42",
           "image": "images/smoothie-hawai.webp"
@@ -3108,10 +3108,10 @@
             "ar": "\u0633\u0645\u0648\u0630\u064A \u0628\u0648\u0644 \u0623\u0644\u062A\u0631\u0627 \u0641\u064A\u062A\u0627\u0645\u064A\u0646\u0627\u062A"
           },
           "description": {
-            "fr": "Mangue, avocat, banane, fraise, orange, miel, datte.",
-            "en": "Mango, avocado, banana, strawberry, orange, honey, date.",
-            "de": "Mango, Avocado, Banane, Erdbeere, Orange, honig, dattel.",
-            "ar": "\u0645\u0627\u0646\u062C\u0648\u060C \u0623\u0641\u0648\u0643\u0627\u062F\u0648\u060C \u0645\u0648\u0632\u060C \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u0639\u0633\u0644, \u062A\u0645\u0631, \u0648\u0628\u0631\u062A\u0642\u0627\u0644 \u0641\u064A \u0648\u0639\u0627\u0621 \u0633\u0645\u0648\u0630\u064A \u063A\u0646\u064A \u0648\u0645\u0632\u064A\u0646."
+            "fr": "\u{1F96D} Mangue, \u{1F951} Avocat, \u{1F34C} Banane, \u{1F353} Fraise, \u{1F34A} Orange, \u{1F36F} Miel, \u{1F334} Datte.",
+            "en": "\u{1F96D} Mango, \u{1F951} Avocado, \u{1F34C} Banana, \u{1F353} Strawberry, \u{1F34A} Orange, \u{1F36F} Honey, \u{1F334} Date.",
+            "de": "\u{1F96D} Mango, \u{1F951} Avocado, \u{1F34C} Banane, \u{1F353} Erdbeere, \u{1F34A} Orange, \u{1F36F} Honig, \u{1F334} Dattel.",
+            "ar": "\u{1F96D} \u0645\u0627\u0646\u062C\u0648\u060C \u{1F951} \u0623\u0641\u0648\u0643\u0627\u062F\u0648\u060C \u{1F34C} \u0645\u0648\u0632\u060C \u{1F353} \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u{1F34A} \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u{1F36F} \u0639\u0633\u0644\u060C \u{1F334} \u062A\u0645\u0631."
           },
           "price": "48",
           "image": "images/smoothiebowl-ultra.webp"
@@ -3124,10 +3124,10 @@
             "ar": "\u0633\u0645\u0648\u0630\u064A \u0628\u0648\u0644 \u0627\u0633\u062A\u0648\u0627\u0626\u064A (\u0625\u0643\u0632\u0648\u062A\u064A\u0643)"
           },
           "description": {
-            "fr": "Ananas, p\xEAche, mangue, banane, orange, datte, miel.",
-            "en": "Pineapple, peach, mango, banana, orange, honey, date.",
-            "de": "Ananas, Pfirsich, Mango, Banane, Orange, honig, dattel.",
-            "ar": "\u0623\u0646\u0627\u0646\u0627\u0633\u060C \u062E\u0648\u062E\u060C \u0645\u0627\u0646\u062C\u0648\u060C \u0645\u0648\u0632\u060C \u0648\u0639\u0635\u064A\u0631 \u0628\u0631\u062A\u0642\u0627\u0644  \u0639\u0633\u0644, \u062A\u0645\u0631 ."
+            "fr": "\u{1F34D} Ananas, \u{1F351} P\xEAche, \u{1F96D} Mangue, \u{1F34C} Banane, \u{1F34A} Orange, \u{1F334} Datte, \u{1F36F} Miel.",
+            "en": "\u{1F34D} Pineapple, \u{1F351} Peach, \u{1F96D} Mango, \u{1F34C} Banana, \u{1F34A} Orange, \u{1F36F} Honey, \u{1F334} Date.",
+            "de": "\u{1F34D} Ananas, \u{1F351} Pfirsich, \u{1F96D} Mango, \u{1F34C} Banane, \u{1F34A} Orange, \u{1F36F} Honig, \u{1F334} Dattel.",
+            "ar": "\u{1F34D} \u0623\u0646\u0627\u0646\u0627\u0633\u060C \u{1F351} \u062E\u0648\u062E\u060C \u{1F96D} \u0645\u0627\u0646\u062C\u0648\u060C \u{1F34C} \u0645\u0648\u0632\u060C \u{1F34A} \u0628\u0631\u062A\u0642\u0627\u0644\u060C \u{1F36F} \u0639\u0633\u0644\u060C \u{1F334} \u062A\u0645\u0631."
           },
           "price": "48",
           "image": "images/smoothiebowl-exotic.webp"
