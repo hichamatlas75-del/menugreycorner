@@ -832,60 +832,88 @@ header {
     text-overflow: ellipsis;
 }
 
+.secure-lightbox-caption {
+    position: absolute !important;
+    bottom: 68px !important;
+    left: 14px !important;
+    right: auto !important;
+    transform: none !important;
+    color: #fff !important;
+    font-size: 0.88rem !important;
+    background: rgba(0, 0, 0, 0.72) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    padding: 7px 12px !important;
+    border-radius: 12px !important;
+    text-align: left !important;
+    max-width: 155px !important;
+    pointer-events: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+    z-index: 100 !important;
+}
+
 .secure-lightbox-add-btn {
-    position: absolute;
-    bottom: 75px;
-    left: 50%;
-    transform: translateX(-50%);
-    height: 44px;
-    width: auto;
-    min-width: 170px;
-    padding: 0 22px;
-    border-radius: 22px;
-    background: linear-gradient(135deg, #C9A84C 0%, #A87B24 100%);
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    color: #FFFFFF;
-    font-family: 'Poppins', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 6px 22px rgba(201, 168, 76, 0.5), 0 2px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.25s cubic-bezier(.22, 1, .36, 1), box-shadow 0.25s ease, filter 0.2s;
-    z-index: 1000000;
-    pointer-events: auto;
-    outline: none;
+    position: absolute !important;
+    bottom: 14px !important;
+    left: 14px !important;
+    right: auto !important;
+    transform: none !important;
+    height: 42px !important;
+    width: auto !important;
+    min-width: 135px !important;
+    max-width: 155px !important;
+    padding: 0 16px !important;
+    border-radius: 12px !important;
+    background: linear-gradient(135deg, #C9A84C 0%, #A87B24 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.45) !important;
+    color: #FFFFFF !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.06em !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    box-shadow: 0 6px 20px rgba(201, 168, 76, 0.45), 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    z-index: 101 !important;
+    pointer-events: auto !important;
+    outline: none !important;
 }
 
 .secure-lightbox-add-btn:hover {
-    transform: translateX(-50%) scale(1.06);
-    background: linear-gradient(135deg, #D4B255 0%, #B8892A 100%);
-    box-shadow: 0 8px 28px rgba(201, 168, 76, 0.65), 0 3px 10px rgba(0, 0, 0, 0.25);
-    filter: brightness(1.06);
+    transform: translateY(-2px) scale(1.03) !important;
+    background: linear-gradient(135deg, #D4B255 0%, #B8892A 100%) !important;
+    box-shadow: 0 8px 26px rgba(201, 168, 76, 0.6), 0 3px 10px rgba(0, 0, 0, 0.25) !important;
 }
 
 .secure-lightbox-add-btn:active {
-    transform: translateX(-50%) scale(0.96);
+    transform: translateY(1px) scale(0.97) !important;
 }
 
 /* ── Sticker Ingrédients (Smoothies / Cocktails / Boissons) ───────────────── */
 .lb-ingredient-sticker {
-    position: absolute;
-    bottom: 14px;
-    right: 10px;
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-radius: 16px;
-    padding: 10px 14px 10px 12px;
-    max-width: 200px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.22);
-    pointer-events: none;
-    animation: lb-sticker-in 0.3s cubic-bezier(.22,1,.36,1) both;
+    position: absolute !important;
+    bottom: 14px !important;
+    right: 14px !important;
+    left: auto !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-radius: 14px !important;
+    padding: 8px 12px 8px 10px !important;
+    max-width: 175px !important;
+    max-height: 70vh !important;
+    overflow-y: auto !important;
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.35) !important;
+    pointer-events: auto !important;
+    animation: lb-sticker-in 0.3s cubic-bezier(.22, 1, .36, 1) both !important;
+    z-index: 100 !important;
 }
 
 @keyframes lb-sticker-in {
@@ -894,80 +922,78 @@ header {
 }
 
 .lb-ingr-header {
-    font-size: 0.68rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #C9A84C;
-    margin-bottom: 7px;
-    font-family: 'Poppins', 'DM Sans', sans-serif;
+    font-size: 0.65rem !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    color: #A87B24 !important;
+    margin-bottom: 5px !important;
+    font-family: 'Poppins', 'DM Sans', sans-serif !important;
 }
 
 .lb-ingr-list {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 3px !important;
 }
 
 .lb-ingr-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.78rem;
-    font-weight: 500;
-    color: #1a1a1a;
-    font-family: 'Poppins', 'DM Sans', sans-serif;
-    line-height: 1.3;
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    font-size: 0.74rem !important;
+    font-weight: 500 !important;
+    color: #1a1a1a !important;
+    font-family: 'Poppins', 'DM Sans', sans-serif !important;
+    line-height: 1.25 !important;
+    white-space: nowrap !important;
 }
 
 /* ── Caption enrichie (nom + prix + description) ─────────────────────────── */
-.secure-lightbox-caption {
-    position: absolute;
-    bottom: 20px;
-    left: 10px;
-    right: auto;
-    transform: none;
-    color: #fff;
-    font-size: 0.88rem;
-    background: rgba(0,0,0,0.62);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    padding: 8px 14px;
-    border-radius: 14px;
-    text-align: left;
-    max-width: 56%;
-    pointer-events: none;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
 .lb-caption-name {
-    font-weight: 700;
-    font-size: 0.9rem;
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    letter-spacing: 0.04em;
-    color: #f5e9c8;
-    line-height: 1.2;
+    font-weight: 700 !important;
+    font-size: 0.88rem !important;
+    font-family: 'Cormorant Garamond', Georgia, serif !important;
+    letter-spacing: 0.03em !important;
+    color: #f5e9c8 !important;
+    line-height: 1.2 !important;
 }
 
 .lb-caption-price {
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: #C9A84C;
-    font-variant-numeric: tabular-nums;
+    font-size: 0.76rem !important;
+    font-weight: 600 !important;
+    color: #C9A84C !important;
+    font-variant-numeric: tabular-nums !important;
 }
 
 .lb-caption-desc {
-    font-size: 0.72rem;
-    color: rgba(255,255,255,0.75);
-    line-height: 1.35;
-    margin-top: 2px;
+    font-size: 0.7rem !important;
+    color: rgba(255, 255, 255, 0.75) !important;
+    line-height: 1.3 !important;
+    margin-top: 2px !important;
 }
 
 /* Rendre le contenu lightbox interactif pour le sticker */
 .secure-lightbox-content {
     pointer-events: none;
+}
+
+/* Support RTL pour la lightbox */
+[dir="rtl"] .secure-lightbox-caption {
+    left: auto !important;
+    right: 14px !important;
+    text-align: right !important;
+}
+
+[dir="rtl"] .secure-lightbox-add-btn {
+    left: auto !important;
+    right: 14px !important;
+}
+
+[dir="rtl"] .lb-ingredient-sticker {
+    right: auto !important;
+    left: 14px !important;
+    text-align: right !important;
 }
 
 /* =========================================
@@ -3940,12 +3966,13 @@ header {
 .hub-card-desc {
     font-size: 0.8rem !important;
     color: #6E6157 !important;
-    line-height: 1.45 !important;
-    margin: 0 0 16px !important;
-    display: -webkit-box !important;
-    -webkit-line-clamp: 2 !important;
-    -webkit-box-orient: vertical !important;
-    overflow: hidden !important;
+    line-height: 1.5 !important;
+    margin: 0 0 14px !important;
+    display: block !important;
+    -webkit-line-clamp: unset !important;
+    -webkit-box-orient: unset !important;
+    overflow: visible !important;
+    word-break: break-word !important;
 }
 
 /* Pied de carte avec prix et bouton Commander */
