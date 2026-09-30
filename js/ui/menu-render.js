@@ -435,6 +435,85 @@ export function activateSearch() {
 /**
  * Setup Lightbox
  */
+
+// ── Mapping ingrédient → emoji ──────────────────────────────────────────────
+const INGREDIENT_EMOJI_MAP = {
+  // Fruits
+  "framboise": "🫐", "raspberry": "🫐", "himbeere": "🫐",
+  "fraise": "🍓", "strawberry": "🍓", "erdbeere": "🍓",
+  "orange": "🍊", "orangen": "🍊",
+  "banane": "🍌", "banana": "🍌", "banane ": "🍌",
+  "ananas": "🍍", "pineapple": "🍍",
+  "mangue": "🥭", "mango": "🥭",
+  "myrtille": "🫐", "blueberry": "🫐", "blaubeere": "🫐",
+  "kiwi": "🥝",
+  "avocat": "🥑", "avocado": "🥑",
+  "pêche": "🍑", "peach": "🍑", "pfirsich": "🍑",
+  "poire": "🍐", "pear": "🍐", "birne": "🍐",
+  "citron": "🍋", "lemon": "🍋", "zitrone": "🍋",
+  "noix de coco": "🥥", "coconut": "🥥", "kokosnuss": "🥥",
+  "datte": "🌴", "date": "🌴", "dattel": "🌴",
+  // Légumes
+  "carotte": "🥕", "carrot": "🥕", "karotte": "🥕",
+  // Condiments & aromates
+  "miel": "🍯", "honey": "🍯", "honig": "🍯",
+  "menthe": "🌿", "mint": "🌿", "minze": "🌿",
+  "gingembre": "🫚", "ginger": "🫚", "ingwer": "🫚",
+  "bissap": "🌺", "hibiscus": "🌺",
+  // Boissons & sirops
+  "sirop bleu curaçao": "💙", "blue curaçao": "💙", "blue-curaçao": "💙",
+  "redbull": "⚡", "red bull": "⚡",
+  "sodawater": "💧",
+};
+
+/**
+ * Catégories qui affichent le sticker ingrédients
+ */
+const INGREDIENT_STICKER_CATEGORIES = [
+  "cocktails", "mojito", "smoothies", "smoothie-bowl",
+  "boissons", "milkshakes", "ice-coffee", "frappuccino"
+];
+
+/**
+ * Génère le HTML du sticker ingrédients à partir d'une description FR
+ */
+function buildIngredientSticker(item, lang) {
+  if (!item) return "";
+
+  // Déterminer si cet item mérite un sticker (catégorie boisson/smoothie)
+  // On se base sur la description : elle contient des ingrédients séparés par des virgules
+  const descFr = (item.description && item.description.fr) ? item.description.fr : "";
+  const descLang = (item.description && item.description[lang]) ? item.description[lang] : descFr;
+
+  // Heuristique : si la description FR est courte (<= 100 chars) et contient des virgules → c'est une liste d'ingrédients
+  const looksLikeIngredients = descFr.length <= 120 && descFr.includes(",");
+  if (!looksLikeIngredients) return "";
+
+  // Parser les ingrédients depuis la description en langue courante
+  const rawIngredients = descLang.split(",").map(s => s.replace(/\.$/, "").trim()).filter(Boolean);
+
+  // Construire la liste avec emojis
+  const ingredientItems = rawIngredients.map(ing => {
+    const ingLower = ing.toLowerCase();
+    let emoji = "✨";
+    for (const [key, em] of Object.entries(INGREDIENT_EMOJI_MAP)) {
+      if (ingLower.includes(key)) { emoji = em; break; }
+    }
+    return `<span class="lb-ingr-item">${emoji} ${ing}</span>`;
+  });
+
+  if (ingredientItems.length === 0) return "";
+
+  const labels = { fr: "Ingrédients", en: "Ingredients", de: "Zutaten", ar: "المكوّنات" };
+  const label = labels[lang] || labels.fr;
+
+  return `
+    <div class="lb-ingredient-sticker">
+      <div class="lb-ingr-header">${label}</div>
+      <div class="lb-ingr-list">${ingredientItems.join("")}</div>
+    </div>`;
+}
+
 export function closeLightbox() {
   const secureLightbox = document.getElementById("secureLightbox");
   const secureLightboxContent = document.querySelector(".secure-lightbox-content");
@@ -447,7 +526,11 @@ export function closeLightbox() {
   if (lbAddBtn) lbAddBtn.style.display = "none";
 
   const lbCaption = document.getElementById("secureLightboxCaption");
-  if (lbCaption) lbCaption.textContent = "";
+  if (lbCaption) lbCaption.innerHTML = "";
+
+  // Remove sticker if present
+  const existingSticker = document.querySelector(".lb-ingredient-sticker");
+  if (existingSticker) existingSticker.remove();
 
   document.body.classList.remove("no-scroll");
   document.documentElement.classList.remove("no-scroll");
@@ -464,11 +547,34 @@ export function openLightboxForItem(item, imgUrl) {
 
   secureLightboxContent.style.backgroundImage = `url("${imgUrl}")`;
 
+  // ── Sticker ingrédients ──────────────────────────────────────────────────
+  // Remove old sticker
+  const oldSticker = secureLightboxContent.querySelector(".lb-ingredient-sticker");
+  if (oldSticker) oldSticker.remove();
+
+  if (item) {
+    const stickerHtml = buildIngredientSticker(item, currentLang);
+    if (stickerHtml) {
+      secureLightboxContent.insertAdjacentHTML("beforeend", stickerHtml);
+    }
+  }
+
+  // ── Caption enrichie (nom + description) ────────────────────────────────
   if (item && lbCaption) {
     const name = item.name[currentLang] || item.name.fr;
-    lbCaption.textContent = `${name} — ${item.price}`;
+    const descFr = (item.description && item.description.fr) || "";
+    const descLang = (item.description && item.description[currentLang]) || descFr;
+    const looksLikeIngredients = descFr.length <= 120 && descFr.includes(",");
+
+    if (looksLikeIngredients) {
+      // Pour les boissons : afficher le nom + prix uniquement (les ingrédients sont dans le sticker)
+      lbCaption.innerHTML = `<span class="lb-caption-name">${name}</span><span class="lb-caption-price">${item.price} MAD</span>`;
+    } else {
+      // Pour les autres plats : nom + prix + description courte
+      lbCaption.innerHTML = `<span class="lb-caption-name">${name}</span><span class="lb-caption-price">${item.price} MAD</span><span class="lb-caption-desc">${descLang}</span>`;
+    }
   } else if (lbCaption) {
-    lbCaption.textContent = "";
+    lbCaption.innerHTML = "";
   }
 
   if (item && lbAddBtn) {
@@ -486,6 +592,7 @@ export function openLightboxForItem(item, imgUrl) {
   document.body.classList.add("no-scroll");
   document.documentElement.classList.add("no-scroll");
 }
+
 
 export function enableSecureLightbox() {
   const secureLightbox = document.getElementById("secureLightbox");

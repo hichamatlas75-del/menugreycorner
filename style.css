@@ -872,6 +872,103 @@ header {
     transform: translateX(-50%) scale(0.96);
 }
 
+/* ── Sticker Ingrédients (Smoothies / Cocktails / Boissons) ───────────────── */
+.lb-ingredient-sticker {
+    position: absolute;
+    bottom: 14px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 16px;
+    padding: 10px 14px 10px 12px;
+    max-width: 200px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.22);
+    pointer-events: none;
+    animation: lb-sticker-in 0.3s cubic-bezier(.22,1,.36,1) both;
+}
+
+@keyframes lb-sticker-in {
+    from { opacity: 0; transform: translateY(10px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.lb-ingr-header {
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #C9A84C;
+    margin-bottom: 7px;
+    font-family: 'Poppins', 'DM Sans', sans-serif;
+}
+
+.lb-ingr-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.lb-ingr-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    font-family: 'Poppins', 'DM Sans', sans-serif;
+    line-height: 1.3;
+}
+
+/* ── Caption enrichie (nom + prix + description) ─────────────────────────── */
+.secure-lightbox-caption {
+    position: absolute;
+    bottom: 20px;
+    left: 10px;
+    right: auto;
+    transform: none;
+    color: #fff;
+    font-size: 0.88rem;
+    background: rgba(0,0,0,0.62);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    padding: 8px 14px;
+    border-radius: 14px;
+    text-align: left;
+    max-width: 56%;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.lb-caption-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    letter-spacing: 0.04em;
+    color: #f5e9c8;
+    line-height: 1.2;
+}
+
+.lb-caption-price {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #C9A84C;
+    font-variant-numeric: tabular-nums;
+}
+
+.lb-caption-desc {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.35;
+    margin-top: 2px;
+}
+
+/* Rendre le contenu lightbox interactif pour le sticker */
+.secure-lightbox-content {
+    pointer-events: none;
+}
 
 /* =========================================
    BACK TO TOP

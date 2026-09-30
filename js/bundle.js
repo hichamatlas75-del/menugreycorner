@@ -5234,6 +5234,95 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       });
     }
   }
+  var INGREDIENT_EMOJI_MAP = {
+    // Fruits
+    "framboise": "\u{1FAD0}",
+    "raspberry": "\u{1FAD0}",
+    "himbeere": "\u{1FAD0}",
+    "fraise": "\u{1F353}",
+    "strawberry": "\u{1F353}",
+    "erdbeere": "\u{1F353}",
+    "orange": "\u{1F34A}",
+    "orangen": "\u{1F34A}",
+    "banane": "\u{1F34C}",
+    "banana": "\u{1F34C}",
+    "banane ": "\u{1F34C}",
+    "ananas": "\u{1F34D}",
+    "pineapple": "\u{1F34D}",
+    "mangue": "\u{1F96D}",
+    "mango": "\u{1F96D}",
+    "myrtille": "\u{1FAD0}",
+    "blueberry": "\u{1FAD0}",
+    "blaubeere": "\u{1FAD0}",
+    "kiwi": "\u{1F95D}",
+    "avocat": "\u{1F951}",
+    "avocado": "\u{1F951}",
+    "p\xEAche": "\u{1F351}",
+    "peach": "\u{1F351}",
+    "pfirsich": "\u{1F351}",
+    "poire": "\u{1F350}",
+    "pear": "\u{1F350}",
+    "birne": "\u{1F350}",
+    "citron": "\u{1F34B}",
+    "lemon": "\u{1F34B}",
+    "zitrone": "\u{1F34B}",
+    "noix de coco": "\u{1F965}",
+    "coconut": "\u{1F965}",
+    "kokosnuss": "\u{1F965}",
+    "datte": "\u{1F334}",
+    "date": "\u{1F334}",
+    "dattel": "\u{1F334}",
+    // Légumes
+    "carotte": "\u{1F955}",
+    "carrot": "\u{1F955}",
+    "karotte": "\u{1F955}",
+    // Condiments & aromates
+    "miel": "\u{1F36F}",
+    "honey": "\u{1F36F}",
+    "honig": "\u{1F36F}",
+    "menthe": "\u{1F33F}",
+    "mint": "\u{1F33F}",
+    "minze": "\u{1F33F}",
+    "gingembre": "\u{1FADA}",
+    "ginger": "\u{1FADA}",
+    "ingwer": "\u{1FADA}",
+    "bissap": "\u{1F33A}",
+    "hibiscus": "\u{1F33A}",
+    // Boissons & sirops
+    "sirop bleu cura\xE7ao": "\u{1F499}",
+    "blue cura\xE7ao": "\u{1F499}",
+    "blue-cura\xE7ao": "\u{1F499}",
+    "redbull": "\u26A1",
+    "red bull": "\u26A1",
+    "sodawater": "\u{1F4A7}"
+  };
+  function buildIngredientSticker(item, lang) {
+    if (!item) return "";
+    const descFr = item.description && item.description.fr ? item.description.fr : "";
+    const descLang = item.description && item.description[lang] ? item.description[lang] : descFr;
+    const looksLikeIngredients = descFr.length <= 120 && descFr.includes(",");
+    if (!looksLikeIngredients) return "";
+    const rawIngredients = descLang.split(",").map((s) => s.replace(/\.$/, "").trim()).filter(Boolean);
+    const ingredientItems = rawIngredients.map((ing) => {
+      const ingLower = ing.toLowerCase();
+      let emoji = "\u2728";
+      for (const [key, em] of Object.entries(INGREDIENT_EMOJI_MAP)) {
+        if (ingLower.includes(key)) {
+          emoji = em;
+          break;
+        }
+      }
+      return `<span class="lb-ingr-item">${emoji} ${ing}</span>`;
+    });
+    if (ingredientItems.length === 0) return "";
+    const labels = { fr: "Ingr\xE9dients", en: "Ingredients", de: "Zutaten", ar: "\u0627\u0644\u0645\u0643\u0648\u0651\u0646\u0627\u062A" };
+    const label = labels[lang] || labels.fr;
+    return `
+    <div class="lb-ingredient-sticker">
+      <div class="lb-ingr-header">${label}</div>
+      <div class="lb-ingr-list">${ingredientItems.join("")}</div>
+    </div>`;
+  }
   function closeLightbox() {
     const secureLightbox = document.getElementById("secureLightbox");
     const secureLightboxContent = document.querySelector(".secure-lightbox-content");
@@ -5243,7 +5332,9 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     const lbAddBtn = document.getElementById("secureLightboxAddBtn");
     if (lbAddBtn) lbAddBtn.style.display = "none";
     const lbCaption = document.getElementById("secureLightboxCaption");
-    if (lbCaption) lbCaption.textContent = "";
+    if (lbCaption) lbCaption.innerHTML = "";
+    const existingSticker = document.querySelector(".lb-ingredient-sticker");
+    if (existingSticker) existingSticker.remove();
     document.body.classList.remove("no-scroll");
     document.documentElement.classList.remove("no-scroll");
   }
@@ -5255,11 +5346,26 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     const lbCaption = document.getElementById("secureLightboxCaption");
     activeLightboxItem = item;
     secureLightboxContent.style.backgroundImage = `url("${imgUrl}")`;
+    const oldSticker = secureLightboxContent.querySelector(".lb-ingredient-sticker");
+    if (oldSticker) oldSticker.remove();
+    if (item) {
+      const stickerHtml = buildIngredientSticker(item, currentLang);
+      if (stickerHtml) {
+        secureLightboxContent.insertAdjacentHTML("beforeend", stickerHtml);
+      }
+    }
     if (item && lbCaption) {
       const name = item.name[currentLang] || item.name.fr;
-      lbCaption.textContent = `${name} \u2014 ${item.price}`;
+      const descFr = item.description && item.description.fr || "";
+      const descLang = item.description && item.description[currentLang] || descFr;
+      const looksLikeIngredients = descFr.length <= 120 && descFr.includes(",");
+      if (looksLikeIngredients) {
+        lbCaption.innerHTML = `<span class="lb-caption-name">${name}</span><span class="lb-caption-price">${item.price} MAD</span>`;
+      } else {
+        lbCaption.innerHTML = `<span class="lb-caption-name">${name}</span><span class="lb-caption-price">${item.price} MAD</span><span class="lb-caption-desc">${descLang}</span>`;
+      }
     } else if (lbCaption) {
-      lbCaption.textContent = "";
+      lbCaption.innerHTML = "";
     }
     if (item && lbAddBtn) {
       lbAddBtn.style.display = "block";
