@@ -6,8 +6,9 @@
 
 import { menuData } from '../data/menu-data.js';
 import { currentLang } from '../services/i18n.js';
-import { addToCart } from '../services/cart.js';
+import { addToCart, showToast } from '../services/cart.js';
 import { closeBurgerMenu, checkItemOptionsAndAdd } from './modals.js';
+import { isBreakfastAvailable } from '../services/schedule.js';
 
 export let activeCategoryId = null;
 export let isViewAllMode = false;
@@ -253,6 +254,17 @@ export function renderDishes(filterTerm = "") {
       catSection.className = "hub-category-section";
       catSection.id = `cat-section-${catId}`;
 
+      const isBreakfastCat = (catId === "petit-dejeuner");
+      const isBreakfastCatOver = isBreakfastCat && !isBreakfastAvailable();
+
+      const bNoticeTexts = {
+        fr: "Formules petit-déjeuner servies jusqu'à 13h00 en semaine et 14h00 le week-end.",
+        en: "Breakfast formulas are served until 13:00 on weekdays and 14:00 on weekends.",
+        de: "Frühstücksangebote werden werktags bis 13:00 Uhr und am Wochenende bis 14:00 Uhr serviert.",
+        es: "Fórmulas de desayuno servidas hasta las 13:00 de lunes a viernes y 14:00 fines de semana.",
+        ar: "يُقدَّم فطور الصباح حتى الساعة 13:00 طيلة الأسبوع وحتى 14:00 في عطلة نهاية الأسبوع."
+      };
+
       catSection.innerHTML = `
         <div class="hub-section-header">
           <div class="hub-header-left">
@@ -260,6 +272,12 @@ export function renderDishes(filterTerm = "") {
             <span class="hub-section-count">${cat.items?.length || 0}</span>
           </div>
         </div>
+        ${isBreakfastCatOver ? `
+          <div class="breakfast-service-notice">
+            <span class="bsn-icon">🕒</span>
+            <span class="bsn-text">${bNoticeTexts[currentLang] || bNoticeTexts.fr}</span>
+          </div>
+        ` : ""}
         <div class="hub-dishes-grid"></div>
       `;
 
@@ -288,6 +306,8 @@ export function renderDishes(filterTerm = "") {
   const currentCatId = getCatId(activeCategory);
   const catTitle = activeCategory.category[currentLang] || activeCategory.category.fr;
   const items = activeCategory.items || [];
+  const isBreakfastCurrent = (currentCatId === "petit-dejeuner");
+  const isBreakfastCurrentOver = isBreakfastCurrent && !isBreakfastAvailable();
 
   const voirToutTexts = {
     fr: "Voir tout",
@@ -305,6 +325,14 @@ export function renderDishes(filterTerm = "") {
     ar: `${items.length} أطباق`
   };
 
+  const bSingleNoticeTexts = {
+    fr: "Formules petit-déjeuner servies jusqu'à 13h00 en semaine et 14h00 le week-end.",
+    en: "Breakfast formulas are served until 13:00 on weekdays and 14:00 on weekends.",
+    de: "Frühstücksangebote werden werktags bis 13:00 Uhr und am Wochenende bis 14:00 Uhr serviert.",
+    es: "Fórmulas de desayuno servidas hasta las 13:00 de lunes a viernes y 14:00 fines de semana.",
+    ar: "يُقدَّم فطور الصباح حتى الساعة 13:00 طيلة الأسبوع وحتى 14:00 في عطلة نهاية الأسبوع."
+  };
+
   menuGrid.innerHTML = `
     <div class="hub-single-category-wrap">
       <div class="hub-section-header">
@@ -317,6 +345,12 @@ export function renderDishes(filterTerm = "") {
           <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
         </button>
       </div>
+      ${isBreakfastCurrentOver ? `
+        <div class="breakfast-service-notice">
+          <span class="bsn-icon">🕒</span>
+          <span class="bsn-text">${bSingleNoticeTexts[currentLang] || bSingleNoticeTexts.fr}</span>
+        </div>
+      ` : ""}
       <div class="hub-dishes-grid"></div>
     </div>
   `;
@@ -339,7 +373,10 @@ export function renderDishes(filterTerm = "") {
  */
 function createDishCard(item, categoryId, itemIndex, categoryBadge = "") {
   const card = document.createElement("article");
-  card.className = "hub-card menu-item";
+  const isBreakfast = (categoryId === "petit-dejeuner");
+  const isOver = isBreakfast && !isBreakfastAvailable();
+
+  card.className = `hub-card menu-item ${isOver ? "hub-card-disabled" : ""}`;
   card.id = `item-${categoryId}-${itemIndex}`;
   card.style.setProperty("--item-index", itemIndex);
   card._menuItem = item;
@@ -354,17 +391,30 @@ function createDishCard(item, categoryId, itemIndex, categoryBadge = "") {
         : currentLang === "ar" ? "جديد"
           : "NOUVEAU";
 
-  const orderBtnText = currentLang === "en" ? "Order"
-    : currentLang === "de" ? "Bestellen"
-      : currentLang === "es" ? "Pedir"
-        : currentLang === "ar" ? "اطلب"
-          : "Commander";
+  const orderBtnText = isOver
+    ? (currentLang === "en" ? "Ended"
+      : currentLang === "de" ? "Beendet"
+        : currentLang === "es" ? "Finalizado"
+          : currentLang === "ar" ? "انتهى"
+            : "Terminé")
+    : (currentLang === "en" ? "Order"
+      : currentLang === "de" ? "Bestellen"
+        : currentLang === "es" ? "Pedir"
+          : currentLang === "ar" ? "اطلب"
+            : "Commander");
+
+  const unavailBadgeText = currentLang === "en" ? "🕒 Until 13h (14h w-e)"
+    : currentLang === "de" ? "🕒 Bis 13h (14h WE)"
+      : currentLang === "es" ? "🕒 Hasta las 13h (14h finde)"
+        : currentLang === "ar" ? "🕒 حتى 13:00 (14:00 عطلة)"
+          : "🕒 Servi jusqu'à 13h (14h w-e)";
 
   card.innerHTML = `
     <div class="hub-card-media">
       <img src="${item.image}" alt="${itemName}" class="hub-card-img" loading="lazy" />
       <div class="hub-card-gradient"></div>
-      ${item.isNew ? `<span class="hub-badge-new">${badgeNewText}</span>` : ""}
+      ${isOver ? `<span class="hub-badge-unavailable">${unavailBadgeText}</span>` : ""}
+      ${!isOver && item.isNew ? `<span class="hub-badge-new">${badgeNewText}</span>` : ""}
       ${categoryBadge ? `<span class="hub-badge-cat">${categoryBadge}</span>` : ""}
       <div class="hub-card-zoom-hint" title="Agrandir">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
@@ -384,7 +434,7 @@ function createDishCard(item, categoryId, itemIndex, categoryBadge = "") {
         <div class="hub-card-price-wrap">
           <span class="hub-card-price item-price">${item.price}</span>
         </div>
-        <button type="button" class="hub-order-btn add-to-cart-btn" aria-label="${orderBtnText}">
+        <button type="button" class="hub-order-btn add-to-cart-btn ${isOver ? 'btn-disabled' : ''}" ${isOver ? 'disabled aria-disabled="true"' : ''} aria-label="${orderBtnText}">
           <span class="hub-order-btn-label">${orderBtnText}</span>
           <svg class="hub-order-btn-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
@@ -589,12 +639,32 @@ export function openLightboxForItem(item, imgUrl) {
 
   if (item && lbAddBtn) {
     lbAddBtn.style.display = "block";
-    const btnText = currentLang === "en" ? "Order"
-      : currentLang === "de" ? "Bestellen"
-        : currentLang === "es" ? "Pedir"
-          : currentLang === "ar" ? "اطلب"
-            : "Commander";
-    lbAddBtn.textContent = btnText;
+    const isBreakfast = (item.categoryId === "petit-dejeuner");
+    const isOver = isBreakfast && !isBreakfastAvailable();
+
+    if (isOver) {
+      lbAddBtn.disabled = true;
+      lbAddBtn.classList.add("btn-disabled");
+      lbAddBtn.style.opacity = "0.55";
+      lbAddBtn.style.cursor = "not-allowed";
+      const endText = currentLang === "en" ? "Service Ended"
+        : currentLang === "de" ? "Service Beendet"
+          : currentLang === "es" ? "Servicio Finalizado"
+            : currentLang === "ar" ? "انتهت فترة التقديم"
+              : "Service Terminé";
+      lbAddBtn.textContent = endText;
+    } else {
+      lbAddBtn.disabled = false;
+      lbAddBtn.classList.remove("btn-disabled");
+      lbAddBtn.style.opacity = "";
+      lbAddBtn.style.cursor = "";
+      const btnText = currentLang === "en" ? "Order"
+        : currentLang === "de" ? "Bestellen"
+          : currentLang === "es" ? "Pedir"
+            : currentLang === "ar" ? "اطلب"
+              : "Commander";
+      lbAddBtn.textContent = btnText;
+    }
   } else if (lbAddBtn) {
     lbAddBtn.style.display = "none";
   }
@@ -614,6 +684,17 @@ export function enableSecureLightbox() {
   if (lbAddBtn && !lbAddBtn._hasListener) {
     lbAddBtn._hasListener = true;
     lbAddBtn.addEventListener("click", () => {
+      if (lbAddBtn.disabled) {
+        const noticeTexts = {
+          fr: "Le service petit-déjeuner est terminé (servi jusqu'à 13h00 en semaine et 14h00 le week-end).",
+          en: "Breakfast service has ended (served until 13:00 on weekdays, 14:00 on weekends).",
+          de: "Der Frühstücksservice ist beendet (werktags bis 13:00 Uhr, am Wochenende bis 14:00 Uhr).",
+          es: "El servicio de desayuno ha finalizado (servido hasta las 13:00 de lunes a viernes y 14:00 fines de semana).",
+          ar: "انتهت فترة تقديم فطور الصباح (يُقدَّم حتى 13:00 طيلة الأسبوع وحتى 14:00 في عطلة نهاية الأسبوع)."
+        };
+        showToast(noticeTexts[currentLang] || noticeTexts.fr);
+        return;
+      }
       if (activeLightboxItem) {
         checkItemOptionsAndAdd(activeLightboxItem);
         closeLightbox();
@@ -696,6 +777,17 @@ export function renderMenu() {
         e.stopPropagation();
         const card = addBtn.closest(".hub-card");
         if (card && card._menuItem) {
+          if (card.classList.contains("hub-card-disabled") || addBtn.disabled) {
+            const noticeTexts = {
+              fr: "Le service petit-déjeuner est terminé (servi jusqu'à 13h00 en semaine et 14h00 le week-end).",
+              en: "Breakfast service has ended (served until 13:00 on weekdays, 14:00 on weekends).",
+              de: "Der Frühstücksservice ist beendet (werktags bis 13:00 Uhr, am Wochenende bis 14:00 Uhr).",
+              es: "El servicio de desayuno ha finalizado (servido hasta las 13:00 de lunes a viernes y 14:00 fines de semana).",
+              ar: "انتهت فترة تقديم فطور الصباح (يُقدَّم حتى 13:00 طيلة الأسبوع وحتى 14:00 في عطلة نهاية الأسبوع)."
+            };
+            showToast(noticeTexts[currentLang] || noticeTexts.fr);
+            return;
+          }
           checkItemOptionsAndAdd(card._menuItem);
           // Quick tap animation
           addBtn.style.transform = "scale(0.92)";

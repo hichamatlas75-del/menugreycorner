@@ -3763,6 +3763,87 @@
   window.updateHeaderLangUI = updateHeaderLangUI;
   window.LANG_META = LANG_META;
 
+  // js/services/schedule.js
+  function getMoroccoDateTime() {
+    const now = /* @__PURE__ */ new Date();
+    try {
+      const formatter = new Intl.DateTimeFormat("en-US", {
+        timeZone: "Africa/Casablanca",
+        weekday: "short",
+        hour: "numeric",
+        minute: "numeric",
+        hour12: false
+      });
+      const parts = formatter.formatToParts(now);
+      let weekday = "Mon";
+      let hour = 12;
+      let minute = 0;
+      for (const p of parts) {
+        if (p.type === "weekday") weekday = p.value;
+        if (p.type === "hour") hour = parseInt(p.value, 10);
+        if (p.type === "minute") minute = parseInt(p.value, 10);
+      }
+      return {
+        weekday,
+        hour,
+        minute,
+        decimalHour: hour + minute / 60,
+        isWeekend: weekday === "Sat" || weekday === "Sun"
+      };
+    } catch (e) {
+      const day = now.getDay();
+      const hour = now.getHours();
+      const minute = now.getMinutes();
+      return {
+        weekday: day === 0 ? "Sun" : day === 6 ? "Sat" : "Mon",
+        hour,
+        minute,
+        decimalHour: hour + minute / 60,
+        isWeekend: day === 0 || day === 6
+      };
+    }
+  }
+  function isRestaurantOpen() {
+    const { decimalHour } = getMoroccoDateTime();
+    return decimalHour >= 7 && decimalHour < 23;
+  }
+  function isBreakfastAvailable() {
+    const { isWeekend, decimalHour } = getMoroccoDateTime();
+    const cutoff = isWeekend ? 14 : 13;
+    return decimalHour >= 7 && decimalHour < cutoff;
+  }
+  var STATUS_TEXTS = {
+    open: {
+      fr: "Ouvert actuellement jusqu'\xE0 23h00",
+      en: "Open now until 23:00",
+      de: "Jetzt ge\xF6ffnet bis 23:00",
+      es: "Abierto ahora hasta las 23:00",
+      ar: "\u0645\u0641\u062A\u0648\u062D \u0627\u0644\u0622\u0646 \u062D\u062A\u0649 23:00"
+    },
+    closed: {
+      fr: "Ferm\xE9 actuellement \u2022 Ouvre \xE0 07h00",
+      en: "Closed now \u2022 Opens at 07:00",
+      de: "Geschlossen \u2022 \xD6ffnet um 07:00",
+      es: "Cerrado ahora \u2022 Abre a las 07:00",
+      ar: "\u0645\u063A\u0644\u0642 \u0627\u0644\u0622\u0646 \u2022 \u064A\u0641\u062A\u062D \u0639\u0646\u062F 07:00"
+    }
+  };
+  function updateScheduleUI() {
+    const badge = document.getElementById("headerStatusBadge");
+    const textEl = document.getElementById("headerStatusText");
+    if (!badge || !textEl) return;
+    const open = isRestaurantOpen();
+    badge.classList.toggle("status-open", open);
+    badge.classList.toggle("status-closed", !open);
+    const stateKey = open ? "open" : "closed";
+    const dict = STATUS_TEXTS[stateKey];
+    const lang = currentLang || "fr";
+    textEl.textContent = dict[lang] || dict.fr;
+  }
+  window.isRestaurantOpen = isRestaurantOpen;
+  window.isBreakfastAvailable = isBreakfastAvailable;
+  window.updateScheduleUI = updateScheduleUI;
+
   // js/services/gps.js
   var GeoFenceManager = {
     CENTER_LAT: 34.0344054,
@@ -4391,9 +4472,16 @@
     if (upperName === "ACCOMPAGNEMENTS" && (menuItem.price === "Inclus" || isNaN(parseFloat(menuItem.price)))) {
       return;
     }
-    if (catId === "petit-dejeuner" && upperName !== "MENU ENFANT") {
-      openHotDrinkSelectorModal(menuItem);
-      return;
+    if (catId === "petit-dejeuner") {
+      if (!isBreakfastAvailable()) {
+        const breakfastNoticeText = currentLang === "en" ? "Breakfast service has ended (served until 13:00 weekdays, 14:00 weekends)." : currentLang === "de" ? "Der Fr\xFChst\xFCcksservice ist beendet (werktags bis 13:00 Uhr, am Wochenende bis 14:00 Uhr)." : currentLang === "es" ? "El servicio de desayuno ha finalizado (servido hasta las 13:00 entre semana y las 14:00 fines de semana)." : currentLang === "ar" ? "\u0627\u0646\u062A\u0647\u062A \u0641\u062A\u0631\u0629 \u062A\u0642\u062F\u064A\u0645 \u0641\u0637\u0648\u0631 \u0627\u0644\u0635\u0628\u0627\u062D (\u064A\u064F\u0642\u062F\u0651\u064E\u0645 \u062D\u062A\u0649 13:00 \u0637\u064A\u0644\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639 \u0648\u062D\u062A\u0649 14:00 \u0641\u064A \u0639\u0637\u0644\u0629 \u0646\u0647\u0627\u064A\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639)." : "Le service petit-d\xE9jeuner est termin\xE9 (servi jusqu'\xE0 13h00 en semaine et 14h00 le week-end).";
+        showToast(breakfastNoticeText);
+        return;
+      }
+      if (upperName !== "MENU ENFANT") {
+        openHotDrinkSelectorModal(menuItem);
+        return;
+      }
     }
     if (catId === "pasta" && !upperName.includes("LASAGNE") && !upperName.includes("SPAGHETTIS NOIRS")) {
       openPastaSelectorModal(menuItem);
@@ -5542,6 +5630,15 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
         const catSection = document.createElement("section");
         catSection.className = "hub-category-section";
         catSection.id = `cat-section-${catId}`;
+        const isBreakfastCat = catId === "petit-dejeuner";
+        const isBreakfastCatOver = isBreakfastCat && !isBreakfastAvailable();
+        const bNoticeTexts = {
+          fr: "Formules petit-d\xE9jeuner servies jusqu'\xE0 13h00 en semaine et 14h00 le week-end.",
+          en: "Breakfast formulas are served until 13:00 on weekdays and 14:00 on weekends.",
+          de: "Fr\xFChst\xFCcksangebote werden werktags bis 13:00 Uhr und am Wochenende bis 14:00 Uhr serviert.",
+          es: "F\xF3rmulas de desayuno servidas hasta las 13:00 de lunes a viernes y 14:00 fines de semana.",
+          ar: "\u064A\u064F\u0642\u062F\u0651\u064E\u0645 \u0641\u0637\u0648\u0631 \u0627\u0644\u0635\u0628\u0627\u062D \u062D\u062A\u0649 \u0627\u0644\u0633\u0627\u0639\u0629 13:00 \u0637\u064A\u0644\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639 \u0648\u062D\u062A\u0649 14:00 \u0641\u064A \u0639\u0637\u0644\u0629 \u0646\u0647\u0627\u064A\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639."
+        };
         catSection.innerHTML = `
         <div class="hub-section-header">
           <div class="hub-header-left">
@@ -5549,6 +5646,12 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
             <span class="hub-section-count">${cat.items?.length || 0}</span>
           </div>
         </div>
+        ${isBreakfastCatOver ? `
+          <div class="breakfast-service-notice">
+            <span class="bsn-icon">\u{1F552}</span>
+            <span class="bsn-text">${bNoticeTexts[currentLang] || bNoticeTexts.fr}</span>
+          </div>
+        ` : ""}
         <div class="hub-dishes-grid"></div>
       `;
         const grid2 = catSection.querySelector(".hub-dishes-grid");
@@ -5570,6 +5673,8 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     const currentCatId = getCatId(activeCategory);
     const catTitle = activeCategory.category[currentLang] || activeCategory.category.fr;
     const items = activeCategory.items || [];
+    const isBreakfastCurrent = currentCatId === "petit-dejeuner";
+    const isBreakfastCurrentOver = isBreakfastCurrent && !isBreakfastAvailable();
     const voirToutTexts = {
       fr: "Voir tout",
       en: "View all",
@@ -5584,6 +5689,13 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       es: `${items.length} platos`,
       ar: `${items.length} \u0623\u0637\u0628\u0627\u0642`
     };
+    const bSingleNoticeTexts = {
+      fr: "Formules petit-d\xE9jeuner servies jusqu'\xE0 13h00 en semaine et 14h00 le week-end.",
+      en: "Breakfast formulas are served until 13:00 on weekdays and 14:00 on weekends.",
+      de: "Fr\xFChst\xFCcksangebote werden werktags bis 13:00 Uhr und am Wochenende bis 14:00 Uhr serviert.",
+      es: "F\xF3rmulas de desayuno servidas hasta las 13:00 de lunes a viernes y 14:00 fines de semana.",
+      ar: "\u064A\u064F\u0642\u062F\u0651\u064E\u0645 \u0641\u0637\u0648\u0631 \u0627\u0644\u0635\u0628\u0627\u062D \u062D\u062A\u0649 \u0627\u0644\u0633\u0627\u0639\u0629 13:00 \u0637\u064A\u0644\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639 \u0648\u062D\u062A\u0649 14:00 \u0641\u064A \u0639\u0637\u0644\u0629 \u0646\u0647\u0627\u064A\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639."
+    };
     menuGrid.innerHTML = `
     <div class="hub-single-category-wrap">
       <div class="hub-section-header">
@@ -5596,6 +5708,12 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
           <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
         </button>
       </div>
+      ${isBreakfastCurrentOver ? `
+        <div class="breakfast-service-notice">
+          <span class="bsn-icon">\u{1F552}</span>
+          <span class="bsn-text">${bSingleNoticeTexts[currentLang] || bSingleNoticeTexts.fr}</span>
+        </div>
+      ` : ""}
       <div class="hub-dishes-grid"></div>
     </div>
   `;
@@ -5612,7 +5730,9 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
   }
   function createDishCard(item, categoryId, itemIndex, categoryBadge = "") {
     const card = document.createElement("article");
-    card.className = "hub-card menu-item";
+    const isBreakfast = categoryId === "petit-dejeuner";
+    const isOver = isBreakfast && !isBreakfastAvailable();
+    card.className = `hub-card menu-item ${isOver ? "hub-card-disabled" : ""}`;
     card.id = `item-${categoryId}-${itemIndex}`;
     card.style.setProperty("--item-index", itemIndex);
     card._menuItem = item;
@@ -5620,12 +5740,14 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     const itemName = item.name[currentLang] || item.name.fr || "";
     const itemDesc = item.description[currentLang] || item.description.fr || "";
     const badgeNewText = currentLang === "en" ? "NEW" : currentLang === "de" ? "NEU" : currentLang === "es" ? "NUEVO" : currentLang === "ar" ? "\u062C\u062F\u064A\u062F" : "NOUVEAU";
-    const orderBtnText = currentLang === "en" ? "Order" : currentLang === "de" ? "Bestellen" : currentLang === "es" ? "Pedir" : currentLang === "ar" ? "\u0627\u0637\u0644\u0628" : "Commander";
+    const orderBtnText = isOver ? currentLang === "en" ? "Ended" : currentLang === "de" ? "Beendet" : currentLang === "es" ? "Finalizado" : currentLang === "ar" ? "\u0627\u0646\u062A\u0647\u0649" : "Termin\xE9" : currentLang === "en" ? "Order" : currentLang === "de" ? "Bestellen" : currentLang === "es" ? "Pedir" : currentLang === "ar" ? "\u0627\u0637\u0644\u0628" : "Commander";
+    const unavailBadgeText = currentLang === "en" ? "\u{1F552} Until 13h (14h w-e)" : currentLang === "de" ? "\u{1F552} Bis 13h (14h WE)" : currentLang === "es" ? "\u{1F552} Hasta las 13h (14h finde)" : currentLang === "ar" ? "\u{1F552} \u062D\u062A\u0649 13:00 (14:00 \u0639\u0637\u0644\u0629)" : "\u{1F552} Servi jusqu'\xE0 13h (14h w-e)";
     card.innerHTML = `
     <div class="hub-card-media">
       <img src="${item.image}" alt="${itemName}" class="hub-card-img" loading="lazy" />
       <div class="hub-card-gradient"></div>
-      ${item.isNew ? `<span class="hub-badge-new">${badgeNewText}</span>` : ""}
+      ${isOver ? `<span class="hub-badge-unavailable">${unavailBadgeText}</span>` : ""}
+      ${!isOver && item.isNew ? `<span class="hub-badge-new">${badgeNewText}</span>` : ""}
       ${categoryBadge ? `<span class="hub-badge-cat">${categoryBadge}</span>` : ""}
       <div class="hub-card-zoom-hint" title="Agrandir">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
@@ -5645,7 +5767,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
         <div class="hub-card-price-wrap">
           <span class="hub-card-price item-price">${item.price}</span>
         </div>
-        <button type="button" class="hub-order-btn add-to-cart-btn" aria-label="${orderBtnText}">
+        <button type="button" class="hub-order-btn add-to-cart-btn ${isOver ? "btn-disabled" : ""}" ${isOver ? 'disabled aria-disabled="true"' : ""} aria-label="${orderBtnText}">
           <span class="hub-order-btn-label">${orderBtnText}</span>
           <svg class="hub-order-btn-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
@@ -5859,8 +5981,23 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     }
     if (item && lbAddBtn) {
       lbAddBtn.style.display = "block";
-      const btnText = currentLang === "en" ? "Order" : currentLang === "de" ? "Bestellen" : currentLang === "es" ? "Pedir" : currentLang === "ar" ? "\u0627\u0637\u0644\u0628" : "Commander";
-      lbAddBtn.textContent = btnText;
+      const isBreakfast = item.categoryId === "petit-dejeuner";
+      const isOver = isBreakfast && !isBreakfastAvailable();
+      if (isOver) {
+        lbAddBtn.disabled = true;
+        lbAddBtn.classList.add("btn-disabled");
+        lbAddBtn.style.opacity = "0.55";
+        lbAddBtn.style.cursor = "not-allowed";
+        const endText = currentLang === "en" ? "Service Ended" : currentLang === "de" ? "Service Beendet" : currentLang === "es" ? "Servicio Finalizado" : currentLang === "ar" ? "\u0627\u0646\u062A\u0647\u062A \u0641\u062A\u0631\u0629 \u0627\u0644\u062A\u0642\u062F\u064A\u0645" : "Service Termin\xE9";
+        lbAddBtn.textContent = endText;
+      } else {
+        lbAddBtn.disabled = false;
+        lbAddBtn.classList.remove("btn-disabled");
+        lbAddBtn.style.opacity = "";
+        lbAddBtn.style.cursor = "";
+        const btnText = currentLang === "en" ? "Order" : currentLang === "de" ? "Bestellen" : currentLang === "es" ? "Pedir" : currentLang === "ar" ? "\u0627\u0637\u0644\u0628" : "Commander";
+        lbAddBtn.textContent = btnText;
+      }
     } else if (lbAddBtn) {
       lbAddBtn.style.display = "none";
     }
@@ -5876,6 +6013,17 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     if (lbAddBtn && !lbAddBtn._hasListener) {
       lbAddBtn._hasListener = true;
       lbAddBtn.addEventListener("click", () => {
+        if (lbAddBtn.disabled) {
+          const noticeTexts = {
+            fr: "Le service petit-d\xE9jeuner est termin\xE9 (servi jusqu'\xE0 13h00 en semaine et 14h00 le week-end).",
+            en: "Breakfast service has ended (served until 13:00 on weekdays, 14:00 on weekends).",
+            de: "Der Fr\xFChst\xFCcksservice ist beendet (werktags bis 13:00 Uhr, am Wochenende bis 14:00 Uhr).",
+            es: "El servicio de desayuno ha finalizado (servido hasta las 13:00 de lunes a viernes y 14:00 fines de semana).",
+            ar: "\u0627\u0646\u062A\u0647\u062A \u0641\u062A\u0631\u0629 \u062A\u0642\u062F\u064A\u0645 \u0641\u0637\u0648\u0631 \u0627\u0644\u0635\u0628\u0627\u062D (\u064A\u064F\u0642\u062F\u0651\u064E\u0645 \u062D\u062A\u0649 13:00 \u0637\u064A\u0644\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639 \u0648\u062D\u062A\u0649 14:00 \u0641\u064A \u0639\u0637\u0644\u0629 \u0646\u0647\u0627\u064A\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639)."
+          };
+          showToast(noticeTexts[currentLang] || noticeTexts.fr);
+          return;
+        }
         if (activeLightboxItem) {
           checkItemOptionsAndAdd(activeLightboxItem);
           closeLightbox();
@@ -5936,6 +6084,17 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
           e.stopPropagation();
           const card2 = addBtn.closest(".hub-card");
           if (card2 && card2._menuItem) {
+            if (card2.classList.contains("hub-card-disabled") || addBtn.disabled) {
+              const noticeTexts = {
+                fr: "Le service petit-d\xE9jeuner est termin\xE9 (servi jusqu'\xE0 13h00 en semaine et 14h00 le week-end).",
+                en: "Breakfast service has ended (served until 13:00 on weekdays, 14:00 on weekends).",
+                de: "Der Fr\xFChst\xFCcksservice ist beendet (werktags bis 13:00 Uhr, am Wochenende bis 14:00 Uhr).",
+                es: "El servicio de desayuno ha finalizado (servido hasta las 13:00 de lunes a viernes y 14:00 fines de semana).",
+                ar: "\u0627\u0646\u062A\u0647\u062A \u0641\u062A\u0631\u0629 \u062A\u0642\u062F\u064A\u0645 \u0641\u0637\u0648\u0631 \u0627\u0644\u0635\u0628\u0627\u062D (\u064A\u064F\u0642\u062F\u0651\u064E\u0645 \u062D\u062A\u0649 13:00 \u0637\u064A\u0644\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639 \u0648\u062D\u062A\u0649 14:00 \u0641\u064A \u0639\u0637\u0644\u0629 \u0646\u0647\u0627\u064A\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639)."
+              };
+              showToast(noticeTexts[currentLang] || noticeTexts.fr);
+              return;
+            }
             checkItemOptionsAndAdd(card2._menuItem);
             addBtn.style.transform = "scale(0.92)";
             setTimeout(() => {
@@ -6187,8 +6346,18 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       if (stepUnhappy) stepUnhappy.style.display = "block";
       if (stepHappy) stepHappy.style.display = "none";
     } else {
-      if (stepUnhappy) stepUnhappy.style.display = "none";
-      if (stepHappy) stepHappy.style.display = "block";
+      closeFeedbackModal();
+      const redirectMsgs = {
+        fr: `\u2B50 Merci pour vos ${stars} \xE9toiles ! Redirection vers Google Maps...`,
+        en: `\u2B50 Thank you for your ${stars}-star rating! Redirecting to Google Maps...`,
+        de: `\u2B50 Vielen Dank f\xFCr Ihre ${stars}-Sterne-Bewertung! Weiterleitung zu Google Maps...`,
+        es: `\u2B50 \xA1Gracias por su calificaci\xF3n de ${stars} estrellas! Redirigiendo a Google Maps...`,
+        ar: `\u2B50 \u0634\u0643\u0631\u0627\u064B \u062C\u0632\u064A\u0644\u0627\u064B \u0644\u062A\u0642\u064A\u064A\u0645\u0643\u0645 \u0627\u0644\u0645\u0645\u062A\u0627\u0632 (${stars} \u0646\u062C\u0648\u0645) ! \u062C\u0627\u0631\u064A \u062A\u0648\u062C\u064A\u0647\u0643\u0645 \u0625\u0644\u0649 Google Maps...`
+      };
+      showToast(redirectMsgs[currentLang] || redirectMsgs.fr);
+      setTimeout(() => {
+        window.open(GOOGLE_REVIEW_URL, "_blank", "noopener");
+      }, 450);
     }
   }
   function buildWhatsAppUrl(stars, isHappy) {
@@ -6306,6 +6475,8 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     applyLanguageToStaticTexts();
     initFeedbackWidget();
     updateHeaderLangUI();
+    updateScheduleUI();
+    setInterval(updateScheduleUI, 6e4);
     document.querySelectorAll(".lang-button[data-lang]").forEach((b) => {
       b.classList.toggle("active", b.dataset.lang === currentLang);
     });
@@ -6385,6 +6556,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
           renderMenu();
           updateCartUI();
           updateTableUI();
+          updateScheduleUI();
           updateFeedbackTexts();
           if (GPSService && GPSService.lastState) {
             GPSService.updateUI(GPSService.lastState);

@@ -1,6 +1,7 @@
-import { updateCartUI, addToCart } from '../services/cart.js';
+import { updateCartUI, addToCart, showToast } from '../services/cart.js';
 import { getTableZoneName } from '../config/firebase.js';
 import { currentLang } from '../services/i18n.js';
+import { isBreakfastAvailable } from '../services/schedule.js';
 
 export let clientTable = null;
 export let pendingActionAfterTableSelect = null;
@@ -282,9 +283,20 @@ export function checkItemOptionsAndAdd(menuItem) {
   }
 
   // 1. PETIT DÉJEUNER (Breakfast) -> Hot drink selection (excluding Menu Enfant)
-  if (catId === "petit-dejeuner" && upperName !== "MENU ENFANT") {
-    openHotDrinkSelectorModal(menuItem);
-    return;
+  if (catId === "petit-dejeuner") {
+    if (!isBreakfastAvailable()) {
+      const breakfastNoticeText = currentLang === "en" ? "Breakfast service has ended (served until 13:00 weekdays, 14:00 weekends)."
+        : currentLang === "de" ? "Der Frühstücksservice ist beendet (werktags bis 13:00 Uhr, am Wochenende bis 14:00 Uhr)."
+          : currentLang === "es" ? "El servicio de desayuno ha finalizado (servido hasta las 13:00 entre semana y las 14:00 fines de semana)."
+            : currentLang === "ar" ? "انتهت فترة تقديم فطور الصباح (يُقدَّم حتى 13:00 طيلة الأسبوع وحتى 14:00 في عطلة نهاية الأسبوع)."
+              : "Le service petit-déjeuner est terminé (servi jusqu'à 13h00 en semaine et 14h00 le week-end).";
+      showToast(breakfastNoticeText);
+      return;
+    }
+    if (upperName !== "MENU ENFANT") {
+      openHotDrinkSelectorModal(menuItem);
+      return;
+    }
   }
 
   // 2. PASTA -> Pasta type selection

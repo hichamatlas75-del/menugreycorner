@@ -5,6 +5,7 @@
 import { isFirebaseActive, db, dbService, whenAuthReady } from './config/firebase.js';
 import { menuData } from './data/menu-data.js';
 import { currentLang, setLanguage, updatePrixInfo, applyLanguageToStaticTexts, updateHeaderLangUI, t } from './services/i18n.js';
+import { updateScheduleUI } from './services/schedule.js';
 import { GPSService } from './services/gps.js';
 import { initClientCart, saveClientCart, clearCart, addToCart, updateCartUI, showToast } from './services/cart.js';
 import { submitPreOrder, submitOrderOrWhatsApp } from './services/orders.js';
@@ -25,6 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
   applyLanguageToStaticTexts();
   initFeedbackWidget();
   updateHeaderLangUI();
+  updateScheduleUI();
+  setInterval(updateScheduleUI, 60000);
 
   // Set initial active flag state based on currentLang
   document.querySelectorAll(".lang-button[data-lang]").forEach(b => {
@@ -124,6 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
         renderMenu();
         updateCartUI();
         updateTableUI();
+        updateScheduleUI();
         updateFeedbackTexts();
         if (GPSService && GPSService.lastState) {
           GPSService.updateUI(GPSService.lastState);

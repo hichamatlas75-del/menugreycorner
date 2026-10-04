@@ -7,6 +7,7 @@
 
 import { currentLang } from '../services/i18n.js';
 import { clientTable } from './modals.js';
+import { showToast } from '../services/cart.js';
 
 const MANAGER_PHONE = "212666265160";
 const GOOGLE_REVIEW_URL = "https://g.page/r/CXF0QNm04m-ZEAE/review";
@@ -260,8 +261,19 @@ export function handleFeedbackRating(stars, clickedBtn) {
     if (stepUnhappy) stepUnhappy.style.display = "block";
     if (stepHappy) stepHappy.style.display = "none";
   } else {
-    if (stepUnhappy) stepUnhappy.style.display = "none";
-    if (stepHappy) stepHappy.style.display = "block";
+    // 4 ou 5 étoiles : Redirection DIRECTE vers Google Maps / Avis
+    closeFeedbackModal();
+    const redirectMsgs = {
+      fr: `⭐ Merci pour vos ${stars} étoiles ! Redirection vers Google Maps...`,
+      en: `⭐ Thank you for your ${stars}-star rating! Redirecting to Google Maps...`,
+      de: `⭐ Vielen Dank für Ihre ${stars}-Sterne-Bewertung! Weiterleitung zu Google Maps...`,
+      es: `⭐ ¡Gracias por su calificación de ${stars} estrellas! Redirigiendo a Google Maps...`,
+      ar: `⭐ شكراً جزيلاً لتقييمكم الممتاز (${stars} نجوم) ! جاري توجيهكم إلى Google Maps...`
+    };
+    showToast(redirectMsgs[currentLang] || redirectMsgs.fr);
+    setTimeout(() => {
+      window.open(GOOGLE_REVIEW_URL, "_blank", "noopener");
+    }, 450);
   }
 }
 
