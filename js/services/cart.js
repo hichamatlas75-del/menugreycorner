@@ -70,6 +70,7 @@ export function addToCart(menuItem, choices = null) {
     fr: "Ajouté au panier !",
     en: "Added to basket !",
     de: "In den Korb gelegt !",
+    es: "¡Añadido a la cesta!",
     ar: "تمت إضافته إلى السلة !"
   };
   const choicesStr = (choices && choices.length > 0) ? ` (${choices.join(', ')})` : '';

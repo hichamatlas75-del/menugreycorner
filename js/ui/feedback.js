@@ -111,6 +111,31 @@ const FEEDBACK_I18N = {
     waRatingLabel: "Bewertung",
     waTableLabel: "Tisch",
     waCommentPrompt: "Mein Kommentar / Feedback: "
+  },
+  es: {
+    fabLabel: "Opinión y Servicio al Cliente",
+    fabSub: "Su opinión importa • Respuesta inmediata del gerente",
+    fabCta: "Calificar ➜",
+    title: "Su opinión nos importa",
+    subtitle: "¿Cómo fue su experiencia en Grey Corner?",
+    note1: "Decepcionante",
+    note2: "Aceptable",
+    note3: "Regular",
+    note4: "Muy bueno",
+    note5: "¡Excelente!",
+    stepUnhappyTitle: "Atención inmediata",
+    stepUnhappyText: "Lo sentimos sinceramente. Nuestro gerente atiende personalmente su mensaje en WhatsApp para responderle al instante.",
+    openWhatsAppBtn: "Contactar al Gerente por WhatsApp 💬",
+    stepHappyTitle: "¡Muchísimas gracias! 😍",
+    stepHappyText: "Su satisfacción es nuestra mayor recompensa. ¡Apoye a nuestro equipo publicando su reseña de 5 estrellas en Google!",
+    googleBtn: "Publicar mi opinión en Google ⭐",
+    whatsappHappyBtn: "Enviar un mensaje al Gerente 💬",
+    tableNone: "No especificada",
+    waUnhappyPrefix: "Hola Grey Corner, les escribo tras mi visita",
+    waHappyPrefix: "¡Hola Grey Corner, felicitaciones por su acogida y excelente servicio!",
+    waRatingLabel: "Calificación",
+    waTableLabel: "Mesa",
+    waCommentPrompt: "Mi comentario / opinión : "
   }
 };
 

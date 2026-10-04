@@ -6,37 +6,37 @@ export let clientTable = null;
 export let pendingActionAfterTableSelect = null;
 
 export const HOT_DRINKS_OPTIONS = [
-  { fr: "Café Séparé", en: "Separated Coffee", de: "Getrennter Kaffee", ar: "قهوة مفصولة" },
-  { fr: "Lait Froid", en: "Cold Milk", de: "Kalte Milch", ar: "حليب بارد" },
-  { fr: "Lait Chaud", en: "Hot Milk", de: "Warme Milch", ar: "حليب ساخن" },
-  { fr: "Café Noir", en: "Black Coffee", de: "Schwarzer Kaffee", ar: "قهوة سوداء" },
-  { fr: "Cappuccino Italien", en: "Italian Cappuccino", de: "Italienischer Cappuccino", ar: "كابتشينو إيطالي" },
-  { fr: "Café Cassé", en: "Café Cassé", de: "Café Cassé", ar: "قهوة مكسورة (كاسي)" },
-  { fr: "Jus d'Orange", en: "Orange Juice", de: "Orangensaft", ar: "عصير برتقال" },
-  { fr: "Lait Cassé", en: "Lait Cassé", de: "Lait Cassé", ar: "حليب مكسور" },
-  { fr: "Café Moitié", en: "Half Coffee", de: "Halber Kaffee", ar: "قهوة نصف نصف" },
-  { fr: "Chocolat au Lait", en: "Milk Chocolate", de: "Milchschokolade", ar: "شوكولاتة بالحليب" },
-  { fr: "Café Américain", en: "Americano Coffee", de: "Kaffee Americano", ar: "قهوة أمريكية" },
-  { fr: "Café au Lait", en: "Coffee with Milk", de: "Milchkaffee", ar: "قهوة بالحليب" },
-  { fr: "Thé à la Menthe", en: "Mint Tea", de: "Minztee", ar: "شاي مغربي بالنعناع" },
-  { fr: "Thé Noir", en: "Black Tea", de: "Schwarzer Tee", ar: "شاي أسود" },
-  { fr: "Thé Noir au Lait", en: "Black Tea with Milk", de: "Schwarzer Tee mit Milch", ar: "شاي أسود بالحليب" },
-  { fr: "Verveine", en: "Verbena Infusion", de: "Eisenkraut Tee", ar: "لويزة" }
+  { fr: "Café Séparé", en: "Separated Coffee", de: "Getrennter Kaffee", es: "Café Separado", ar: "قهوة مفصولة" },
+  { fr: "Lait Froid", en: "Cold Milk", de: "Kalte Milch", es: "Leche Fría", ar: "حليب بارد" },
+  { fr: "Lait Chaud", en: "Hot Milk", de: "Warme Milch", es: "Leche Caliente", ar: "حليب ساخن" },
+  { fr: "Café Noir", en: "Black Coffee", de: "Schwarzer Kaffee", es: "Café Solo", ar: "قهوة سوداء" },
+  { fr: "Cappuccino Italien", en: "Italian Cappuccino", de: "Italienischer Cappuccino", es: "Capuchino Italiano", ar: "كابتشينو إيطالي" },
+  { fr: "Café Cassé", en: "Café Cassé", de: "Café Cassé", es: "Café Cortado", ar: "قهوة مكسورة (كاسي)" },
+  { fr: "Jus d'Orange", en: "Orange Juice", de: "Orangensaft", es: "Zumo de Naranja", ar: "عصير برتقال" },
+  { fr: "Lait Cassé", en: "Lait Cassé", de: "Lait Cassé", es: "Leche Manchada", ar: "حليب مكسور" },
+  { fr: "Café Moitié", en: "Half Coffee", de: "Halber Kaffee", es: "Café Mitad y Mitad", ar: "قهوة نصف نصف" },
+  { fr: "Chocolat au Lait", en: "Milk Chocolate", de: "Milchschokolade", es: "Chocolate con Leche", ar: "شوكولاتة بالحليب" },
+  { fr: "Café Américain", en: "Americano Coffee", de: "Kaffee Americano", es: "Café Americano", ar: "قهوة أمريكية" },
+  { fr: "Café au Lait", en: "Coffee with Milk", de: "Milchkaffee", es: "Café con Leche", ar: "قهوة بالحليب" },
+  { fr: "Thé à la Menthe", en: "Mint Tea", de: "Minztee", es: "Té a la Menta", ar: "شاي مغربي بالنعناع" },
+  { fr: "Thé Noir", en: "Black Tea", de: "Schwarzer Tee", es: "Té Negro", ar: "شاي أسود" },
+  { fr: "Thé Noir au Lait", en: "Black Tea with Milk", de: "Schwarzer Tee mit Milch", es: "Té Negro con Leche", ar: "شاي أسود بالحليب" },
+  { fr: "Verveine", en: "Verbena Infusion", de: "Eisenkraut Tee", es: "Infusión de Hierbaluisa", ar: "لويزة" }
 ];
 
 export const SIDES_OPTIONS = [
-  { fr: "Légumes sautés", en: "Sautéed vegetables", de: "Sautiertes Gemüse", ar: "خضار سوتيه" },
-  { fr: "Riz", en: "Rice", de: "Reis", ar: "أرز" },
-  { fr: "Frites", en: "French Fries", de: "Pommes Frites", ar: "بطاطس مقلية" },
-  { fr: "Purée pomme de terre", en: "Mashed potatoes", de: "Kartoffelpüree", ar: "بطاطس مهروسة (بوريه)" },
-  { fr: "Potatos", en: "Potato Wedges", de: "Spaltenkartoffeln", ar: "بطاطس ويدجز (بوتاتوس)" }
+  { fr: "Légumes sautés", en: "Sautéed vegetables", de: "Sautiertes Gemüse", es: "Verduras salteadas", ar: "خضار سوتيه" },
+  { fr: "Riz", en: "Rice", de: "Reis", es: "Arroz", ar: "أرز" },
+  { fr: "Frites", en: "French Fries", de: "Pommes Frites", es: "Patatas fritas", ar: "بطاطس مقلية" },
+  { fr: "Purée pomme de terre", en: "Mashed potatoes", de: "Kartoffelpüree", es: "Puré de patatas", ar: "بطاطس مهروسة (بوريه)" },
+  { fr: "Potatos", en: "Potato Wedges", de: "Spaltenkartoffeln", es: "Patatas gajo", ar: "بطاطس ويدجز (بوتاتوس)" }
 ];
 
 export const PASTA_OPTIONS = [
-  { fr: "Rigatoni", en: "Rigatoni", de: "Rigatoni", ar: "ريغاتوني" },
-  { fr: "Tagliatelles", en: "Tagliatelle", de: "Tagliatelle", ar: "تالياتيلي" },
-  { fr: "Spaghettis", en: "Spaghetti", de: "Spaghetti", ar: "سباغيتي" },
-  { fr: "Linguines", en: "Linguine", de: "Linguine", ar: "لينغويني" }
+  { fr: "Rigatoni", en: "Rigatoni", de: "Rigatoni", es: "Rigatoni", ar: "ريغاتوني" },
+  { fr: "Tagliatelles", en: "Tagliatelle", de: "Tagliatelle", es: "Tagliatelle", ar: "تالياتيلي" },
+  { fr: "Spaghettis", en: "Spaghetti", de: "Spaghetti", es: "Espaguetis", ar: "سباغيتي" },
+  { fr: "Linguines", en: "Linguine", de: "Linguine", es: "Linguine", ar: "لينغويني" }
 ];
 
 let selectedOptionMenuItem = null;
@@ -57,6 +57,7 @@ function renderOptionList(listContainerId, counterId, confirmBtnId, optionsArray
       fr: `Sélection : ${totalSelected} / ${limit}`,
       en: `Selection: ${totalSelected} / ${limit}`,
       de: `Auswahl: ${totalSelected} / ${limit}`,
+      es: `Selección: ${totalSelected} / ${limit}`,
       ar: `المحدد: ${totalSelected} / ${limit}`
     };
     if (counterEl) {
@@ -168,6 +169,7 @@ export function openHotDrinkSelectorModal(menuItem) {
     fr: isBrunchDuo ? "Sélectionnez 2 Boissons Chaudes" : "Choisissez votre Boisson Chaude",
     en: isBrunchDuo ? "Select 2 Hot Beverages" : "Choose Your Hot Beverage",
     de: isBrunchDuo ? "Wählen Sie 2 Heißgetränke" : "Wählen Sie Ihr Heißgetränk",
+    es: isBrunchDuo ? "Seleccione 2 Bebidas Calientes" : "Elija su Bebida Caliente",
     ar: isBrunchDuo ? "اختر مشروبين ساخنين" : "اختر مشروبك الساخن"
   };
 
@@ -175,6 +177,7 @@ export function openHotDrinkSelectorModal(menuItem) {
     fr: `Votre menu "${menuItem.name[currentLang] || menuItem.name.fr}" comprend ${limit} boisson(s) chaude(s) au choix.`,
     en: `Your "${menuItem.name[currentLang] || menuItem.name.fr}" menu includes ${limit} choice(s) of hot beverage.`,
     de: `Ihr Menü "${menuItem.name[currentLang] || menuItem.name.fr}" beinhaltet ${limit} Heißgetränk(e) nach Wahl.`,
+    es: `Su menú "${menuItem.name[currentLang] || menuItem.name.fr}" incluye ${limit} bebida(s) caliente(s) a elegir.`,
     ar: `قائمتك "${menuItem.name[currentLang] || menuItem.name.fr}" تتضمن ${limit} مشروب(ات) ساخنة من اختيارك.`
   };
 
@@ -205,6 +208,7 @@ export function openSidesSelectorModal(menuItem) {
     fr: "Choisissez 2 Accompagnements",
     en: "Choose 2 Accompaniments",
     de: "Wählen Sie 2 Beilagen",
+    es: "Elija 2 Guarniciones",
     ar: "اختر مرافقتين"
   };
 
@@ -212,6 +216,7 @@ export function openSidesSelectorModal(menuItem) {
     fr: `Veuillez sélectionner 2 accompagnements de votre choix pour "${menuItem.name[currentLang] || menuItem.name.fr}".`,
     en: `Please select 2 accompaniments of your choice for "${menuItem.name[currentLang] || menuItem.name.fr}".`,
     de: `Bitte wählen Sie 2 Beilagen Ihrer Wahl für "${menuItem.name[currentLang] || menuItem.name.fr}".`,
+    es: `Por favor, seleccione 2 guarniciones a su elección para "${menuItem.name[currentLang] || menuItem.name.fr}".`,
     ar: `يرجى اختيار مرافقتين من اختيارك لطبق "${menuItem.name[currentLang] || menuItem.name.fr}".`
   };
 
@@ -242,6 +247,7 @@ export function openPastaSelectorModal(menuItem) {
     fr: "Choisissez votre type de pâtes",
     en: "Choose your type of pasta",
     de: "Wählen Sie Ihre Nudelsorte",
+    es: "Elija su tipo de pasta",
     ar: "اختر نوع المعكرونة"
   };
 
@@ -249,6 +255,7 @@ export function openPastaSelectorModal(menuItem) {
     fr: `Veuillez sélectionner le type de pâtes pour votre plat "${menuItem.name[currentLang] || menuItem.name.fr}".`,
     en: `Please select the pasta type for your "${menuItem.name[currentLang] || menuItem.name.fr}" dish.`,
     de: `Bitte wählen Sie die Nudelsorte für Ihr Gericht "${menuItem.name[currentLang] || menuItem.name.fr}".`,
+    es: `Por favor, seleccione el tipo de pasta para su plato "${menuItem.name[currentLang] || menuItem.name.fr}".`,
     ar: `يرجى اختيار نوع المعكرونة لطبق "${menuItem.name[currentLang] || menuItem.name.fr}".`
   };
 

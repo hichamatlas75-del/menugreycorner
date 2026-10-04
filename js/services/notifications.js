@@ -32,6 +32,7 @@ export function triggerQuickServiceCall(clientTable, type) {
       fr: "Veuillez choisir votre numéro de table.",
       en: "Please select your table number.",
       de: "Bitte wählen Sie Ihre Tischnummer.",
+      es: "Por favor, elija su número de mesa.",
       ar: "يرجى اختيار رقم طاولتك."
     };
     showToast(tableMsgs[currentLang] || tableMsgs.fr);
@@ -46,6 +47,7 @@ export function triggerQuickServiceCall(clientTable, type) {
       fr: `Veuillez attendre ${waitRemaining}s avant de renouveler cet appel.`,
       en: `Please wait ${waitRemaining}s before repeating this request.`,
       de: `Bitte warten Sie ${waitRemaining}s, bevor Sie diese Anfrage wiederholen.`,
+      es: `Por favor, espere ${waitRemaining}s antes de repetir esta llamada.`,
       ar: `يرجى الانتظار ${waitRemaining} ثانية قبل تكرار هذا الطلب.`
     };
     showToast(errorMsgs[currentLang] || errorMsgs.fr);
@@ -66,6 +68,7 @@ export function triggerQuickServiceCall(clientTable, type) {
         fr: "Appel envoyé ! Votre serveur a été alerté.",
         en: "Call sent! Your waiter has been alerted.",
         de: "Anruf gesendet! Ihr Kellner wurde benachrichtigt.",
+        es: "¡Llamada enviada! Su camarero ha sido avisado.",
         ar: "تم إرسال الطلب ! تم إشعار نادلك."
       };
       showToast(okMsgs[currentLang] || okMsgs.fr);
@@ -271,6 +274,7 @@ export function subscribeToActiveWaiterEvents(clientTable) {
           fr: `🔔 Le serveur a accepté votre ${typeLabel} et arrive à votre table !`,
           en: `🔔 The waiter accepted your ${typeLabel} and is coming to your table!`,
           de: `🔔 Ihr Kellner hat Ihre ${typeLabel} angenommen und kommt zu Ihrem Tisch!`,
+          es: `🔔 ¡El camarero ha aceptado su petición y se dirige a su mesa!`,
           ar: `🔔 لقد قبل النادل طلبك وهو في الطريق إلى طاولتك !`
         };
         const msg = acceptedMsgs[currentLang] || acceptedMsgs.fr;
@@ -316,6 +320,7 @@ export function subscribeToActiveWaiterEvents(clientTable) {
           fr: "👨‍🍳 Le serveur a validé votre précommande !",
           en: "👨‍🍳 The waiter confirmed your pre-order!",
           de: "👨‍🍳 Der Kellner hat Ihre Vorbestellung bestätigt!",
+          es: "👨‍🍳 ¡El camarero ha confirmado su prepedido!",
           ar: "👨‍🍳 لقد وافق النادل على طلبك المسبق !"
         };
         const msg = acceptedMsgs[currentLang] || acceptedMsgs.fr;
@@ -344,6 +349,7 @@ export function renderNotificationHistory(clientTable) {
       fr: "Aucune notification récente.<br><span style='font-size:0.75rem;opacity:0.7;'>Vos appels serveur et suivis de commande apparaîtront ici.</span>",
       en: "No recent notifications.<br><span style='font-size:0.75rem;opacity:0.7;'>Your waiter calls and order updates will appear here.</span>",
       de: "Keine aktuellen Benachrichtigungen.<br><span style='font-size:0.75rem;opacity:0.7;'>Ihre Kellnerrufe und Bestellaktualisierungen werden hier angezeigt.</span>",
+      es: "No hay notificaciones recientes.<br><span style='font-size:0.75rem;opacity:0.7;'>Sus llamadas al camarero y el estado de sus pedidos aparecerán aquí.</span>",
       ar: "لا توجد إشعارات حديثة.<br><span style='font-size:0.75rem;opacity:0.7;'>ستظهر هنا طلبات النادل ومتابعة طلباتك.</span>"
     };
     ndContentFeed.innerHTML = `
@@ -381,7 +387,8 @@ export function setupNotificationDrawer(getClientTable) {
       const currentTable = typeof getClientTable === "function" ? getClientTable() : getClientTable;
       const tableBadge = document.getElementById("ndTableBadge");
       if (tableBadge) {
-        tableBadge.textContent = currentTable ? `Table ${currentTable}` : (currentLang === "ar" ? "طاولة" : "Table");
+        const tableLabel = currentLang === "ar" ? "طاولة" : (currentLang === "es" ? "Mesa" : (currentLang === "de" ? "Tisch" : "Table"));
+        tableBadge.textContent = currentTable ? `${tableLabel} ${currentTable}` : tableLabel;
       }
       renderNotificationHistory(currentTable);
     };

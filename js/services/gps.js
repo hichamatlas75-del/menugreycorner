@@ -162,6 +162,13 @@ export const GPSService = {
         denied: "GPS erlauben zum Bestellen",
         error: "GPS-Fehler. Einstellungen prüfen"
       },
+      es: {
+        inside: "En Grey Corner Fez",
+        outside: "Modo consulta solamente",
+        suspect: "¡Posición GPS sospechosa!",
+        denied: "Permitir GPS para pedir",
+        error: "Error GPS. Compruebe ajustes"
+      },
       ar: {
         inside: "في غري كورنر فاس",
         outside: "وضع التصفح فقط",

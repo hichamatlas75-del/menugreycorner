@@ -16,6 +16,7 @@ export function GC_sendWhatsApp() {
       fr: 'Votre panier est vide.',
       en: 'Your cart is empty.',
       de: 'Ihr Warenkorb ist leer.',
+      es: 'Su cesta está vacía.',
       ar: 'سلتكم فارغة.'
     };
     alert(emptyMsgs[currentLang] || emptyMsgs.fr);
@@ -80,6 +81,7 @@ export function submitPreOrder(clientTable, onComplete) {
       fr: "Le service est temporairement suspendu (mode rush). Merci de patienter un instant.",
       en: "Service is temporarily paused (rush mode). Please wait a moment.",
       de: "Der Service ist vorübergehend pausiert (Stoßzeit). Bitte warten Sie einen Moment.",
+      es: "El servicio está temporalmente suspendido (modo hora punta). Gracias por su paciencia.",
       ar: "الخدمة معلقة مؤقتاً (فترة الذروة). يرجى الانتظار لحظات."
     };
     showToast(frozenMsgs[currentLang] || frozenMsgs.fr);
@@ -92,6 +94,7 @@ export function submitPreOrder(clientTable, onComplete) {
       fr: "Veuillez choisir votre numéro de table avant d'envoyer la commande.",
       en: "Please select your table number before sending the order.",
       de: "Bitte wählen Sie Ihre Tischnummer, bevor Sie die Bestellung senden.",
+      es: "Por favor, elija su número de mesa antes de enviar el pedido.",
       ar: "يرجى اختيار رقم طاولتك قبل إرسال الطلب."
     };
     showToast(tableMsgs[currentLang] || tableMsgs.fr);
@@ -137,6 +140,7 @@ export function submitPreOrder(clientTable, onComplete) {
         fr: "Précommande envoyée ! Le serveur arrive la confirmer.",
         en: "Pre-order sent! The waiter is coming to confirm.",
         de: "Vorbestellung gesendet! Der Kellner kommt zur Bestätigung.",
+        es: "¡Pedido anticipado enviado! El camarero viene a confirmarlo.",
         ar: "تم إرسال الطلب المسبق ! النادل قادم لتأكيده."
       };
       showToast(okMsgs[currentLang] || okMsgs.fr);
@@ -157,7 +161,14 @@ export function submitPreOrder(clientTable, onComplete) {
       // Subscribe to real-time status updates from waiter
       subscribeToActiveWaiterEvents(clientTable);
     } else {
-      showToast("Erreur de connexion. Veuillez réessayer.");
+      const errMsgs = {
+        fr: "Erreur de connexion. Veuillez réessayer.",
+        en: "Connection error. Please try again.",
+        de: "Verbindungsfehler. Bitte versuchen Sie es erneut.",
+        es: "Error de conexión. Por favor, inténtelo de nuevo.",
+        ar: "خطأ في الاتصال. يرجى المحاولة مرة أخرى."
+      };
+      showToast(errMsgs[currentLang] || errMsgs.fr);
     }
   });
 }

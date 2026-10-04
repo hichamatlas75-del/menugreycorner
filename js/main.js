@@ -133,6 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
         fr: { title: "Grey Corner — Menu", text: "🍽️ Découvrez le menu Grey Corner Café à Fès !" },
         en: { title: "Grey Corner — Menu", text: "🍽️ Discover the Grey Corner Café menu in Fès!" },
         de: { title: "Grey Corner — Menü", text: "🍽️ Entdecken Sie das Menü des Grey Corner Café in Fès!" },
+        es: { title: "Grey Corner — Menú", text: "🍽️ ¡Descubra la carta de Grey Corner Café en Fez!" },
         ar: { title: "Grey Corner — قائمة الطعام", text: "🍽️ اكتشف قائمة مقهى Grey Corner في فاس!" }
       };
       const tShare = texts[currentLang] || texts.fr;
@@ -163,6 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
         fr: "Lien copié ✓",
         en: "Link copied ✓",
         de: "Link kopiert ✓",
+        es: "Enlace copiado ✓",
         ar: "تم نسخ الرابط ✓"
       };
       const toast = document.getElementById("scToast");

@@ -293,6 +293,7 @@ export function renderDishes(filterTerm = "") {
     fr: "Voir tout",
     en: "View all",
     de: "Alle ansehen",
+    es: "Ver todo",
     ar: "عرض الكل"
   };
 
@@ -300,6 +301,7 @@ export function renderDishes(filterTerm = "") {
     fr: `${items.length} plats`,
     en: `${items.length} items`,
     de: `${items.length} Gerichte`,
+    es: `${items.length} platos`,
     ar: `${items.length} أطباق`
   };
 
@@ -348,13 +350,15 @@ function createDishCard(item, categoryId, itemIndex, categoryBadge = "") {
 
   const badgeNewText = currentLang === "en" ? "NEW"
     : currentLang === "de" ? "NEU"
-      : currentLang === "ar" ? "جديد"
-        : "NOUVEAU";
+      : currentLang === "es" ? "NUEVO"
+        : currentLang === "ar" ? "جديد"
+          : "NOUVEAU";
 
   const orderBtnText = currentLang === "en" ? "Order"
     : currentLang === "de" ? "Bestellen"
-      : currentLang === "ar" ? "اطلب"
-        : "Commander";
+      : currentLang === "es" ? "Pedir"
+        : currentLang === "ar" ? "اطلب"
+          : "Commander";
 
   card.innerHTML = `
     <div class="hub-card-media">
@@ -439,31 +443,31 @@ export function activateSearch() {
 // ── Mapping ingrédient → emoji ──────────────────────────────────────────────
 const INGREDIENT_EMOJI_MAP = {
   // Fruits
-  "framboise": "🫐", "raspberry": "🫐", "himbeere": "🫐",
-  "fraise": "🍓", "strawberry": "🍓", "erdbeere": "🍓",
-  "orange": "🍊", "orangen": "🍊",
-  "banane": "🍌", "banana": "🍌", "banane ": "🍌",
-  "ananas": "🍍", "pineapple": "🍍",
+  "framboise": "🫐", "raspberry": "🫐", "himbeere": "🫐", "frambuesa": "🫐",
+  "fraise": "🍓", "strawberry": "🍓", "erdbeere": "🍓", "fresa": "🍓",
+  "orange": "🍊", "orangen": "🍊", "naranja": "🍊",
+  "banane": "🍌", "banana": "🍌", "banane ": "🍌", "plátano": "🍌", "platano": "🍌",
+  "ananas": "🍍", "pineapple": "🍍", "piña": "🍍", "pina": "🍍",
   "mangue": "🥭", "mango": "🥭",
-  "myrtille": "🫐", "blueberry": "🫐", "blaubeere": "🫐",
+  "myrtille": "🫐", "blueberry": "🫐", "blaubeere": "🫐", "arándano": "🫐", "arandano": "🫐",
   "kiwi": "🥝",
-  "avocat": "🥑", "avocado": "🥑",
-  "pêche": "🍑", "peach": "🍑", "pfirsich": "🍑",
-  "poire": "🍐", "pear": "🍐", "birne": "🍐",
-  "citron": "🍋", "lemon": "🍋", "zitrone": "🍋",
-  "noix de coco": "🥥", "coconut": "🥥", "kokosnuss": "🥥",
-  "datte": "🌴", "date": "🌴", "dattel": "🌴",
-  "fruits secs": "🌰", "fruits sec": "🌰", "dried fruits": "🌰", "trockenfrüchte": "🌰", "فواكه جافة": "🌰",
-  "fruits de saison": "🥝", "fruits de saison en décoration": "🥝", "seasonal fruit": "🥝", "saisonfrüchte": "🥝", "فواكه موسمية": "🥝",
+  "avocat": "🥑", "avocado": "🥑", "aguacate": "🥑",
+  "pêche": "🍑", "peach": "🍑", "pfirsich": "🍑", "melocotón": "🍑", "melocoton": "🍑",
+  "poire": "🍐", "pear": "🍐", "birne": "🍐", "pera": "🍐",
+  "citron": "🍋", "lemon": "🍋", "zitrone": "🍋", "limón": "🍋", "limon": "🍋",
+  "noix de coco": "🥥", "coconut": "🥥", "kokosnuss": "🥥", "coco": "🥥",
+  "datte": "🌴", "date": "🌴", "dattel": "🌴", "dátil": "🌴", "datil": "🌴",
+  "fruits secs": "🌰", "fruits sec": "🌰", "dried fruits": "🌰", "trockenfrüchte": "🌰", "frutos secos": "🌰", "fruto seco": "🌰", "فواكه جافة": "🌰",
+  "fruits de saison": "🥝", "fruits de saison en décoration": "🥝", "seasonal fruit": "🥝", "saisonfrüchte": "🥝", "frutas de temporada": "🥝", "fruta de temporada": "🥝", "فواكه موسمية": "🥝",
   // Légumes
-  "carotte": "🥕", "carrot": "🥕", "karotte": "🥕",
+  "carotte": "🥕", "carrot": "🥕", "karotte": "🥕", "zanahoria": "🥕",
   // Condiments & aromates
   "miel": "🍯", "honey": "🍯", "honig": "🍯",
-  "menthe": "🌿", "mint": "🌿", "minze": "🌿",
-  "gingembre": "🫚", "ginger": "🫚", "ingwer": "🫚",
-  "bissap": "🌺", "hibiscus": "🌺",
+  "menthe": "🌿", "mint": "🌿", "minze": "🌿", "menta": "🌿",
+  "gingembre": "🫚", "ginger": "🫚", "ingwer": "🫚", "jengibre": "🫚",
+  "bissap": "🌺", "hibiscus": "🌺", "hibisco": "🌺",
   // Boissons & sirops
-  "sirop bleu curaçao": "💙", "blue curaçao": "💙", "blue-curaçao": "💙",
+  "sirop bleu curaçao": "💙", "blue curaçao": "💙", "blue-curaçao": "💙", "curaçao azul": "💙",
   "redbull": "⚡", "red bull": "⚡",
   "sodawater": "💧",
 };
@@ -510,7 +514,7 @@ function buildIngredientSticker(item, lang) {
 
   if (ingredientItems.length === 0) return "";
 
-  const labels = { fr: "Ingrédients", en: "Ingredients", de: "Zutaten", ar: "المكوّنات" };
+  const labels = { fr: "Ingrédients", en: "Ingredients", de: "Zutaten", es: "Ingredientes", ar: "المكوّنات" };
   const label = labels[lang] || labels.fr;
 
   return `
@@ -587,8 +591,9 @@ export function openLightboxForItem(item, imgUrl) {
     lbAddBtn.style.display = "block";
     const btnText = currentLang === "en" ? "Order"
       : currentLang === "de" ? "Bestellen"
-        : currentLang === "ar" ? "اطلب"
-          : "Commander";
+        : currentLang === "es" ? "Pedir"
+          : currentLang === "ar" ? "اطلب"
+            : "Commander";
     lbAddBtn.textContent = btnText;
   } else if (lbAddBtn) {
     lbAddBtn.style.display = "none";
