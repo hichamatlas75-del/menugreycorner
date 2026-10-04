@@ -5493,9 +5493,23 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     }
     return "images/logo-gold.webp";
   }
+  function getDefaultInitialCategoryId() {
+    if (!menuData || menuData.length === 0) return null;
+    if (isBreakfastAvailable()) {
+      return getCatId(menuData[0]);
+    }
+    const entreesCat = menuData.find((c) => getCatId(c) === "entrees");
+    if (entreesCat) {
+      return "entrees";
+    }
+    return menuData.length > 1 ? getCatId(menuData[1]) : getCatId(menuData[0]);
+  }
   function renderCategoryPastilles() {
     const container = document.getElementById("hubCategories");
     if (!container || !menuData || !Array.isArray(menuData)) return;
+    if (!activeCategoryId && menuData.length > 0) {
+      activeCategoryId = getDefaultInitialCategoryId();
+    }
     container.innerHTML = "";
     menuData.forEach((category) => {
       const catId = getCatId(category);
@@ -5520,6 +5534,11 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
         selectCategory(catId);
       });
       container.appendChild(btn);
+      if (isActive) {
+        setTimeout(() => {
+          btn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+        }, 80);
+      }
     });
   }
   function selectCategory(catId, smoothScroll = true) {
@@ -5666,7 +5685,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       return;
     }
     if (!activeCategoryId && menuData.length > 0) {
-      activeCategoryId = getCatId(menuData[0]);
+      activeCategoryId = getDefaultInitialCategoryId();
     }
     const activeCategory = menuData.find((c) => getCatId(c) === activeCategoryId) || menuData[0];
     if (!activeCategory) return;
@@ -6072,7 +6091,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       return;
     }
     if (!activeCategoryId && menuData.length > 0) {
-      activeCategoryId = getCatId(menuData[0]);
+      activeCategoryId = getDefaultInitialCategoryId();
     }
     renderCategoryPastilles();
     renderDishes();

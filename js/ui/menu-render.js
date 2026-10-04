@@ -71,11 +71,36 @@ function getCatImage(category) {
 }
 
 /**
+ * Determine default initial category:
+ * - If during breakfast hours (until 13h weekdays, 14h weekends): starts at "petit-dejeuner"
+ * - If outside breakfast hours: skips "petit-dejeuner" and starts directly at "entrees" (Entrées froides)
+ */
+export function getDefaultInitialCategoryId() {
+  if (!menuData || menuData.length === 0) return null;
+
+  if (isBreakfastAvailable()) {
+    return getCatId(menuData[0]); // "petit-dejeuner"
+  }
+
+  // Hors horaire petit-déjeuner : sauter le petit-déjeuner et commencer directement sur les entrées froides ("entrees")
+  const entreesCat = menuData.find(c => getCatId(c) === "entrees");
+  if (entreesCat) {
+    return "entrees";
+  }
+
+  return menuData.length > 1 ? getCatId(menuData[1]) : getCatId(menuData[0]);
+}
+
+/**
  * Render the Category Pastilles Hub
  */
 export function renderCategoryPastilles() {
   const container = document.getElementById("hubCategories");
   if (!container || !menuData || !Array.isArray(menuData)) return;
+
+  if (!activeCategoryId && menuData.length > 0) {
+    activeCategoryId = getDefaultInitialCategoryId();
+  }
 
   container.innerHTML = "";
 
@@ -106,6 +131,12 @@ export function renderCategoryPastilles() {
     });
 
     container.appendChild(btn);
+
+    if (isActive) {
+      setTimeout(() => {
+        btn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      }, 80);
+    }
   });
 }
 
@@ -297,7 +328,7 @@ export function renderDishes(filterTerm = "") {
 
   // 3. SINGLE CATEGORY MODE (DEFAULT HUB TACTILE)
   if (!activeCategoryId && menuData.length > 0) {
-    activeCategoryId = getCatId(menuData[0]);
+    activeCategoryId = getDefaultInitialCategoryId();
   }
 
   const activeCategory = menuData.find(c => getCatId(c) === activeCategoryId) || menuData[0];
@@ -759,7 +790,7 @@ export function renderMenu() {
 
   // Set default active category if none
   if (!activeCategoryId && menuData.length > 0) {
-    activeCategoryId = getCatId(menuData[0]);
+    activeCategoryId = getDefaultInitialCategoryId();
   }
 
   // Render Category Pastilles
