@@ -3812,6 +3812,111 @@
     const cutoff = isWeekend ? 14 : 13;
     return decimalHour >= 7 && decimalHour < cutoff;
   }
+  var WEEKDAY_NAMES = {
+    Mon: { fr: "Lundi", en: "Monday", es: "Lunes", de: "Montag", ar: "\u0627\u0644\u0625\u062B\u0646\u064A\u0646" },
+    Tue: { fr: "Mardi", en: "Tuesday", es: "Martes", de: "Dienstag", ar: "\u0627\u0644\u062B\u0644\u0627\u062B\u0627\u0621" },
+    Wed: { fr: "Mercredi", en: "Wednesday", es: "Mi\xE9rcoles", de: "Mittwoch", ar: "\u0627\u0644\u0623\u0631\u0628\u0639\u0627\u0621" },
+    Thu: { fr: "Jeudi", en: "Thursday", es: "Jueves", de: "Donnerstag", ar: "\u0627\u0644\u062E\u0645\u064A\u0633" },
+    Fri: { fr: "Vendredi", en: "Friday", es: "Viernes", de: "Freitag", ar: "\u0627\u0644\u062C\u0645\u0639\u0629" },
+    Sat: { fr: "Samedi", en: "Saturday", es: "S\xE1bado", de: "Samstag", ar: "\u0627\u0644\u0633\u0628\u062A" },
+    Sun: { fr: "Dimanche", en: "Sunday", es: "Domingo", de: "Sonntag", ar: "\u0627\u0644\u0623\u062D\u062F" }
+  };
+  function getKitchenScheduleInfo() {
+    const { weekday, decimalHour } = getMoroccoDateTime();
+    let startHour = 12;
+    let dayType = "weekday";
+    if (weekday === "Sat") {
+      startHour = 13;
+      dayType = "saturday";
+    } else if (weekday === "Sun") {
+      startHour = 14;
+      dayType = "sunday";
+    } else {
+      startHour = 12;
+      dayType = "weekday";
+    }
+    const isBefore = decimalHour < startHour;
+    const isOpen = decimalHour >= startHour && decimalHour < 23;
+    const isClosed = decimalHour >= 23 || decimalHour < 7;
+    return {
+      weekday,
+      dayType,
+      startHour,
+      isBefore,
+      isOpen,
+      isClosed
+    };
+  }
+  function getKitchenNoticeInner(lang = "fr") {
+    const info = getKitchenScheduleInfo();
+    const dayName = WEEKDAY_NAMES[info.weekday]?.[lang] || WEEKDAY_NAMES[info.weekday]?.fr || info.weekday;
+    const todayLabel = {
+      fr: "Aujourd'hui",
+      en: "Today",
+      es: "Hoy",
+      de: "Heute",
+      ar: "\u0627\u0644\u064A\u0648\u0645"
+    }[lang] || "Aujourd'hui";
+    let statusText = "";
+    if (info.isBefore) {
+      const beforeTexts = {
+        fr: `Le service cuisine commence \xE0 ${info.startHour}h00`,
+        en: `Kitchen service starts at ${info.startHour}:00`,
+        es: `El servicio de cocina comienza a las ${info.startHour}:00`,
+        de: `K\xFCchenservice beginnt um ${info.startHour}:00 Uhr`,
+        ar: `\u064A\u0628\u062F\u0623 \u0639\u0645\u0644 \u0627\u0644\u0645\u0637\u0628\u062E \u0639\u0646\u062F \u0627\u0644\u0633\u0627\u0639\u0629 ${info.startHour}:00`
+      };
+      statusText = beforeTexts[lang] || beforeTexts.fr;
+    } else if (info.isOpen) {
+      const openTexts = {
+        fr: `Service cuisine ouvert (d\xE9but\xE9 \xE0 ${info.startHour}h00)`,
+        en: `Kitchen service open (started at ${info.startHour}:00)`,
+        es: `Servicio de cocina abierto (iniciado a las ${info.startHour}:00)`,
+        de: `K\xFCchenservice ge\xF6ffnet (ab ${info.startHour}:00 Uhr)`,
+        ar: `\u062E\u062F\u0645\u0629 \u0627\u0644\u0645\u0637\u0628\u062E \u0645\u0641\u062A\u0648\u062D\u0629 (\u0628\u062F\u0623\u062A \u0639\u0646\u062F ${info.startHour}:00)`
+      };
+      statusText = openTexts[lang] || openTexts.fr;
+    } else {
+      const closedTexts = {
+        fr: `Service cuisine ferm\xE9 \u2022 Reprise \xE0 ${info.startHour}h00`,
+        en: `Kitchen service closed \u2022 Reopens at ${info.startHour}:00`,
+        es: `Servicio de cocina cerrado \u2022 Abre a las ${info.startHour}:00`,
+        de: `K\xFCchenservice geschlossen \u2022 \xD6ffnet um ${info.startHour}:00 Uhr`,
+        ar: `\u0627\u0644\u0645\u0637\u0628\u062E \u0645\u063A\u0644\u0642 \u062D\u0627\u0644\u064A\u0627\u064B \u2022 \u064A\u0641\u062A\u062D \u0639\u0646\u062F ${info.startHour}:00`
+      };
+      statusText = closedTexts[lang] || closedTexts.fr;
+    }
+    const slotLabels = {
+      weekday: { fr: "Semaine", en: "Weekdays", es: "Semana", de: "Werktags", ar: "\u0627\u0644\u0623\u0633\u0628\u0648\u0639" },
+      saturday: { fr: "Samedi", en: "Saturday", es: "S\xE1bado", de: "Samstag", ar: "\u0627\u0644\u0633\u0628\u062A" },
+      sunday: { fr: "Dimanche", en: "Sunday", es: "Domingo", de: "Sonntag", ar: "\u0627\u0644\u0623\u062D\u062F" }
+    };
+    const isWk = info.dayType === "weekday";
+    const isSat = info.dayType === "saturday";
+    const isSun = info.dayType === "sunday";
+    return `
+    <div class="esn-card-inner">
+      <div class="esn-primary-row">
+        <span class="esn-icon">\u{1F552}</span>
+        <div class="esn-title-group">
+          <span class="esn-badge-today">${todayLabel} (${dayName})</span>
+          <strong class="esn-main-status">${statusText}</strong>
+        </div>
+      </div>
+      <div class="esn-schedule-pills">
+        <span class="esn-pill ${isWk ? "esn-pill-active" : ""}">
+          ${isWk ? '<span class="esn-pin">\u{1F4CD}</span>' : ""}${slotLabels.weekday[lang] || slotLabels.weekday.fr} : 12h00
+        </span>
+        <span class="esn-pill ${isSat ? "esn-pill-active" : ""}">
+          ${isSat ? '<span class="esn-pin">\u{1F4CD}</span>' : ""}${slotLabels.saturday[lang] || slotLabels.saturday.fr} : 13h00
+        </span>
+        <span class="esn-pill ${isSun ? "esn-pill-active" : ""}">
+          ${isSun ? '<span class="esn-pin">\u{1F4CD}</span>' : ""}${slotLabels.sunday[lang] || slotLabels.sunday.fr} : 14h00
+        </span>
+      </div>
+    </div>
+  `;
+  }
   var STATUS_TEXTS = {
     open: {
       fr: "Ouvert actuellement jusqu'\xE0 23h00",
@@ -3831,18 +3936,28 @@
   function updateScheduleUI() {
     const badge = document.getElementById("headerStatusBadge");
     const textEl = document.getElementById("headerStatusText");
-    if (!badge || !textEl) return;
-    const open = isRestaurantOpen();
-    badge.classList.toggle("status-open", open);
-    badge.classList.toggle("status-closed", !open);
-    const stateKey = open ? "open" : "closed";
-    const dict = STATUS_TEXTS[stateKey];
     const lang = currentLang || "fr";
-    textEl.textContent = dict[lang] || dict.fr;
+    if (badge && textEl) {
+      const open = isRestaurantOpen();
+      badge.classList.toggle("status-open", open);
+      badge.classList.toggle("status-closed", !open);
+      const stateKey = open ? "open" : "closed";
+      const dict = STATUS_TEXTS[stateKey];
+      textEl.textContent = dict[lang] || dict.fr;
+    }
+    const entreesNotices = document.querySelectorAll(".entrees-service-notice");
+    if (entreesNotices.length > 0) {
+      const innerHtml = getKitchenNoticeInner(lang);
+      entreesNotices.forEach((el) => {
+        el.innerHTML = innerHtml;
+      });
+    }
   }
   window.isRestaurantOpen = isRestaurantOpen;
   window.isBreakfastAvailable = isBreakfastAvailable;
   window.updateScheduleUI = updateScheduleUI;
+  window.getKitchenScheduleInfo = getKitchenScheduleInfo;
+  window.getKitchenNoticeInner = getKitchenNoticeInner;
 
   // js/services/gps.js
   var GeoFenceManager = {
@@ -5659,13 +5774,6 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
           es: "F\xF3rmulas de desayuno servidas hasta las 13:00 de lunes a viernes et 14:00 fines de semana.",
           ar: "\u064A\u064F\u0642\u062F\u0651\u064E\u0645 \u0641\u0637\u0648\u0631 \u0627\u0644\u0635\u0628\u0627\u062D \u062D\u062A\u0649 \u0627\u0644\u0633\u0627\u0639\u0629 13:00 \u0637\u064A\u0644\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639 \u0648\u062D\u062A\u0649 14:00 \u0641\u064A \u0639\u0637\u0644\u0629 \u0646\u0647\u0627\u064A\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639."
         };
-        const entreesNoticeTexts2 = {
-          fr: "Service commence \xE0 12h00 en semaine, 13h00 le samedi et 14h00 le dimanche.",
-          en: "Service starts at 12:00 on weekdays, 13:00 on Saturday and 14:00 on Sunday.",
-          de: "Service beginnt werktags um 12:00 Uhr, samstags um 13:00 Uhr und sonntags um 14:00 Uhr.",
-          es: "El servicio comienza a las 12:00 entre semana, 13:00 los s\xE1bados y 14:00 los domingos.",
-          ar: "\u064A\u0628\u062F\u0623 \u062A\u0642\u062F\u064A\u0645 \u0627\u0644\u0648\u062C\u0628\u0627\u062A \u0639\u0646\u062F \u0627\u0644\u0633\u0627\u0639\u0629 12:00 \u062E\u0644\u0627\u0644 \u0627\u0644\u0623\u0633\u0628\u0648\u0639\u060C 13:00 \u064A\u0648\u0645 \u0627\u0644\u0633\u0628\u062A \u0648 14:00 \u064A\u0648\u0645 \u0627\u0644\u0623\u062D\u062F."
-        };
         catSection.innerHTML = `
         <div class="hub-section-header">
           <div class="hub-header-left">
@@ -5681,8 +5789,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
         ` : ""}
         ${isEntreesCat ? `
           <div class="entrees-service-notice">
-            <span class="esn-icon">\u{1F552}</span>
-            <span class="esn-text">${entreesNoticeTexts2[currentLang] || entreesNoticeTexts2.fr}</span>
+            ${getKitchenNoticeInner(currentLang)}
           </div>
         ` : ""}
         <div class="hub-dishes-grid"></div>
@@ -5730,13 +5837,6 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       es: "F\xF3rmulas de desayuno servidas hasta las 13:00 de lunes a viernes y 14:00 fines de semana.",
       ar: "\u064A\u064F\u0642\u062F\u0651\u064E\u0645 \u0641\u0637\u0648\u0631 \u0627\u0644\u0635\u0628\u0627\u062D \u062D\u062A\u0649 \u0627\u0644\u0633\u0627\u0639\u0629 13:00 \u0637\u064A\u0644\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639 \u0648\u062D\u062A\u0649 14:00 \u0641\u064A \u0639\u0637\u0644\u0629 \u0646\u0647\u0627\u064A\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639."
     };
-    const entreesNoticeTexts = {
-      fr: "Service commence \xE0 12h00 en semaine, 13h00 le samedi et 14h00 le dimanche.",
-      en: "Service starts at 12:00 on weekdays, 13:00 on Saturday and 14:00 on Sunday.",
-      de: "Service beginnt werktags um 12:00 Uhr, samstags um 13:00 Uhr und sonntags um 14:00 Uhr.",
-      es: "El servicio comienza a las 12:00 entre semana, 13:00 los s\xE1bados y 14:00 los domingos.",
-      ar: "\u064A\u0628\u062F\u0623 \u062A\u0642\u062F\u064A\u0645 \u0627\u0644\u0648\u062C\u0628\u0627\u062A \u0639\u0646\u062F \u0627\u0644\u0633\u0627\u0639\u0629 12:00 \u062E\u0644\u0627\u0644 \u0627\u0644\u0623\u0633\u0628\u0648\u0639\u060C 13:00 \u064A\u0648\u0645 \u0627\u0644\u0633\u0628\u062A \u0648 14:00 \u064A\u0648\u0645 \u0627\u0644\u0623\u062D\u062F."
-    };
     menuGrid.innerHTML = `
     <div class="hub-single-category-wrap">
       <div class="hub-section-header">
@@ -5757,8 +5857,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       ` : ""}
       ${isEntreesCurrent ? `
         <div class="entrees-service-notice">
-          <span class="esn-icon">\u{1F552}</span>
-          <span class="esn-text">${entreesNoticeTexts[currentLang] || entreesNoticeTexts.fr}</span>
+          ${getKitchenNoticeInner(currentLang)}
         </div>
       ` : ""}
       <div class="hub-dishes-grid"></div>

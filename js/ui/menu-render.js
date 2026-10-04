@@ -8,7 +8,7 @@ import { menuData } from '../data/menu-data.js';
 import { currentLang } from '../services/i18n.js';
 import { addToCart, showToast } from '../services/cart.js';
 import { closeBurgerMenu, checkItemOptionsAndAdd } from './modals.js';
-import { isBreakfastAvailable } from '../services/schedule.js';
+import { isBreakfastAvailable, getKitchenNoticeInner } from '../services/schedule.js';
 
 export let activeCategoryId = null;
 export let isViewAllMode = false;
@@ -297,14 +297,6 @@ export function renderDishes(filterTerm = "") {
         ar: "يُقدَّم فطور الصباح حتى الساعة 13:00 طيلة الأسبوع وحتى 14:00 في عطلة نهاية الأسبوع."
       };
 
-      const entreesNoticeTexts = {
-        fr: "Service commence à 12h00 en semaine, 13h00 le samedi et 14h00 le dimanche.",
-        en: "Service starts at 12:00 on weekdays, 13:00 on Saturday and 14:00 on Sunday.",
-        de: "Service beginnt werktags um 12:00 Uhr, samstags um 13:00 Uhr und sonntags um 14:00 Uhr.",
-        es: "El servicio comienza a las 12:00 entre semana, 13:00 los sábados y 14:00 los domingos.",
-        ar: "يبدأ تقديم الوجبات عند الساعة 12:00 خلال الأسبوع، 13:00 يوم السبت و 14:00 يوم الأحد."
-      };
-
       catSection.innerHTML = `
         <div class="hub-section-header">
           <div class="hub-header-left">
@@ -320,8 +312,7 @@ export function renderDishes(filterTerm = "") {
         ` : ""}
         ${isEntreesCat ? `
           <div class="entrees-service-notice">
-            <span class="esn-icon">🕒</span>
-            <span class="esn-text">${entreesNoticeTexts[currentLang] || entreesNoticeTexts.fr}</span>
+            ${getKitchenNoticeInner(currentLang)}
           </div>
         ` : ""}
         <div class="hub-dishes-grid"></div>
@@ -380,14 +371,6 @@ export function renderDishes(filterTerm = "") {
     ar: "يُقدَّم فطور الصباح حتى الساعة 13:00 طيلة الأسبوع وحتى 14:00 في عطلة نهاية الأسبوع."
   };
 
-  const entreesNoticeTexts = {
-    fr: "Service commence à 12h00 en semaine, 13h00 le samedi et 14h00 le dimanche.",
-    en: "Service starts at 12:00 on weekdays, 13:00 on Saturday and 14:00 on Sunday.",
-    de: "Service beginnt werktags um 12:00 Uhr, samstags um 13:00 Uhr und sonntags um 14:00 Uhr.",
-    es: "El servicio comienza a las 12:00 entre semana, 13:00 los sábados y 14:00 los domingos.",
-    ar: "يبدأ تقديم الوجبات عند الساعة 12:00 خلال الأسبوع، 13:00 يوم السبت و 14:00 يوم الأحد."
-  };
-
   menuGrid.innerHTML = `
     <div class="hub-single-category-wrap">
       <div class="hub-section-header">
@@ -408,8 +391,7 @@ export function renderDishes(filterTerm = "") {
       ` : ""}
       ${isEntreesCurrent ? `
         <div class="entrees-service-notice">
-          <span class="esn-icon">🕒</span>
-          <span class="esn-text">${entreesNoticeTexts[currentLang] || entreesNoticeTexts.fr}</span>
+          ${getKitchenNoticeInner(currentLang)}
         </div>
       ` : ""}
       <div class="hub-dishes-grid"></div>
