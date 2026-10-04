@@ -3716,6 +3716,23 @@
       searchInput.placeholder = placeholders[currentLang] || placeholders.fr;
     }
   }
+  var LANG_META = {
+    fr: { code: "FR", flag: "\u{1F1EB}\u{1F1F7}", name: "Fran\xE7ais" },
+    en: { code: "EN", flag: "\u{1F1EC}\u{1F1E7}", name: "English" },
+    de: { code: "DE", flag: "\u{1F1E9}\u{1F1EA}", name: "Deutsch" },
+    es: { code: "ES", flag: "\u{1F1EA}\u{1F1F8}", name: "Espa\xF1ol" },
+    ar: { code: "AR", flag: "\u{1F1F2}\u{1F1E6}", name: "\u0627\u0644\u0639\u0631\u0628\u064A\u0629" }
+  };
+  function updateHeaderLangUI() {
+    const meta = LANG_META[currentLang] || LANG_META.fr;
+    const flagEl = document.getElementById("headerActiveFlag");
+    const codeEl = document.getElementById("headerActiveCode");
+    if (flagEl) flagEl.textContent = meta.flag;
+    if (codeEl) codeEl.textContent = meta.code;
+    document.querySelectorAll(".header-lang-dropdown .lang-button[data-lang]").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.lang === currentLang);
+    });
+  }
   function setLanguage(lang) {
     if (["fr", "en", "de", "es", "ar"].includes(lang)) {
       currentLang = lang;
@@ -3727,6 +3744,7 @@
       document.documentElement.classList.toggle("rtl-mode", lang === "ar");
       applyLanguageToStaticTexts();
       updatePrixInfo();
+      updateHeaderLangUI();
       if (typeof window.updateFeedbackTexts === "function") {
         window.updateFeedbackTexts();
       }
@@ -3742,6 +3760,8 @@
   window.setLanguage = setLanguage;
   window.updatePrixInfo = updatePrixInfo;
   window.applyLanguageToStaticTexts = applyLanguageToStaticTexts;
+  window.updateHeaderLangUI = updateHeaderLangUI;
+  window.LANG_META = LANG_META;
 
   // js/services/gps.js
   var GeoFenceManager = {
@@ -6248,6 +6268,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     initClientCart();
     applyLanguageToStaticTexts();
     initFeedbackWidget();
+    updateHeaderLangUI();
     document.querySelectorAll(".lang-button[data-lang]").forEach((b) => {
       b.classList.toggle("active", b.dataset.lang === currentLang);
     });
@@ -6292,6 +6313,27 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     if (table) {
       subscribeToActiveWaiterEvents(table);
     }
+    const headerLangWrapper = document.getElementById("headerLangWrapper");
+    const headerLangBtn = document.getElementById("headerLangBtn");
+    if (headerLangBtn && headerLangWrapper) {
+      headerLangBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const isOpen = headerLangWrapper.classList.toggle("open");
+        headerLangBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      });
+      document.addEventListener("click", (e) => {
+        if (!headerLangWrapper.contains(e.target)) {
+          headerLangWrapper.classList.remove("open");
+          headerLangBtn.setAttribute("aria-expanded", "false");
+        }
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && headerLangWrapper.classList.contains("open")) {
+          headerLangWrapper.classList.remove("open");
+          headerLangBtn.setAttribute("aria-expanded", "false");
+        }
+      });
+    }
     document.querySelectorAll(".lang-button[data-lang]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const lang = btn.dataset.lang;
@@ -6299,6 +6341,10 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
           document.querySelectorAll(".lang-button[data-lang]").forEach((b) => {
             b.classList.toggle("active", b.dataset.lang === lang);
           });
+          if (headerLangWrapper) {
+            headerLangWrapper.classList.remove("open");
+            if (headerLangBtn) headerLangBtn.setAttribute("aria-expanded", "false");
+          }
           renderMenu();
           updateCartUI();
           updateFeedbackTexts();

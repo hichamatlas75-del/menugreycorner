@@ -53,6 +53,26 @@ export function applyLanguageToStaticTexts() {
   }
 }
 
+export const LANG_META = {
+  fr: { code: "FR", flag: "🇫🇷", name: "Français" },
+  en: { code: "EN", flag: "🇬🇧", name: "English" },
+  de: { code: "DE", flag: "🇩🇪", name: "Deutsch" },
+  es: { code: "ES", flag: "🇪🇸", name: "Español" },
+  ar: { code: "AR", flag: "🇲🇦", name: "العربية" }
+};
+
+export function updateHeaderLangUI() {
+  const meta = LANG_META[currentLang] || LANG_META.fr;
+  const flagEl = document.getElementById("headerActiveFlag");
+  const codeEl = document.getElementById("headerActiveCode");
+  if (flagEl) flagEl.textContent = meta.flag;
+  if (codeEl) codeEl.textContent = meta.code;
+
+  document.querySelectorAll(".header-lang-dropdown .lang-button[data-lang]").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.lang === currentLang);
+  });
+}
+
 export function setLanguage(lang) {
   if (["fr", "en", "de", "es", "ar"].includes(lang)) {
     currentLang = lang;
@@ -64,6 +84,7 @@ export function setLanguage(lang) {
     document.documentElement.classList.toggle("rtl-mode", lang === "ar");
     applyLanguageToStaticTexts();
     updatePrixInfo();
+    updateHeaderLangUI();
     if (typeof window.updateFeedbackTexts === "function") {
       window.updateFeedbackTexts();
     }
@@ -100,3 +121,5 @@ window.currentLang = currentLang;
 window.setLanguage = setLanguage;
 window.updatePrixInfo = updatePrixInfo;
 window.applyLanguageToStaticTexts = applyLanguageToStaticTexts;
+window.updateHeaderLangUI = updateHeaderLangUI;
+window.LANG_META = LANG_META;

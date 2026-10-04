@@ -4,7 +4,7 @@
 
 import { isFirebaseActive, db, dbService, whenAuthReady } from './config/firebase.js';
 import { menuData } from './data/menu-data.js';
-import { currentLang, setLanguage, updatePrixInfo, applyLanguageToStaticTexts, t } from './services/i18n.js';
+import { currentLang, setLanguage, updatePrixInfo, applyLanguageToStaticTexts, updateHeaderLangUI, t } from './services/i18n.js';
 import { GPSService } from './services/gps.js';
 import { initClientCart, saveClientCart, clearCart, addToCart, updateCartUI, showToast } from './services/cart.js';
 import { submitPreOrder, submitOrderOrWhatsApp } from './services/orders.js';
@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initClientCart();
   applyLanguageToStaticTexts();
   initFeedbackWidget();
+  updateHeaderLangUI();
 
   // Set initial active flag state based on currentLang
   document.querySelectorAll(".lang-button[data-lang]").forEach(b => {
@@ -79,8 +80,35 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ============================================================
-  //  LANGUAGE SYSTEM — Pure trilingual FR / EN / DE / AR
+  //  LANGUAGE SYSTEM & HEADER DROPDOWN
   // ============================================================
+
+  const headerLangWrapper = document.getElementById("headerLangWrapper");
+  const headerLangBtn = document.getElementById("headerLangBtn");
+
+  if (headerLangBtn && headerLangWrapper) {
+    headerLangBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isOpen = headerLangWrapper.classList.toggle("open");
+      headerLangBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!headerLangWrapper.contains(e.target)) {
+        headerLangWrapper.classList.remove("open");
+        headerLangBtn.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    // Close dropdown on Escape
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && headerLangWrapper.classList.contains("open")) {
+        headerLangWrapper.classList.remove("open");
+        headerLangBtn.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
 
   document.querySelectorAll(".lang-button[data-lang]").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -89,6 +117,10 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll(".lang-button[data-lang]").forEach(b => {
           b.classList.toggle("active", b.dataset.lang === lang);
         });
+        if (headerLangWrapper) {
+          headerLangWrapper.classList.remove("open");
+          if (headerLangBtn) headerLangBtn.setAttribute("aria-expanded", "false");
+        }
         renderMenu();
         updateCartUI();
         updateFeedbackTexts();

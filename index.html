@@ -102,6 +102,45 @@
     ================================= -->
     <header>
         <div class="header-overlay"></div>
+
+        <!-- SÉLECTEUR DE LANGUE COMPACT HEADER (Single Active Flag + Dropdown) -->
+        <div class="header-lang-wrapper" id="headerLangWrapper">
+            <button class="header-lang-btn" id="headerLangBtn" type="button" aria-haspopup="true" aria-expanded="false" title="Changer de langue">
+                <span class="header-lang-flag" id="headerActiveFlag">🇫🇷</span>
+                <span class="header-lang-code" id="headerActiveCode">FR</span>
+                <svg class="header-lang-arrow" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </button>
+            <div class="header-lang-dropdown" id="headerLangDropdown" role="menu">
+                <button class="lang-button active" data-lang="fr" type="button" role="menuitem" title="Français">
+                    <span class="hl-flag">🇫🇷</span>
+                    <span class="hl-name">Français</span>
+                    <span class="hl-check">✓</span>
+                </button>
+                <button class="lang-button" data-lang="en" type="button" role="menuitem" title="English">
+                    <span class="hl-flag">🇬🇧</span>
+                    <span class="hl-name">English</span>
+                    <span class="hl-check">✓</span>
+                </button>
+                <button class="lang-button" data-lang="de" type="button" role="menuitem" title="Deutsch">
+                    <span class="hl-flag">🇩🇪</span>
+                    <span class="hl-name">Deutsch</span>
+                    <span class="hl-check">✓</span>
+                </button>
+                <button class="lang-button" data-lang="es" type="button" role="menuitem" title="Español">
+                    <span class="hl-flag">🇪🇸</span>
+                    <span class="hl-name">Español</span>
+                    <span class="hl-check">✓</span>
+                </button>
+                <button class="lang-button" data-lang="ar" type="button" role="menuitem" title="العربية">
+                    <span class="hl-flag">🇲🇦</span>
+                    <span class="hl-name">العربية</span>
+                    <span class="hl-check">✓</span>
+                </button>
+            </div>
+        </div>
+
         <div class="container header-center">
             <img src="images/logo-gold.webp" class="logo-big" alt="Grey Corner Café">
 
@@ -246,14 +285,6 @@
         </div>
     </footer>
 
-    <!-- Sélecteur de langue -->
-    <div class="lang-switch">
-        <button class="lang-button active" data-lang="fr" title="Français">🇫🇷</button>
-        <button class="lang-button" data-lang="en" title="English">🇬🇧</button>
-        <button class="lang-button" data-lang="de" title="Deutsch">🇩🇪</button>
-        <button class="lang-button" data-lang="es" title="Español">🇪🇸</button>
-        <button class="lang-button" data-lang="ar" title="العربية">🇲🇦</button>
-    </div>
 
 
 
