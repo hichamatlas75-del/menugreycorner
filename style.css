@@ -4034,9 +4034,10 @@ header {
 }
 
 /* =========================================
-   BREAKFAST HOURS & UNAVAILABLE DISHES
+   SERVICE HOURS & UNAVAILABLE DISHES
 ========================================= */
-.breakfast-service-notice {
+.breakfast-service-notice,
+.entrees-service-notice {
     display: flex;
     align-items: center;
     gap: 11px;
@@ -4053,9 +4054,22 @@ header {
     box-shadow: 0 3px 12px rgba(44, 34, 28, 0.04);
 }
 
-.bsn-icon {
+.entrees-service-notice {
+    background: linear-gradient(135deg, rgba(201, 168, 76, 0.14) 0%, rgba(201, 168, 76, 0.07) 100%);
+    border: 1px solid rgba(201, 168, 76, 0.35);
+    color: #3D3126;
+}
+
+.bsn-icon,
+.esn-icon {
     font-size: 19px;
     flex-shrink: 0;
+    line-height: 1;
+}
+
+.bsn-text,
+.esn-text {
+    line-height: 1.4;
 }
 
 .hub-card.hub-card-disabled {

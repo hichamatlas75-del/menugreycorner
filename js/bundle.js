@@ -5651,12 +5651,20 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
         catSection.id = `cat-section-${catId}`;
         const isBreakfastCat = catId === "petit-dejeuner";
         const isBreakfastCatOver = isBreakfastCat && !isBreakfastAvailable();
+        const isEntreesCat = catId === "entrees";
         const bNoticeTexts = {
           fr: "Formules petit-d\xE9jeuner servies jusqu'\xE0 13h00 en semaine et 14h00 le week-end.",
           en: "Breakfast formulas are served until 13:00 on weekdays and 14:00 on weekends.",
           de: "Fr\xFChst\xFCcksangebote werden werktags bis 13:00 Uhr und am Wochenende bis 14:00 Uhr serviert.",
-          es: "F\xF3rmulas de desayuno servidas hasta las 13:00 de lunes a viernes y 14:00 fines de semana.",
+          es: "F\xF3rmulas de desayuno servidas hasta las 13:00 de lunes a viernes et 14:00 fines de semana.",
           ar: "\u064A\u064F\u0642\u062F\u0651\u064E\u0645 \u0641\u0637\u0648\u0631 \u0627\u0644\u0635\u0628\u0627\u062D \u062D\u062A\u0649 \u0627\u0644\u0633\u0627\u0639\u0629 13:00 \u0637\u064A\u0644\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639 \u0648\u062D\u062A\u0649 14:00 \u0641\u064A \u0639\u0637\u0644\u0629 \u0646\u0647\u0627\u064A\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639."
+        };
+        const entreesNoticeTexts2 = {
+          fr: "Service commence \xE0 12h00 en semaine, 13h00 le samedi et 14h00 le dimanche.",
+          en: "Service starts at 12:00 on weekdays, 13:00 on Saturday and 14:00 on Sunday.",
+          de: "Service beginnt werktags um 12:00 Uhr, samstags um 13:00 Uhr und sonntags um 14:00 Uhr.",
+          es: "El servicio comienza a las 12:00 entre semana, 13:00 los s\xE1bados y 14:00 los domingos.",
+          ar: "\u064A\u0628\u062F\u0623 \u062A\u0642\u062F\u064A\u0645 \u0627\u0644\u0648\u062C\u0628\u0627\u062A \u0639\u0646\u062F \u0627\u0644\u0633\u0627\u0639\u0629 12:00 \u062E\u0644\u0627\u0644 \u0627\u0644\u0623\u0633\u0628\u0648\u0639\u060C 13:00 \u064A\u0648\u0645 \u0627\u0644\u0633\u0628\u062A \u0648 14:00 \u064A\u0648\u0645 \u0627\u0644\u0623\u062D\u062F."
         };
         catSection.innerHTML = `
         <div class="hub-section-header">
@@ -5669,6 +5677,12 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
           <div class="breakfast-service-notice">
             <span class="bsn-icon">\u{1F552}</span>
             <span class="bsn-text">${bNoticeTexts[currentLang] || bNoticeTexts.fr}</span>
+          </div>
+        ` : ""}
+        ${isEntreesCat ? `
+          <div class="entrees-service-notice">
+            <span class="esn-icon">\u{1F552}</span>
+            <span class="esn-text">${entreesNoticeTexts2[currentLang] || entreesNoticeTexts2.fr}</span>
           </div>
         ` : ""}
         <div class="hub-dishes-grid"></div>
@@ -5694,6 +5708,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     const items = activeCategory.items || [];
     const isBreakfastCurrent = currentCatId === "petit-dejeuner";
     const isBreakfastCurrentOver = isBreakfastCurrent && !isBreakfastAvailable();
+    const isEntreesCurrent = currentCatId === "entrees";
     const voirToutTexts = {
       fr: "Voir tout",
       en: "View all",
@@ -5715,6 +5730,13 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       es: "F\xF3rmulas de desayuno servidas hasta las 13:00 de lunes a viernes y 14:00 fines de semana.",
       ar: "\u064A\u064F\u0642\u062F\u0651\u064E\u0645 \u0641\u0637\u0648\u0631 \u0627\u0644\u0635\u0628\u0627\u062D \u062D\u062A\u0649 \u0627\u0644\u0633\u0627\u0639\u0629 13:00 \u0637\u064A\u0644\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639 \u0648\u062D\u062A\u0649 14:00 \u0641\u064A \u0639\u0637\u0644\u0629 \u0646\u0647\u0627\u064A\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639."
     };
+    const entreesNoticeTexts = {
+      fr: "Service commence \xE0 12h00 en semaine, 13h00 le samedi et 14h00 le dimanche.",
+      en: "Service starts at 12:00 on weekdays, 13:00 on Saturday and 14:00 on Sunday.",
+      de: "Service beginnt werktags um 12:00 Uhr, samstags um 13:00 Uhr und sonntags um 14:00 Uhr.",
+      es: "El servicio comienza a las 12:00 entre semana, 13:00 los s\xE1bados y 14:00 los domingos.",
+      ar: "\u064A\u0628\u062F\u0623 \u062A\u0642\u062F\u064A\u0645 \u0627\u0644\u0648\u062C\u0628\u0627\u062A \u0639\u0646\u062F \u0627\u0644\u0633\u0627\u0639\u0629 12:00 \u062E\u0644\u0627\u0644 \u0627\u0644\u0623\u0633\u0628\u0648\u0639\u060C 13:00 \u064A\u0648\u0645 \u0627\u0644\u0633\u0628\u062A \u0648 14:00 \u064A\u0648\u0645 \u0627\u0644\u0623\u062D\u062F."
+    };
     menuGrid.innerHTML = `
     <div class="hub-single-category-wrap">
       <div class="hub-section-header">
@@ -5731,6 +5753,12 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
         <div class="breakfast-service-notice">
           <span class="bsn-icon">\u{1F552}</span>
           <span class="bsn-text">${bSingleNoticeTexts[currentLang] || bSingleNoticeTexts.fr}</span>
+        </div>
+      ` : ""}
+      ${isEntreesCurrent ? `
+        <div class="entrees-service-notice">
+          <span class="esn-icon">\u{1F552}</span>
+          <span class="esn-text">${entreesNoticeTexts[currentLang] || entreesNoticeTexts.fr}</span>
         </div>
       ` : ""}
       <div class="hub-dishes-grid"></div>

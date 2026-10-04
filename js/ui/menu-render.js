@@ -287,13 +287,22 @@ export function renderDishes(filterTerm = "") {
 
       const isBreakfastCat = (catId === "petit-dejeuner");
       const isBreakfastCatOver = isBreakfastCat && !isBreakfastAvailable();
+      const isEntreesCat = (catId === "entrees");
 
       const bNoticeTexts = {
         fr: "Formules petit-déjeuner servies jusqu'à 13h00 en semaine et 14h00 le week-end.",
         en: "Breakfast formulas are served until 13:00 on weekdays and 14:00 on weekends.",
         de: "Frühstücksangebote werden werktags bis 13:00 Uhr und am Wochenende bis 14:00 Uhr serviert.",
-        es: "Fórmulas de desayuno servidas hasta las 13:00 de lunes a viernes y 14:00 fines de semana.",
+        es: "Fórmulas de desayuno servidas hasta las 13:00 de lunes a viernes et 14:00 fines de semana.",
         ar: "يُقدَّم فطور الصباح حتى الساعة 13:00 طيلة الأسبوع وحتى 14:00 في عطلة نهاية الأسبوع."
+      };
+
+      const entreesNoticeTexts = {
+        fr: "Service commence à 12h00 en semaine, 13h00 le samedi et 14h00 le dimanche.",
+        en: "Service starts at 12:00 on weekdays, 13:00 on Saturday and 14:00 on Sunday.",
+        de: "Service beginnt werktags um 12:00 Uhr, samstags um 13:00 Uhr und sonntags um 14:00 Uhr.",
+        es: "El servicio comienza a las 12:00 entre semana, 13:00 los sábados y 14:00 los domingos.",
+        ar: "يبدأ تقديم الوجبات عند الساعة 12:00 خلال الأسبوع، 13:00 يوم السبت و 14:00 يوم الأحد."
       };
 
       catSection.innerHTML = `
@@ -307,6 +316,12 @@ export function renderDishes(filterTerm = "") {
           <div class="breakfast-service-notice">
             <span class="bsn-icon">🕒</span>
             <span class="bsn-text">${bNoticeTexts[currentLang] || bNoticeTexts.fr}</span>
+          </div>
+        ` : ""}
+        ${isEntreesCat ? `
+          <div class="entrees-service-notice">
+            <span class="esn-icon">🕒</span>
+            <span class="esn-text">${entreesNoticeTexts[currentLang] || entreesNoticeTexts.fr}</span>
           </div>
         ` : ""}
         <div class="hub-dishes-grid"></div>
@@ -339,6 +354,7 @@ export function renderDishes(filterTerm = "") {
   const items = activeCategory.items || [];
   const isBreakfastCurrent = (currentCatId === "petit-dejeuner");
   const isBreakfastCurrentOver = isBreakfastCurrent && !isBreakfastAvailable();
+  const isEntreesCurrent = (currentCatId === "entrees");
 
   const voirToutTexts = {
     fr: "Voir tout",
@@ -364,6 +380,14 @@ export function renderDishes(filterTerm = "") {
     ar: "يُقدَّم فطور الصباح حتى الساعة 13:00 طيلة الأسبوع وحتى 14:00 في عطلة نهاية الأسبوع."
   };
 
+  const entreesNoticeTexts = {
+    fr: "Service commence à 12h00 en semaine, 13h00 le samedi et 14h00 le dimanche.",
+    en: "Service starts at 12:00 on weekdays, 13:00 on Saturday and 14:00 on Sunday.",
+    de: "Service beginnt werktags um 12:00 Uhr, samstags um 13:00 Uhr und sonntags um 14:00 Uhr.",
+    es: "El servicio comienza a las 12:00 entre semana, 13:00 los sábados y 14:00 los domingos.",
+    ar: "يبدأ تقديم الوجبات عند الساعة 12:00 خلال الأسبوع، 13:00 يوم السبت و 14:00 يوم الأحد."
+  };
+
   menuGrid.innerHTML = `
     <div class="hub-single-category-wrap">
       <div class="hub-section-header">
@@ -380,6 +404,12 @@ export function renderDishes(filterTerm = "") {
         <div class="breakfast-service-notice">
           <span class="bsn-icon">🕒</span>
           <span class="bsn-text">${bSingleNoticeTexts[currentLang] || bSingleNoticeTexts.fr}</span>
+        </div>
+      ` : ""}
+      ${isEntreesCurrent ? `
+        <div class="entrees-service-notice">
+          <span class="esn-icon">🕒</span>
+          <span class="esn-text">${entreesNoticeTexts[currentLang] || entreesNoticeTexts.fr}</span>
         </div>
       ` : ""}
       <div class="hub-dishes-grid"></div>
