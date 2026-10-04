@@ -308,14 +308,37 @@ export function setPendingActionAfterTableSelect(action) {
 }
 
 export function parseTableFromUrl() {
+  // Purger impérativement toute table persistée dans le localStorage du portable
+  try { localStorage.removeItem("grey_corner_table"); } catch(e) {}
+
   const params = new URLSearchParams(window.location.search);
   const table = params.get("table") || params.get("t");
+
   if (table) {
-    clientTable = table;
-    try { localStorage.setItem("grey_corner_table", table); } catch(e) {}
+    clientTable = String(table);
+    // Mémoriser uniquement pour cet onglet / session active (< 2h)
+    try {
+      sessionStorage.setItem("gc_session_table", clientTable);
+      sessionStorage.setItem("gc_session_table_time", String(Date.now()));
+    } catch(e) {}
   } else {
-    try { clientTable = localStorage.getItem("grey_corner_table") || null; } catch(e) { clientTable = null; }
+    // Si pas de paramètre dans l'URL, vérifier si la session active dans l'onglet est récente (< 2h)
+    try {
+      const sessTable = sessionStorage.getItem("gc_session_table");
+      const sessTime = parseInt(sessionStorage.getItem("gc_session_table_time") || "0", 10);
+      const isFresh = sessTime && (Date.now() - sessTime < 2 * 60 * 60 * 1000);
+      if (sessTable && isFresh) {
+        clientTable = String(sessTable);
+      } else {
+        clientTable = null;
+        sessionStorage.removeItem("gc_session_table");
+        sessionStorage.removeItem("gc_session_table_time");
+      }
+    } catch(e) {
+      clientTable = null;
+    }
   }
+
   updateTableUI();
   return clientTable;
 }
@@ -323,12 +346,35 @@ export function parseTableFromUrl() {
 export function updateTableUI() {
   const badge = document.getElementById("cdTableBadge");
   if (badge) {
-    badge.textContent = clientTable ? `Table ${clientTable}` : "Sélectionner Table";
+    const lang = window.currentLang || "fr";
+    const selectText = {
+      fr: "Sélectionner Table",
+      en: "Select Table",
+      de: "Tisch wählen",
+      es: "Seleccionar Mesa",
+      ar: "اختر الطاولة"
+    };
+    const tableText = {
+      fr: "Table",
+      en: "Table",
+      de: "Tisch",
+      es: "Mesa",
+      ar: "طاولة"
+    };
+    badge.textContent = clientTable ? `${tableText[lang] || "Table"} ${clientTable}` : (selectText[lang] || "Sélectionner Table");
     badge.style.cursor = "pointer";
   }
   const ndTableBadge = document.getElementById("ndTableBadge");
   if (ndTableBadge) {
-    ndTableBadge.textContent = clientTable ? getTableZoneName(clientTable) : "Table non définie";
+    const lang = window.currentLang || "fr";
+    const noTableText = {
+      fr: "Table non définie",
+      en: "Table not defined",
+      de: "Tisch nicht definiert",
+      es: "Mesa no definida",
+      ar: "طاولة غير محددة"
+    };
+    ndTableBadge.textContent = clientTable ? getTableZoneName(clientTable) : (noTableText[lang] || "Table non définie");
   }
   const bellBtn = document.getElementById("notificationBellBtn");
   if (bellBtn) {
@@ -338,14 +384,19 @@ export function updateTableUI() {
 
 export function setTable(num) {
   clientTable = String(num);
-  try { localStorage.setItem("grey_corner_table", clientTable); } catch(e) {}
+
+  // Sécurité : Ne jamais persister dans le localStorage du smartphone client
+  try { localStorage.removeItem("grey_corner_table"); } catch(e) {}
+
+  // Garder uniquement pour la session courante du repas (< 2h)
+  try {
+    sessionStorage.setItem("gc_session_table", clientTable);
+    sessionStorage.setItem("gc_session_table_time", String(Date.now()));
+  } catch(e) {}
+
   updateTableUI();
 
-  try {
-    const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?table=${num}`;
-    window.history.pushState({ path: newUrl }, '', newUrl);
-  } catch (e) {}
-
+  // Ne pas pousser ?table= dans l'historique du navigateur afin d'éviter qu'il soit mémorisé dans les favoris / historique
   closeTableModal();
 
   if (typeof window.subscribeToActiveWaiterEvents === "function") {

@@ -4409,17 +4409,31 @@
     pendingActionAfterTableSelect = action;
   }
   function parseTableFromUrl() {
+    try {
+      localStorage.removeItem("grey_corner_table");
+    } catch (e) {
+    }
     const params = new URLSearchParams(window.location.search);
     const table = params.get("table") || params.get("t");
     if (table) {
-      clientTable = table;
+      clientTable = String(table);
       try {
-        localStorage.setItem("grey_corner_table", table);
+        sessionStorage.setItem("gc_session_table", clientTable);
+        sessionStorage.setItem("gc_session_table_time", String(Date.now()));
       } catch (e) {
       }
     } else {
       try {
-        clientTable = localStorage.getItem("grey_corner_table") || null;
+        const sessTable = sessionStorage.getItem("gc_session_table");
+        const sessTime = parseInt(sessionStorage.getItem("gc_session_table_time") || "0", 10);
+        const isFresh = sessTime && Date.now() - sessTime < 2 * 60 * 60 * 1e3;
+        if (sessTable && isFresh) {
+          clientTable = String(sessTable);
+        } else {
+          clientTable = null;
+          sessionStorage.removeItem("gc_session_table");
+          sessionStorage.removeItem("gc_session_table_time");
+        }
       } catch (e) {
         clientTable = null;
       }
@@ -4430,12 +4444,35 @@
   function updateTableUI() {
     const badge = document.getElementById("cdTableBadge");
     if (badge) {
-      badge.textContent = clientTable ? `Table ${clientTable}` : "S\xE9lectionner Table";
+      const lang = window.currentLang || "fr";
+      const selectText = {
+        fr: "S\xE9lectionner Table",
+        en: "Select Table",
+        de: "Tisch w\xE4hlen",
+        es: "Seleccionar Mesa",
+        ar: "\u0627\u062E\u062A\u0631 \u0627\u0644\u0637\u0627\u0648\u0644\u0629"
+      };
+      const tableText = {
+        fr: "Table",
+        en: "Table",
+        de: "Tisch",
+        es: "Mesa",
+        ar: "\u0637\u0627\u0648\u0644\u0629"
+      };
+      badge.textContent = clientTable ? `${tableText[lang] || "Table"} ${clientTable}` : selectText[lang] || "S\xE9lectionner Table";
       badge.style.cursor = "pointer";
     }
     const ndTableBadge = document.getElementById("ndTableBadge");
     if (ndTableBadge) {
-      ndTableBadge.textContent = clientTable ? getTableZoneName(clientTable) : "Table non d\xE9finie";
+      const lang = window.currentLang || "fr";
+      const noTableText = {
+        fr: "Table non d\xE9finie",
+        en: "Table not defined",
+        de: "Tisch nicht definiert",
+        es: "Mesa no definida",
+        ar: "\u0637\u0627\u0648\u0644\u0629 \u063A\u064A\u0631 \u0645\u062D\u062F\u062F\u0629"
+      };
+      ndTableBadge.textContent = clientTable ? getTableZoneName(clientTable) : noTableText[lang] || "Table non d\xE9finie";
     }
     const bellBtn = document.getElementById("notificationBellBtn");
     if (bellBtn) {
@@ -4445,15 +4482,15 @@
   function setTable(num) {
     clientTable = String(num);
     try {
-      localStorage.setItem("grey_corner_table", clientTable);
+      localStorage.removeItem("grey_corner_table");
+    } catch (e) {
+    }
+    try {
+      sessionStorage.setItem("gc_session_table", clientTable);
+      sessionStorage.setItem("gc_session_table_time", String(Date.now()));
     } catch (e) {
     }
     updateTableUI();
-    try {
-      const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?table=${num}`;
-      window.history.pushState({ path: newUrl }, "", newUrl);
-    } catch (e) {
-    }
     closeTableModal();
     if (typeof window.subscribeToActiveWaiterEvents === "function") {
       window._currentSubscribedTable = null;
@@ -6347,6 +6384,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
           }
           renderMenu();
           updateCartUI();
+          updateTableUI();
           updateFeedbackTexts();
           if (GPSService && GPSService.lastState) {
             GPSService.updateUI(GPSService.lastState);

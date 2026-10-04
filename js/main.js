@@ -11,7 +11,7 @@ import { submitPreOrder, submitOrderOrWhatsApp } from './services/orders.js';
 import { triggerQuickServiceCall, renderNotificationHistory, subscribeToActiveWaiterEvents, setupNotificationDrawer } from './services/notifications.js';
 import {
   openCartDrawer, closeCartDrawer, openTableModal, closeTableModal,
-  showTableSelectorModal, parseTableFromUrl, clientTable,
+  showTableSelectorModal, parseTableFromUrl, clientTable, updateTableUI,
   setupBurgerMenu,
   GC_showGpsBlocked, GC_hideGpsBlocked, GC_switchGpsTab, GC_dismissGpsBlocked,
   GC_showPreorderModal, GC_hidePreorderModal
@@ -123,6 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         renderMenu();
         updateCartUI();
+        updateTableUI();
         updateFeedbackTexts();
         if (GPSService && GPSService.lastState) {
           GPSService.updateUI(GPSService.lastState);
