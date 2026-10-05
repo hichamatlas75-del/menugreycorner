@@ -1,20 +1,19 @@
-.gradle/  
-.idea/  
-build/  
-app/  
-gradle/  
-local.properties
-build.gradle
-settings.gradle
-gradle.properties
-gradlew
-gradlew.bat
+# IDE & System
+.idea/
+.vscode/
+.DS_Store
+
+# Cloudflare Wrangler
 .wrangler/
+
+# Android Build Outputs
+.gradle/
+**/build/
+**/local.properties
+*.iml
 
 # Firebase & Cloud Credentials (Security)
 *serviceAccountKey.json
 *service_account*.json
 *.pem
 *.key
-
-

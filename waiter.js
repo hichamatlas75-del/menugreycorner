@@ -63,8 +63,54 @@ function updatePushUI(state, customText) {
     }
 }
 
+function isAndroidNativeApp() {
+    return (typeof AndroidInterface !== "undefined")
+        || (typeof window !== "undefined" && window.AndroidInterface)
+        || (typeof window !== "undefined" && window.__isNativeAndroid)
+        || (navigator.userAgent && navigator.userAgent.includes("GreyCornerWaiterApp"));
+}
+
+async function syncNativeFcmToken() {
+    const ai = (typeof AndroidInterface !== "undefined")
+        ? AndroidInterface
+        : ((typeof window !== "undefined" && window.AndroidInterface) ? window.AndroidInterface : null);
+
+    const token = (window.__nativeFcmToken) || (ai && typeof ai.getFcmToken === "function" ? ai.getFcmToken() : null);
+    if (!token) {
+        setTimeout(syncNativeFcmToken, 2000);
+        return;
+    }
+
+    currentFcmToken = token;
+    console.log("📲 Token FCM natif Android synchronisé:", token.substring(0, 15) + "...");
+
+    const firestoreDb = (typeof db !== "undefined" && db) ? db : (typeof firebase !== "undefined" && firebase.firestore ? firebase.firestore() : null);
+    if (firestoreDb) {
+        try {
+            await firestoreDb.collection("waiter_fcm_tokens").doc(myDeviceId).set({
+                token: token,
+                deviceId: myDeviceId,
+                waiterId: activeWaiterId,
+                waiterName: activeWaiterName,
+                active: true,
+                platform: "android_native",
+                userAgent: navigator.userAgent,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+            console.log("☁️ Token natif Android enregistré dans Firestore.");
+        } catch (e) {
+            console.warn("Erreur enregistrement token natif:", e);
+        }
+    }
+}
+
 function checkImmediatePushAndConnection() {
-    if ("Notification" in window) {
+    if (isAndroidNativeApp()) {
+        updatePushUI("granted", "App Native (FCM OK)");
+        const btn = document.getElementById("pushNotifBtn");
+        if (btn) btn.title = "Application Android Native — FCM et Service de maintien en arrière-plan actifs.";
+        syncNativeFcmToken();
+    } else if ("Notification" in window) {
         if (Notification.permission === "granted") {
             updatePushUI("granted", "Push Actif");
         } else if (Notification.permission === "denied") {
@@ -153,6 +199,12 @@ window.addEventListener("offline", () => setConnectionStatus("offline"));
 // ── GESTIONNAIRE PUSH FCM (Permissions & Tokens) ──────────────────────────────
 
 async function initWaiterFcmPush(swReg) {
+    if (isAndroidNativeApp()) {
+        updatePushUI("granted", "App Native (FCM OK)");
+        syncNativeFcmToken();
+        return;
+    }
+
     const btn = document.getElementById("pushNotifBtn");
     if (btn && !btn._hasClickListener) {
         btn._hasClickListener = true;
@@ -789,11 +841,15 @@ function processCallsFeed(calls) {
         if (btnAccept) {
             btnAccept.addEventListener("click", () => {
                 dbService.updateCallStatus(call.id, "accepted", activeWaiterId);
+                const ai = (typeof AndroidInterface !== "undefined") ? AndroidInterface : (typeof window !== "undefined" ? window.AndroidInterface : null);
+                if (ai && typeof ai.cancelAlert === "function") ai.cancelAlert(call.id);
             });
         }
         if (btnComplete) {
             btnComplete.addEventListener("click", () => {
                 dbService.updateCallStatus(call.id, "completed");
+                const ai = (typeof AndroidInterface !== "undefined") ? AndroidInterface : (typeof window !== "undefined" ? window.AndroidInterface : null);
+                if (ai && typeof ai.cancelAlert === "function") ai.cancelAlert(call.id);
             });
         }
 
@@ -922,11 +978,15 @@ function processPreOrdersFeed(orders) {
         if (btnAccept) {
             btnAccept.addEventListener("click", () => {
                 dbService.updatePreOrderStatus(order.id, "accepted", activeWaiterId);
+                const ai = (typeof AndroidInterface !== "undefined") ? AndroidInterface : (typeof window !== "undefined" ? window.AndroidInterface : null);
+                if (ai && typeof ai.cancelAlert === "function") ai.cancelAlert(order.id);
             });
         }
         if (btnComplete) {
             btnComplete.addEventListener("click", () => {
                 dbService.updatePreOrderStatus(order.id, "completed");
+                const ai = (typeof AndroidInterface !== "undefined") ? AndroidInterface : (typeof window !== "undefined" ? window.AndroidInterface : null);
+                if (ai && typeof ai.cancelAlert === "function") ai.cancelAlert(order.id);
             });
         }
 
