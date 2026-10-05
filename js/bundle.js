@@ -3809,12 +3809,12 @@
   }
   function isBreakfastAvailable() {
     const { isWeekend, decimalHour } = getMoroccoDateTime();
-    const cutoff = isWeekend ? 14 : 12;
+    const cutoff = isWeekend ? 14 : 13;
     return decimalHour >= 7 && decimalHour < cutoff;
   }
   function getBreakfastScheduleInfo() {
     const { weekday, decimalHour, isWeekend } = getMoroccoDateTime();
-    const cutoffHour = isWeekend ? 14 : 12;
+    const cutoffHour = isWeekend ? 14 : 13;
     const isAvailable = decimalHour >= 7 && decimalHour < cutoffHour;
     const isBefore = decimalHour < 7;
     const isAfter = decimalHour >= cutoffHour;
@@ -3885,7 +3885,7 @@
       </div>
       <div class="esn-schedule-pills">
         <span class="esn-pill ${isWk ? "esn-pill-active" : ""}">
-          ${isWk ? '<span class="esn-pin">\u{1F4CD}</span>' : ""}${slotLabels.weekday[lang] || slotLabels.weekday.fr} : 07h00 \u2013 12h00
+          ${isWk ? '<span class="esn-pin">\u{1F4CD}</span>' : ""}${slotLabels.weekday[lang] || slotLabels.weekday.fr} : 07h00 \u2013 13h00
         </span>
         <span class="esn-pill ${isWkEnd ? "esn-pill-active" : ""}">
           ${isWkEnd ? '<span class="esn-pin">\u{1F4CD}</span>' : ""}${slotLabels.weekend[lang] || slotLabels.weekend.fr} : 07h00 \u2013 14h00

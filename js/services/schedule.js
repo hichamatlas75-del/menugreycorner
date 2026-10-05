@@ -60,23 +60,23 @@ export function isRestaurantOpen() {
 
 /**
  * Check if breakfast service is currently available
- * - Mon - Fri (Semaine): 07:00 – 12:00
+ * - Mon - Fri (Semaine): 07:00 – 13:00
  * - Sat - Sun (Week-end): 07:00 – 14:00
  */
 export function isBreakfastAvailable() {
   const { isWeekend, decimalHour } = getMoroccoDateTime();
-  const cutoff = isWeekend ? 14 : 12;
+  const cutoff = isWeekend ? 14 : 13;
   return decimalHour >= 7 && decimalHour < cutoff;
 }
 
 /**
  * Detect current day and breakfast service status
- * - Mon - Fri: 07:00 – 12:00
+ * - Mon - Fri: 07:00 – 13:00
  * - Sat - Sun: 07:00 – 14:00
  */
 export function getBreakfastScheduleInfo() {
   const { weekday, decimalHour, isWeekend } = getMoroccoDateTime();
-  const cutoffHour = isWeekend ? 14 : 12;
+  const cutoffHour = isWeekend ? 14 : 13;
   const isAvailable = decimalHour >= 7 && decimalHour < cutoffHour;
   const isBefore = decimalHour < 7;
   const isAfter = decimalHour >= cutoffHour;
@@ -157,7 +157,7 @@ export function getBreakfastNoticeInner(lang = "fr") {
       </div>
       <div class="esn-schedule-pills">
         <span class="esn-pill ${isWk ? 'esn-pill-active' : ''}">
-          ${isWk ? '<span class="esn-pin">📍</span>' : ''}${slotLabels.weekday[lang] || slotLabels.weekday.fr} : 07h00 – 12h00
+          ${isWk ? '<span class="esn-pin">📍</span>' : ''}${slotLabels.weekday[lang] || slotLabels.weekday.fr} : 07h00 – 13h00
         </span>
         <span class="esn-pill ${isWkEnd ? 'esn-pill-active' : ''}">
           ${isWkEnd ? '<span class="esn-pin">📍</span>' : ''}${slotLabels.weekend[lang] || slotLabels.weekend.fr} : 07h00 – 14h00
