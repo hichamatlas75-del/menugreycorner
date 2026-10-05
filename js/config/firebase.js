@@ -136,26 +136,47 @@ if (typeof window !== "undefined") {
     window.FIREBASE_VAPID_KEY = FIREBASE_VAPID_KEY;
 }
 
+export const WORKER_URL = "https://greycorner-fcm.hichamatlas75.workers.dev";
+export const WORKER_SECRET = "greycorner_secure_2026";
+
 export function sendFcmToWaiters(type, title, body, tableId, docId) {
     if (typeof fetch === "undefined") return;
 
-    fetch("/api/send-fcm", {
+    const payload = {
+        type: type,
+        title: title,
+        body: body,
+        table: String(tableId),
+        tableId: String(tableId),
+        docId: String(docId)
+    };
+
+    // 1. Appel du Worker Cloudflare opérationnel (greycorner-fcm)
+    fetch(WORKER_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            type: type,
-            title: title,
-            body: body,
-            tableId: String(tableId),
-            docId: String(docId)
-        })
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${WORKER_SECRET}`
+        },
+        body: JSON.stringify(payload)
     }).then(res => {
         if (res.ok) {
-            console.log("🚀 FCM Push relayé avec succès via /api/send-fcm");
+            console.log("🚀 FCM Push relayé avec succès via greycorner-fcm Worker");
+        } else {
+            console.warn("⚠️ Worker greycorner-fcm a renvoyé:", res.status, "— repli sur /api/send-fcm");
+            fetch("/api/send-fcm", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            }).catch(() => {});
         }
     }).catch(err => {
-        // En local ou si l'endpoint serverless n'est pas configuré, Firestore trigger / Cloud Function prend le relais
-        console.log("ℹ️ FCM HTTP relay info:", err.message);
+        console.warn("⚠️ Échec réseau greycorner-fcm:", err.message, "— repli sur /api/send-fcm");
+        fetch("/api/send-fcm", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        }).catch(() => {});
     });
 }
 
