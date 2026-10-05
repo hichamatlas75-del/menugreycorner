@@ -8,7 +8,16 @@ import { menuData } from '../data/menu-data.js';
 import { currentLang } from '../services/i18n.js';
 import { addToCart, showToast } from '../services/cart.js';
 import { closeBurgerMenu, checkItemOptionsAndAdd } from './modals.js';
-import { isBreakfastAvailable, getKitchenNoticeInner, getBreakfastNoticeInner } from '../services/schedule.js';
+import {
+  isBreakfastAvailable,
+  isKitchenAvailable,
+  isKitchenCategory,
+  getKitchenScheduleInfo,
+  getKitchenBlockedMessage,
+  getBreakfastBlockedMessage,
+  getKitchenNoticeInner,
+  getBreakfastNoticeInner
+} from '../services/schedule.js';
 
 export let activeCategoryId = null;
 export let isViewAllMode = false;
@@ -369,7 +378,7 @@ export function renderDishes(filterTerm = "") {
           ${getBreakfastNoticeInner(currentLang)}
         </div>
       ` : ""}
-      ${isEntreesCurrent ? `
+      ${isKitchenCategory(currentCatId) ? `
         <div class="entrees-service-notice">
           ${getKitchenNoticeInner(currentLang)}
         </div>
@@ -397,9 +406,16 @@ export function renderDishes(filterTerm = "") {
 function createDishCard(item, categoryId, itemIndex, categoryBadge = "") {
   const card = document.createElement("article");
   const isBreakfast = (categoryId === "petit-dejeuner");
-  const isOver = isBreakfast && !isBreakfastAvailable();
+  const isKitchen = isKitchenCategory(categoryId);
+
+  const isBreakfastBlocked = isBreakfast && !isBreakfastAvailable();
+  const isKitchenBlocked = isKitchen && !isKitchenAvailable();
+  const isOver = isBreakfastBlocked || isKitchenBlocked;
 
   card.className = `hub-card menu-item ${isOver ? "hub-card-disabled" : ""}`;
+  if (isOver) {
+    card.dataset.blockedReason = isKitchenBlocked ? "kitchen" : "breakfast";
+  }
   card.id = `item-${categoryId}-${itemIndex}`;
   card.style.setProperty("--item-index", itemIndex);
   card._menuItem = item;
@@ -414,23 +430,53 @@ function createDishCard(item, categoryId, itemIndex, categoryBadge = "") {
         : currentLang === "ar" ? "جديد"
           : "NOUVEAU";
 
-  const orderBtnText = isOver
-    ? (currentLang === "en" ? "Ended"
+  let orderBtnText = "";
+  let unavailBadgeText = "";
+
+  if (isBreakfastBlocked) {
+    orderBtnText = currentLang === "en" ? "Ended"
       : currentLang === "de" ? "Beendet"
         : currentLang === "es" ? "Finalizado"
           : currentLang === "ar" ? "انتهى"
-            : "Terminé")
-    : (currentLang === "en" ? "Order"
+            : "Terminé";
+
+    unavailBadgeText = currentLang === "en" ? "🕒 Until 13h (14h w-e)"
+      : currentLang === "de" ? "🕒 Bis 13h (14h WE)"
+        : currentLang === "es" ? "🕒 Hasta las 13h (14h finde)"
+          : currentLang === "ar" ? "🕒 حتى 13:00 (14:00 عطلة)"
+            : "🕒 Servi jusqu'à 13h (14h w-e)";
+  } else if (isKitchenBlocked) {
+    const kInfo = getKitchenScheduleInfo();
+    if (kInfo.isClosed) {
+      orderBtnText = currentLang === "en" ? "Closed"
+        : currentLang === "de" ? "Geschlossen"
+          : currentLang === "es" ? "Cerrado"
+            : currentLang === "ar" ? "مغلق"
+              : "Fermé";
+      unavailBadgeText = currentLang === "en" ? "🌙 Closed"
+        : currentLang === "de" ? "🌙 Geschlossen"
+          : currentLang === "es" ? "🌙 Cerrado"
+            : currentLang === "ar" ? "🌙 مغلق"
+              : "🌙 Service fermé";
+    } else {
+      orderBtnText = currentLang === "en" ? `From ${kInfo.startHour}:00`
+        : currentLang === "de" ? `Ab ${kInfo.startHour}h`
+          : currentLang === "es" ? `Desde ${kInfo.startHour}h`
+            : currentLang === "ar" ? `من ${kInfo.startHour}:00`
+              : `Dès ${kInfo.startHour}h`;
+      unavailBadgeText = currentLang === "en" ? `🕒 Kitchen at ${kInfo.startHour}:00`
+        : currentLang === "de" ? `🕒 Küche ab ${kInfo.startHour}h`
+          : currentLang === "es" ? `🕒 Cocina desde las ${kInfo.startHour}h`
+            : currentLang === "ar" ? `🕒 المطبخ من ${kInfo.startHour}:00`
+              : `🕒 Cuisine dès ${kInfo.startHour}h00`;
+    }
+  } else {
+    orderBtnText = currentLang === "en" ? "Order"
       : currentLang === "de" ? "Bestellen"
         : currentLang === "es" ? "Pedir"
           : currentLang === "ar" ? "اطلب"
-            : "Commander");
-
-  const unavailBadgeText = currentLang === "en" ? "🕒 Until 13h (14h w-e)"
-    : currentLang === "de" ? "🕒 Bis 13h (14h WE)"
-      : currentLang === "es" ? "🕒 Hasta las 13h (14h finde)"
-        : currentLang === "ar" ? "🕒 حتى 13:00 (14:00 عطلة)"
-          : "🕒 Servi jusqu'à 13h (14h w-e)";
+            : "Commander";
+  }
 
   card.innerHTML = `
     <div class="hub-card-media">
@@ -663,19 +709,38 @@ export function openLightboxForItem(item, imgUrl) {
   if (item && lbAddBtn) {
     lbAddBtn.style.display = "block";
     const isBreakfast = (item.categoryId === "petit-dejeuner");
-    const isOver = isBreakfast && !isBreakfastAvailable();
+    const isKitchen = isKitchenCategory(item.categoryId);
+    const isBreakfastBlocked = isBreakfast && !isBreakfastAvailable();
+    const isKitchenBlocked = isKitchen && !isKitchenAvailable();
+    const isBlocked = isBreakfastBlocked || isKitchenBlocked;
 
-    if (isOver) {
+    if (isBlocked) {
       lbAddBtn.disabled = true;
       lbAddBtn.classList.add("btn-disabled");
       lbAddBtn.style.opacity = "0.55";
       lbAddBtn.style.cursor = "not-allowed";
-      const endText = currentLang === "en" ? "Service Ended"
-        : currentLang === "de" ? "Service Beendet"
-          : currentLang === "es" ? "Servicio Finalizado"
-            : currentLang === "ar" ? "انتهت فترة التقديم"
-              : "Service Terminé";
-      lbAddBtn.textContent = endText;
+      if (isKitchenBlocked) {
+        const kInfo = getKitchenScheduleInfo();
+        const kText = kInfo.isClosed
+          ? (currentLang === "en" ? "Kitchen Closed"
+            : currentLang === "de" ? "Küche geschlossen"
+              : currentLang === "es" ? "Cocina cerrada"
+                : currentLang === "ar" ? "المطبخ مغلق"
+                  : "Cuisine Fermée")
+          : (currentLang === "en" ? `Kitchen from ${kInfo.startHour}:00`
+            : currentLang === "de" ? `Küche ab ${kInfo.startHour}:00`
+              : currentLang === "es" ? `Cocina desde las ${kInfo.startHour}:00`
+                : currentLang === "ar" ? `المطبخ ابتداءً من ${kInfo.startHour}:00`
+                  : `Cuisine dès ${kInfo.startHour}h00`);
+        lbAddBtn.textContent = kText;
+      } else {
+        const endText = currentLang === "en" ? "Service Ended"
+          : currentLang === "de" ? "Service Beendet"
+            : currentLang === "es" ? "Servicio Finalizado"
+              : currentLang === "ar" ? "انتهت فترة التقديم"
+                : "Service Terminé";
+        lbAddBtn.textContent = endText;
+      }
     } else {
       lbAddBtn.disabled = false;
       lbAddBtn.classList.remove("btn-disabled");
@@ -708,14 +773,11 @@ export function enableSecureLightbox() {
     lbAddBtn._hasListener = true;
     lbAddBtn.addEventListener("click", () => {
       if (lbAddBtn.disabled) {
-        const noticeTexts = {
-          fr: "Le service petit-déjeuner est terminé (servi jusqu'à 13h00 en semaine et 14h00 le week-end).",
-          en: "Breakfast service has ended (served until 13:00 on weekdays, 14:00 on weekends).",
-          de: "Der Frühstücksservice ist beendet (werktags bis 13:00 Uhr, am Wochenende bis 14:00 Uhr).",
-          es: "El servicio de desayuno ha finalizado (servido hasta las 13:00 de lunes a viernes y 14:00 fines de semana).",
-          ar: "انتهت فترة تقديم فطور الصباح (يُقدَّم حتى 13:00 طيلة الأسبوع وحتى 14:00 في عطلة نهاية الأسبوع)."
-        };
-        showToast(noticeTexts[currentLang] || noticeTexts.fr);
+        if (activeLightboxItem && isKitchenCategory(activeLightboxItem.categoryId)) {
+          showToast(getKitchenBlockedMessage(currentLang));
+        } else {
+          showToast(getBreakfastBlockedMessage(currentLang));
+        }
         return;
       }
       if (activeLightboxItem) {
@@ -801,14 +863,11 @@ export function renderMenu() {
         const card = addBtn.closest(".hub-card");
         if (card && card._menuItem) {
           if (card.classList.contains("hub-card-disabled") || addBtn.disabled) {
-            const noticeTexts = {
-              fr: "Le service petit-déjeuner est terminé (servi jusqu'à 13h00 en semaine et 14h00 le week-end).",
-              en: "Breakfast service has ended (served until 13:00 on weekdays, 14:00 on weekends).",
-              de: "Der Frühstücksservice ist beendet (werktags bis 13:00 Uhr, am Wochenende bis 14:00 Uhr).",
-              es: "El servicio de desayuno ha finalizado (servido hasta las 13:00 de lunes a viernes y 14:00 fines de semana).",
-              ar: "انتهت فترة تقديم فطور الصباح (يُقدَّم حتى 13:00 طيلة الأسبوع وحتى 14:00 في عطلة نهاية الأسبوع)."
-            };
-            showToast(noticeTexts[currentLang] || noticeTexts.fr);
+            if (card.dataset.blockedReason === "kitchen" || isKitchenCategory(card._menuItem.categoryId)) {
+              showToast(getKitchenBlockedMessage(currentLang));
+            } else {
+              showToast(getBreakfastBlockedMessage(currentLang));
+            }
             return;
           }
           checkItemOptionsAndAdd(card._menuItem);

@@ -318,6 +318,77 @@ const STATUS_TEXTS = {
 };
 
 /**
+ * Category IDs that belong to the kitchen (repas / cuisine)
+ */
+export const KITCHEN_CATEGORY_IDS = new Set([
+  "entrees",
+  "entrees-chaudes",
+  "plats",
+  "couscous-vendredi",
+  "sandwichs",
+  "burgers",
+  "panini",
+  "pizza",
+  "pasta",
+  "crepes-salees"
+]);
+
+export function isKitchenCategory(catId) {
+  if (!catId) return false;
+  return KITCHEN_CATEGORY_IDS.has(String(catId).toLowerCase().trim());
+}
+
+/**
+ * Check if kitchen service is currently available (orderable)
+ * - Weekdays: 12:00 – 23:00
+ * - Saturday: 13:00 – 23:00
+ * - Sunday: 14:00 – 23:00
+ */
+export function isKitchenAvailable() {
+  const { isBefore, isClosed } = getKitchenScheduleInfo();
+  return !isBefore && !isClosed;
+}
+
+/**
+ * Localized message when kitchen order is blocked
+ */
+export function getKitchenBlockedMessage(lang = "fr") {
+  const info = getKitchenScheduleInfo();
+  if (info.isClosed) {
+    const closedMsgs = {
+      fr: `Le service cuisine est fermé pour la nuit (reprise aujourd'hui à ${info.startHour}h00).`,
+      en: `Kitchen service is closed for the night (resumes today at ${info.startHour}:00).`,
+      es: `El servicio de cocina está cerrado por la noche (reabre hoy a las ${info.startHour}:00).`,
+      de: `Der Küchenservice ist für die Nacht geschlossen (öffnet heute um ${info.startHour}:00 Uhr).`,
+      ar: `خدمة المطبخ مغلقة لهذه الليلة (تستأنف اليوم عند الساعة ${info.startHour}:00).`
+    };
+    return closedMsgs[lang] || closedMsgs.fr;
+  }
+  const beforeMsgs = {
+    fr: `Le service cuisine commence à ${info.startHour}h00 aujourd'hui (12h en semaine, 13h samedi, 14h dimanche).`,
+    en: `Kitchen service starts at ${info.startHour}:00 today (12:00 weekdays, 13:00 Sat, 14:00 Sun).`,
+    es: `El servicio de cocina comienza a las ${info.startHour}:00 hoy (12:00 entre semana, 13:00 sáb, 14:00 dom).`,
+    de: `Der Küchenservice beginnt heute um ${info.startHour}:00 Uhr (12:00 werktags, 13:00 Sa, 14:00 So).`,
+    ar: `يبدأ عمل المطبخ عند الساعة ${info.startHour}:00 اليوم (12:00 خلال الأسبوع، 13:00 السبت، 14:00 الأحد).`
+  };
+  return beforeMsgs[lang] || beforeMsgs.fr;
+}
+
+/**
+ * Localized message when breakfast order is blocked
+ */
+export function getBreakfastBlockedMessage(lang = "fr") {
+  const msgs = {
+    fr: "Le service petit-déjeuner est terminé (servi de 07h00 à 13h00 en semaine et 14h00 le week-end).",
+    en: "Breakfast service has ended (served 07:00 to 13:00 weekdays, 14:00 weekends).",
+    de: "Der Frühstücksservice ist beendet (werktags von 07:00 bis 13:00 Uhr, am Wochenende bis 14:00 Uhr).",
+    es: "El servicio de desayuno ha finalizado (servido de 07:00 a 13:00 de lunes a viernes y 14:00 fines de semana).",
+    ar: "انتهت فترة تقديم فطور الصباح (يُقدَّم من 07:00 إلى 13:00 طيلة الأسبوع وحتى 14:00 في عطلة نهاية الأسبوع)."
+  };
+  return msgs[lang] || msgs.fr;
+}
+
+/**
  * Update the dynamic opening badge in the header
  */
 export function updateScheduleUI() {
@@ -354,11 +425,29 @@ export function updateScheduleUI() {
       el.classList.toggle("is-ended", !isAvail);
     });
   }
+
+  // Check for real-time state changes and re-render dishes if needed
+  const currB = isBreakfastAvailable();
+  const currK = isKitchenAvailable();
+  if (window._prevBreakfastAvailable !== undefined && (window._prevBreakfastAvailable !== currB || window._prevKitchenAvailable !== currK)) {
+    window._prevBreakfastAvailable = currB;
+    window._prevKitchenAvailable = currK;
+    if (typeof window.renderMenu === "function") {
+      window.renderMenu();
+    }
+  } else {
+    window._prevBreakfastAvailable = currB;
+    window._prevKitchenAvailable = currK;
+  }
 }
 
 // Global binding for backwards compatibility
 window.isRestaurantOpen = isRestaurantOpen;
 window.isBreakfastAvailable = isBreakfastAvailable;
+window.isKitchenAvailable = isKitchenAvailable;
+window.isKitchenCategory = isKitchenCategory;
+window.getKitchenBlockedMessage = getKitchenBlockedMessage;
+window.getBreakfastBlockedMessage = getBreakfastBlockedMessage;
 window.updateScheduleUI = updateScheduleUI;
 window.getKitchenScheduleInfo = getKitchenScheduleInfo;
 window.getKitchenNoticeInner = getKitchenNoticeInner;

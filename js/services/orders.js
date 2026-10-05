@@ -3,7 +3,7 @@
  */
 
 import { currentLang } from './i18n.js';
-import { clientCart, saveClientCart, clearCart, showToast } from './cart.js';
+import { clientCart, saveClientCart, clearCart, showToast, checkCartBlockedItems } from './cart.js';
 import { dbService } from '../config/firebase.js';
 import { showTableSelectorModal, setPendingActionAfterTableSelect } from '../ui/modals.js';
 import { subscribeToActiveWaiterEvents } from './notifications.js';
@@ -22,6 +22,13 @@ export function GC_sendWhatsApp() {
     alert(emptyMsgs[currentLang] || emptyMsgs.fr);
     return;
   }
+
+  const blockedCheck = checkCartBlockedItems();
+  if (blockedCheck.blocked) {
+    showToast(blockedCheck.message);
+    return;
+  }
+
   const lang = currentLang || localStorage.getItem('lang') || 'fr';
   const modeLabel = window.GC_preorderMode === 'pickup'
     ? 'À emporter (comptoir)'
@@ -75,6 +82,13 @@ export function submitPreOrder(clientTable, onComplete) {
     if (spinner) spinner.style.display = "none";
     if (onComplete) onComplete();
   };
+
+  const blockedCheck = checkCartBlockedItems();
+  if (blockedCheck.blocked) {
+    resetBtn();
+    showToast(blockedCheck.message);
+    return;
+  }
 
   if (window.systemFrozen) {
     const frozenMsgs = {

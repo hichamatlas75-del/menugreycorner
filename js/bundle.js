@@ -4015,6 +4015,57 @@
       ar: "\u0645\u063A\u0644\u0642 \u0627\u0644\u0622\u0646 \u2022 \u064A\u0641\u062A\u062D \u0639\u0646\u062F 07:00"
     }
   };
+  var KITCHEN_CATEGORY_IDS = /* @__PURE__ */ new Set([
+    "entrees",
+    "entrees-chaudes",
+    "plats",
+    "couscous-vendredi",
+    "sandwichs",
+    "burgers",
+    "panini",
+    "pizza",
+    "pasta",
+    "crepes-salees"
+  ]);
+  function isKitchenCategory(catId) {
+    if (!catId) return false;
+    return KITCHEN_CATEGORY_IDS.has(String(catId).toLowerCase().trim());
+  }
+  function isKitchenAvailable() {
+    const { isBefore, isClosed } = getKitchenScheduleInfo();
+    return !isBefore && !isClosed;
+  }
+  function getKitchenBlockedMessage(lang = "fr") {
+    const info = getKitchenScheduleInfo();
+    if (info.isClosed) {
+      const closedMsgs = {
+        fr: `Le service cuisine est ferm\xE9 pour la nuit (reprise aujourd'hui \xE0 ${info.startHour}h00).`,
+        en: `Kitchen service is closed for the night (resumes today at ${info.startHour}:00).`,
+        es: `El servicio de cocina est\xE1 cerrado por la noche (reabre hoy a las ${info.startHour}:00).`,
+        de: `Der K\xFCchenservice ist f\xFCr die Nacht geschlossen (\xF6ffnet heute um ${info.startHour}:00 Uhr).`,
+        ar: `\u062E\u062F\u0645\u0629 \u0627\u0644\u0645\u0637\u0628\u062E \u0645\u063A\u0644\u0642\u0629 \u0644\u0647\u0630\u0647 \u0627\u0644\u0644\u064A\u0644\u0629 (\u062A\u0633\u062A\u0623\u0646\u0641 \u0627\u0644\u064A\u0648\u0645 \u0639\u0646\u062F \u0627\u0644\u0633\u0627\u0639\u0629 ${info.startHour}:00).`
+      };
+      return closedMsgs[lang] || closedMsgs.fr;
+    }
+    const beforeMsgs = {
+      fr: `Le service cuisine commence \xE0 ${info.startHour}h00 aujourd'hui (12h en semaine, 13h samedi, 14h dimanche).`,
+      en: `Kitchen service starts at ${info.startHour}:00 today (12:00 weekdays, 13:00 Sat, 14:00 Sun).`,
+      es: `El servicio de cocina comienza a las ${info.startHour}:00 hoy (12:00 entre semana, 13:00 s\xE1b, 14:00 dom).`,
+      de: `Der K\xFCchenservice beginnt heute um ${info.startHour}:00 Uhr (12:00 werktags, 13:00 Sa, 14:00 So).`,
+      ar: `\u064A\u0628\u062F\u0623 \u0639\u0645\u0644 \u0627\u0644\u0645\u0637\u0628\u062E \u0639\u0646\u062F \u0627\u0644\u0633\u0627\u0639\u0629 ${info.startHour}:00 \u0627\u0644\u064A\u0648\u0645 (12:00 \u062E\u0644\u0627\u0644 \u0627\u0644\u0623\u0633\u0628\u0648\u0639\u060C 13:00 \u0627\u0644\u0633\u0628\u062A\u060C 14:00 \u0627\u0644\u0623\u062D\u062F).`
+    };
+    return beforeMsgs[lang] || beforeMsgs.fr;
+  }
+  function getBreakfastBlockedMessage(lang = "fr") {
+    const msgs = {
+      fr: "Le service petit-d\xE9jeuner est termin\xE9 (servi de 07h00 \xE0 13h00 en semaine et 14h00 le week-end).",
+      en: "Breakfast service has ended (served 07:00 to 13:00 weekdays, 14:00 weekends).",
+      de: "Der Fr\xFChst\xFCcksservice ist beendet (werktags von 07:00 bis 13:00 Uhr, am Wochenende bis 14:00 Uhr).",
+      es: "El servicio de desayuno ha finalizado (servido de 07:00 a 13:00 de lunes a viernes y 14:00 fines de semana).",
+      ar: "\u0627\u0646\u062A\u0647\u062A \u0641\u062A\u0631\u0629 \u062A\u0642\u062F\u064A\u0645 \u0641\u0637\u0648\u0631 \u0627\u0644\u0635\u0628\u0627\u062D (\u064A\u064F\u0642\u062F\u0651\u064E\u0645 \u0645\u0646 07:00 \u0625\u0644\u0649 13:00 \u0637\u064A\u0644\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639 \u0648\u062D\u062A\u0649 14:00 \u0641\u064A \u0639\u0637\u0644\u0629 \u0646\u0647\u0627\u064A\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639)."
+    };
+    return msgs[lang] || msgs.fr;
+  }
   function updateScheduleUI() {
     const badge = document.getElementById("headerStatusBadge");
     const textEl = document.getElementById("headerStatusText");
@@ -4043,9 +4094,25 @@
         el.classList.toggle("is-ended", !isAvail);
       });
     }
+    const currB = isBreakfastAvailable();
+    const currK = isKitchenAvailable();
+    if (window._prevBreakfastAvailable !== void 0 && (window._prevBreakfastAvailable !== currB || window._prevKitchenAvailable !== currK)) {
+      window._prevBreakfastAvailable = currB;
+      window._prevKitchenAvailable = currK;
+      if (typeof window.renderMenu === "function") {
+        window.renderMenu();
+      }
+    } else {
+      window._prevBreakfastAvailable = currB;
+      window._prevKitchenAvailable = currK;
+    }
   }
   window.isRestaurantOpen = isRestaurantOpen;
   window.isBreakfastAvailable = isBreakfastAvailable;
+  window.isKitchenAvailable = isKitchenAvailable;
+  window.isKitchenCategory = isKitchenCategory;
+  window.getKitchenBlockedMessage = getKitchenBlockedMessage;
+  window.getBreakfastBlockedMessage = getBreakfastBlockedMessage;
   window.updateScheduleUI = updateScheduleUI;
   window.getKitchenScheduleInfo = getKitchenScheduleInfo;
   window.getKitchenNoticeInner = getKitchenNoticeInner;
@@ -4323,6 +4390,16 @@
     }, 2500);
   }
   function addToCart(menuItem, choices = null) {
+    if (!menuItem) return;
+    const catId = menuItem.categoryId || "";
+    if (catId === "petit-dejeuner" && !isBreakfastAvailable()) {
+      showToast(getBreakfastBlockedMessage(currentLang));
+      return;
+    }
+    if (isKitchenCategory(catId) && !isKitchenAvailable()) {
+      showToast(getKitchenBlockedMessage(currentLang));
+      return;
+    }
     let cartItemId = menuItem.name.fr;
     if (choices && choices.length > 0) {
       cartItemId += `_${choices.join("_")}`;
@@ -4334,6 +4411,7 @@
       clientCart.push({
         id: cartItemId,
         name: menuItem.name,
+        categoryId: catId,
         categoryNameFr: menuItem.categoryNameFr || "",
         price: parseFloat(menuItem.price) || 0,
         image: menuItem.image,
@@ -4352,6 +4430,34 @@
     };
     const choicesStr = choices && choices.length > 0 ? ` (${choices.join(", ")})` : "";
     showToast(`${menuItem.name[currentLang] || menuItem.name.fr}${choicesStr} \u2014 ${toastMsgs[currentLang] || toastMsgs.fr}`);
+  }
+  function checkCartBlockedItems(cart = clientCart) {
+    if (!cart || cart.length === 0) return { blocked: false };
+    const breakfastBlocked = !isBreakfastAvailable();
+    const kitchenBlocked = !isKitchenAvailable();
+    for (const item of cart) {
+      let catId = item.categoryId;
+      if (!catId && item.categoryNameFr) {
+        catId = item.categoryNameFr.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+      }
+      if (catId === "petit-dejeuner" && breakfastBlocked) {
+        return {
+          blocked: true,
+          reason: "breakfast",
+          message: getBreakfastBlockedMessage(currentLang),
+          item
+        };
+      }
+      if (isKitchenCategory(catId) && kitchenBlocked) {
+        return {
+          blocked: true,
+          reason: "kitchen",
+          message: getKitchenBlockedMessage(currentLang),
+          item
+        };
+      }
+    }
+    return { blocked: false };
   }
   function updateCartUI() {
     const badge = document.getElementById("cabCartBadge");
@@ -4386,11 +4492,23 @@
           const isDrinkItem = item.categoryNameFr && (item.categoryNameFr.toLowerCase().includes("boisson") || item.categoryNameFr.toLowerCase().includes("petit-d") || item.categoryNameFr.toLowerCase().includes("caf\xE9"));
           const choiceIcon = isDrinkItem ? "\u2615" : "\u{1F37D}\uFE0F";
           const drinkChoicesStr = item.drinkChoices && item.drinkChoices.length > 0 ? `<div style="font-size:0.75rem; color:var(--sc-gold-light); margin-top:2px;">${choiceIcon} ${item.drinkChoices.join(", ")}</div>` : "";
+          const itemCatId = item.categoryId || (item.categoryNameFr ? item.categoryNameFr.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") : "");
+          const isItemBreakfastBlocked = itemCatId === "petit-dejeuner" && !isBreakfastAvailable();
+          const isItemKitchenBlocked = isKitchenCategory(itemCatId) && !isKitchenAvailable();
+          const isItemBlocked = isItemBreakfastBlocked || isItemKitchenBlocked;
+          const blockedBadge = isItemBlocked ? `<div class="cd-item-blocked-tag" style="display:inline-flex; align-items:center; gap:4px; font-size:0.72rem; color:#ef4444; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.25); border-radius:4px; padding:2px 6px; margin-top:3px; font-weight:500;">
+               <span>\u26A0\uFE0F</span> ${isItemBreakfastBlocked ? currentLang === "en" ? "Breakfast ended" : currentLang === "ar" ? "\u0641\u0637\u0648\u0631 \u0627\u0644\u0635\u0628\u0627\u062D \u0627\u0646\u062A\u0647\u0649" : "Petit-d\xE9jeuner termin\xE9" : currentLang === "en" ? "Kitchen closed" : currentLang === "ar" ? "\u0627\u0644\u0645\u0637\u0628\u062E \u0645\u063A\u0644\u0642" : "Cuisine ferm\xE9e"}
+             </div>` : "";
+          if (isItemBlocked) {
+            itemDiv.classList.add("cd-item-disabled");
+            itemDiv.style.opacity = "0.78";
+          }
           itemDiv.innerHTML = `
           <div class="cd-item-img" style="background-image: url('${item.image}')"></div>
           <div class="cd-item-details">
             <h4 class="cd-item-name">${item.name[currentLang] || item.name.fr || item.name}</h4>
             ${drinkChoicesStr}
+            ${blockedBadge}
             <span class="cd-item-price">${item.price * item.qty} MAD</span>
           </div>
           <div class="cd-item-actions">
@@ -4431,6 +4549,30 @@
         });
         const totalPrice = clientCart.reduce((sum, item) => sum + item.price * item.qty, 0);
         if (cdTotalPrice) cdTotalPrice.textContent = `${totalPrice} MAD`;
+        const blockedCheck = checkCartBlockedItems();
+        let blockedNoticeEl = document.getElementById("cdBlockedNotice");
+        if (blockedCheck.blocked) {
+          if (!blockedNoticeEl && cdFooter) {
+            blockedNoticeEl = document.createElement("div");
+            blockedNoticeEl.id = "cdBlockedNotice";
+            blockedNoticeEl.className = "cd-blocked-alert";
+            blockedNoticeEl.style.cssText = "background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); border-radius:8px; padding:8px 12px; margin-bottom:12px; font-size:0.78rem; color:#ef4444; line-height:1.35; text-align:left;";
+            cdFooter.insertBefore(blockedNoticeEl, cdFooter.firstChild);
+          }
+          if (blockedNoticeEl) {
+            const noticeTexts = {
+              fr: "\u26A0\uFE0F <strong>Attention :</strong> Certains articles de votre panier ne sont pas disponibles actuellement aux horaires de service. Veuillez les retirer (\u{1F5D1}\uFE0F) pour valider votre commande.",
+              en: "\u26A0\uFE0F <strong>Notice:</strong> Some items in your cart are outside service hours. Please remove them (\u{1F5D1}\uFE0F) to submit your order.",
+              de: "\u26A0\uFE0F <strong>Hinweis:</strong> Einige Artikel in Ihrem Korb liegen au\xDFerhalb der Servicezeiten. Bitte entfernen Sie sie (\u{1F5D1}\uFE0F), um zu bestellen.",
+              es: "\u26A0\uFE0F <strong>Aviso:</strong> Algunos art\xEDculos de su cesta est\xE1n fuera del horario de servicio. Elim\xEDnelos (\u{1F5D1}\uFE0F) para realizar el pedido.",
+              ar: "\u26A0\uFE0F <strong>\u062A\u0646\u0628\u064A\u0647 :</strong> \u0628\u0639\u0636 \u0627\u0644\u0645\u0646\u062A\u062C\u0627\u062A \u0641\u064A \u0633\u0644\u062A\u0643 \u063A\u064A\u0631 \u0645\u062A\u0648\u0641\u0631\u0629 \u062D\u0627\u0644\u064A\u0627\u064B \u062E\u0627\u0631\u062C \u0623\u0648\u0642\u0627\u062A \u0627\u0644\u062E\u062F\u0645\u0629. \u064A\u0631\u062C\u0649 \u062D\u0630\u0641\u0647\u0627 (\u{1F5D1}\uFE0F) \u0644\u0625\u062A\u0645\u0627\u0645 \u0627\u0644\u0637\u0644\u0628."
+            };
+            blockedNoticeEl.innerHTML = noticeTexts[currentLang] || noticeTexts.fr;
+            blockedNoticeEl.style.display = "block";
+          }
+        } else if (blockedNoticeEl) {
+          blockedNoticeEl.style.display = "none";
+        }
       }
     }
   }
@@ -4439,6 +4581,7 @@
   window.saveClientCart = saveClientCart;
   window.clearCart = clearCart;
   window.addToCart = addToCart;
+  window.checkCartBlockedItems = checkCartBlockedItems;
   window.updateCartUI = updateCartUI;
   window.showToast = showToast;
 
@@ -4680,10 +4823,13 @@
     if (upperName === "ACCOMPAGNEMENTS" && (menuItem.price === "Inclus" || isNaN(parseFloat(menuItem.price)))) {
       return;
     }
+    if (isKitchenCategory(catId) && !isKitchenAvailable()) {
+      showToast(getKitchenBlockedMessage(currentLang));
+      return;
+    }
     if (catId === "petit-dejeuner") {
       if (!isBreakfastAvailable()) {
-        const breakfastNoticeText = currentLang === "en" ? "Breakfast service has ended (served until 13:00 weekdays, 14:00 weekends)." : currentLang === "de" ? "Der Fr\xFChst\xFCcksservice ist beendet (werktags bis 13:00 Uhr, am Wochenende bis 14:00 Uhr)." : currentLang === "es" ? "El servicio de desayuno ha finalizado (servido hasta las 13:00 entre semana y las 14:00 fines de semana)." : currentLang === "ar" ? "\u0627\u0646\u062A\u0647\u062A \u0641\u062A\u0631\u0629 \u062A\u0642\u062F\u064A\u0645 \u0641\u0637\u0648\u0631 \u0627\u0644\u0635\u0628\u0627\u062D (\u064A\u064F\u0642\u062F\u0651\u064E\u0645 \u062D\u062A\u0649 13:00 \u0637\u064A\u0644\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639 \u0648\u062D\u062A\u0649 14:00 \u0641\u064A \u0639\u0637\u0644\u0629 \u0646\u0647\u0627\u064A\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639)." : "Le service petit-d\xE9jeuner est termin\xE9 (servi jusqu'\xE0 13h00 en semaine et 14h00 le week-end).";
-        showToast(breakfastNoticeText);
+        showToast(getBreakfastBlockedMessage(currentLang));
         return;
       }
       if (upperName !== "MENU ENFANT") {
@@ -5516,6 +5662,11 @@
       alert(emptyMsgs[currentLang] || emptyMsgs.fr);
       return;
     }
+    const blockedCheck = checkCartBlockedItems();
+    if (blockedCheck.blocked) {
+      showToast(blockedCheck.message);
+      return;
+    }
     const lang = currentLang || localStorage.getItem("lang") || "fr";
     const modeLabel = window.GC_preorderMode === "pickup" ? "\xC0 emporter (comptoir)" : "\xC0 table" + (window.GC_preorderTable ? " n\xB0" + window.GC_preorderTable : " \u2014 num\xE9ro \xE0 pr\xE9ciser \xE0 l'arriv\xE9e");
     let lines = "", total = 0;
@@ -5564,6 +5715,12 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       if (spinner) spinner.style.display = "none";
       if (onComplete) onComplete();
     };
+    const blockedCheck = checkCartBlockedItems();
+    if (blockedCheck.blocked) {
+      resetBtn();
+      showToast(blockedCheck.message);
+      return;
+    }
     if (window.systemFrozen) {
       const frozenMsgs = {
         fr: "Le service est temporairement suspendu (mode rush). Merci de patienter un instant.",
@@ -5930,7 +6087,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
           ${getBreakfastNoticeInner(currentLang)}
         </div>
       ` : ""}
-      ${isEntreesCurrent ? `
+      ${isKitchenCategory(currentCatId) ? `
         <div class="entrees-service-notice">
           ${getKitchenNoticeInner(currentLang)}
         </div>
@@ -5952,8 +6109,14 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
   function createDishCard(item, categoryId, itemIndex, categoryBadge = "") {
     const card = document.createElement("article");
     const isBreakfast = categoryId === "petit-dejeuner";
-    const isOver = isBreakfast && !isBreakfastAvailable();
+    const isKitchen = isKitchenCategory(categoryId);
+    const isBreakfastBlocked = isBreakfast && !isBreakfastAvailable();
+    const isKitchenBlocked = isKitchen && !isKitchenAvailable();
+    const isOver = isBreakfastBlocked || isKitchenBlocked;
     card.className = `hub-card menu-item ${isOver ? "hub-card-disabled" : ""}`;
+    if (isOver) {
+      card.dataset.blockedReason = isKitchenBlocked ? "kitchen" : "breakfast";
+    }
     card.id = `item-${categoryId}-${itemIndex}`;
     card.style.setProperty("--item-index", itemIndex);
     card._menuItem = item;
@@ -5961,8 +6124,23 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     const itemName = item.name[currentLang] || item.name.fr || "";
     const itemDesc = item.description[currentLang] || item.description.fr || "";
     const badgeNewText = currentLang === "en" ? "NEW" : currentLang === "de" ? "NEU" : currentLang === "es" ? "NUEVO" : currentLang === "ar" ? "\u062C\u062F\u064A\u062F" : "NOUVEAU";
-    const orderBtnText = isOver ? currentLang === "en" ? "Ended" : currentLang === "de" ? "Beendet" : currentLang === "es" ? "Finalizado" : currentLang === "ar" ? "\u0627\u0646\u062A\u0647\u0649" : "Termin\xE9" : currentLang === "en" ? "Order" : currentLang === "de" ? "Bestellen" : currentLang === "es" ? "Pedir" : currentLang === "ar" ? "\u0627\u0637\u0644\u0628" : "Commander";
-    const unavailBadgeText = currentLang === "en" ? "\u{1F552} Until 13h (14h w-e)" : currentLang === "de" ? "\u{1F552} Bis 13h (14h WE)" : currentLang === "es" ? "\u{1F552} Hasta las 13h (14h finde)" : currentLang === "ar" ? "\u{1F552} \u062D\u062A\u0649 13:00 (14:00 \u0639\u0637\u0644\u0629)" : "\u{1F552} Servi jusqu'\xE0 13h (14h w-e)";
+    let orderBtnText = "";
+    let unavailBadgeText = "";
+    if (isBreakfastBlocked) {
+      orderBtnText = currentLang === "en" ? "Ended" : currentLang === "de" ? "Beendet" : currentLang === "es" ? "Finalizado" : currentLang === "ar" ? "\u0627\u0646\u062A\u0647\u0649" : "Termin\xE9";
+      unavailBadgeText = currentLang === "en" ? "\u{1F552} Until 13h (14h w-e)" : currentLang === "de" ? "\u{1F552} Bis 13h (14h WE)" : currentLang === "es" ? "\u{1F552} Hasta las 13h (14h finde)" : currentLang === "ar" ? "\u{1F552} \u062D\u062A\u0649 13:00 (14:00 \u0639\u0637\u0644\u0629)" : "\u{1F552} Servi jusqu'\xE0 13h (14h w-e)";
+    } else if (isKitchenBlocked) {
+      const kInfo = getKitchenScheduleInfo();
+      if (kInfo.isClosed) {
+        orderBtnText = currentLang === "en" ? "Closed" : currentLang === "de" ? "Geschlossen" : currentLang === "es" ? "Cerrado" : currentLang === "ar" ? "\u0645\u063A\u0644\u0642" : "Ferm\xE9";
+        unavailBadgeText = currentLang === "en" ? "\u{1F319} Closed" : currentLang === "de" ? "\u{1F319} Geschlossen" : currentLang === "es" ? "\u{1F319} Cerrado" : currentLang === "ar" ? "\u{1F319} \u0645\u063A\u0644\u0642" : "\u{1F319} Service ferm\xE9";
+      } else {
+        orderBtnText = currentLang === "en" ? `From ${kInfo.startHour}:00` : currentLang === "de" ? `Ab ${kInfo.startHour}h` : currentLang === "es" ? `Desde ${kInfo.startHour}h` : currentLang === "ar" ? `\u0645\u0646 ${kInfo.startHour}:00` : `D\xE8s ${kInfo.startHour}h`;
+        unavailBadgeText = currentLang === "en" ? `\u{1F552} Kitchen at ${kInfo.startHour}:00` : currentLang === "de" ? `\u{1F552} K\xFCche ab ${kInfo.startHour}h` : currentLang === "es" ? `\u{1F552} Cocina desde las ${kInfo.startHour}h` : currentLang === "ar" ? `\u{1F552} \u0627\u0644\u0645\u0637\u0628\u062E \u0645\u0646 ${kInfo.startHour}:00` : `\u{1F552} Cuisine d\xE8s ${kInfo.startHour}h00`;
+      }
+    } else {
+      orderBtnText = currentLang === "en" ? "Order" : currentLang === "de" ? "Bestellen" : currentLang === "es" ? "Pedir" : currentLang === "ar" ? "\u0627\u0637\u0644\u0628" : "Commander";
+    }
     card.innerHTML = `
     <div class="hub-card-media">
       <img src="${item.image}" alt="${itemName}" class="hub-card-img" loading="lazy" />
@@ -6203,14 +6381,23 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     if (item && lbAddBtn) {
       lbAddBtn.style.display = "block";
       const isBreakfast = item.categoryId === "petit-dejeuner";
-      const isOver = isBreakfast && !isBreakfastAvailable();
-      if (isOver) {
+      const isKitchen = isKitchenCategory(item.categoryId);
+      const isBreakfastBlocked = isBreakfast && !isBreakfastAvailable();
+      const isKitchenBlocked = isKitchen && !isKitchenAvailable();
+      const isBlocked = isBreakfastBlocked || isKitchenBlocked;
+      if (isBlocked) {
         lbAddBtn.disabled = true;
         lbAddBtn.classList.add("btn-disabled");
         lbAddBtn.style.opacity = "0.55";
         lbAddBtn.style.cursor = "not-allowed";
-        const endText = currentLang === "en" ? "Service Ended" : currentLang === "de" ? "Service Beendet" : currentLang === "es" ? "Servicio Finalizado" : currentLang === "ar" ? "\u0627\u0646\u062A\u0647\u062A \u0641\u062A\u0631\u0629 \u0627\u0644\u062A\u0642\u062F\u064A\u0645" : "Service Termin\xE9";
-        lbAddBtn.textContent = endText;
+        if (isKitchenBlocked) {
+          const kInfo = getKitchenScheduleInfo();
+          const kText = kInfo.isClosed ? currentLang === "en" ? "Kitchen Closed" : currentLang === "de" ? "K\xFCche geschlossen" : currentLang === "es" ? "Cocina cerrada" : currentLang === "ar" ? "\u0627\u0644\u0645\u0637\u0628\u062E \u0645\u063A\u0644\u0642" : "Cuisine Ferm\xE9e" : currentLang === "en" ? `Kitchen from ${kInfo.startHour}:00` : currentLang === "de" ? `K\xFCche ab ${kInfo.startHour}:00` : currentLang === "es" ? `Cocina desde las ${kInfo.startHour}:00` : currentLang === "ar" ? `\u0627\u0644\u0645\u0637\u0628\u062E \u0627\u0628\u062A\u062F\u0627\u0621\u064B \u0645\u0646 ${kInfo.startHour}:00` : `Cuisine d\xE8s ${kInfo.startHour}h00`;
+          lbAddBtn.textContent = kText;
+        } else {
+          const endText = currentLang === "en" ? "Service Ended" : currentLang === "de" ? "Service Beendet" : currentLang === "es" ? "Servicio Finalizado" : currentLang === "ar" ? "\u0627\u0646\u062A\u0647\u062A \u0641\u062A\u0631\u0629 \u0627\u0644\u062A\u0642\u062F\u064A\u0645" : "Service Termin\xE9";
+          lbAddBtn.textContent = endText;
+        }
       } else {
         lbAddBtn.disabled = false;
         lbAddBtn.classList.remove("btn-disabled");
@@ -6235,14 +6422,11 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       lbAddBtn._hasListener = true;
       lbAddBtn.addEventListener("click", () => {
         if (lbAddBtn.disabled) {
-          const noticeTexts = {
-            fr: "Le service petit-d\xE9jeuner est termin\xE9 (servi jusqu'\xE0 13h00 en semaine et 14h00 le week-end).",
-            en: "Breakfast service has ended (served until 13:00 on weekdays, 14:00 on weekends).",
-            de: "Der Fr\xFChst\xFCcksservice ist beendet (werktags bis 13:00 Uhr, am Wochenende bis 14:00 Uhr).",
-            es: "El servicio de desayuno ha finalizado (servido hasta las 13:00 de lunes a viernes y 14:00 fines de semana).",
-            ar: "\u0627\u0646\u062A\u0647\u062A \u0641\u062A\u0631\u0629 \u062A\u0642\u062F\u064A\u0645 \u0641\u0637\u0648\u0631 \u0627\u0644\u0635\u0628\u0627\u062D (\u064A\u064F\u0642\u062F\u0651\u064E\u0645 \u062D\u062A\u0649 13:00 \u0637\u064A\u0644\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639 \u0648\u062D\u062A\u0649 14:00 \u0641\u064A \u0639\u0637\u0644\u0629 \u0646\u0647\u0627\u064A\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639)."
-          };
-          showToast(noticeTexts[currentLang] || noticeTexts.fr);
+          if (activeLightboxItem && isKitchenCategory(activeLightboxItem.categoryId)) {
+            showToast(getKitchenBlockedMessage(currentLang));
+          } else {
+            showToast(getBreakfastBlockedMessage(currentLang));
+          }
           return;
         }
         if (activeLightboxItem) {
@@ -6306,14 +6490,11 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
           const card2 = addBtn.closest(".hub-card");
           if (card2 && card2._menuItem) {
             if (card2.classList.contains("hub-card-disabled") || addBtn.disabled) {
-              const noticeTexts = {
-                fr: "Le service petit-d\xE9jeuner est termin\xE9 (servi jusqu'\xE0 13h00 en semaine et 14h00 le week-end).",
-                en: "Breakfast service has ended (served until 13:00 on weekdays, 14:00 on weekends).",
-                de: "Der Fr\xFChst\xFCcksservice ist beendet (werktags bis 13:00 Uhr, am Wochenende bis 14:00 Uhr).",
-                es: "El servicio de desayuno ha finalizado (servido hasta las 13:00 de lunes a viernes y 14:00 fines de semana).",
-                ar: "\u0627\u0646\u062A\u0647\u062A \u0641\u062A\u0631\u0629 \u062A\u0642\u062F\u064A\u0645 \u0641\u0637\u0648\u0631 \u0627\u0644\u0635\u0628\u0627\u062D (\u064A\u064F\u0642\u062F\u0651\u064E\u0645 \u062D\u062A\u0649 13:00 \u0637\u064A\u0644\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639 \u0648\u062D\u062A\u0649 14:00 \u0641\u064A \u0639\u0637\u0644\u0629 \u0646\u0647\u0627\u064A\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639)."
-              };
-              showToast(noticeTexts[currentLang] || noticeTexts.fr);
+              if (card2.dataset.blockedReason === "kitchen" || isKitchenCategory(card2._menuItem.categoryId)) {
+                showToast(getKitchenBlockedMessage(currentLang));
+              } else {
+                showToast(getBreakfastBlockedMessage(currentLang));
+              }
               return;
             }
             checkItemOptionsAndAdd(card2._menuItem);
