@@ -3,6 +3,9 @@
 .vscode/
 .DS_Store
 
+# Android Local Project & APK
+android/
+
 # Cloudflare Wrangler
 .wrangler/
 
