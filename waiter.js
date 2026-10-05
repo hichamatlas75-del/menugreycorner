@@ -302,6 +302,7 @@ async function registerFcmToken(swReg, showSuccessFeedback = false) {
                     waiterId: activeWaiterId,
                     waiterName: activeWaiterName,
                     active: true,
+                    platform: "web",
                     userAgent: navigator.userAgent,
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 }, { merge: true });
