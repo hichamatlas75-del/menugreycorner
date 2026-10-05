@@ -4,7 +4,7 @@
 
 import { currentLang } from './i18n.js';
 import { clientCart, saveClientCart, clearCart, showToast, checkCartBlockedItems } from './cart.js';
-import { dbService } from '../config/firebase.js';
+import { db, dbService, sendFcmToWaiters, getTableZoneName } from '../config/firebase.js';
 import { showTableSelectorModal, setPendingActionAfterTableSelect } from '../ui/modals.js';
 import { subscribeToActiveWaiterEvents } from './notifications.js';
 
@@ -172,6 +172,9 @@ export function submitPreOrder(clientTable, onComplete) {
 
       localStorage.setItem("last_pre_order_id", orderId);
 
+      // Armement de la notification de secours au cas où le serveur n'a pas réagi
+      armBackupOrderReminder(orderId, clientTable, totalPrice);
+
       // Subscribe to real-time status updates from waiter
       subscribeToActiveWaiterEvents(clientTable);
     } else {
@@ -185,6 +188,51 @@ export function submitPreOrder(clientTable, onComplete) {
       showToast(errMsgs[currentLang] || errMsgs.fr);
     }
   });
+}
+
+/**
+ * Surveillance et relance automatique de secours si la commande n'est pas acceptée
+ */
+function armBackupOrderReminder(orderId, table, total) {
+  if (!orderId || !table) return;
+
+  // Secours N°1 après 25 secondes si toujours en attente
+  setTimeout(() => {
+    if (typeof db !== "undefined" && db) {
+      db.collection("pre_orders").doc(String(orderId)).get().then(doc => {
+        if (doc.exists && doc.data() && doc.data().status === "pending") {
+          console.log("🚨 NOTIFICATION DE SECOURS (25s) : Commande toujours en attente !");
+          const zone = getTableZoneName ? getTableZoneName(table) : `Table ${table}`;
+          sendFcmToWaiters(
+            "PRE_ORDER",
+            `⚠️ RAPPEL DE SECOURS — ${zone}`,
+            `Commande non validée après 25s ! Total : ${total} MAD`,
+            table,
+            orderId
+          );
+        }
+      }).catch(() => {});
+    }
+  }, 25000);
+
+  // Secours N°2 d'urgence après 55 secondes
+  setTimeout(() => {
+    if (typeof db !== "undefined" && db) {
+      db.collection("pre_orders").doc(String(orderId)).get().then(doc => {
+        if (doc.exists && doc.data() && doc.data().status === "pending") {
+          console.log("🚨 ALARME D'URGENCE (55s) : Relance finale de secours !");
+          const zone = getTableZoneName ? getTableZoneName(table) : `Table ${table}`;
+          sendFcmToWaiters(
+            "PRE_ORDER",
+            `🚨 ALARME URGENTE — ${zone}`,
+            `Commande EN ATTENTE depuis 1 min ! Le client attend.`,
+            table,
+            orderId
+          );
+        }
+      }).catch(() => {});
+    }
+  }, 55000);
 }
 
 window.submitPreOrder = submitPreOrder;
