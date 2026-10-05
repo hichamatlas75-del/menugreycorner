@@ -281,6 +281,19 @@ export const dbService = {
                             } catch (e) {
                                 console.warn("Mirroring call to waiter_calls failed:", e);
                             }
+
+                            // Notification de secours à 25s si l'appel est toujours en attente
+                            setTimeout(() => {
+                                if (isFirebaseActive && db) {
+                                    db.collection("waiters_calls").doc(docRef.id).get().then(snap => {
+                                        if (snap.exists && snap.data() && snap.data().status === "pending") {
+                                            console.log("🚨 RAPPEL DE SECOURS (25s) : Appel table toujours en attente !");
+                                            sendFcmToWaiters("CALL", `⚠️ RAPPEL DE SECOURS — ${zoneName}`, `Table ${tableId} attend toujours (${typeLabel})`, tableId, docRef.id);
+                                        }
+                                    }).catch(() => {});
+                                }
+                            }, 25000);
+
                             if (callback) callback(true, docRef.id);
                         })
                         .catch(e => { console.error(e); if (callback) callback(false); });
