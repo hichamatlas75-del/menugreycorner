@@ -3,18 +3,18 @@
    ============================================================================ */
 
 :root {
-    --bg: #0A0F1A;
-    --card: #121A2A;
-    --card-accent: #172237;
-    --gold: #C9A84C;
-    --gold-dark: #A48332;
-    --sc-gold-light: #E2C97E;
-    --text: #F8F9FA;
-    --muted: rgba(240, 234, 216, 0.45);
-    --border: rgba(201, 168, 76, 0.15);
-    --success: #2ecc71;
-    --alert: #e74c3c;
-    --water: #3498db;
+    --bg: #F4F6F9;
+    --card: #FFFFFF;
+    --card-accent: #EAEFF5;
+    --gold: #A17420;
+    --gold-dark: #845B10;
+    --sc-gold-light: #B8860B;
+    --text: #0F172A;
+    --muted: #64748B;
+    --border: #DDE3EA;
+    --success: #16A34A;
+    --alert: #DC2626;
+    --water: #0284C7;
 }
 
 * {
@@ -27,7 +27,7 @@
 body {
     background-color: var(--bg);
     color: var(--text);
-    font-family: 'Poppins', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-size: 14px;
     line-height: 1.5;
     overflow-x: hidden;
@@ -199,7 +199,7 @@ body {
 /* App Header */
 .app-header {
     height: 64px;
-    background: rgba(18, 26, 42, 0.85);
+    background: rgba(255, 255, 255, 0.97);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border-bottom: 1px solid var(--border);

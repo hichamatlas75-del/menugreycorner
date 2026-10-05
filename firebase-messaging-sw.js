@@ -3,8 +3,8 @@
 // Reçoit les notifications Push en arrière-plan (application et écran fermés)
 // ============================================================================
 
-const SW_VERSION = "fcm-sw-v1.0";
-const CACHE_NAME = "waiter-cache-v3";
+const SW_VERSION = "fcm-sw-v6.0";
+const CACHE_NAME = "waiter-cache-v6";
 
 // 1. Chargement des bibliothèques officielles Firebase compat
 importScripts("https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js");
@@ -67,14 +67,16 @@ self.addEventListener("activate", (event) => {
     );
 });
 
-// Cache avec stratégie Network-First
+// Stratégie Network-First avec rafraîchissement prioritaire pour HTML et JS
 self.addEventListener("fetch", (event) => {
     if (event.request.method !== "GET") return;
     const url = new URL(event.request.url);
     if (url.hostname !== self.location.hostname) return;
 
+    const isHtmlOrJs = event.request.mode === "navigate" || url.pathname.endsWith(".html") || url.pathname.endsWith(".js");
+
     event.respondWith(
-        fetch(event.request)
+        fetch(event.request, isHtmlOrJs ? { cache: "no-cache" } : {})
             .then((res) => {
                 if (res && res.status === 200) {
                     const clone = res.clone();

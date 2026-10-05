@@ -4,7 +4,7 @@
 //        et cache offline pour l'interface serveur.
 // ============================================================================
 
-const SW_VERSION = "waiter-sw-v3";
+const SW_VERSION = "waiter-sw-v6.0";
 const CACHE_NAME = SW_VERSION;
 
 // Ressources statiques à mettre en cache pour fonctionnement offline
@@ -58,8 +58,10 @@ self.addEventListener("fetch", (event) => {
     const url = new URL(event.request.url);
     if (url.hostname !== self.location.hostname) return;
 
+    const isHtmlOrJs = event.request.mode === "navigate" || url.pathname.endsWith(".html") || url.pathname.endsWith(".js");
+
     event.respondWith(
-        fetch(event.request)
+        fetch(event.request, isHtmlOrJs ? { cache: "no-cache" } : {})
             .then((response) => {
                 if (response && response.status === 200) {
                     const clone = response.clone();

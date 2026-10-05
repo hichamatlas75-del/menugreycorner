@@ -47,7 +47,7 @@ async function getGoogleOAuth2Token(serviceAccount) {
     const cryptoKey = await crypto.subtle.importKey(
         "pkcs8",
         keyBuffer,
-        { name: "RSASSA-PKPKCS1-v1_5", hash: "SHA-256" },
+        { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
         false,
         ["sign"]
     );
