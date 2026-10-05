@@ -82,23 +82,32 @@ exports.onWaiterCallCreated = functions.firestore
         }
 
         const tokens = waiterTokens.map(t => t.token);
+        const callTitle = `🔔 Table ${tableNum} — ${typeLabel}`;
+        const callBody = `Demande reçue à ${new Date().toLocaleTimeString("fr-FR", { timeZone: "Africa/Casablanca" })}`;
+
         const multicastMessage = {
             tokens: tokens,
-            notification: {
-                title: `🔔 Table ${tableNum} — ${typeLabel}`,
-                body: `Demande reçue à ${new Date().toLocaleTimeString("fr-FR", { timeZone: "Africa/Casablanca" })}`
-            },
             data: {
+                title: callTitle,
+                body: callBody,
                 callId: context.params.callId,
+                docId: context.params.callId,
                 table: String(tableNum),
+                tableId: String(tableNum),
                 type: String(call.type || "call"),
                 url: "/waiter.html"
+            },
+            android: {
+                priority: "high",
+                ttl: 0
             },
             webpush: {
                 headers: {
                     Urgency: "high"
                 },
                 notification: {
+                    title: callTitle,
+                    body: callBody,
                     icon: "/images/android-chrome-192x192.png",
                     badge: "/images/android-chrome-192x192.png",
                     vibrate: [500, 200, 500, 200, 1000],
@@ -111,6 +120,13 @@ exports.onWaiterCallCreated = functions.firestore
         try {
             const response = await admin.messaging().sendEachForMulticast(multicastMessage);
             console.log(`📡 Appel FCM envoyé: ${response.successCount} succès, ${response.failureCount} échecs.`);
+
+            // Envoi de secours sur le topic "waiters" pour réveiller les APKs natives
+            admin.messaging().send({
+                topic: "waiters",
+                data: multicastMessage.data,
+                android: { priority: "high", ttl: 0 }
+            }).catch(e => console.warn("Erreur broadcast topic waiters (call):", e));
 
             if (response.failureCount > 0) {
                 const failed = [];
@@ -143,31 +159,54 @@ exports.onPreOrderCreated = functions.firestore
         const tableNum = order.table || "Inconnue";
         const total = order.totalPrice || 0;
         const itemCount = Array.isArray(order.items) ? order.items.length : 0;
+        const orderTitle = `👨‍🍳 Nouvelle Commande — Table ${tableNum}`;
+        const orderBody = `Total : ${total} MAD (${itemCount} article${itemCount > 1 ? "s" : ""})`;
 
         const waiterTokens = await getActiveWaiterTokens();
         if (waiterTokens.length === 0) {
             console.log("ℹ️ Aucun token de serveur enregistré pour la précommande.");
+            // Envoi de secours quand même sur le topic "waiters"
+            admin.messaging().send({
+                topic: "waiters",
+                data: {
+                    title: orderTitle,
+                    body: orderBody,
+                    orderId: context.params.orderId,
+                    docId: context.params.orderId,
+                    table: String(tableNum),
+                    tableId: String(tableNum),
+                    type: "order",
+                    url: "/waiter.html"
+                },
+                android: { priority: "high", ttl: 0 }
+            }).catch(() => {});
             return null;
         }
 
         const tokens = waiterTokens.map(t => t.token);
         const multicastMessage = {
             tokens: tokens,
-            notification: {
-                title: `👨‍🍳 Nouvelle Commande — Table ${tableNum}`,
-                body: `Total : ${total} MAD (${itemCount} article${itemCount > 1 ? "s" : ""})`
-            },
             data: {
+                title: orderTitle,
+                body: orderBody,
                 orderId: context.params.orderId,
+                docId: context.params.orderId,
                 table: String(tableNum),
+                tableId: String(tableNum),
                 type: "order",
                 url: "/waiter.html"
+            },
+            android: {
+                priority: "high",
+                ttl: 0
             },
             webpush: {
                 headers: {
                     Urgency: "high"
                 },
                 notification: {
+                    title: orderTitle,
+                    body: orderBody,
                     icon: "/images/android-chrome-192x192.png",
                     badge: "/images/android-chrome-192x192.png",
                     vibrate: [500, 200, 500, 200, 1000],
@@ -180,6 +219,13 @@ exports.onPreOrderCreated = functions.firestore
         try {
             const response = await admin.messaging().sendEachForMulticast(multicastMessage);
             console.log(`📡 Commande FCM envoyée: ${response.successCount} succès, ${response.failureCount} échecs.`);
+
+            // Envoi de secours sur le topic "waiters" pour réveiller les APKs natives
+            admin.messaging().send({
+                topic: "waiters",
+                data: multicastMessage.data,
+                android: { priority: "high", ttl: 0 }
+            }).catch(e => console.warn("Erreur broadcast topic waiters (order):", e));
 
             if (response.failureCount > 0) {
                 const failed = [];
