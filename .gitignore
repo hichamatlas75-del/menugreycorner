@@ -11,3 +11,10 @@ gradlew
 gradlew.bat
 .wrangler/
 
+# Firebase & Cloud Credentials (Security)
+*serviceAccountKey.json
+*service_account*.json
+*.pem
+*.key
+
+

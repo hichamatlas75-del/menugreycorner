@@ -131,9 +131,32 @@ export function getTableZoneName(tableNum) {
     return `Table ${num}`;
 }
 
+export const FIREBASE_VAPID_KEY = "BO5FSWfM-nUZt6OZV4uGCbTmEi_dErg_FCVW52oxYi8Y__v0dBreH3KTY1Eo4NjzhZ83g09dESoSlegDI3vBH1I";
+if (typeof window !== "undefined") {
+    window.FIREBASE_VAPID_KEY = FIREBASE_VAPID_KEY;
+}
+
 export function sendFcmToWaiters(type, title, body, tableId, docId) {
-    // Note: Legacy FCM HTTP endpoint (fcm.googleapis.com/fcm/send) was retired by Google in June 2024.
-    // Real-time synchronization is natively provided by Firestore onSnapshot in waiter.js.
+    if (typeof fetch === "undefined") return;
+
+    fetch("/api/send-fcm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            type: type,
+            title: title,
+            body: body,
+            tableId: String(tableId),
+            docId: String(docId)
+        })
+    }).then(res => {
+        if (res.ok) {
+            console.log("🚀 FCM Push relayé avec succès via /api/send-fcm");
+        }
+    }).catch(err => {
+        // En local ou si l'endpoint serverless n'est pas configuré, Firestore trigger / Cloud Function prend le relais
+        console.log("ℹ️ FCM HTTP relay info:", err.message);
+    });
 }
 
 export const dbService = {
@@ -223,6 +246,11 @@ export const dbService = {
                 if (isFirebaseActive) {
                     db.collection("waiters_calls").add(data)
                         .then(docRef => {
+                            const zoneName = getTableZoneName(tableId);
+                            const typeLabels = { waiter: "Appel Serveur", water: "Besoin d'Eau", bill: "L'Addition" };
+                            const typeLabel = typeLabels[type] || "Appel";
+                            sendFcmToWaiters("CALL", `🔔 ${typeLabel} : ${zoneName}`, `Table ${tableId} demande de l'assistance`, tableId, docRef.id);
+
                             // Mirror to 'waiter_calls' for Android native APK background poller compatibility
                             try {
                                 db.collection("waiter_calls").doc(docRef.id).set({

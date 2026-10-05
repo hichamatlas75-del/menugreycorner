@@ -187,6 +187,72 @@
             }
         }
 
+        /* ── Push Notification Pill ──────────────────────────────────────── */
+        .push-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: .68rem;
+            font-weight: 600;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: var(--font-sans);
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .push-pill:hover {
+            border-color: var(--border-hover);
+        }
+
+        .push-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--muted);
+            flex-shrink: 0;
+            transition: background 0.3s ease;
+        }
+
+        .push-pill.push-granted {
+            background: rgba(46, 204, 113, .12);
+            border-color: rgba(46, 204, 113, .35);
+            color: #2ecc71;
+        }
+
+        .push-pill.push-granted .push-dot {
+            background: #2ecc71;
+            box-shadow: 0 0 6px rgba(46, 204, 113, .6);
+            animation: pulse-dot 2s infinite;
+        }
+
+        .push-pill.push-denied {
+            background: rgba(231, 76, 60, .12);
+            border-color: rgba(231, 76, 60, .35);
+            color: #e74c3c;
+        }
+
+        .push-pill.push-denied .push-dot {
+            background: #e74c3c;
+        }
+
+        .push-pill.push-prompt {
+            background: rgba(201, 169, 110, .14);
+            border-color: rgba(201, 169, 110, .4);
+            color: var(--gold);
+        }
+
+        .push-pill.push-prompt .push-dot {
+            background: var(--gold);
+        }
+
         /* ── Stats bar ───────────────────────────────────────────────────── */
         .stats-bar {
             display: grid;
@@ -631,6 +697,12 @@
             </div>
 
             <div class="header-right">
+                <!-- Statut notifications Push FCM en arrière-plan -->
+                <button id="pushNotifBtn" class="push-pill push-prompt" type="button" title="Activer les notifications push en arrière-plan">
+                    <span class="push-dot"></span>
+                    <span id="pushNotifLabel">Push En attente</span>
+                </button>
+
                 <!-- Statut connexion Firebase (piloté depuis waiter.js) -->
                 <div class="connection-pill disconnected" id="connectionPill">
                     <span class="conn-dot"></span>
@@ -710,10 +782,11 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js"></script>
     <script type="module" src="js/config/firebase.js"></script>
 
     <!-- Waiter Logic -->
-    <script src="waiter.js?v=1.2"></script>
+    <script src="waiter.js?v=1.3"></script>
 </body>
 
 </html>

@@ -1,12 +1,19 @@
 // ============================================================================
-// SERVICE WORKER — Enregistrement pour push background & offline cache
+// SERVICE WORKER & FCM PUSH NOTIFICATIONS
 // ============================================================================
+
+let waiterSwRegistration = null;
+let currentFcmToken = null;
 
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-        navigator.serviceWorker.register("/waiter-sw.js", { scope: "/" })
+        navigator.serviceWorker.register("/firebase-messaging-sw.js", { scope: "/" })
             .then((reg) => {
-                console.log("✅ Service Worker waiter enregistré:", reg.scope);
+                waiterSwRegistration = reg;
+                console.log("✅ Service Worker FCM enregistré:", reg.scope);
+
+                // Initialisation du flux de notifications Push FCM
+                initWaiterFcmPush(reg);
 
                 // Vérifier si une mise à jour est disponible
                 reg.addEventListener("updatefound", () => {
@@ -31,6 +38,155 @@ if ("serviceWorker" in navigator) {
             }
         }, 25000);
     });
+}
+
+// ── GESTIONNAIRE PUSH FCM (Inscriptions, Tokens, Synchronisation) ─────────────
+
+async function initWaiterFcmPush(swReg) {
+    const btn = document.getElementById("pushNotifBtn");
+    const label = document.getElementById("pushNotifLabel");
+
+    const updatePushUI = (state, customText) => {
+        if (!btn || !label) return;
+        btn.classList.remove("push-granted", "push-denied", "push-prompt");
+        if (state === "granted") {
+            btn.classList.add("push-granted");
+            label.textContent = customText || "Push Actif";
+            btn.title = "Notifications d'arrière-plan actives pour ce smartphone.";
+        } else if (state === "denied") {
+            btn.classList.add("push-denied");
+            label.textContent = customText || "Push Bloqué";
+            btn.title = "Notifications bloquées dans les paramètres du navigateur.";
+        } else {
+            btn.classList.add("push-prompt");
+            label.textContent = customText || "Activer Push";
+            btn.title = "Cliquez pour activer les notifications d'arrière-plan (écran éteint).";
+        }
+    };
+
+    if (btn && !btn._hasClickListener) {
+        btn._hasClickListener = true;
+        btn.addEventListener("click", () => requestFcmPushPermission(swReg, true));
+    }
+
+    if (!("Notification" in window)) {
+        console.warn("⚠️ Notification API non supportée sur ce navigateur.");
+        updatePushUI("denied", "Non supporté");
+        return;
+    }
+
+    if (Notification.permission === "granted") {
+        updatePushUI("granted", "Push Synchronisation...");
+        await registerFcmToken(swReg, false);
+    } else if (Notification.permission === "denied") {
+        updatePushUI("denied");
+    } else {
+        updatePushUI("prompt");
+    }
+}
+
+async function requestFcmPushPermission(swReg, userInitiated = false) {
+    if (!("Notification" in window)) {
+        alert("Les notifications Web Push ne sont pas supportées par ce navigateur.");
+        return;
+    }
+
+    if (Notification.permission === "denied") {
+        alert("Les notifications sont bloquées dans votre navigateur.\n\nPour les activer :\n1. Cliquez sur l'icône de cadenas ou de réglages à gauche de l'adresse web\n2. Autorisez les 'Notifications'\n3. Rechargez la page.");
+        return;
+    }
+
+    try {
+        const permission = await Notification.requestPermission();
+        if (permission === "granted") {
+            await registerFcmToken(swReg, userInitiated);
+        } else {
+            const btn = document.getElementById("pushNotifBtn");
+            const label = document.getElementById("pushNotifLabel");
+            if (btn && label) {
+                btn.classList.remove("push-granted", "push-prompt");
+                btn.classList.add("push-denied");
+                label.textContent = "Push Refusé";
+            }
+        }
+    } catch (e) {
+        console.error("❌ Erreur demande de permission:", e);
+    }
+}
+
+async function registerFcmToken(swReg, showSuccessFeedback = false) {
+    const btn = document.getElementById("pushNotifBtn");
+    const label = document.getElementById("pushNotifLabel");
+
+    try {
+        if (typeof firebase === "undefined" || !firebase.messaging || !firebase.messaging.isSupported()) {
+            console.warn("⚠️ Firebase Messaging non supporté ou indisponible.");
+            return;
+        }
+
+        const messaging = firebase.messaging();
+
+        const DEFAULT_VAPID_KEY = "BO5FSWfM-nUZt6OZV4uGCbTmEi_dErg_FCVW52oxYi8Y__v0dBreH3KTY1Eo4NjzhZ83g09dESoSlegDI3vBH1I";
+        let vapidKey = localStorage.getItem("fcm_vapid_key") || window.FIREBASE_VAPID_KEY || DEFAULT_VAPID_KEY;
+
+        const tokenOptions = {
+            serviceWorkerRegistration: swReg || waiterSwRegistration,
+            vapidKey: vapidKey
+        };
+
+        let token = null;
+        try {
+            token = await messaging.getToken(tokenOptions);
+        } catch (tokenErr) {
+            console.warn("⚠️ Erreur récupération token FCM:", tokenErr);
+            if (tokenErr.code === "messaging/missing-vapid-key" || (tokenErr.message && tokenErr.message.includes("vapidKey"))) {
+                const inputKey = prompt("🔑 Clé VAPID Firebase requise pour recevoir les pushs.\nCollez la clé VAPID (générée dans la console Firebase > Paramètres > Cloud Messaging > Certificats Web Push) :");
+                if (inputKey && inputKey.trim()) {
+                    vapidKey = inputKey.trim();
+                    localStorage.setItem("fcm_vapid_key", vapidKey);
+                    tokenOptions.vapidKey = vapidKey;
+                    token = await messaging.getToken(tokenOptions);
+                }
+            } else {
+                throw tokenErr;
+            }
+        }
+
+        if (token) {
+            currentFcmToken = token;
+            console.log("📲 FCM Token actif:", token.substring(0, 15) + "...");
+
+            if (typeof db !== "undefined" && db) {
+                await db.collection("waiter_fcm_tokens").doc(myDeviceId).set({
+                    token: token,
+                    deviceId: myDeviceId,
+                    waiterId: activeWaiterId,
+                    waiterName: activeWaiterName,
+                    active: true,
+                    userAgent: navigator.userAgent,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+                console.log("☁️ Token enregistré dans Firestore (collection waiter_fcm_tokens).");
+            }
+
+            if (btn && label) {
+                btn.classList.remove("push-denied", "push-prompt");
+                btn.classList.add("push-granted");
+                label.textContent = "Push Actif";
+            }
+
+            if (showSuccessFeedback) {
+                alert("✅ Notifications Push activées avec succès !\n\nCe smartphone recevra désormais les alertes même avec l'écran éteint et l'application fermée.");
+            }
+        }
+    } catch (err) {
+        console.error("❌ Échec enregistrement token FCM:", err);
+        if (btn && label) {
+            btn.classList.remove("push-granted");
+            btn.classList.add("push-prompt");
+            label.textContent = "Push Erreur";
+        }
+    }
 }
 
 // ============================================================================

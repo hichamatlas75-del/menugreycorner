@@ -124,7 +124,29 @@
     if (num >= 301 && num <= 323) return `Terrasse (Table ${num})`;
     return `Table ${num}`;
   }
+  var FIREBASE_VAPID_KEY = "BO5FSWfM-nUZt6OZV4uGCbTmEi_dErg_FCVW52oxYi8Y__v0dBreH3KTY1Eo4NjzhZ83g09dESoSlegDI3vBH1I";
+  if (typeof window !== "undefined") {
+    window.FIREBASE_VAPID_KEY = FIREBASE_VAPID_KEY;
+  }
   function sendFcmToWaiters(type, title, body, tableId, docId) {
+    if (typeof fetch === "undefined") return;
+    fetch("/api/send-fcm", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        type,
+        title,
+        body,
+        tableId: String(tableId),
+        docId: String(docId)
+      })
+    }).then((res) => {
+      if (res.ok) {
+        console.log("\u{1F680} FCM Push relay\xE9 avec succ\xE8s via /api/send-fcm");
+      }
+    }).catch((err) => {
+      console.log("\u2139\uFE0F FCM HTTP relay info:", err.message);
+    });
   }
   var dbService = {
     isCloud() {
@@ -240,6 +262,10 @@
           };
           if (isFirebaseActive) {
             db.collection("waiters_calls").add(data).then((docRef) => {
+              const zoneName = getTableZoneName(tableId);
+              const typeLabels = { waiter: "Appel Serveur", water: "Besoin d'Eau", bill: "L'Addition" };
+              const typeLabel = typeLabels[type] || "Appel";
+              sendFcmToWaiters("CALL", `\u{1F514} ${typeLabel} : ${zoneName}`, `Table ${tableId} demande de l'assistance`, tableId, docRef.id);
               try {
                 db.collection("waiter_calls").doc(docRef.id).set({
                   ...data,
