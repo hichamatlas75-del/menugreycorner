@@ -1185,6 +1185,33 @@ window.addEventListener("beforeunload", () => {
 });
 
 // ============================================================================
+// WATCHDOG DE SECOURS — Rappels sonores tant qu'un appel ou commande est en attente
+// ============================================================================
+let pendingAlertWatchdog = null;
+function startPendingAlertWatchdog() {
+    if (pendingAlertWatchdog) return;
+    pendingAlertWatchdog = setInterval(() => {
+        const hasPendingCalls = (activeCallsList || []).some(c => c.status === "pending");
+        const hasPendingOrders = (activePreOrdersList || []).some(o => o.status === "pending");
+
+        if (hasPendingCalls || hasPendingOrders) {
+            console.log("⏰ Watchdog : Éléments toujours en attente → Relance sonore et réveil écran.");
+            triggerHapticVibrate();
+            playAlertSound();
+            requestScreenWakeLock();
+
+            const ai = (typeof AndroidInterface !== "undefined")
+                ? AndroidInterface
+                : ((typeof window !== "undefined" && window.AndroidInterface) ? window.AndroidInterface : null);
+            if (ai && typeof ai.triggerActionAlert === "function") {
+                const label = hasPendingOrders ? "Commande(s) en attente !" : "Appel(s) en attente !";
+                ai.triggerActionAlert("pending_reminder", "reminder", "⚠️ Attention : En attente", label);
+            }
+        }
+    }, 20000); // Répète toutes les 20 secondes
+}
+
+// ============================================================================
 // INITIALISATION
 // ============================================================================
 
@@ -1192,6 +1219,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initTabNavigation();
     requestScreenWakeLock();
     startAndroidKeepAlive();
+    startPendingAlertWatchdog();
 
     function startWaiterApp() {
         if (typeof dbService !== "undefined" && dbService.isCloud()) {
