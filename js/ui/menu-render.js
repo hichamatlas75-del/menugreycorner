@@ -8,7 +8,7 @@ import { menuData } from '../data/menu-data.js';
 import { currentLang } from '../services/i18n.js';
 import { addToCart, showToast } from '../services/cart.js';
 import { closeBurgerMenu, checkItemOptionsAndAdd } from './modals.js';
-import { isBreakfastAvailable, getKitchenNoticeInner } from '../services/schedule.js';
+import { isBreakfastAvailable, getKitchenNoticeInner, getBreakfastNoticeInner } from '../services/schedule.js';
 
 export let activeCategoryId = null;
 export let isViewAllMode = false;
@@ -286,16 +286,7 @@ export function renderDishes(filterTerm = "") {
       catSection.id = `cat-section-${catId}`;
 
       const isBreakfastCat = (catId === "petit-dejeuner");
-      const isBreakfastCatOver = isBreakfastCat && !isBreakfastAvailable();
       const isEntreesCat = (catId === "entrees");
-
-      const bNoticeTexts = {
-        fr: "Formules petit-déjeuner servies jusqu'à 13h00 en semaine et 14h00 le week-end.",
-        en: "Breakfast formulas are served until 13:00 on weekdays and 14:00 on weekends.",
-        de: "Frühstücksangebote werden werktags bis 13:00 Uhr und am Wochenende bis 14:00 Uhr serviert.",
-        es: "Fórmulas de desayuno servidas hasta las 13:00 de lunes a viernes et 14:00 fines de semana.",
-        ar: "يُقدَّم فطور الصباح حتى الساعة 13:00 طيلة الأسبوع وحتى 14:00 في عطلة نهاية الأسبوع."
-      };
 
       catSection.innerHTML = `
         <div class="hub-section-header">
@@ -304,10 +295,9 @@ export function renderDishes(filterTerm = "") {
             <span class="hub-section-count">${cat.items?.length || 0}</span>
           </div>
         </div>
-        ${isBreakfastCatOver ? `
-          <div class="breakfast-service-notice">
-            <span class="bsn-icon">🕒</span>
-            <span class="bsn-text">${bNoticeTexts[currentLang] || bNoticeTexts.fr}</span>
+        ${isBreakfastCat ? `
+          <div class="breakfast-service-notice ${!isBreakfastAvailable() ? 'is-ended' : ''}">
+            ${getBreakfastNoticeInner(currentLang)}
           </div>
         ` : ""}
         ${isEntreesCat ? `
@@ -344,7 +334,6 @@ export function renderDishes(filterTerm = "") {
   const catTitle = activeCategory.category[currentLang] || activeCategory.category.fr;
   const items = activeCategory.items || [];
   const isBreakfastCurrent = (currentCatId === "petit-dejeuner");
-  const isBreakfastCurrentOver = isBreakfastCurrent && !isBreakfastAvailable();
   const isEntreesCurrent = (currentCatId === "entrees");
 
   const voirToutTexts = {
@@ -363,14 +352,6 @@ export function renderDishes(filterTerm = "") {
     ar: `${items.length} أطباق`
   };
 
-  const bSingleNoticeTexts = {
-    fr: "Formules petit-déjeuner servies jusqu'à 13h00 en semaine et 14h00 le week-end.",
-    en: "Breakfast formulas are served until 13:00 on weekdays and 14:00 on weekends.",
-    de: "Frühstücksangebote werden werktags bis 13:00 Uhr und am Wochenende bis 14:00 Uhr serviert.",
-    es: "Fórmulas de desayuno servidas hasta las 13:00 de lunes a viernes y 14:00 fines de semana.",
-    ar: "يُقدَّم فطور الصباح حتى الساعة 13:00 طيلة الأسبوع وحتى 14:00 في عطلة نهاية الأسبوع."
-  };
-
   menuGrid.innerHTML = `
     <div class="hub-single-category-wrap">
       <div class="hub-section-header">
@@ -383,10 +364,9 @@ export function renderDishes(filterTerm = "") {
           <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
         </button>
       </div>
-      ${isBreakfastCurrentOver ? `
-        <div class="breakfast-service-notice">
-          <span class="bsn-icon">🕒</span>
-          <span class="bsn-text">${bSingleNoticeTexts[currentLang] || bSingleNoticeTexts.fr}</span>
+      ${isBreakfastCurrent ? `
+        <div class="breakfast-service-notice ${!isBreakfastAvailable() ? 'is-ended' : ''}">
+          ${getBreakfastNoticeInner(currentLang)}
         </div>
       ` : ""}
       ${isEntreesCurrent ? `

@@ -60,13 +60,111 @@ export function isRestaurantOpen() {
 
 /**
  * Check if breakfast service is currently available
- * - Mon - Fri: until 13:00
- * - Sat - Sun: until 14:00
+ * - Mon - Fri (Semaine): 07:00 – 12:00
+ * - Sat - Sun (Week-end): 07:00 – 14:00
  */
 export function isBreakfastAvailable() {
   const { isWeekend, decimalHour } = getMoroccoDateTime();
-  const cutoff = isWeekend ? 14 : 13;
+  const cutoff = isWeekend ? 14 : 12;
   return decimalHour >= 7 && decimalHour < cutoff;
+}
+
+/**
+ * Detect current day and breakfast service status
+ * - Mon - Fri: 07:00 – 12:00
+ * - Sat - Sun: 07:00 – 14:00
+ */
+export function getBreakfastScheduleInfo() {
+  const { weekday, decimalHour, isWeekend } = getMoroccoDateTime();
+  const cutoffHour = isWeekend ? 14 : 12;
+  const isAvailable = decimalHour >= 7 && decimalHour < cutoffHour;
+  const isBefore = decimalHour < 7;
+  const isAfter = decimalHour >= cutoffHour;
+
+  return {
+    weekday,
+    isWeekend,
+    startHour: 7,
+    cutoffHour,
+    isAvailable,
+    isBefore,
+    isAfter,
+    decimalHour
+  };
+}
+
+/**
+ * Generate HTML content for the dynamic breakfast notice above breakfast dishes
+ */
+export function getBreakfastNoticeInner(lang = "fr") {
+  const info = getBreakfastScheduleInfo();
+  const dayName = WEEKDAY_NAMES[info.weekday]?.[lang] || WEEKDAY_NAMES[info.weekday]?.fr || info.weekday;
+
+  const todayLabel = {
+    fr: "Aujourd'hui",
+    en: "Today",
+    es: "Hoy",
+    de: "Heute",
+    ar: "اليوم"
+  }[lang] || "Aujourd'hui";
+
+  let statusText = "";
+  if (info.isBefore) {
+    const beforeTexts = {
+      fr: "Service petit-déjeuner commence à 07h00",
+      en: "Breakfast service starts at 07:00",
+      es: "El servicio de desayuno comienza a las 07:00",
+      de: "Frühstücksservice beginnt um 07:00 Uhr",
+      ar: "يبدأ فطور الصباح عند الساعة 07:00"
+    };
+    statusText = beforeTexts[lang] || beforeTexts.fr;
+  } else if (info.isAvailable) {
+    const availableTexts = {
+      fr: `Service petit-déjeuner en cours (jusqu'à ${info.cutoffHour}h00)`,
+      en: `Breakfast service open (until ${info.cutoffHour}:00)`,
+      es: `Servicio de desayuno en curso (hasta las ${info.cutoffHour}:00)`,
+      de: `Frühstücksservice läuft (bis ${info.cutoffHour}:00 Uhr)`,
+      ar: `خدمة فطور الصباح متوفرة حالياً (حتى الساعة ${info.cutoffHour}:00)`
+    };
+    statusText = availableTexts[lang] || availableTexts.fr;
+  } else {
+    const endedTexts = {
+      fr: "Service petit-déjeuner terminé pour aujourd'hui",
+      en: "Breakfast service ended for today",
+      es: "Servicio de desayuno finalizado por hoy",
+      de: "Frühstücksservice für heute beendet",
+      ar: "انتهت خدمة فطور الصباح لهذا اليوم"
+    };
+    statusText = endedTexts[lang] || endedTexts.fr;
+  }
+
+  const slotLabels = {
+    weekday: { fr: "Semaine", en: "Weekdays", es: "Semana", de: "Werktags", ar: "الأسبوع" },
+    weekend: { fr: "Week-end", en: "Weekend", es: "Fin de semana", de: "Wochenende", ar: "عطلة نهاية الأسبوع" }
+  };
+
+  const isWk = !info.isWeekend;
+  const isWkEnd = info.isWeekend;
+
+  return `
+    <div class="esn-card-inner">
+      <div class="esn-primary-row">
+        <span class="esn-icon">☕</span>
+        <div class="esn-title-group">
+          <span class="esn-badge-today">${todayLabel} (${dayName})</span>
+          <strong class="esn-main-status">${statusText}</strong>
+        </div>
+      </div>
+      <div class="esn-schedule-pills">
+        <span class="esn-pill ${isWk ? 'esn-pill-active' : ''}">
+          ${isWk ? '<span class="esn-pin">📍</span>' : ''}${slotLabels.weekday[lang] || slotLabels.weekday.fr} : 07h00 – 12h00
+        </span>
+        <span class="esn-pill ${isWkEnd ? 'esn-pill-active' : ''}">
+          ${isWkEnd ? '<span class="esn-pin">📍</span>' : ''}${slotLabels.weekend[lang] || slotLabels.weekend.fr} : 07h00 – 14h00
+        </span>
+      </div>
+    </div>
+  `;
 }
 
 /**
@@ -245,6 +343,17 @@ export function updateScheduleUI() {
       el.innerHTML = innerHtml;
     });
   }
+
+  // Also dynamically update any breakfast notices on page
+  const breakfastNotices = document.querySelectorAll(".breakfast-service-notice");
+  if (breakfastNotices.length > 0) {
+    const innerHtml = getBreakfastNoticeInner(lang);
+    const isAvail = isBreakfastAvailable();
+    breakfastNotices.forEach(el => {
+      el.innerHTML = innerHtml;
+      el.classList.toggle("is-ended", !isAvail);
+    });
+  }
 }
 
 // Global binding for backwards compatibility
@@ -253,3 +362,5 @@ window.isBreakfastAvailable = isBreakfastAvailable;
 window.updateScheduleUI = updateScheduleUI;
 window.getKitchenScheduleInfo = getKitchenScheduleInfo;
 window.getKitchenNoticeInner = getKitchenNoticeInner;
+window.getBreakfastScheduleInfo = getBreakfastScheduleInfo;
+window.getBreakfastNoticeInner = getBreakfastNoticeInner;

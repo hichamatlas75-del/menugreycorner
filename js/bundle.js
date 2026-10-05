@@ -3809,8 +3809,90 @@
   }
   function isBreakfastAvailable() {
     const { isWeekend, decimalHour } = getMoroccoDateTime();
-    const cutoff = isWeekend ? 14 : 13;
+    const cutoff = isWeekend ? 14 : 12;
     return decimalHour >= 7 && decimalHour < cutoff;
+  }
+  function getBreakfastScheduleInfo() {
+    const { weekday, decimalHour, isWeekend } = getMoroccoDateTime();
+    const cutoffHour = isWeekend ? 14 : 12;
+    const isAvailable = decimalHour >= 7 && decimalHour < cutoffHour;
+    const isBefore = decimalHour < 7;
+    const isAfter = decimalHour >= cutoffHour;
+    return {
+      weekday,
+      isWeekend,
+      startHour: 7,
+      cutoffHour,
+      isAvailable,
+      isBefore,
+      isAfter,
+      decimalHour
+    };
+  }
+  function getBreakfastNoticeInner(lang = "fr") {
+    const info = getBreakfastScheduleInfo();
+    const dayName = WEEKDAY_NAMES[info.weekday]?.[lang] || WEEKDAY_NAMES[info.weekday]?.fr || info.weekday;
+    const todayLabel = {
+      fr: "Aujourd'hui",
+      en: "Today",
+      es: "Hoy",
+      de: "Heute",
+      ar: "\u0627\u0644\u064A\u0648\u0645"
+    }[lang] || "Aujourd'hui";
+    let statusText = "";
+    if (info.isBefore) {
+      const beforeTexts = {
+        fr: "Service petit-d\xE9jeuner commence \xE0 07h00",
+        en: "Breakfast service starts at 07:00",
+        es: "El servicio de desayuno comienza a las 07:00",
+        de: "Fr\xFChst\xFCcksservice beginnt um 07:00 Uhr",
+        ar: "\u064A\u0628\u062F\u0623 \u0641\u0637\u0648\u0631 \u0627\u0644\u0635\u0628\u0627\u062D \u0639\u0646\u062F \u0627\u0644\u0633\u0627\u0639\u0629 07:00"
+      };
+      statusText = beforeTexts[lang] || beforeTexts.fr;
+    } else if (info.isAvailable) {
+      const availableTexts = {
+        fr: `Service petit-d\xE9jeuner en cours (jusqu'\xE0 ${info.cutoffHour}h00)`,
+        en: `Breakfast service open (until ${info.cutoffHour}:00)`,
+        es: `Servicio de desayuno en curso (hasta las ${info.cutoffHour}:00)`,
+        de: `Fr\xFChst\xFCcksservice l\xE4uft (bis ${info.cutoffHour}:00 Uhr)`,
+        ar: `\u062E\u062F\u0645\u0629 \u0641\u0637\u0648\u0631 \u0627\u0644\u0635\u0628\u0627\u062D \u0645\u062A\u0648\u0641\u0631\u0629 \u062D\u0627\u0644\u064A\u0627\u064B (\u062D\u062A\u0649 \u0627\u0644\u0633\u0627\u0639\u0629 ${info.cutoffHour}:00)`
+      };
+      statusText = availableTexts[lang] || availableTexts.fr;
+    } else {
+      const endedTexts = {
+        fr: "Service petit-d\xE9jeuner termin\xE9 pour aujourd'hui",
+        en: "Breakfast service ended for today",
+        es: "Servicio de desayuno finalizado por hoy",
+        de: "Fr\xFChst\xFCcksservice f\xFCr heute beendet",
+        ar: "\u0627\u0646\u062A\u0647\u062A \u062E\u062F\u0645\u0629 \u0641\u0637\u0648\u0631 \u0627\u0644\u0635\u0628\u0627\u062D \u0644\u0647\u0630\u0627 \u0627\u0644\u064A\u0648\u0645"
+      };
+      statusText = endedTexts[lang] || endedTexts.fr;
+    }
+    const slotLabels = {
+      weekday: { fr: "Semaine", en: "Weekdays", es: "Semana", de: "Werktags", ar: "\u0627\u0644\u0623\u0633\u0628\u0648\u0639" },
+      weekend: { fr: "Week-end", en: "Weekend", es: "Fin de semana", de: "Wochenende", ar: "\u0639\u0637\u0644\u0629 \u0646\u0647\u0627\u064A\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639" }
+    };
+    const isWk = !info.isWeekend;
+    const isWkEnd = info.isWeekend;
+    return `
+    <div class="esn-card-inner">
+      <div class="esn-primary-row">
+        <span class="esn-icon">\u2615</span>
+        <div class="esn-title-group">
+          <span class="esn-badge-today">${todayLabel} (${dayName})</span>
+          <strong class="esn-main-status">${statusText}</strong>
+        </div>
+      </div>
+      <div class="esn-schedule-pills">
+        <span class="esn-pill ${isWk ? "esn-pill-active" : ""}">
+          ${isWk ? '<span class="esn-pin">\u{1F4CD}</span>' : ""}${slotLabels.weekday[lang] || slotLabels.weekday.fr} : 07h00 \u2013 12h00
+        </span>
+        <span class="esn-pill ${isWkEnd ? "esn-pill-active" : ""}">
+          ${isWkEnd ? '<span class="esn-pin">\u{1F4CD}</span>' : ""}${slotLabels.weekend[lang] || slotLabels.weekend.fr} : 07h00 \u2013 14h00
+        </span>
+      </div>
+    </div>
+  `;
   }
   var WEEKDAY_NAMES = {
     Mon: { fr: "Lundi", en: "Monday", es: "Lunes", de: "Montag", ar: "\u0627\u0644\u0625\u062B\u0646\u064A\u0646" },
@@ -3952,12 +4034,23 @@
         el.innerHTML = innerHtml;
       });
     }
+    const breakfastNotices = document.querySelectorAll(".breakfast-service-notice");
+    if (breakfastNotices.length > 0) {
+      const innerHtml = getBreakfastNoticeInner(lang);
+      const isAvail = isBreakfastAvailable();
+      breakfastNotices.forEach((el) => {
+        el.innerHTML = innerHtml;
+        el.classList.toggle("is-ended", !isAvail);
+      });
+    }
   }
   window.isRestaurantOpen = isRestaurantOpen;
   window.isBreakfastAvailable = isBreakfastAvailable;
   window.updateScheduleUI = updateScheduleUI;
   window.getKitchenScheduleInfo = getKitchenScheduleInfo;
   window.getKitchenNoticeInner = getKitchenNoticeInner;
+  window.getBreakfastScheduleInfo = getBreakfastScheduleInfo;
+  window.getBreakfastNoticeInner = getBreakfastNoticeInner;
 
   // js/services/gps.js
   var GeoFenceManager = {
@@ -5765,15 +5858,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
         catSection.className = "hub-category-section";
         catSection.id = `cat-section-${catId}`;
         const isBreakfastCat = catId === "petit-dejeuner";
-        const isBreakfastCatOver = isBreakfastCat && !isBreakfastAvailable();
         const isEntreesCat = catId === "entrees";
-        const bNoticeTexts = {
-          fr: "Formules petit-d\xE9jeuner servies jusqu'\xE0 13h00 en semaine et 14h00 le week-end.",
-          en: "Breakfast formulas are served until 13:00 on weekdays and 14:00 on weekends.",
-          de: "Fr\xFChst\xFCcksangebote werden werktags bis 13:00 Uhr und am Wochenende bis 14:00 Uhr serviert.",
-          es: "F\xF3rmulas de desayuno servidas hasta las 13:00 de lunes a viernes et 14:00 fines de semana.",
-          ar: "\u064A\u064F\u0642\u062F\u0651\u064E\u0645 \u0641\u0637\u0648\u0631 \u0627\u0644\u0635\u0628\u0627\u062D \u062D\u062A\u0649 \u0627\u0644\u0633\u0627\u0639\u0629 13:00 \u0637\u064A\u0644\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639 \u0648\u062D\u062A\u0649 14:00 \u0641\u064A \u0639\u0637\u0644\u0629 \u0646\u0647\u0627\u064A\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639."
-        };
         catSection.innerHTML = `
         <div class="hub-section-header">
           <div class="hub-header-left">
@@ -5781,10 +5866,9 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
             <span class="hub-section-count">${cat.items?.length || 0}</span>
           </div>
         </div>
-        ${isBreakfastCatOver ? `
-          <div class="breakfast-service-notice">
-            <span class="bsn-icon">\u{1F552}</span>
-            <span class="bsn-text">${bNoticeTexts[currentLang] || bNoticeTexts.fr}</span>
+        ${isBreakfastCat ? `
+          <div class="breakfast-service-notice ${!isBreakfastAvailable() ? "is-ended" : ""}">
+            ${getBreakfastNoticeInner(currentLang)}
           </div>
         ` : ""}
         ${isEntreesCat ? `
@@ -5814,7 +5898,6 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     const catTitle = activeCategory.category[currentLang] || activeCategory.category.fr;
     const items = activeCategory.items || [];
     const isBreakfastCurrent = currentCatId === "petit-dejeuner";
-    const isBreakfastCurrentOver = isBreakfastCurrent && !isBreakfastAvailable();
     const isEntreesCurrent = currentCatId === "entrees";
     const voirToutTexts = {
       fr: "Voir tout",
@@ -5830,13 +5913,6 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       es: `${items.length} platos`,
       ar: `${items.length} \u0623\u0637\u0628\u0627\u0642`
     };
-    const bSingleNoticeTexts = {
-      fr: "Formules petit-d\xE9jeuner servies jusqu'\xE0 13h00 en semaine et 14h00 le week-end.",
-      en: "Breakfast formulas are served until 13:00 on weekdays and 14:00 on weekends.",
-      de: "Fr\xFChst\xFCcksangebote werden werktags bis 13:00 Uhr und am Wochenende bis 14:00 Uhr serviert.",
-      es: "F\xF3rmulas de desayuno servidas hasta las 13:00 de lunes a viernes y 14:00 fines de semana.",
-      ar: "\u064A\u064F\u0642\u062F\u0651\u064E\u0645 \u0641\u0637\u0648\u0631 \u0627\u0644\u0635\u0628\u0627\u062D \u062D\u062A\u0649 \u0627\u0644\u0633\u0627\u0639\u0629 13:00 \u0637\u064A\u0644\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639 \u0648\u062D\u062A\u0649 14:00 \u0641\u064A \u0639\u0637\u0644\u0629 \u0646\u0647\u0627\u064A\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639."
-    };
     menuGrid.innerHTML = `
     <div class="hub-single-category-wrap">
       <div class="hub-section-header">
@@ -5849,10 +5925,9 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
           <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
         </button>
       </div>
-      ${isBreakfastCurrentOver ? `
-        <div class="breakfast-service-notice">
-          <span class="bsn-icon">\u{1F552}</span>
-          <span class="bsn-text">${bSingleNoticeTexts[currentLang] || bSingleNoticeTexts.fr}</span>
+      ${isBreakfastCurrent ? `
+        <div class="breakfast-service-notice ${!isBreakfastAvailable() ? "is-ended" : ""}">
+          ${getBreakfastNoticeInner(currentLang)}
         </div>
       ` : ""}
       ${isEntreesCurrent ? `
