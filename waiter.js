@@ -803,6 +803,8 @@ function processCallsFeed(calls) {
         } else {
             knownCallIds.add(call.id);
             if (isAcceptedByMe) myActiveCallsCount++;
+            const ai = (typeof AndroidInterface !== "undefined") ? AndroidInterface : (typeof window !== "undefined" ? window.AndroidInterface : null);
+            if (ai && typeof ai.cancelAlert === "function") ai.cancelAlert(call.id);
         }
 
         const card = document.createElement("div");
@@ -921,6 +923,8 @@ function processPreOrdersFeed(orders) {
         } else {
             knownOrderIds.add(order.id);
             if (isAcceptedByMe) myActiveOrdersCount++;
+            const ai = (typeof AndroidInterface !== "undefined") ? AndroidInterface : (typeof window !== "undefined" ? window.AndroidInterface : null);
+            if (ai && typeof ai.cancelAlert === "function") ai.cancelAlert(order.id);
         }
 
         const card = document.createElement("div");
@@ -1191,11 +1195,22 @@ let pendingAlertWatchdog = null;
 function startPendingAlertWatchdog() {
     if (pendingAlertWatchdog) return;
     pendingAlertWatchdog = setInterval(() => {
-        const hasPendingCalls = (activeCallsList || []).some(c => c.status === "pending");
-        const hasPendingOrders = (activePreOrdersList || []).some(o => o.status === "pending");
+        const now = Date.now();
+        const maxAgeMs = 15 * 60 * 1000; // Ne relance que les alertes de moins de 15 minutes
+
+        const hasPendingCalls = (activeCallsList || []).some(c => {
+            if (c.status !== "pending") return false;
+            const age = c.createdAt ? (now - parseSafeDate(c.createdAt).getTime()) : 0;
+            return age >= 0 && age < maxAgeMs;
+        });
+        const hasPendingOrders = (activePreOrdersList || []).some(o => {
+            if (o.status !== "pending") return false;
+            const age = o.createdAt ? (now - parseSafeDate(o.createdAt).getTime()) : 0;
+            return age >= 0 && age < maxAgeMs;
+        });
 
         if (hasPendingCalls || hasPendingOrders) {
-            console.log("⏰ Watchdog : Éléments toujours en attente → Relance sonore et réveil écran.");
+            console.log("⏰ Watchdog : Éléments récents toujours en attente → Relance sonore et réveil écran.");
             triggerHapticVibrate();
             playAlertSound();
             requestScreenWakeLock();
@@ -1204,7 +1219,7 @@ function startPendingAlertWatchdog() {
                 ? AndroidInterface
                 : ((typeof window !== "undefined" && window.AndroidInterface) ? window.AndroidInterface : null);
             if (ai && typeof ai.triggerActionAlert === "function") {
-                const label = hasPendingOrders ? "Commande(s) en attente !" : "Appel(s) en attente !";
+                const label = hasPendingOrders ? "Commande(s) récente(s) en attente !" : "Appel(s) en attente !";
                 ai.triggerActionAlert("pending_reminder", "reminder", "⚠️ Attention : En attente", label);
             }
         }
