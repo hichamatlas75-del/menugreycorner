@@ -418,7 +418,13 @@ export const dbService = {
                     db.collection("pre_orders").add(data)
                         .then(docRef => {
                             const zoneName = getTableZoneName(tableId);
-                            sendFcmToWaiters("PRE_ORDER", `👨‍🍳 Nouvelle Précommande : ${zoneName}`, `Total : ${totalPrice} MAD`, tableId, docRef.id);
+                            let itemsSummary = "";
+                            if (Array.isArray(items) && items.length > 0) {
+                                const preview = items.slice(0, 3).map(it => `${it.qty || 1}x ${it.name || "Article"}`).join(", ");
+                                const extra = items.length > 3 ? ` (+${items.length - 3})` : "";
+                                itemsSummary = `${preview}${extra} • `;
+                            }
+                            sendFcmToWaiters("PRE_ORDER", `👨‍🍳 Nouvelle Précommande : ${zoneName}`, `${itemsSummary}Total : ${totalPrice} MAD`, tableId, docRef.id);
                             if (callback) callback(true, docRef.id);
                         })
                         .catch(e => { console.error(e); if (callback) callback(false); });
