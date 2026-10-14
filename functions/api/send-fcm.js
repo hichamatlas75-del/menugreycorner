@@ -1,15 +1,25 @@
 /**
  * ============================================================================
- * GREY CORNER — CLOUDFLARE PAGES FUNCTION : FCM HTTP v1 DISPATCHER
- * Route : POST /api/send-fcm
+ * GREY CORNER — CLOUDFLARE DISPATCHER : FCM HTTP v1 DISPATCHER
+ * Compatible à la fois avec :
+ *   1. Cloudflare Pages Functions (Route: POST /api/send-fcm)
+ *   2. Cloudflare Worker autonome (greycorner-fcm)
  * ============================================================================
  * Envoie des notifications Push vers l'API Google Firebase Cloud Messaging v1
  * aux smartphones des serveurs même si l'application est totalement FERMÉE.
  */
 
+const CORS_HEADERS = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization"
+};
+
 // Helper : Convertit une clé PEM RSA en ArrayBuffer pour Web Crypto
 function pemToArrayBuffer(pem) {
+    if (!pem) throw new Error("Clé privée PEM vide ou manquante.");
     const cleanPem = pem
+        .replace(/\\n/g, "\n")
         .replace(/-----BEGIN[ A-Z_-]+-----/g, "")
         .replace(/-----END[ A-Z_-]+-----/g, "")
         .replace(/\s+/g, "");
@@ -25,6 +35,37 @@ function pemToArrayBuffer(pem) {
 function base64UrlEncode(str) {
     const b64 = typeof str === "string" ? btoa(str) : btoa(String.fromCharCode(...new Uint8Array(str)));
     return b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+// Résout le compte de service Firebase depuis les variables d'environnement Cloudflare
+function resolveServiceAccount(env) {
+    if (!env) return null;
+
+    // Format 1 : FIREBASE_SERVICE_ACCOUNT (JSON complet)
+    if (env.FIREBASE_SERVICE_ACCOUNT) {
+        try {
+            return typeof env.FIREBASE_SERVICE_ACCOUNT === "string"
+                ? JSON.parse(env.FIREBASE_SERVICE_ACCOUNT)
+                : env.FIREBASE_SERVICE_ACCOUNT;
+        } catch (e) {
+            console.warn("⚠️ Erreur de parsing de FIREBASE_SERVICE_ACCOUNT:", e);
+        }
+    }
+
+    // Format 2 : Variables séparées (comme configuré dans le Cloudflare Worker greycorner-fcm)
+    const privateKey = env.FIREBASE_PRIVATE_KEY || env.FIRBASE_PRIVATE_KEY;
+    const clientEmail = env.FIREBASE_CLIENT_EMAIL;
+    const projectId = env.FIREBASE_PROJECT_ID || "grey-corner-restaurant";
+
+    if (privateKey && clientEmail) {
+        return {
+            project_id: projectId,
+            client_email: clientEmail,
+            private_key: privateKey.replace(/\\n/g, "\n")
+        };
+    }
+
+    return null;
 }
 
 // Génère un jeton Google OAuth2 Bearer via l'API Web Crypto (RS256)
@@ -98,40 +139,36 @@ async function getActiveWaiterTokens(projectId, accessToken) {
         const fields = doc.fields || {};
         const isActive = fields.active ? fields.active.booleanValue : true;
         const token = fields.token ? fields.token.stringValue : null;
+        const platform = fields.platform ? fields.platform.stringValue : "";
+        const userAgent = fields.userAgent ? fields.userAgent.stringValue : "";
         if (isActive && token) {
-            tokens.push({ token, name: doc.name });
+            tokens.push({ token, name: doc.name, platform, userAgent });
         }
     });
 
     return tokens;
 }
 
-export async function onRequestPost(context) {
-    const { request, env } = context;
+// Cœur du traitement de la requête FCM
+async function handleFcmRequest(request, env) {
+    if (request.method === "OPTIONS") {
+        return new Response(null, { status: 204, headers: CORS_HEADERS });
+    }
 
     try {
         const payload = await request.json();
         const { type, title, body, tableId, docId } = payload;
 
-        // Récupérer le compte de service depuis la variable secrète Cloudflare Pages
-        let serviceAccount = null;
-        if (env && env.FIREBASE_SERVICE_ACCOUNT) {
-            try {
-                serviceAccount = typeof env.FIREBASE_SERVICE_ACCOUNT === "string"
-                    ? JSON.parse(env.FIREBASE_SERVICE_ACCOUNT)
-                    : env.FIREBASE_SERVICE_ACCOUNT;
-            } catch (e) {
-                console.warn("⚠️ Erreur de parsing de FIREBASE_SERVICE_ACCOUNT:", e);
-            }
-        }
+        const serviceAccount = resolveServiceAccount(env);
 
         if (!serviceAccount) {
+            console.warn("⚠️ Clés Firebase introuvables dans l'environnement Cloudflare.");
             return new Response(JSON.stringify({
                 status: "skipped",
-                message: "FIREBASE_SERVICE_ACCOUNT secret not configured in Cloudflare Pages. Push queued for client/firebase fallback."
+                message: "Identifiants Firebase non configurés dans Cloudflare (FIREBASE_PRIVATE_KEY ou FIREBASE_SERVICE_ACCOUNT manquant)."
             }), {
                 status: 200,
-                headers: { "Content-Type": "application/json" }
+                headers: { ...CORS_HEADERS, "Content-Type": "application/json" }
             });
         }
 
@@ -139,59 +176,109 @@ export async function onRequestPost(context) {
         const accessToken = await getGoogleOAuth2Token(serviceAccount);
         const waiterTokens = await getActiveWaiterTokens(projectId, accessToken);
 
-        if (waiterTokens.length === 0) {
-            return new Response(JSON.stringify({
-                status: "ok",
-                sent: 0,
-                message: "No active waiter device registered in Firestore yet."
-            }), {
-                status: 200,
-                headers: { "Content-Type": "application/json" }
-            });
-        }
+        const isOrder = String(type || "").toLowerCase().includes("order");
+        const defaultTitle = isOrder
+            ? `👨‍🍳 Nouvelle Commande — Table ${tableId}`
+            : `🔔 Appel Serveur — Table ${tableId}`;
+        const finalTitle = title || defaultTitle;
+        const finalBody = body || (isOrder ? "Nouvelle commande en attente de validation" : `Table ${tableId} sollicite le service.`);
+
+        // Construire la liste des cibles : tokens enregistrés + diffusion de secours sur le topic "waiters"
+        const targets = [];
+        const seenTokens = new Set();
+
+        waiterTokens.forEach((t) => {
+            if (t.token && !seenTokens.has(t.token)) {
+                seenTokens.add(t.token);
+                targets.push({
+                    type: "token",
+                    value: t.token,
+                    platform: t.platform,
+                    userAgent: t.userAgent
+                });
+            }
+        });
+
+        // Diffusion automatique sur le topic "waiters" pour réveiller les APKs natives abonnées
+        targets.push({
+            type: "topic",
+            value: "waiters",
+            platform: "android_native",
+            userAgent: "GreyCornerWaiterApp"
+        });
+
+        const fcmUrl = `https://fcm.googleapis.com/v1/projects/${projectId}/messages:send`;
 
         const results = await Promise.all(
-            waiterTokens.map(async ({ token }) => {
-                const fcmUrl = `https://fcm.googleapis.com/v1/projects/${projectId}/messages:send`;
-                const message = {
-                    message: {
-                        token: token,
+            targets.map(async (target) => {
+                const isNativeAndroid = (target.platform === "android_native")
+                    || (target.userAgent && target.userAgent.includes("GreyCornerWaiterApp"))
+                    || (target.type === "topic");
+
+                // Payload FCM v1 structuré pour réveiller l'écran et déclencher l'alarme de l'APK
+                const messageObj = {
+                    data: {
+                        title: String(finalTitle),
+                        body: String(finalBody),
+                        type: String(type || "call"),
+                        table: String(tableId || ""),
+                        tableId: String(tableId || ""),
+                        docId: String(docId || ""),
+                        orderId: String(docId || ""),
+                        callId: String(docId || ""),
+                        url: "/waiter.html"
+                    },
+                    android: {
+                        priority: "high",
+                        ttl: "0s"
+                    },
+                    webpush: {
+                        headers: {
+                            Urgency: "high"
+                        },
                         notification: {
-                            title: title || "🔔 Grey Corner — Appel Serveur",
-                            body: body || `Table ${tableId} sollicite le service.`
-                        },
-                        data: {
-                            type: String(type || "call"),
-                            tableId: String(tableId || ""),
-                            docId: String(docId || ""),
-                            url: "/waiter.html"
-                        },
-                        webpush: {
-                            headers: {
-                                Urgency: "high"
-                            },
-                            notification: {
-                                icon: "/images/android-chrome-192x192.png",
-                                badge: "/images/android-chrome-192x192.png",
-                                vibrate: [500, 200, 500, 200, 1000],
-                                tag: `waiter-${type}-${tableId || Date.now()}`,
-                                renotify: true,
-                                requireInteraction: true
-                            }
+                            title: String(finalTitle),
+                            body: String(finalBody),
+                            icon: "/images/android-chrome-192x192.png",
+                            badge: "/images/android-chrome-192x192.png",
+                            vibrate: [500, 200, 500, 200, 1000],
+                            tag: `waiter-${type}-${tableId || Date.now()}`,
+                            renotify: true,
+                            requireInteraction: true
                         }
                     }
                 };
 
-                const pushRes = await fetch(fcmUrl, {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(message)
-                });
+                if (target.type === "topic") {
+                    messageObj.topic = target.value;
+                } else {
+                    messageObj.token = target.value;
+                }
 
-                return pushRes.ok;
+                // Pour les navigateurs Web classiques, on ajoute la racine notification pour assurer l'affichage.
+                // Pour l'APK Android (native ou topic), on NE MET PAS de racine notification afin d'empêcher
+                // Google Play Services d'intercepter le message et permettre à onMessageReceived() d'allumer l'écran.
+                if (!isNativeAndroid) {
+                    messageObj.notification = {
+                        title: String(finalTitle),
+                        body: String(finalBody)
+                    };
+                }
+
+                try {
+                    const pushRes = await fetch(fcmUrl, {
+                        method: "POST",
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ message: messageObj })
+                    });
+                    return pushRes.ok;
+                } catch (pushErr) {
+                    console.error("Erreur envoi FCM pour cible:", target.value, pushErr);
+                    return false;
+                }
             })
         );
 
@@ -200,16 +287,32 @@ export async function onRequestPost(context) {
         return new Response(JSON.stringify({
             status: "success",
             sent: successCount,
-            total: waiterTokens.length
+            total: targets.length
         }), {
             status: 200,
-            headers: { "Content-Type": "application/json" }
+            headers: { ...CORS_HEADERS, "Content-Type": "application/json" }
         });
     } catch (err) {
-        console.error("❌ Erreur traitement /api/send-fcm:", err);
+        console.error("❌ Erreur traitement FCM:", err);
         return new Response(JSON.stringify({ error: err.message || String(err) }), {
             status: 500,
-            headers: { "Content-Type": "application/json" }
+            headers: { ...CORS_HEADERS, "Content-Type": "application/json" }
         });
     }
 }
+
+// ── EXPORTS POUR CLOUDFLARE PAGES FUNCTIONS (/api/send-fcm) ──────────────────
+export async function onRequestPost(context) {
+    return handleFcmRequest(context.request, context.env);
+}
+
+export async function onRequestOptions() {
+    return new Response(null, { status: 204, headers: CORS_HEADERS });
+}
+
+// ── EXPORT POUR CLOUDFLARE WORKER AUTONOME (greycorner-fcm) ──────────────────
+export default {
+    async fetch(request, env, ctx) {
+        return handleFcmRequest(request, env);
+    }
+};

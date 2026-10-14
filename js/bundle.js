@@ -128,24 +128,45 @@
   if (typeof window !== "undefined") {
     window.FIREBASE_VAPID_KEY = FIREBASE_VAPID_KEY;
   }
+  var WORKER_URL = "https://greycorner-fcm.hichamatlas75.workers.dev";
+  var WORKER_SECRET = "greycorner_secure_2026";
   function sendFcmToWaiters(type, title, body, tableId, docId) {
     if (typeof fetch === "undefined") return;
-    fetch("/api/send-fcm", {
+    const payload = {
+      type,
+      title,
+      body,
+      table: String(tableId),
+      tableId: String(tableId),
+      docId: String(docId)
+    };
+    fetch(WORKER_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        type,
-        title,
-        body,
-        tableId: String(tableId),
-        docId: String(docId)
-      })
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${WORKER_SECRET}`
+      },
+      body: JSON.stringify(payload)
     }).then((res) => {
       if (res.ok) {
-        console.log("\u{1F680} FCM Push relay\xE9 avec succ\xE8s via /api/send-fcm");
+        console.log("\u{1F680} FCM Push relay\xE9 avec succ\xE8s via greycorner-fcm Worker");
+      } else {
+        console.warn("\u26A0\uFE0F Worker greycorner-fcm a renvoy\xE9:", res.status, "\u2014 repli sur /api/send-fcm");
+        fetch("/api/send-fcm", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        }).catch(() => {
+        });
       }
     }).catch((err) => {
-      console.log("\u2139\uFE0F FCM HTTP relay info:", err.message);
+      console.warn("\u26A0\uFE0F \xC9chec r\xE9seau greycorner-fcm:", err.message, "\u2014 repli sur /api/send-fcm");
+      fetch("/api/send-fcm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).catch(() => {
+      });
     });
   }
   var dbService = {
@@ -275,6 +296,17 @@
               } catch (e) {
                 console.warn("Mirroring call to waiter_calls failed:", e);
               }
+              setTimeout(() => {
+                if (isFirebaseActive && db) {
+                  db.collection("waiters_calls").doc(docRef.id).get().then((snap) => {
+                    if (snap.exists && snap.data() && snap.data().status === "pending") {
+                      console.log("\u{1F6A8} RAPPEL DE SECOURS (25s) : Appel table toujours en attente !");
+                      sendFcmToWaiters("CALL", `\u26A0\uFE0F RAPPEL DE SECOURS \u2014 ${zoneName}`, `Table ${tableId} attend toujours (${typeLabel})`, tableId, docRef.id);
+                    }
+                  }).catch(() => {
+                  });
+                }
+              }, 25e3);
               if (callback) callback(true, docRef.id);
             }).catch((e) => {
               console.error(e);
@@ -405,7 +437,13 @@
           if (isFirebaseActive) {
             db.collection("pre_orders").add(data).then((docRef) => {
               const zoneName = getTableZoneName(tableId);
-              sendFcmToWaiters("PRE_ORDER", `\u{1F468}\u200D\u{1F373} Nouvelle Pr\xE9commande : ${zoneName}`, `Total : ${totalPrice} MAD`, tableId, docRef.id);
+              let itemsSummary = "";
+              if (Array.isArray(items) && items.length > 0) {
+                const preview = items.slice(0, 3).map((it) => `${it.qty || 1}x ${it.name || "Article"}`).join(", ");
+                const extra = items.length > 3 ? ` (+${items.length - 3})` : "";
+                itemsSummary = `${preview}${extra} \u2022 `;
+              }
+              sendFcmToWaiters("PRE_ORDER", `\u{1F468}\u200D\u{1F373} Nouvelle Pr\xE9commande : ${zoneName}`, `${itemsSummary}Total : ${totalPrice} MAD`, tableId, docRef.id);
               if (callback) callback(true, docRef.id);
             }).catch((e) => {
               console.error(e);
@@ -5820,6 +5858,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
         if (cdDrawer) cdDrawer.classList.remove("active");
         document.body.classList.remove("no-scroll");
         localStorage.setItem("last_pre_order_id", orderId);
+        armBackupOrderReminder(orderId, clientTable2, totalPrice);
         subscribeToActiveWaiterEvents(clientTable2);
       } else {
         const errMsgs = {
@@ -5832,6 +5871,45 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
         showToast(errMsgs[currentLang] || errMsgs.fr);
       }
     });
+  }
+  function armBackupOrderReminder(orderId, table, total) {
+    if (!orderId || !table) return;
+    setTimeout(() => {
+      if (typeof db !== "undefined" && db) {
+        db.collection("pre_orders").doc(String(orderId)).get().then((doc) => {
+          if (doc.exists && doc.data() && doc.data().status === "pending") {
+            console.log("\u{1F6A8} NOTIFICATION DE SECOURS (25s) : Commande toujours en attente !");
+            const zone = getTableZoneName ? getTableZoneName(table) : `Table ${table}`;
+            sendFcmToWaiters(
+              "PRE_ORDER",
+              `\u26A0\uFE0F RAPPEL DE SECOURS \u2014 ${zone}`,
+              `Commande non valid\xE9e apr\xE8s 25s ! Total : ${total} MAD`,
+              table,
+              orderId
+            );
+          }
+        }).catch(() => {
+        });
+      }
+    }, 25e3);
+    setTimeout(() => {
+      if (typeof db !== "undefined" && db) {
+        db.collection("pre_orders").doc(String(orderId)).get().then((doc) => {
+          if (doc.exists && doc.data() && doc.data().status === "pending") {
+            console.log("\u{1F6A8} ALARME D'URGENCE (55s) : Relance finale de secours !");
+            const zone = getTableZoneName ? getTableZoneName(table) : `Table ${table}`;
+            sendFcmToWaiters(
+              "PRE_ORDER",
+              `\u{1F6A8} ALARME URGENTE \u2014 ${zone}`,
+              `Commande EN ATTENTE depuis 1 min ! Le client attend.`,
+              table,
+              orderId
+            );
+          }
+        }).catch(() => {
+        });
+      }
+    }, 55e3);
   }
   window.submitPreOrder = submitPreOrder;
   window.submitOrderOrWhatsApp = submitOrderOrWhatsApp;

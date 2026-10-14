@@ -136,26 +136,47 @@ if (typeof window !== "undefined") {
     window.FIREBASE_VAPID_KEY = FIREBASE_VAPID_KEY;
 }
 
+export const WORKER_URL = "https://greycorner-fcm.hichamatlas75.workers.dev";
+export const WORKER_SECRET = "greycorner_secure_2026";
+
 export function sendFcmToWaiters(type, title, body, tableId, docId) {
     if (typeof fetch === "undefined") return;
 
-    fetch("/api/send-fcm", {
+    const payload = {
+        type: type,
+        title: title,
+        body: body,
+        table: String(tableId),
+        tableId: String(tableId),
+        docId: String(docId)
+    };
+
+    // 1. Appel du Worker Cloudflare opérationnel (greycorner-fcm)
+    fetch(WORKER_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            type: type,
-            title: title,
-            body: body,
-            tableId: String(tableId),
-            docId: String(docId)
-        })
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${WORKER_SECRET}`
+        },
+        body: JSON.stringify(payload)
     }).then(res => {
         if (res.ok) {
-            console.log("🚀 FCM Push relayé avec succès via /api/send-fcm");
+            console.log("🚀 FCM Push relayé avec succès via greycorner-fcm Worker");
+        } else {
+            console.warn("⚠️ Worker greycorner-fcm a renvoyé:", res.status, "— repli sur /api/send-fcm");
+            fetch("/api/send-fcm", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            }).catch(() => {});
         }
     }).catch(err => {
-        // En local ou si l'endpoint serverless n'est pas configuré, Firestore trigger / Cloud Function prend le relais
-        console.log("ℹ️ FCM HTTP relay info:", err.message);
+        console.warn("⚠️ Échec réseau greycorner-fcm:", err.message, "— repli sur /api/send-fcm");
+        fetch("/api/send-fcm", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        }).catch(() => {});
     });
 }
 
@@ -260,6 +281,19 @@ export const dbService = {
                             } catch (e) {
                                 console.warn("Mirroring call to waiter_calls failed:", e);
                             }
+
+                            // Notification de secours à 25s si l'appel est toujours en attente
+                            setTimeout(() => {
+                                if (isFirebaseActive && db) {
+                                    db.collection("waiters_calls").doc(docRef.id).get().then(snap => {
+                                        if (snap.exists && snap.data() && snap.data().status === "pending") {
+                                            console.log("🚨 RAPPEL DE SECOURS (25s) : Appel table toujours en attente !");
+                                            sendFcmToWaiters("CALL", `⚠️ RAPPEL DE SECOURS — ${zoneName}`, `Table ${tableId} attend toujours (${typeLabel})`, tableId, docRef.id);
+                                        }
+                                    }).catch(() => {});
+                                }
+                            }, 25000);
+
                             if (callback) callback(true, docRef.id);
                         })
                         .catch(e => { console.error(e); if (callback) callback(false); });
@@ -384,7 +418,13 @@ export const dbService = {
                     db.collection("pre_orders").add(data)
                         .then(docRef => {
                             const zoneName = getTableZoneName(tableId);
-                            sendFcmToWaiters("PRE_ORDER", `👨‍🍳 Nouvelle Précommande : ${zoneName}`, `Total : ${totalPrice} MAD`, tableId, docRef.id);
+                            let itemsSummary = "";
+                            if (Array.isArray(items) && items.length > 0) {
+                                const preview = items.slice(0, 3).map(it => `${it.qty || 1}x ${it.name || "Article"}`).join(", ");
+                                const extra = items.length > 3 ? ` (+${items.length - 3})` : "";
+                                itemsSummary = `${preview}${extra} • `;
+                            }
+                            sendFcmToWaiters("PRE_ORDER", `👨‍🍳 Nouvelle Précommande : ${zoneName}`, `${itemsSummary}Total : ${totalPrice} MAD`, tableId, docRef.id);
                             if (callback) callback(true, docRef.id);
                         })
                         .catch(e => { console.error(e); if (callback) callback(false); });
