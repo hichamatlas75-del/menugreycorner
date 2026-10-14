@@ -8,6 +8,7 @@ import {
   getKitchenBlockedMessage,
   getBreakfastBlockedMessage
 } from '../services/schedule.js';
+import { playTableSelectSound, playTapSound } from '../services/sound.js';
 
 export let clientTable = null;
 export let pendingActionAfterTableSelect = null;
@@ -403,6 +404,7 @@ export function updateTableUI() {
 
 export function setTable(num) {
   clientTable = String(num);
+  playTableSelectSound();
 
   // Sécurité : Ne jamais persister dans le localStorage du smartphone client
   try { localStorage.removeItem("grey_corner_table"); } catch(e) {}
@@ -431,6 +433,7 @@ export function setTable(num) {
 }
 
 export function showTableSelectorModal() {
+  playTapSound();
   const modal = document.getElementById("tableModalOverlay");
   const grid = document.getElementById("tableGridSelect");
 
@@ -504,6 +507,7 @@ export function showTableSelectorModal() {
 }
 
 export function openCartDrawer() {
+  playTapSound();
   const overlay = document.getElementById("cartDrawerOverlay");
   const drawer = document.getElementById("cartDrawer");
 
@@ -519,6 +523,7 @@ export function openCartDrawer() {
 }
 
 export function closeCartDrawer() {
+  playTapSound();
   const overlay = document.getElementById("cartDrawerOverlay");
   const drawer = document.getElementById("cartDrawer");
 

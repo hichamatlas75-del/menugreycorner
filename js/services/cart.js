@@ -10,6 +10,7 @@ import {
   getKitchenBlockedMessage,
   getBreakfastBlockedMessage
 } from './schedule.js';
+import { playAddToCartSound, playTapSound } from './sound.js';
 
 export let clientCart = [];
 
@@ -86,6 +87,7 @@ export function addToCart(menuItem, choices = null) {
     });
   }
   saveClientCart();
+  playAddToCartSound();
   const toastMsgs = {
     fr: "Ajouté au panier !",
     en: "Added to basket !",
@@ -208,6 +210,7 @@ export function updateCartUI() {
         `;
 
         itemDiv.querySelector(".cd-dec").addEventListener("click", () => {
+          playTapSound();
           const idx = clientCart.findIndex(c => c.id === item.id);
           if (idx !== -1) {
             if (clientCart[idx].qty > 1) {
@@ -220,6 +223,7 @@ export function updateCartUI() {
         });
 
         itemDiv.querySelector(".cd-inc").addEventListener("click", () => {
+          playAddToCartSound();
           const idx = clientCart.findIndex(c => c.id === item.id);
           if (idx !== -1) {
             clientCart[idx].qty += 1;
@@ -228,6 +232,7 @@ export function updateCartUI() {
         });
 
         itemDiv.querySelector(".cd-remove-btn").addEventListener("click", () => {
+          playTapSound();
           const idx = clientCart.findIndex(c => c.id === item.id);
           if (idx !== -1) {
             clientCart.splice(idx, 1);

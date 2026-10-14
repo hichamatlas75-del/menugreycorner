@@ -7,6 +7,7 @@ import { clientCart, saveClientCart, clearCart, showToast, checkCartBlockedItems
 import { db, dbService, sendFcmToWaiters, getTableZoneName } from '../config/firebase.js';
 import { showTableSelectorModal, setPendingActionAfterTableSelect } from '../ui/modals.js';
 import { subscribeToActiveWaiterEvents } from './notifications.js';
+import { playOrderSuccessSound } from './sound.js';
 
 export const WHATSAPP_NUMBER = '212666265160';
 
@@ -144,11 +145,7 @@ export function submitPreOrder(clientTable, onComplete) {
   dbService.sendPreOrder(clientTable, itemsList, note, totalPrice, (success, orderId) => {
     resetBtn();
     if (success) {
-      try {
-        const chime = new Audio("https://assets.mixkit.co/active_storage/sfx/911/911-200.wav");
-        chime.volume = 0.4;
-        chime.play();
-      } catch (e) {}
+      playOrderSuccessSound();
 
       const okMsgs = {
         fr: "Précommande envoyée ! Le serveur arrive la confirmer.",

@@ -6,6 +6,7 @@ import { currentLang } from './i18n.js';
 import { showToast } from './cart.js';
 import { dbService } from '../config/firebase.js';
 import { showTableSelectorModal, setPendingActionAfterTableSelect } from '../ui/modals.js';
+import { playServiceCallSound } from './sound.js';
 
 export let memoryNotifications = [];
 const cooldowns = {};
@@ -62,6 +63,7 @@ export function triggerQuickServiceCall(clientTable, type) {
     if (btn) btn.classList.remove("active");
 
     if (success) {
+      playServiceCallSound();
       setCallCooldown(type);
 
       const okMsgs = {

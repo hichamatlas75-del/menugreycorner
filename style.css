@@ -2302,6 +2302,33 @@ body {
     color: var(--primary);
 }
 
+.gc-sound-toggle-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 1.15rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.2s ease;
+    outline: none;
+    padding: 2px 4px;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.gc-sound-toggle-btn:hover {
+    transform: scale(1.12);
+    opacity: 1;
+}
+
+.gc-sound-toggle-btn:active {
+    transform: scale(0.92);
+}
+
+.gc-sound-toggle-btn.muted {
+    opacity: 0.55;
+    filter: grayscale(1);
+}
+
 .cd-body {
     flex: 1;
     overflow-y: auto;

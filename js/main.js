@@ -19,6 +19,7 @@ import {
 } from './ui/modals.js';
 import { renderMenu, toggleCategoryDrawer, openDrawer, closeDrawer, updateFloatingButtons, setupFloatingButtons } from './ui/menu-render.js';
 import { initFeedbackWidget, updateFeedbackTexts } from './ui/feedback.js';
+import { updateSoundUI, toggleSoundMute, playTapSound } from './services/sound.js';
 
 document.addEventListener("DOMContentLoaded", () => {
   const table = parseTableFromUrl();
@@ -40,7 +41,16 @@ document.addEventListener("DOMContentLoaded", () => {
   setupNotificationDrawer(() => clientTable);
   updatePrixInfo();
   updateCartUI();
+  updateSoundUI();
   GPSService.init();
+
+  document.querySelectorAll(".gc-sound-toggle-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const muted = toggleSoundMute();
+      if (!muted) playTapSound();
+    });
+  });
 
   // Back to top button listener
   const btt = document.getElementById("backToTop");

@@ -4417,6 +4417,227 @@
   window.LocationSecurityManager = LocationSecurityManager;
   window.GPSService = GPSService;
 
+  // js/services/sound.js
+  var audioCtx = null;
+  var isMuted = false;
+  try {
+    isMuted = localStorage.getItem("gc_sound_muted") === "true";
+  } catch (e) {
+    isMuted = false;
+  }
+  function getAudioContext() {
+    if (typeof window === "undefined") return null;
+    if (!audioCtx) {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (AudioContextClass) {
+        audioCtx = new AudioContextClass();
+      }
+    }
+    if (audioCtx && audioCtx.state === "suspended") {
+      audioCtx.resume().catch(() => {
+      });
+    }
+    return audioCtx;
+  }
+  if (typeof window !== "undefined") {
+    const unlockAudio = () => {
+      try {
+        const ctx = getAudioContext();
+        if (ctx && ctx.state !== "running") {
+          const buffer = ctx.createBuffer(1, 1, 22050);
+          const source = ctx.createBufferSource();
+          source.buffer = buffer;
+          source.connect(ctx.destination);
+          source.start(0);
+          ctx.resume().catch(() => {
+          });
+        }
+      } catch (e) {
+      }
+      document.removeEventListener("touchstart", unlockAudio);
+      document.removeEventListener("click", unlockAudio);
+      document.removeEventListener("pointerdown", unlockAudio);
+    };
+    document.addEventListener("touchstart", unlockAudio, { once: true, passive: true });
+    document.addEventListener("click", unlockAudio, { once: true, passive: true });
+    document.addEventListener("pointerdown", unlockAudio, { once: true, passive: true });
+  }
+  function triggerHaptic(duration = 15) {
+    if (isMuted) return;
+    if (typeof navigator !== "undefined" && navigator.vibrate) {
+      try {
+        navigator.vibrate(duration);
+      } catch (e) {
+      }
+    }
+  }
+  function playTapSound() {
+    if (isMuted) return;
+    try {
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(420, now);
+      osc.frequency.exponentialRampToValueAtTime(220, now + 0.035);
+      gain.gain.setValueAtTime(0.12, now);
+      gain.gain.exponentialRampToValueAtTime(1e-3, now + 0.04);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.045);
+      triggerHaptic(10);
+    } catch (e) {
+    }
+  }
+  function playAddToCartSound() {
+    if (isMuted) return;
+    try {
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      const osc1 = ctx.createOscillator();
+      const gain1 = ctx.createGain();
+      osc1.type = "sine";
+      osc1.frequency.setValueAtTime(369.99, now);
+      gain1.gain.setValueAtTime(0.18, now);
+      gain1.gain.exponentialRampToValueAtTime(1e-3, now + 0.22);
+      osc1.connect(gain1);
+      gain1.connect(ctx.destination);
+      osc1.start(now);
+      osc1.stop(now + 0.23);
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.type = "sine";
+      osc2.frequency.setValueAtTime(554.37, now + 0.08);
+      gain2.gain.setValueAtTime(0.22, now + 0.08);
+      gain2.gain.exponentialRampToValueAtTime(1e-3, now + 0.38);
+      osc2.connect(gain2);
+      gain2.connect(ctx.destination);
+      osc2.start(now + 0.08);
+      osc2.stop(now + 0.39);
+      triggerHaptic(18);
+    } catch (e) {
+    }
+  }
+  function playTableSelectSound() {
+    if (isMuted) return;
+    try {
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(880, now);
+      gain.gain.setValueAtTime(0.15, now);
+      gain.gain.exponentialRampToValueAtTime(1e-3, now + 0.25);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.26);
+      triggerHaptic(16);
+    } catch (e) {
+    }
+  }
+  function playServiceCallSound() {
+    if (isMuted) return;
+    try {
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      const osc1 = ctx.createOscillator();
+      const gain1 = ctx.createGain();
+      osc1.type = "sine";
+      osc1.frequency.setValueAtTime(1318.51, now);
+      gain1.gain.setValueAtTime(0.2, now);
+      gain1.gain.exponentialRampToValueAtTime(1e-3, now + 0.65);
+      osc1.connect(gain1);
+      gain1.connect(ctx.destination);
+      osc1.start(now);
+      osc1.stop(now + 0.66);
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.type = "sine";
+      osc2.frequency.setValueAtTime(2637.02, now);
+      gain2.gain.setValueAtTime(0.08, now);
+      gain2.gain.exponentialRampToValueAtTime(1e-3, now + 0.35);
+      osc2.connect(gain2);
+      gain2.connect(ctx.destination);
+      osc2.start(now);
+      osc2.stop(now + 0.36);
+      triggerHaptic([15, 30, 15]);
+    } catch (e) {
+    }
+  }
+  function playOrderSuccessSound() {
+    if (isMuted) return;
+    try {
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      const notes = [
+        { freq: 523.25, time: 0, dur: 0.45, gain: 0.16 },
+        // C5
+        { freq: 659.25, time: 0.09, dur: 0.48, gain: 0.18 },
+        // E5
+        { freq: 783.99, time: 0.18, dur: 0.52, gain: 0.2 },
+        // G5
+        { freq: 1046.5, time: 0.27, dur: 0.75, gain: 0.22 }
+        // C6
+      ];
+      notes.forEach((n) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(n.freq, now + n.time);
+        gain.gain.setValueAtTime(n.gain, now + n.time);
+        gain.gain.exponentialRampToValueAtTime(1e-3, now + n.time + n.dur);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + n.time);
+        osc.stop(now + n.time + n.dur);
+      });
+      triggerHaptic([25, 35, 25]);
+    } catch (e) {
+    }
+  }
+  function toggleSoundMute() {
+    isMuted = !isMuted;
+    try {
+      localStorage.setItem("gc_sound_muted", isMuted ? "true" : "false");
+    } catch (e) {
+    }
+    updateSoundUI();
+    return isMuted;
+  }
+  function isSoundMuted() {
+    return isMuted;
+  }
+  function updateSoundUI() {
+    if (typeof document === "undefined") return;
+    const btns = document.querySelectorAll(".gc-sound-toggle-btn");
+    btns.forEach((btn) => {
+      btn.innerHTML = isMuted ? "\u{1F507}" : "\u{1F50A}";
+      btn.setAttribute("aria-label", isMuted ? "Activer le son" : "Couper le son");
+      btn.classList.toggle("muted", isMuted);
+    });
+  }
+  if (typeof window !== "undefined") {
+    window.GC_Sound = {
+      playTap: playTapSound,
+      playAddToCart: playAddToCartSound,
+      playTableSelect: playTableSelectSound,
+      playServiceCall: playServiceCallSound,
+      playOrderSuccess: playOrderSuccessSound,
+      toggleMute: toggleSoundMute,
+      isMuted: isSoundMuted,
+      updateUI: updateSoundUI
+    };
+  }
+
   // js/services/cart.js
   var clientCart = [];
   function initClientCart() {
@@ -4485,6 +4706,7 @@
       });
     }
     saveClientCart();
+    playAddToCartSound();
     const toastMsgs = {
       fr: "Ajout\xE9 au panier !",
       en: "Added to basket !",
@@ -4585,6 +4807,7 @@
           </div>
         `;
           itemDiv.querySelector(".cd-dec").addEventListener("click", () => {
+            playTapSound();
             const idx = clientCart.findIndex((c) => c.id === item.id);
             if (idx !== -1) {
               if (clientCart[idx].qty > 1) {
@@ -4596,6 +4819,7 @@
             }
           });
           itemDiv.querySelector(".cd-inc").addEventListener("click", () => {
+            playAddToCartSound();
             const idx = clientCart.findIndex((c) => c.id === item.id);
             if (idx !== -1) {
               clientCart[idx].qty += 1;
@@ -4603,6 +4827,7 @@
             }
           });
           itemDiv.querySelector(".cd-remove-btn").addEventListener("click", () => {
+            playTapSound();
             const idx = clientCart.findIndex((c) => c.id === item.id);
             if (idx !== -1) {
               clientCart.splice(idx, 1);
@@ -4987,6 +5212,7 @@
   }
   function setTable(num) {
     clientTable = String(num);
+    playTableSelectSound();
     try {
       localStorage.removeItem("grey_corner_table");
     } catch (e) {
@@ -5009,6 +5235,7 @@
     }
   }
   function showTableSelectorModal() {
+    playTapSound();
     const modal = document.getElementById("tableModalOverlay");
     const grid = document.getElementById("tableGridSelect");
     if (!modal || !grid) return;
@@ -5071,6 +5298,7 @@
     });
   }
   function openCartDrawer() {
+    playTapSound();
     const overlay = document.getElementById("cartDrawerOverlay");
     const drawer = document.getElementById("cartDrawer");
     if (typeof updateCartUI === "function") {
@@ -5083,6 +5311,7 @@
     }
   }
   function closeCartDrawer() {
+    playTapSound();
     const overlay = document.getElementById("cartDrawerOverlay");
     const drawer = document.getElementById("cartDrawer");
     if (overlay && drawer) {
@@ -5404,6 +5633,7 @@
     dbService.sendCall(clientTable2, type, (success, callId) => {
       if (btn) btn.classList.remove("active");
       if (success) {
+        playServiceCallSound();
         setCallCooldown(type);
         const okMsgs = {
           fr: "Appel envoy\xE9 ! Votre serveur a \xE9t\xE9 alert\xE9.",
@@ -5431,7 +5661,7 @@
     }
   }
   var chimeAudio = null;
-  var audioCtx = null;
+  var audioCtx2 = null;
   function getChimeAudio() {
     if (!chimeAudio) {
       chimeAudio = new Audio("https://assets.mixkit.co/active_storage/sfx/911/911-200.wav");
@@ -5439,23 +5669,23 @@
     }
     return chimeAudio;
   }
-  function getAudioContext() {
-    if (!audioCtx && typeof window !== "undefined") {
+  function getAudioContext2() {
+    if (!audioCtx2 && typeof window !== "undefined") {
       const AudioContextClass = window.AudioContext || window.webkitAudioContext;
       if (AudioContextClass) {
-        audioCtx = new AudioContextClass();
+        audioCtx2 = new AudioContextClass();
       }
     }
-    if (audioCtx && audioCtx.state === "suspended") {
-      audioCtx.resume().catch(() => {
+    if (audioCtx2 && audioCtx2.state === "suspended") {
+      audioCtx2.resume().catch(() => {
       });
     }
-    return audioCtx;
+    return audioCtx2;
   }
   if (typeof window !== "undefined") {
     const unlockAudio = () => {
       try {
-        const ctx = getAudioContext();
+        const ctx = getAudioContext2();
         if (ctx) {
           const buffer = ctx.createBuffer(1, 1, 22050);
           const source = ctx.createBufferSource();
@@ -5485,7 +5715,7 @@
   function playChimeSound() {
     let playedWebAudio = false;
     try {
-      const ctx = getAudioContext();
+      const ctx = getAudioContext2();
       if (ctx) {
         const now = ctx.currentTime;
         const osc1 = ctx.createOscillator();
@@ -5834,12 +6064,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     dbService.sendPreOrder(clientTable2, itemsList, note, totalPrice, (success, orderId) => {
       resetBtn();
       if (success) {
-        try {
-          const chime = new Audio("https://assets.mixkit.co/active_storage/sfx/911/911-200.wav");
-          chime.volume = 0.4;
-          chime.play();
-        } catch (e) {
-        }
+        playOrderSuccessSound();
         const okMsgs = {
           fr: "Pr\xE9commande envoy\xE9e ! Le serveur arrive la confirmer.",
           en: "Pre-order sent! The waiter is coming to confirm.",
@@ -6992,7 +7217,15 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     setupNotificationDrawer(() => clientTable);
     updatePrixInfo();
     updateCartUI();
+    updateSoundUI();
     GPSService.init();
+    document.querySelectorAll(".gc-sound-toggle-btn").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const muted = toggleSoundMute();
+        if (!muted) playTapSound();
+      });
+    });
     const btt = document.getElementById("backToTop");
     if (btt) {
       window.addEventListener("scroll", () => {
