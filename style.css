@@ -4064,7 +4064,8 @@ header {
    SERVICE HOURS & UNAVAILABLE DISHES
 ========================================= */
 .breakfast-service-notice,
-.entrees-service-notice {
+.entrees-service-notice,
+.couscous-service-notice {
     display: block;
     background: linear-gradient(135deg, rgba(201, 168, 76, 0.16) 0%, rgba(201, 168, 76, 0.06) 100%);
     border: 1px solid rgba(201, 168, 76, 0.40);
@@ -4077,13 +4078,15 @@ header {
     box-shadow: 0 3px 14px rgba(44, 34, 28, 0.05);
 }
 
-.breakfast-service-notice.is-ended {
+.breakfast-service-notice.is-ended,
+.couscous-service-notice.is-ended {
     background: linear-gradient(135deg, rgba(200, 185, 170, 0.15) 0%, rgba(200, 185, 170, 0.05) 100%);
     border-color: rgba(180, 160, 140, 0.35);
     opacity: 0.95;
 }
 
-.breakfast-service-notice.is-ended .esn-badge-today {
+.breakfast-service-notice.is-ended .esn-badge-today,
+.couscous-service-notice.is-ended .esn-badge-today {
     background: #947E68;
     color: #FFFFFF;
 }

@@ -7,8 +7,11 @@ import {
   isBreakfastAvailable,
   isKitchenAvailable,
   isKitchenCategory,
+  isCouscousAvailable,
+  isCouscousCategory,
   getKitchenBlockedMessage,
-  getBreakfastBlockedMessage
+  getBreakfastBlockedMessage,
+  getCouscousBlockedMessage
 } from './schedule.js';
 import { playAddToCartSound, playTapSound } from './sound.js';
 
@@ -56,8 +59,13 @@ export function addToCart(menuItem, choices = null) {
   if (!menuItem) return;
 
   const catId = menuItem.categoryId || "";
+  const nameFr = (menuItem.name && menuItem.name.fr) ? menuItem.name.fr : String(menuItem.name || "");
   if (catId === "petit-dejeuner" && !isBreakfastAvailable()) {
     showToast(getBreakfastBlockedMessage(currentLang));
+    return;
+  }
+  if (isCouscousCategory(catId, nameFr) && !isCouscousAvailable()) {
+    showToast(getCouscousBlockedMessage(currentLang));
     return;
   }
   if (isKitchenCategory(catId) && !isKitchenAvailable()) {
@@ -103,17 +111,27 @@ export function checkCartBlockedItems(cart = clientCart) {
   if (!cart || cart.length === 0) return { blocked: false };
   const breakfastBlocked = !isBreakfastAvailable();
   const kitchenBlocked = !isKitchenAvailable();
+  const couscousBlocked = !isCouscousAvailable();
 
   for (const item of cart) {
     let catId = item.categoryId;
     if (!catId && item.categoryNameFr) {
       catId = item.categoryNameFr.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
     }
+    const nameFr = (item.name && item.name.fr) ? item.name.fr : String(item.name || "");
     if (catId === "petit-dejeuner" && breakfastBlocked) {
       return {
         blocked: true,
         reason: "breakfast",
         message: getBreakfastBlockedMessage(currentLang),
+        item
+      };
+    }
+    if (isCouscousCategory(catId, nameFr) && couscousBlocked) {
+      return {
+        blocked: true,
+        reason: "couscous",
+        message: getCouscousBlockedMessage(currentLang),
         item
       };
     }
@@ -174,15 +192,25 @@ export function updateCartUI() {
           : '';
 
         const itemCatId = item.categoryId || (item.categoryNameFr ? item.categoryNameFr.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") : "");
+        const itemNameFr = (item.name && item.name.fr) ? item.name.fr : String(item.name || "");
         const isItemBreakfastBlocked = (itemCatId === "petit-dejeuner" && !isBreakfastAvailable());
+        const isItemCouscousBlocked = (isCouscousCategory(itemCatId, itemNameFr) && !isCouscousAvailable());
         const isItemKitchenBlocked = (isKitchenCategory(itemCatId) && !isKitchenAvailable());
-        const isItemBlocked = isItemBreakfastBlocked || isItemKitchenBlocked;
+        const isItemBlocked = isItemBreakfastBlocked || isItemKitchenBlocked || isItemCouscousBlocked;
+
+        const couscousTagText = currentLang === 'en' ? 'Fridays 12:00-17:00 only'
+          : currentLang === 'ar' ? 'الجمعة 12-17 فقط'
+          : currentLang === 'es' ? 'Viernes 12h-17h solo'
+          : currentLang === 'de' ? 'Nur Fr. 12-17h'
+          : 'Vendredi 12h-17h uniquement';
 
         const blockedBadge = isItemBlocked
           ? `<div class="cd-item-blocked-tag" style="display:inline-flex; align-items:center; gap:4px; font-size:0.72rem; color:#ef4444; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.25); border-radius:4px; padding:2px 6px; margin-top:3px; font-weight:500;">
-               <span>⚠️</span> ${isItemBreakfastBlocked
-                 ? (currentLang === 'en' ? 'Breakfast ended' : currentLang === 'ar' ? 'فطور الصباح انتهى' : 'Petit-déjeuner terminé')
-                 : (currentLang === 'en' ? 'Kitchen closed' : currentLang === 'ar' ? 'المطبخ مغلق' : 'Cuisine fermée')}
+               <span>⚠️</span> ${isItemCouscousBlocked
+                 ? couscousTagText
+                 : isItemBreakfastBlocked
+                   ? (currentLang === 'en' ? 'Breakfast ended' : currentLang === 'ar' ? 'فطور الصباح انتهى' : 'Petit-déjeuner terminé')
+                   : (currentLang === 'en' ? 'Kitchen closed' : currentLang === 'ar' ? 'المطبخ مغلق' : 'Cuisine fermée')}
              </div>`
           : '';
 

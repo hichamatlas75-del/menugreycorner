@@ -65,6 +65,12 @@ export function GC_sendWhatsApp() {
 
 export function submitOrderOrWhatsApp(clientTable, onComplete) {
   if (window.GC_isPreorder) {
+    const blockedCheck = checkCartBlockedItems();
+    if (blockedCheck.blocked) {
+      showToast(blockedCheck.message);
+      if (onComplete) onComplete();
+      return;
+    }
     GC_sendWhatsApp();
     if (onComplete) onComplete();
     return;

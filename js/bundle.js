@@ -4083,7 +4083,6 @@
     "entrees",
     "entrees-chaudes",
     "plats",
-    "couscous-vendredi",
     "sandwichs",
     "burgers",
     "panini",
@@ -4094,6 +4093,147 @@
   function isKitchenCategory(catId) {
     if (!catId) return false;
     return KITCHEN_CATEGORY_IDS.has(String(catId).toLowerCase().trim());
+  }
+  function isCouscousCategory(catId, itemName = "") {
+    if (catId) {
+      const id = String(catId).toLowerCase().trim();
+      if (id === "couscous-vendredi" || id === "couscous" || id.includes("couscous")) {
+        return true;
+      }
+    }
+    if (itemName) {
+      const name = (typeof itemName === "object" ? itemName.fr || Object.values(itemName)[0] || "" : String(itemName)).toLowerCase();
+      if (name.includes("couscous")) {
+        return true;
+      }
+    }
+    return false;
+  }
+  function isCouscousAvailable() {
+    const { weekday, decimalHour } = getMoroccoDateTime();
+    return weekday === "Fri" && decimalHour >= 12 && decimalHour < 17;
+  }
+  function getCouscousScheduleInfo() {
+    const { weekday, decimalHour } = getMoroccoDateTime();
+    const isFriday = weekday === "Fri";
+    const isBefore = isFriday && decimalHour < 12;
+    const isAvailable = isFriday && (decimalHour >= 12 && decimalHour < 17);
+    const isAfter = isFriday && decimalHour >= 17;
+    const isOtherDay = !isFriday;
+    return {
+      weekday,
+      isFriday,
+      startHour: 12,
+      cutoffHour: 17,
+      isAvailable,
+      isBefore,
+      isAfter,
+      isOtherDay,
+      decimalHour
+    };
+  }
+  function getCouscousNoticeInner(lang = "fr") {
+    const info = getCouscousScheduleInfo();
+    const dayName = WEEKDAY_NAMES[info.weekday]?.[lang] || WEEKDAY_NAMES[info.weekday]?.fr || info.weekday;
+    const todayLabel = {
+      fr: "Aujourd'hui",
+      en: "Today",
+      es: "Hoy",
+      de: "Heute",
+      ar: "\u0627\u0644\u064A\u0648\u0645"
+    }[lang] || "Aujourd'hui";
+    let statusText = "";
+    if (info.isAvailable) {
+      const availableTexts = {
+        fr: "Service Couscous du Vendredi en cours (jusqu'\xE0 17h00)",
+        en: "Friday Couscous service open (until 17:00)",
+        es: "Servicio de Cusc\xFAs del Viernes en curso (hasta las 17:00)",
+        de: "Freitags-Couscous Service ge\xF6ffnet (bis 17:00 Uhr)",
+        ar: "\u062E\u062F\u0645\u0629 \u0643\u0633\u0643\u0633 \u0627\u0644\u062C\u0645\u0639\u0629 \u0645\u062A\u0648\u0641\u0631\u0629 \u062D\u0627\u0644\u064A\u0627\u064B (\u062D\u062A\u0649 \u0627\u0644\u0633\u0627\u0639\u0629 17:00)"
+      };
+      statusText = availableTexts[lang] || availableTexts.fr;
+    } else if (info.isBefore) {
+      const beforeTexts = {
+        fr: "Service Couscous disponible d\xE8s 12h00 aujourd'hui (jusqu'\xE0 17h00)",
+        en: "Couscous service starts at 12:00 today (until 17:00)",
+        es: "Servicio de Cusc\xFAs disponible a partir de las 12:00 hoy (hasta las 17:00)",
+        de: "Couscous-Service beginnt heute um 12:00 Uhr (bis 17:00 Uhr)",
+        ar: "\u062E\u062F\u0645\u0629 \u0627\u0644\u0643\u0633\u0643\u0633 \u062A\u0628\u062F\u0623 \u0627\u0644\u064A\u0648\u0645 \u0639\u0646\u062F \u0627\u0644\u0633\u0627\u0639\u0629 12:00 (\u062D\u062A\u0649 17:00)"
+      };
+      statusText = beforeTexts[lang] || beforeTexts.fr;
+    } else if (info.isAfter) {
+      const endedTexts = {
+        fr: "Service Couscous termin\xE9 pour aujourd'hui (servi le vendredi de 12h \xE0 17h)",
+        en: "Couscous service ended for today (served Fridays 12:00 to 17:00)",
+        es: "Servicio de Cusc\xFAs finalizado por hoy (servido los viernes de 12:00 a 17:00)",
+        de: "Couscous-Service f\xFCr heute beendet (freitags von 12:00 bis 17:00 Uhr)",
+        ar: "\u0627\u0646\u062A\u0647\u062A \u062E\u062F\u0645\u0629 \u0627\u0644\u0643\u0633\u0643\u0633 \u0644\u0647\u0630\u0627 \u0627\u0644\u064A\u0648\u0645 (\u064A\u064F\u0642\u062F\u0651\u064E\u0645 \u064A\u0648\u0645 \u0627\u0644\u062C\u0645\u0639\u0629 \u0645\u0646 12:00 \u0625\u0644\u0649 17:00)"
+      };
+      statusText = endedTexts[lang] || endedTexts.fr;
+    } else {
+      const otherDayTexts = {
+        fr: "Disponible exclusivement le Vendredi de 12h00 \xE0 17h00",
+        en: "Available exclusively on Fridays from 12:00 to 17:00",
+        es: "Disponible exclusivamente los Viernes de 12:00 a 17:00",
+        de: "Ausschlie\xDFlich freitags von 12:00 bis 17:00 Uhr erh\xE4ltlich",
+        ar: "\u0645\u062A\u0648\u0641\u0631 \u062D\u0635\u0631\u064A\u0627\u064B \u0643\u0644 \u064A\u0648\u0645 \u062C\u0645\u0639\u0629 \u0645\u0646 \u0627\u0644\u0633\u0627\u0639\u0629 12:00 \u0625\u0644\u0649 17:00"
+      };
+      statusText = otherDayTexts[lang] || otherDayTexts.fr;
+    }
+    const fridaySlotLabel = {
+      fr: "Vendredi",
+      en: "Friday",
+      es: "Viernes",
+      de: "Freitag",
+      ar: "\u0627\u0644\u062C\u0645\u0639\u0629"
+    }[lang] || "Vendredi";
+    return `
+    <div class="esn-card-inner">
+      <div class="esn-primary-row">
+        <span class="esn-icon">\u{1F372}</span>
+        <div class="esn-title-group">
+          <span class="esn-badge-today">${todayLabel} (${dayName})</span>
+          <strong class="esn-main-status">${statusText}</strong>
+        </div>
+      </div>
+      <div class="esn-schedule-pills">
+        <span class="esn-pill ${info.isAvailable ? "esn-pill-active" : ""}">
+          ${info.isAvailable ? '<span class="esn-pin">\u{1F4CD}</span>' : ""}${fridaySlotLabel} : 12h00 \u2013 17h00
+        </span>
+      </div>
+    </div>
+  `;
+  }
+  function getCouscousBlockedMessage(lang = "fr") {
+    const info = getCouscousScheduleInfo();
+    if (info.isBefore) {
+      const beforeMsgs = {
+        fr: "Le couscous est servi uniquement le vendredi \xE0 partir de 12h00 (jusqu'\xE0 17h00).",
+        en: "Couscous is served only on Fridays starting from 12:00 (until 17:00).",
+        es: "El cusc\xFAs se sirve \xFAnicamente los viernes a partir de las 12:00 (hasta las 17:00).",
+        de: "Couscous wird nur freitags ab 12:00 Uhr serviert (bis 17:00 Uhr).",
+        ar: "\u064A\u064F\u0642\u062F\u0651\u064E\u0645 \u0627\u0644\u0643\u0633\u0643\u0633 \u062D\u0635\u0631\u064A\u0627\u064B \u064A\u0648\u0645 \u0627\u0644\u062C\u0645\u0639\u0629 \u0627\u0628\u062A\u062F\u0627\u0621\u064B \u0645\u0646 \u0627\u0644\u0633\u0627\u0639\u0629 12:00 (\u062D\u062A\u0649 17:00)."
+      };
+      return beforeMsgs[lang] || beforeMsgs.fr;
+    }
+    if (info.isAfter) {
+      const afterMsgs = {
+        fr: "Le service couscous est termin\xE9 pour aujourd'hui (servi le vendredi de 12h00 \xE0 17h00).",
+        en: "Couscous service has ended for today (served Fridays from 12:00 to 17:00).",
+        es: "El servicio de cusc\xFAs ha finalizado por hoy (servido los viernes de 12:00 a 17:00).",
+        de: "Der Couscous-Service ist f\xFCr heute beendet (freitags von 12:00 bis 17:00 Uhr).",
+        ar: "\u0627\u0646\u062A\u0647\u062A \u062E\u062F\u0645\u0629 \u0627\u0644\u0643\u0633\u0643\u0633 \u0644\u0647\u0630\u0627 \u0627\u0644\u064A\u0648\u0645 (\u064A\u064F\u0642\u062F\u0651\u064E\u0645 \u064A\u0648\u0645 \u0627\u0644\u062C\u0645\u0639\u0629 \u0645\u0646 12:00 \u0625\u0644\u0649 17:00)."
+      };
+      return afterMsgs[lang] || afterMsgs.fr;
+    }
+    const otherMsgs = {
+      fr: "Le couscous est disponible exclusivement le vendredi entre 12h00 et 17h00.",
+      en: "Couscous is available exclusively on Fridays between 12:00 and 17:00.",
+      es: "El cusc\xFAs est\xE1 disponible exclusivamente los viernes entre las 12:00 y las 17:00.",
+      de: "Couscous ist ausschlie\xDFlich freitags zwischen 12:00 und 17:00 Uhr erh\xE4ltlich.",
+      ar: "\u0627\u0644\u0643\u0633\u0643\u0633 \u0645\u062A\u0648\u0641\u0631 \u062D\u0635\u0631\u064A\u0627\u064B \u0643\u0644 \u064A\u0648\u0645 \u062C\u0645\u0639\u0629 \u0628\u064A\u0646 \u0627\u0644\u0633\u0627\u0639\u0629 12:00 \u0648 17:00."
+    };
+    return otherMsgs[lang] || otherMsgs.fr;
   }
   function isKitchenAvailable() {
     const { isBefore, isClosed } = getKitchenScheduleInfo();
@@ -4158,23 +4298,40 @@
         el.classList.toggle("is-ended", !isAvail);
       });
     }
+    const couscousNotices = document.querySelectorAll(".couscous-service-notice");
+    if (couscousNotices.length > 0) {
+      const innerHtml = getCouscousNoticeInner(lang);
+      const isAvail = isCouscousAvailable();
+      couscousNotices.forEach((el) => {
+        el.innerHTML = innerHtml;
+        el.classList.toggle("is-ended", !isAvail);
+      });
+    }
     const currB = isBreakfastAvailable();
     const currK = isKitchenAvailable();
-    if (window._prevBreakfastAvailable !== void 0 && (window._prevBreakfastAvailable !== currB || window._prevKitchenAvailable !== currK)) {
+    const currC = isCouscousAvailable();
+    if (window._prevBreakfastAvailable !== void 0 && (window._prevBreakfastAvailable !== currB || window._prevKitchenAvailable !== currK || window._prevCouscousAvailable !== currC)) {
       window._prevBreakfastAvailable = currB;
       window._prevKitchenAvailable = currK;
+      window._prevCouscousAvailable = currC;
       if (typeof window.renderMenu === "function") {
         window.renderMenu();
       }
     } else {
       window._prevBreakfastAvailable = currB;
       window._prevKitchenAvailable = currK;
+      window._prevCouscousAvailable = currC;
     }
   }
   window.isRestaurantOpen = isRestaurantOpen;
   window.isBreakfastAvailable = isBreakfastAvailable;
   window.isKitchenAvailable = isKitchenAvailable;
   window.isKitchenCategory = isKitchenCategory;
+  window.isCouscousCategory = isCouscousCategory;
+  window.isCouscousAvailable = isCouscousAvailable;
+  window.getCouscousScheduleInfo = getCouscousScheduleInfo;
+  window.getCouscousNoticeInner = getCouscousNoticeInner;
+  window.getCouscousBlockedMessage = getCouscousBlockedMessage;
   window.getKitchenBlockedMessage = getKitchenBlockedMessage;
   window.getBreakfastBlockedMessage = getBreakfastBlockedMessage;
   window.updateScheduleUI = updateScheduleUI;
@@ -4609,8 +4766,13 @@
   function addToCart(menuItem, choices = null) {
     if (!menuItem) return;
     const catId = menuItem.categoryId || "";
+    const nameFr = menuItem.name && menuItem.name.fr ? menuItem.name.fr : String(menuItem.name || "");
     if (catId === "petit-dejeuner" && !isBreakfastAvailable()) {
       showToast(getBreakfastBlockedMessage(currentLang));
+      return;
+    }
+    if (isCouscousCategory(catId, nameFr) && !isCouscousAvailable()) {
+      showToast(getCouscousBlockedMessage(currentLang));
       return;
     }
     if (isKitchenCategory(catId) && !isKitchenAvailable()) {
@@ -4653,16 +4815,26 @@
     if (!cart || cart.length === 0) return { blocked: false };
     const breakfastBlocked = !isBreakfastAvailable();
     const kitchenBlocked = !isKitchenAvailable();
+    const couscousBlocked = !isCouscousAvailable();
     for (const item of cart) {
       let catId = item.categoryId;
       if (!catId && item.categoryNameFr) {
         catId = item.categoryNameFr.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
       }
+      const nameFr = item.name && item.name.fr ? item.name.fr : String(item.name || "");
       if (catId === "petit-dejeuner" && breakfastBlocked) {
         return {
           blocked: true,
           reason: "breakfast",
           message: getBreakfastBlockedMessage(currentLang),
+          item
+        };
+      }
+      if (isCouscousCategory(catId, nameFr) && couscousBlocked) {
+        return {
+          blocked: true,
+          reason: "couscous",
+          message: getCouscousBlockedMessage(currentLang),
           item
         };
       }
@@ -4711,11 +4883,14 @@
           const choiceIcon = isDrinkItem ? "\u2615" : "\u{1F37D}\uFE0F";
           const drinkChoicesStr = item.drinkChoices && item.drinkChoices.length > 0 ? `<div style="font-size:0.75rem; color:var(--sc-gold-light); margin-top:2px;">${choiceIcon} ${item.drinkChoices.join(", ")}</div>` : "";
           const itemCatId = item.categoryId || (item.categoryNameFr ? item.categoryNameFr.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") : "");
+          const itemNameFr = item.name && item.name.fr ? item.name.fr : String(item.name || "");
           const isItemBreakfastBlocked = itemCatId === "petit-dejeuner" && !isBreakfastAvailable();
+          const isItemCouscousBlocked = isCouscousCategory(itemCatId, itemNameFr) && !isCouscousAvailable();
           const isItemKitchenBlocked = isKitchenCategory(itemCatId) && !isKitchenAvailable();
-          const isItemBlocked = isItemBreakfastBlocked || isItemKitchenBlocked;
+          const isItemBlocked = isItemBreakfastBlocked || isItemKitchenBlocked || isItemCouscousBlocked;
+          const couscousTagText = currentLang === "en" ? "Fridays 12:00-17:00 only" : currentLang === "ar" ? "\u0627\u0644\u062C\u0645\u0639\u0629 12-17 \u0641\u0642\u0637" : currentLang === "es" ? "Viernes 12h-17h solo" : currentLang === "de" ? "Nur Fr. 12-17h" : "Vendredi 12h-17h uniquement";
           const blockedBadge = isItemBlocked ? `<div class="cd-item-blocked-tag" style="display:inline-flex; align-items:center; gap:4px; font-size:0.72rem; color:#ef4444; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.25); border-radius:4px; padding:2px 6px; margin-top:3px; font-weight:500;">
-               <span>\u26A0\uFE0F</span> ${isItemBreakfastBlocked ? currentLang === "en" ? "Breakfast ended" : currentLang === "ar" ? "\u0641\u0637\u0648\u0631 \u0627\u0644\u0635\u0628\u0627\u062D \u0627\u0646\u062A\u0647\u0649" : "Petit-d\xE9jeuner termin\xE9" : currentLang === "en" ? "Kitchen closed" : currentLang === "ar" ? "\u0627\u0644\u0645\u0637\u0628\u062E \u0645\u063A\u0644\u0642" : "Cuisine ferm\xE9e"}
+               <span>\u26A0\uFE0F</span> ${isItemCouscousBlocked ? couscousTagText : isItemBreakfastBlocked ? currentLang === "en" ? "Breakfast ended" : currentLang === "ar" ? "\u0641\u0637\u0648\u0631 \u0627\u0644\u0635\u0628\u0627\u062D \u0627\u0646\u062A\u0647\u0649" : "Petit-d\xE9jeuner termin\xE9" : currentLang === "en" ? "Kitchen closed" : currentLang === "ar" ? "\u0627\u0644\u0645\u0637\u0628\u062E \u0645\u063A\u0644\u0642" : "Cuisine ferm\xE9e"}
              </div>` : "";
           if (isItemBlocked) {
             itemDiv.classList.add("cd-item-disabled");
@@ -5100,6 +5275,10 @@
         ar: "\u0645\u0631\u0627\u0641\u0642\u062A\u0627\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643 \u0645\u0634\u0645\u0648\u0644\u062A\u0627\u0646 \u0645\u062C\u0627\u0646\u0627\u064B \u0645\u0639 \u0643\u0644 \u0637\u0628\u0642 \u0631\u0626\u064A\u0633\u064A."
       };
       showToast(infoMsgs[currentLang] || infoMsgs.fr);
+      return;
+    }
+    if (isCouscousCategory(catId, nameFr) && !isCouscousAvailable()) {
+      showToast(getCouscousBlockedMessage(currentLang));
       return;
     }
     if (isKitchenCategory(catId) && !isKitchenAvailable()) {
@@ -5984,6 +6163,12 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
   }
   function submitOrderOrWhatsApp(clientTable2, onComplete) {
     if (window.GC_isPreorder) {
+      const blockedCheck = checkCartBlockedItems();
+      if (blockedCheck.blocked) {
+        showToast(blockedCheck.message);
+        if (onComplete) onComplete();
+        return;
+      }
       GC_sendWhatsApp();
       if (onComplete) onComplete();
       return;
@@ -6352,6 +6537,11 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
             ${getKitchenNoticeInner(currentLang)}
           </div>
         ` : ""}
+        ${isCouscousCategory(catId) ? `
+          <div class="couscous-service-notice ${!isCouscousAvailable() ? "is-ended" : ""}">
+            ${getCouscousNoticeInner(currentLang)}
+          </div>
+        ` : ""}
         <div class="hub-dishes-grid"></div>
       `;
         const grid2 = catSection.querySelector(".hub-dishes-grid");
@@ -6411,6 +6601,11 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
           ${getKitchenNoticeInner(currentLang)}
         </div>
       ` : ""}
+      ${isCouscousCategory(currentCatId) ? `
+        <div class="couscous-service-notice ${!isCouscousAvailable() ? "is-ended" : ""}">
+          ${getCouscousNoticeInner(currentLang)}
+        </div>
+      ` : ""}
       <div class="hub-dishes-grid"></div>
     </div>
   `;
@@ -6429,12 +6624,14 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     const card = document.createElement("article");
     const isBreakfast = categoryId === "petit-dejeuner";
     const isKitchen = isKitchenCategory(categoryId);
+    const isCouscous = isCouscousCategory(categoryId, item.name?.fr || item.name);
     const isBreakfastBlocked = isBreakfast && !isBreakfastAvailable();
     const isKitchenBlocked = isKitchen && !isKitchenAvailable();
-    const isOver = isBreakfastBlocked || isKitchenBlocked;
+    const isCouscousBlocked = isCouscous && !isCouscousAvailable();
+    const isOver = isBreakfastBlocked || isKitchenBlocked || isCouscousBlocked;
     card.className = `hub-card menu-item ${isOver ? "hub-card-disabled" : ""}`;
     if (isOver) {
-      card.dataset.blockedReason = isKitchenBlocked ? "kitchen" : "breakfast";
+      card.dataset.blockedReason = isCouscousBlocked ? "couscous" : isKitchenBlocked ? "kitchen" : "breakfast";
     }
     card.id = `item-${categoryId}-${itemIndex}`;
     card.style.setProperty("--item-index", itemIndex);
@@ -6448,6 +6645,18 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     if (isBreakfastBlocked) {
       orderBtnText = currentLang === "en" ? "Ended" : currentLang === "de" ? "Beendet" : currentLang === "es" ? "Finalizado" : currentLang === "ar" ? "\u0627\u0646\u062A\u0647\u0649" : "Termin\xE9";
       unavailBadgeText = currentLang === "en" ? "\u{1F552} Until 13h (14h w-e)" : currentLang === "de" ? "\u{1F552} Bis 13h (14h WE)" : currentLang === "es" ? "\u{1F552} Hasta las 13h (14h finde)" : currentLang === "ar" ? "\u{1F552} \u062D\u062A\u0649 13:00 (14:00 \u0639\u0637\u0644\u0629)" : "\u{1F552} Servi jusqu'\xE0 13h (14h w-e)";
+    } else if (isCouscousBlocked) {
+      const cInfo = getCouscousScheduleInfo();
+      if (cInfo.isBefore) {
+        orderBtnText = currentLang === "en" ? "From 12:00" : currentLang === "de" ? "Ab 12h" : currentLang === "es" ? "Desde 12h" : currentLang === "ar" ? "\u0645\u0646 12:00" : "D\xE8s 12h";
+        unavailBadgeText = currentLang === "en" ? "\u{1F552} Friday at 12:00" : currentLang === "de" ? "\u{1F552} Freitag ab 12h" : currentLang === "es" ? "\u{1F552} Viernes desde 12h" : currentLang === "ar" ? "\u{1F552} \u0627\u0644\u062C\u0645\u0639\u0629 \u0645\u0646 12:00" : "\u{1F552} Vendredi d\xE8s 12h";
+      } else if (cInfo.isAfter) {
+        orderBtnText = currentLang === "en" ? "Ended" : currentLang === "de" ? "Beendet" : currentLang === "es" ? "Finalizado" : currentLang === "ar" ? "\u0627\u0646\u062A\u0647\u0649" : "Termin\xE9";
+        unavailBadgeText = currentLang === "en" ? "\u{1F319} Service ended" : currentLang === "de" ? "\u{1F319} Service beendet" : currentLang === "es" ? "\u{1F319} Servicio finalizado" : currentLang === "ar" ? "\u{1F319} \u0627\u0646\u062A\u0647\u062A \u0627\u0644\u062E\u062F\u0645\u0629" : "\u{1F319} Service termin\xE9 (17h)";
+      } else {
+        orderBtnText = currentLang === "en" ? "Fridays" : currentLang === "de" ? "Freitags" : currentLang === "es" ? "Viernes" : currentLang === "ar" ? "\u0627\u0644\u062C\u0645\u0639\u0629" : "Vendredi";
+        unavailBadgeText = currentLang === "en" ? "\u{1F4C5} Fridays (12h-17h)" : currentLang === "de" ? "\u{1F4C5} Freitags (12-17h)" : currentLang === "es" ? "\u{1F4C5} Viernes (12h-17h)" : currentLang === "ar" ? "\u{1F4C5} \u0627\u0644\u062C\u0645\u0639\u0629 (12-17)" : "\u{1F4C5} Vendredi (12h-17h)";
+      }
     } else if (isKitchenBlocked) {
       const kInfo = getKitchenScheduleInfo();
       if (kInfo.isClosed) {
@@ -6701,15 +6910,21 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       lbAddBtn.style.display = "block";
       const isBreakfast = item.categoryId === "petit-dejeuner";
       const isKitchen = isKitchenCategory(item.categoryId);
+      const isCouscous = isCouscousCategory(item.categoryId, item.name?.fr || item.name);
       const isBreakfastBlocked = isBreakfast && !isBreakfastAvailable();
       const isKitchenBlocked = isKitchen && !isKitchenAvailable();
-      const isBlocked = isBreakfastBlocked || isKitchenBlocked;
+      const isCouscousBlocked = isCouscous && !isCouscousAvailable();
+      const isBlocked = isBreakfastBlocked || isKitchenBlocked || isCouscousBlocked;
       if (isBlocked) {
         lbAddBtn.disabled = true;
         lbAddBtn.classList.add("btn-disabled");
         lbAddBtn.style.opacity = "0.55";
         lbAddBtn.style.cursor = "not-allowed";
-        if (isKitchenBlocked) {
+        if (isCouscousBlocked) {
+          const cInfo = getCouscousScheduleInfo();
+          const cText = cInfo.isBefore ? currentLang === "en" ? "Couscous from 12:00" : currentLang === "ar" ? "\u0627\u0644\u0643\u0633\u0643\u0633 \u0645\u0646 12:00" : "Couscous d\xE8s 12h00" : cInfo.isAfter ? currentLang === "en" ? "Service Ended (17:00)" : currentLang === "ar" ? "\u0627\u0646\u062A\u0647\u062A \u0627\u0644\u062E\u062F\u0645\u0629 (17:00)" : "Service Termin\xE9 (17h00)" : currentLang === "en" ? "Vendredi (12h-17h)" : currentLang === "ar" ? "\u0627\u0644\u062C\u0645\u0639\u0629 (12-17)" : "Vendredi (12h-17h)";
+          lbAddBtn.textContent = cText;
+        } else if (isKitchenBlocked) {
           const kInfo = getKitchenScheduleInfo();
           const kText = kInfo.isClosed ? currentLang === "en" ? "Kitchen Closed" : currentLang === "de" ? "K\xFCche geschlossen" : currentLang === "es" ? "Cocina cerrada" : currentLang === "ar" ? "\u0627\u0644\u0645\u0637\u0628\u062E \u0645\u063A\u0644\u0642" : "Cuisine Ferm\xE9e" : currentLang === "en" ? `Kitchen from ${kInfo.startHour}:00` : currentLang === "de" ? `K\xFCche ab ${kInfo.startHour}:00` : currentLang === "es" ? `Cocina desde las ${kInfo.startHour}:00` : currentLang === "ar" ? `\u0627\u0644\u0645\u0637\u0628\u062E \u0627\u0628\u062A\u062F\u0627\u0621\u064B \u0645\u0646 ${kInfo.startHour}:00` : `Cuisine d\xE8s ${kInfo.startHour}h00`;
           lbAddBtn.textContent = kText;
@@ -6741,7 +6956,9 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       lbAddBtn._hasListener = true;
       lbAddBtn.addEventListener("click", () => {
         if (lbAddBtn.disabled) {
-          if (activeLightboxItem && isKitchenCategory(activeLightboxItem.categoryId)) {
+          if (activeLightboxItem && isCouscousCategory(activeLightboxItem.categoryId, activeLightboxItem.name?.fr || activeLightboxItem.name)) {
+            showToast(getCouscousBlockedMessage(currentLang));
+          } else if (activeLightboxItem && isKitchenCategory(activeLightboxItem.categoryId)) {
             showToast(getKitchenBlockedMessage(currentLang));
           } else {
             showToast(getBreakfastBlockedMessage(currentLang));
@@ -6809,7 +7026,9 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
           const card2 = addBtn.closest(".hub-card");
           if (card2 && card2._menuItem) {
             if (card2.classList.contains("hub-card-disabled") || addBtn.disabled) {
-              if (card2.dataset.blockedReason === "kitchen" || isKitchenCategory(card2._menuItem.categoryId)) {
+              if (card2.dataset.blockedReason === "couscous" || isCouscousCategory(card2._menuItem.categoryId, card2._menuItem.name?.fr || card2._menuItem.name)) {
+                showToast(getCouscousBlockedMessage(currentLang));
+              } else if (card2.dataset.blockedReason === "kitchen" || isKitchenCategory(card2._menuItem.categoryId)) {
                 showToast(getKitchenBlockedMessage(currentLang));
               } else {
                 showToast(getBreakfastBlockedMessage(currentLang));

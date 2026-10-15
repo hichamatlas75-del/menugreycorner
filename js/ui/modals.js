@@ -5,8 +5,11 @@ import {
   isBreakfastAvailable,
   isKitchenAvailable,
   isKitchenCategory,
+  isCouscousAvailable,
+  isCouscousCategory,
   getKitchenBlockedMessage,
-  getBreakfastBlockedMessage
+  getBreakfastBlockedMessage,
+  getCouscousBlockedMessage
 } from '../services/schedule.js';
 import { playTableSelectSound, playTapSound, playAddToCartSound } from '../services/sound.js';
 
@@ -356,6 +359,12 @@ export function checkItemOptionsAndAdd(menuItem) {
       ar: "مرافقتان من اختيارك مشمولتان مجاناً مع كل طبق رئيسي."
     };
     showToast(infoMsgs[currentLang] || infoMsgs.fr);
+    return;
+  }
+
+  // Couscous security check: Only Friday between 12:00 and 17:00
+  if (isCouscousCategory(catId, nameFr) && !isCouscousAvailable()) {
+    showToast(getCouscousBlockedMessage(currentLang));
     return;
   }
 

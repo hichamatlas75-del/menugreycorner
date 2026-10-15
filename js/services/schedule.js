@@ -324,7 +324,6 @@ export const KITCHEN_CATEGORY_IDS = new Set([
   "entrees",
   "entrees-chaudes",
   "plats",
-  "couscous-vendredi",
   "sandwichs",
   "burgers",
   "panini",
@@ -336,6 +335,173 @@ export const KITCHEN_CATEGORY_IDS = new Set([
 export function isKitchenCategory(catId) {
   if (!catId) return false;
   return KITCHEN_CATEGORY_IDS.has(String(catId).toLowerCase().trim());
+}
+
+/**
+ * Check if category or item is Couscous
+ */
+export function isCouscousCategory(catId, itemName = "") {
+  if (catId) {
+    const id = String(catId).toLowerCase().trim();
+    if (id === "couscous-vendredi" || id === "couscous" || id.includes("couscous")) {
+      return true;
+    }
+  }
+  if (itemName) {
+    const name = (typeof itemName === "object" ? (itemName.fr || Object.values(itemName)[0] || "") : String(itemName)).toLowerCase();
+    if (name.includes("couscous")) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Check if Couscous service is currently available
+ * - Exclusive service: Friday only, between 12:00 and 17:00 (Casablanca time)
+ */
+export function isCouscousAvailable() {
+  const { weekday, decimalHour } = getMoroccoDateTime();
+  return (weekday === "Fri" && decimalHour >= 12 && decimalHour < 17);
+}
+
+/**
+ * Detect current day and Couscous service status
+ */
+export function getCouscousScheduleInfo() {
+  const { weekday, decimalHour } = getMoroccoDateTime();
+  const isFriday = (weekday === "Fri");
+  const isBefore = isFriday && (decimalHour < 12);
+  const isAvailable = isFriday && (decimalHour >= 12 && decimalHour < 17);
+  const isAfter = isFriday && (decimalHour >= 17);
+  const isOtherDay = !isFriday;
+
+  return {
+    weekday,
+    isFriday,
+    startHour: 12,
+    cutoffHour: 17,
+    isAvailable,
+    isBefore,
+    isAfter,
+    isOtherDay,
+    decimalHour
+  };
+}
+
+/**
+ * Generate HTML content for the dynamic Couscous notice banner
+ */
+export function getCouscousNoticeInner(lang = "fr") {
+  const info = getCouscousScheduleInfo();
+  const dayName = WEEKDAY_NAMES[info.weekday]?.[lang] || WEEKDAY_NAMES[info.weekday]?.fr || info.weekday;
+
+  const todayLabel = {
+    fr: "Aujourd'hui",
+    en: "Today",
+    es: "Hoy",
+    de: "Heute",
+    ar: "اليوم"
+  }[lang] || "Aujourd'hui";
+
+  let statusText = "";
+  if (info.isAvailable) {
+    const availableTexts = {
+      fr: "Service Couscous du Vendredi en cours (jusqu'à 17h00)",
+      en: "Friday Couscous service open (until 17:00)",
+      es: "Servicio de Cuscús del Viernes en curso (hasta las 17:00)",
+      de: "Freitags-Couscous Service geöffnet (bis 17:00 Uhr)",
+      ar: "خدمة كسكس الجمعة متوفرة حالياً (حتى الساعة 17:00)"
+    };
+    statusText = availableTexts[lang] || availableTexts.fr;
+  } else if (info.isBefore) {
+    const beforeTexts = {
+      fr: "Service Couscous disponible dès 12h00 aujourd'hui (jusqu'à 17h00)",
+      en: "Couscous service starts at 12:00 today (until 17:00)",
+      es: "Servicio de Cuscús disponible a partir de las 12:00 hoy (hasta las 17:00)",
+      de: "Couscous-Service beginnt heute um 12:00 Uhr (bis 17:00 Uhr)",
+      ar: "خدمة الكسكس تبدأ اليوم عند الساعة 12:00 (حتى 17:00)"
+    };
+    statusText = beforeTexts[lang] || beforeTexts.fr;
+  } else if (info.isAfter) {
+    const endedTexts = {
+      fr: "Service Couscous terminé pour aujourd'hui (servi le vendredi de 12h à 17h)",
+      en: "Couscous service ended for today (served Fridays 12:00 to 17:00)",
+      es: "Servicio de Cuscús finalizado por hoy (servido los viernes de 12:00 a 17:00)",
+      de: "Couscous-Service für heute beendet (freitags von 12:00 bis 17:00 Uhr)",
+      ar: "انتهت خدمة الكسكس لهذا اليوم (يُقدَّم يوم الجمعة من 12:00 إلى 17:00)"
+    };
+    statusText = endedTexts[lang] || endedTexts.fr;
+  } else {
+    const otherDayTexts = {
+      fr: "Disponible exclusivement le Vendredi de 12h00 à 17h00",
+      en: "Available exclusively on Fridays from 12:00 to 17:00",
+      es: "Disponible exclusivamente los Viernes de 12:00 a 17:00",
+      de: "Ausschließlich freitags von 12:00 bis 17:00 Uhr erhältlich",
+      ar: "متوفر حصرياً كل يوم جمعة من الساعة 12:00 إلى 17:00"
+    };
+    statusText = otherDayTexts[lang] || otherDayTexts.fr;
+  }
+
+  const fridaySlotLabel = {
+    fr: "Vendredi",
+    en: "Friday",
+    es: "Viernes",
+    de: "Freitag",
+    ar: "الجمعة"
+  }[lang] || "Vendredi";
+
+  return `
+    <div class="esn-card-inner">
+      <div class="esn-primary-row">
+        <span class="esn-icon">🍲</span>
+        <div class="esn-title-group">
+          <span class="esn-badge-today">${todayLabel} (${dayName})</span>
+          <strong class="esn-main-status">${statusText}</strong>
+        </div>
+      </div>
+      <div class="esn-schedule-pills">
+        <span class="esn-pill ${info.isAvailable ? 'esn-pill-active' : ''}">
+          ${info.isAvailable ? '<span class="esn-pin">📍</span>' : ''}${fridaySlotLabel} : 12h00 – 17h00
+        </span>
+      </div>
+    </div>
+  `;
+}
+
+/**
+ * Localized message when couscous order is blocked
+ */
+export function getCouscousBlockedMessage(lang = "fr") {
+  const info = getCouscousScheduleInfo();
+  if (info.isBefore) {
+    const beforeMsgs = {
+      fr: "Le couscous est servi uniquement le vendredi à partir de 12h00 (jusqu'à 17h00).",
+      en: "Couscous is served only on Fridays starting from 12:00 (until 17:00).",
+      es: "El cuscús se sirve únicamente los viernes a partir de las 12:00 (hasta las 17:00).",
+      de: "Couscous wird nur freitags ab 12:00 Uhr serviert (bis 17:00 Uhr).",
+      ar: "يُقدَّم الكسكس حصرياً يوم الجمعة ابتداءً من الساعة 12:00 (حتى 17:00)."
+    };
+    return beforeMsgs[lang] || beforeMsgs.fr;
+  }
+  if (info.isAfter) {
+    const afterMsgs = {
+      fr: "Le service couscous est terminé pour aujourd'hui (servi le vendredi de 12h00 à 17h00).",
+      en: "Couscous service has ended for today (served Fridays from 12:00 to 17:00).",
+      es: "El servicio de cuscús ha finalizado por hoy (servido los viernes de 12:00 a 17:00).",
+      de: "Der Couscous-Service ist für heute beendet (freitags von 12:00 bis 17:00 Uhr).",
+      ar: "انتهت خدمة الكسكس لهذا اليوم (يُقدَّم يوم الجمعة من 12:00 إلى 17:00)."
+    };
+    return afterMsgs[lang] || afterMsgs.fr;
+  }
+  const otherMsgs = {
+    fr: "Le couscous est disponible exclusivement le vendredi entre 12h00 et 17h00.",
+    en: "Couscous is available exclusively on Fridays between 12:00 and 17:00.",
+    es: "El cuscús está disponible exclusivamente los viernes entre las 12:00 y las 17:00.",
+    de: "Couscous ist ausschließlich freitags zwischen 12:00 und 17:00 Uhr erhältlich.",
+    ar: "الكسكس متوفر حصرياً كل يوم جمعة بين الساعة 12:00 و 17:00."
+  };
+  return otherMsgs[lang] || otherMsgs.fr;
 }
 
 /**
@@ -426,18 +592,36 @@ export function updateScheduleUI() {
     });
   }
 
+  // Also dynamically update any couscous notices on page
+  const couscousNotices = document.querySelectorAll(".couscous-service-notice");
+  if (couscousNotices.length > 0) {
+    const innerHtml = getCouscousNoticeInner(lang);
+    const isAvail = isCouscousAvailable();
+    couscousNotices.forEach(el => {
+      el.innerHTML = innerHtml;
+      el.classList.toggle("is-ended", !isAvail);
+    });
+  }
+
   // Check for real-time state changes and re-render dishes if needed
   const currB = isBreakfastAvailable();
   const currK = isKitchenAvailable();
-  if (window._prevBreakfastAvailable !== undefined && (window._prevBreakfastAvailable !== currB || window._prevKitchenAvailable !== currK)) {
+  const currC = isCouscousAvailable();
+  if (window._prevBreakfastAvailable !== undefined && (
+    window._prevBreakfastAvailable !== currB ||
+    window._prevKitchenAvailable !== currK ||
+    window._prevCouscousAvailable !== currC
+  )) {
     window._prevBreakfastAvailable = currB;
     window._prevKitchenAvailable = currK;
+    window._prevCouscousAvailable = currC;
     if (typeof window.renderMenu === "function") {
       window.renderMenu();
     }
   } else {
     window._prevBreakfastAvailable = currB;
     window._prevKitchenAvailable = currK;
+    window._prevCouscousAvailable = currC;
   }
 }
 
@@ -446,6 +630,11 @@ window.isRestaurantOpen = isRestaurantOpen;
 window.isBreakfastAvailable = isBreakfastAvailable;
 window.isKitchenAvailable = isKitchenAvailable;
 window.isKitchenCategory = isKitchenCategory;
+window.isCouscousCategory = isCouscousCategory;
+window.isCouscousAvailable = isCouscousAvailable;
+window.getCouscousScheduleInfo = getCouscousScheduleInfo;
+window.getCouscousNoticeInner = getCouscousNoticeInner;
+window.getCouscousBlockedMessage = getCouscousBlockedMessage;
 window.getKitchenBlockedMessage = getKitchenBlockedMessage;
 window.getBreakfastBlockedMessage = getBreakfastBlockedMessage;
 window.updateScheduleUI = updateScheduleUI;
