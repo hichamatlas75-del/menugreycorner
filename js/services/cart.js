@@ -185,11 +185,12 @@ export function updateCartUI() {
         const isDrinkItem = catLower.includes("boisson") ||
           catLower.includes("petit-d") ||
           catLower.includes("café");
+        const isIceCream = catLower.includes("glace");
         const isDessertItem = catLower.includes("gateau") ||
           catLower.includes("gâteau") ||
           catLower.includes("crêpe") ||
           catLower.includes("crepe");
-        const choiceIcon = isDrinkItem ? '☕' : (isDessertItem ? '🍰' : '🍽️');
+        const choiceIcon = isDrinkItem ? '☕' : (isIceCream ? '🍨' : (isDessertItem ? '🍰' : '🍽️'));
         const drinkChoicesStr = item.drinkChoices && item.drinkChoices.length > 0
           ? `<div style="font-size:0.75rem; color:var(--sc-gold-light); margin-top:2px;">${choiceIcon} ${item.drinkChoices.join(', ')}</div>`
           : '';

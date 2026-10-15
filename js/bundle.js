@@ -3652,11 +3652,11 @@
             "es": "COPA GREY CORNER"
           },
           "description": {
-            "fr": "Vanille, nougat, yaourt,pistache.",
-            "en": "Vanilla, nougat, yogurt,pistachio.",
-            "de": "Vanille, Nougat, Waldbeerjoghurt,pistazie.",
-            "ar": "\u0641\u0627\u0646\u064A\u0644\u064A\u0627\u060C \u0646\u0648\u063A\u0627\u060C \u0632\u0628\u0627\u062F\u064A \u0628\u0627\u0644\u0641\u0648\u0627\u0643\u0647 (\u064A\u0627\u063A\u0648\u0631\u062A)\u060C \u0648\u0641\u0633\u062A\u0642 \u062D\u0644\u0628\u064A \u0645\u0639 \u0627\u0644\u062A\u0632\u064A\u064A\u0646 \u0627\u0644\u0631\u0627\u0642\u064A.",
-            "es": "Vainilla, turr\xF3n nougat, yogur y pistacho con decoraci\xF3n artesanal."
+            "fr": "4 parfums au choix : Yaourt, Vanille, Pistache, Chocolat, Fraise, Nougat.",
+            "en": "4 flavors of choice: Yogurt, Vanilla, Pistachio, Chocolate, Strawberry, Nougat.",
+            "de": "4 Sorten nach Wahl: Joghurt, Vanille, Pistazie, Schokolade, Erdbeere, Nougat.",
+            "ar": "4 \u0646\u0643\u0647\u0627\u062A \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643: \u064A\u0627\u063A\u0648\u0631\u062A\u060C \u0641\u0627\u0646\u064A\u0644\u064A\u0627\u060C \u0641\u0633\u062A\u0642\u060C \u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629\u060C \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u0623\u0648 \u0646\u0648\u063A\u0627 \u0645\u0639 \u0627\u0644\u062A\u0632\u064A\u064A\u0646 \u0627\u0644\u0631\u0627\u0642\u064A.",
+            "es": "4 sabores a elegir: Yogur, Vainilla, Pistacho, Chocolate, Fresa o Nougat."
           },
           "price": "65",
           "image": "images/glace-gc.webp"
@@ -3670,11 +3670,11 @@
             "es": "COPA AMOR"
           },
           "description": {
-            "fr": "Fraise, yaourt,nougat.",
-            "en": "Strawberry, yogurt, nougat.",
-            "de": "Erdbeere, Joghurt, nougat.",
-            "ar": "\u0645\u062B\u0644\u062C\u0627\u062A \u0627\u0644\u0641\u0631\u0627\u0648\u0644\u0629\u060C \u0632\u0628\u0627\u062F\u064A\u060C\u0648\u0646\u0648\u063A\u0627 \u0645\u0639 \u0627\u0644\u062A\u0632\u064A\u064A\u0646 \u0648\u0635\u0644\u0635\u0629 \u0627\u0644\u0641\u0648\u0627\u0643\u0647.",
-            "es": "Fresa, yogur y turr\xF3n nougat con coulis de frutas."
+            "fr": "3 parfums au choix : Yaourt, Vanille, Pistache, Chocolat, Fraise, Nougat.",
+            "en": "3 flavors of choice: Yogurt, Vanilla, Pistachio, Chocolate, Strawberry, Nougat.",
+            "de": "3 Sorten nach Wahl: Joghurt, Vanille, Pistazie, Schokolade, Erdbeere, Nougat.",
+            "ar": "3 \u0646\u0643\u0647\u0627\u062A \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643: \u064A\u0627\u063A\u0648\u0631\u062A\u060C \u0641\u0627\u0646\u064A\u0644\u064A\u0627\u060C \u0641\u0633\u062A\u0642\u060C \u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629\u060C \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u0623\u0648 \u0646\u0648\u063A\u0627 \u0645\u0639 \u0627\u0644\u062A\u0632\u064A\u064A\u0646 \u0648\u0635\u0644\u0635\u0629 \u0627\u0644\u0641\u0648\u0627\u0643\u0647.",
+            "es": "3 sabores a elegir: Yogur, Vainilla, Pistacho, Chocolate, Fresa o Nougat."
           },
           "price": "45",
           "image": "images/glace-amor.webp"
@@ -3688,11 +3688,11 @@
             "es": "COPA INFANTIL"
           },
           "description": {
-            "fr": "chocolat, fraise, Chantilly.",
-            "en": "chocolate, Strawberry, whipped cream.",
-            "de": "schokolade, Erdbeere, Schlagsahne.",
-            "ar": "\u0645\u062B\u0644\u062C\u0627\u062A \u0627\u0644\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629\u060C \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u0648\u0643\u0631\u064A\u0645\u0629 \u0627\u0644\u0634\u0627\u0646\u062A\u064A\u064A \u0645\u0639 \u062D\u0644\u0648\u0649 \u0645\u0644\u0648\u0646\u0629.",
-            "es": "Helado de chocolate y fresa con nata montada y topping divertido."
+            "fr": "2 parfums au choix avec chantilly : Yaourt, Vanille, Pistache, Chocolat, Fraise, Nougat.",
+            "en": "2 flavors of choice with whipped cream: Yogurt, Vanilla, Pistachio, Chocolate, Strawberry, Nougat.",
+            "de": "2 Sorten nach Wahl mit Schlagsahne: Joghurt, Vanille, Pistazie, Schokolade, Erdbeere, Nougat.",
+            "ar": "\u0646\u0643\u0647\u062A\u0627\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643 \u0645\u0639 \u0643\u0631\u064A\u0645\u0629 \u0627\u0644\u0634\u0627\u0646\u062A\u064A\u064A: \u064A\u0627\u063A\u0648\u0631\u062A\u060C \u0641\u0627\u0646\u064A\u0644\u064A\u0627\u060C \u0641\u0633\u062A\u0642\u060C \u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629\u060C \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u0623\u0648 \u0646\u0648\u063A\u0627.",
+            "es": "2 sabores a elegir con nata montada: Yogur, Vainilla, Pistacho, Chocolate, Fresa o Nougat."
           },
           "price": "40",
           "image": "images/glace-enfant.webp"
@@ -3706,11 +3706,11 @@
             "es": "2 Bolas de Helado"
           },
           "description": {
-            "fr": "Parfums au choix : Vanille, chocolat, nougat, pistache, bubble, yaourt fruit des bois, fraise, caramel.",
-            "en": "Flavors of choice: Vanilla, chocolate, nougat, pitachio, bubble, forest fruit yogurt, strawberry, caramel.",
-            "de": "Geschmacksrichtungen nach Wahl: Vanille, Schokolade, Nougat, pistazie, bubble, Waldbeerjoghurt, Erdbeere, Karamell.",
-            "ar": "\u0646\u0643\u0647\u062A\u0627\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643: \u0641\u0627\u0646\u064A\u0644\u064A\u0627\u060C \u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629\u060C \u0646\u0648\u063A\u0627\u060C \u0641\u0633\u062A\u0642\u060C \u0628\u0627\u0628\u0644\u060C \u0632\u0628\u0627\u062F\u064A \u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u063A\u0627\u0628\u0629\u060C \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u0623\u0648 \u0643\u0631\u0627\u0645\u064A\u0644.",
-            "es": "Sabores a elegir: Vainilla, chocolate, nougat, pistacho, chicle (bubble), yogur con frutos del bosque, fresa o caramelo."
+            "fr": "2 boules au choix : Yaourt, Vanille, Pistache, Chocolat, Fraise, Nougat.",
+            "en": "2 scoops of choice: Yogurt, Vanilla, Pistachio, Chocolate, Strawberry, Nougat.",
+            "de": "2 Kugeln nach Wahl: Joghurt, Vanille, Pistazie, Schokolade, Erdbeere, Nougat.",
+            "ar": "\u0643\u0631\u062A\u0627\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643: \u064A\u0627\u063A\u0648\u0631\u062A\u060C \u0641\u0627\u0646\u064A\u0644\u064A\u0627\u060C \u0641\u0633\u062A\u0642\u060C \u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629\u060C \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u0623\u0648 \u0646\u0648\u063A\u0627.",
+            "es": "2 bolas a elegir: Yogur, Vainilla, Pistacho, Chocolate, Fresa o Nougat."
           },
           "price": "30",
           "image": "images/glace-2boules.webp"
@@ -3724,11 +3724,11 @@
             "es": "1 Bola de Helado"
           },
           "description": {
-            "fr": "Parfum au choix : Vanille, chocolat, nougat, pitache, bubble, yaourt fruit des bois, fraise, caramel.",
-            "en": "Flavor of choice: Vanilla, chocolate, nougat, pistachio, bubble, forest fruit yogurt, strawberry, caramel.",
-            "de": "Geschmack nach Wahl: Vanille, Schokolade, Nougat, pistazie, Bubble, Waldbeerjoghurt, Erdbeere, Karamell.",
-            "ar": "\u0646\u0643\u0647\u0629 \u0648\u0627\u062D\u062F\u0629 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643: \u0641\u0627\u0646\u064A\u0644\u064A\u0627\u060C \u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629\u060C \u0646\u0648\u063A\u0627\u060C \u0641\u0633\u062A\u0642\u060C \u0628\u0627\u0628\u0644\u060C \u0632\u0628\u0627\u062F\u064A \u0641\u0648\u0627\u0643\u0647 \u0627\u0644\u063A\u0627\u0628\u0629\u060C \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u0623\u0648 \u0643\u0631\u0627\u0645\u064A\u0644.",
-            "es": "Sabor a elegir: Vainilla, chocolate, nougat, pistacho, chicle (bubble), yogur con frutos del bosque, fresa o caramelo."
+            "fr": "1 boule au choix : Yaourt, Vanille, Pistache, Chocolat, Fraise, Nougat.",
+            "en": "1 scoop of choice: Yogurt, Vanilla, Pistachio, Chocolate, Strawberry, Nougat.",
+            "de": "1 Kugel nach Wahl: Joghurt, Vanille, Pistazie, Schokolade, Erdbeere, Nougat.",
+            "ar": "\u0643\u0631\u0629 \u0648\u0627\u062D\u062F\u0629 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643: \u064A\u0627\u063A\u0648\u0631\u062A\u060C \u0641\u0627\u0646\u064A\u0644\u064A\u0627\u060C \u0641\u0633\u062A\u0642\u060C \u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629\u060C \u0641\u0631\u0627\u0648\u0644\u0629\u060C \u0623\u0648 \u0646\u0648\u063A\u0627.",
+            "es": "1 bola a elegir: Yogur, Vainilla, Pistacho, Chocolate, Fresa o Nougat."
           },
           "price": "16",
           "image": "images/glace-1boule.webp"
@@ -4881,8 +4881,9 @@
           itemDiv.className = "cd-item";
           const catLower = (item.categoryNameFr || "").toLowerCase();
           const isDrinkItem = catLower.includes("boisson") || catLower.includes("petit-d") || catLower.includes("caf\xE9");
+          const isIceCream = catLower.includes("glace");
           const isDessertItem = catLower.includes("gateau") || catLower.includes("g\xE2teau") || catLower.includes("cr\xEApe") || catLower.includes("crepe");
-          const choiceIcon = isDrinkItem ? "\u2615" : isDessertItem ? "\u{1F370}" : "\u{1F37D}\uFE0F";
+          const choiceIcon = isDrinkItem ? "\u2615" : isIceCream ? "\u{1F368}" : isDessertItem ? "\u{1F370}" : "\u{1F37D}\uFE0F";
           const drinkChoicesStr = item.drinkChoices && item.drinkChoices.length > 0 ? `<div style="font-size:0.75rem; color:var(--sc-gold-light); margin-top:2px;">${choiceIcon} ${item.drinkChoices.join(", ")}</div>` : "";
           const itemCatId = item.categoryId || (item.categoryNameFr ? item.categoryNameFr.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") : "");
           const itemNameFr = item.name && item.name.fr ? item.name.fr : String(item.name || "");
@@ -5021,6 +5022,14 @@
     { fr: "Pistache", en: "Pistachio", de: "Pistazie", es: "Pistacho", ar: "\u0641\u0633\u062A\u0642" },
     { fr: "Fruits Rouges", en: "Red Berries", de: "Rote Fr\xFCchte", es: "Frutos Rojos", ar: "\u0641\u0648\u0627\u0643\u0647 \u062D\u0645\u0631\u0627\u0621" },
     { fr: "Caramel", en: "Caramel", de: "Karamell", es: "Caramelo", ar: "\u0643\u0631\u0627\u0645\u064A\u0644" }
+  ];
+  var GLACE_FLAVOR_OPTIONS = [
+    { fr: "Yaourt", en: "Yogurt", de: "Joghurt", es: "Yogur", ar: "\u064A\u0627\u063A\u0648\u0631\u062A (\u0632\u0628\u0627\u062F\u064A)" },
+    { fr: "Vanille", en: "Vanilla", de: "Vanille", es: "Vainilla", ar: "\u0641\u0627\u0646\u064A\u0644\u064A\u0627" },
+    { fr: "Pistache", en: "Pistachio", de: "Pistazie", es: "Pistacho", ar: "\u0641\u0633\u062A\u0642" },
+    { fr: "Chocolat", en: "Chocolate", de: "Schokolade", es: "Chocolate", ar: "\u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629" },
+    { fr: "Fraise", en: "Strawberry", de: "Erdbeere", es: "Fresa", ar: "\u0641\u0631\u0627\u0648\u0644\u0629" },
+    { fr: "Nougat", en: "Nougat", de: "Nougat", es: "Turr\xF3n Nougat", ar: "\u0646\u0648\u063A\u0627" }
   ];
   var selectedOptionMenuItem = null;
   function renderOptionList(listContainerId, counterId, confirmBtnId, optionsArray, limit, modalEl) {
@@ -5310,6 +5319,58 @@
     }
     renderOptionList("sanSebastienList", "sanSebastienCounter", "sanSebastienConfirmBtn", SAN_SEBASTIEN_FLAVOR_OPTIONS, limit, modal);
   }
+  function getGlaceFlavorLimit(menuItem) {
+    const nameFr = (menuItem?.name && menuItem.name.fr ? menuItem.name.fr : String(menuItem?.name || "")).toUpperCase();
+    if (nameFr.includes("GREY CORNER")) return 4;
+    if (nameFr.includes("AMOR")) return 3;
+    if (nameFr.includes("ENFANT")) return 2;
+    if (nameFr.includes("2 BOULE") || nameFr.startsWith("2 ")) return 2;
+    if (nameFr.includes("1 BOULE") || nameFr.startsWith("1 ")) return 1;
+    return 1;
+  }
+  function openGlaceSelectorModal(menuItem) {
+    playTapSound();
+    selectedOptionMenuItem = menuItem;
+    const modal = document.getElementById("glaceModalOverlay");
+    if (!modal) return;
+    modal.style.display = "flex";
+    if (!modal._hasBackdropListener) {
+      modal._hasBackdropListener = true;
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+          playTapSound();
+          modal.style.display = "none";
+        }
+      });
+    }
+    const limit = getGlaceFlavorLimit(menuItem);
+    const titleEl = document.getElementById("glaceModalTitle");
+    const subtitleEl = document.getElementById("glaceModalSubtitle");
+    const titles = {
+      fr: limit > 1 ? `Choisissez vos ${limit} parfums` : "Choisissez votre parfum",
+      en: limit > 1 ? `Choose your ${limit} flavors` : "Choose your flavor",
+      de: limit > 1 ? `W\xE4hlen Sie Ihre ${limit} Sorten` : "W\xE4hlen Sie Ihre Sorte",
+      es: limit > 1 ? `Elija sus ${limit} sabores` : "Elija su sabor",
+      ar: limit > 1 ? `\u0627\u062E\u062A\u0631 ${limit} \u0646\u0643\u0647\u0627\u062A` : "\u0627\u062E\u062A\u0631 \u0627\u0644\u0646\u0643\u0647\u0629"
+    };
+    const subtitles = {
+      fr: `Veuillez s\xE9lectionner ${limit} parfum(s) au choix pour "${menuItem.name[currentLang] || menuItem.name.fr}".`,
+      en: `Please select ${limit} flavor(s) of your choice for "${menuItem.name[currentLang] || menuItem.name.fr}".`,
+      de: `Bitte w\xE4hlen Sie ${limit} Sorte(n) Ihrer Wahl f\xFCr "${menuItem.name[currentLang] || menuItem.name.fr}".`,
+      es: `Por favor, seleccione ${limit} sabor(es) a su elecci\xF3n para "${menuItem.name[currentLang] || menuItem.name.fr}".`,
+      ar: `\u064A\u0631\u062C\u0649 \u0627\u062E\u062A\u064A\u0627\u0631 ${limit} \u0646\u0643\u0647\u0629(\u0646\u0643\u0647\u0627\u062A) \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643 \u0644\u0640 "${menuItem.name[currentLang] || menuItem.name.fr}".`
+    };
+    if (titleEl) titleEl.textContent = titles[currentLang] || titles.fr;
+    if (subtitleEl) subtitleEl.textContent = subtitles[currentLang] || subtitles.fr;
+    const closeBtn = document.getElementById("glaceCloseBtn");
+    if (closeBtn) {
+      closeBtn.onclick = () => {
+        playTapSound();
+        modal.style.display = "none";
+      };
+    }
+    renderOptionList("glaceList", "glaceCounter", "glaceConfirmBtn", GLACE_FLAVOR_OPTIONS, limit, modal);
+  }
   function checkItemOptionsAndAdd(menuItem) {
     if (!menuItem) return;
     const nameFr = menuItem.name && menuItem.name.fr ? menuItem.name.fr : String(menuItem.name || "");
@@ -5356,6 +5417,11 @@
     const isSanSebastien = upperName === "SAN SEBASTIEN" || upperName === "SAN SEBASTIAN" || upperName.includes("SAN SEBAST") && !upperName.includes("NUTELLA");
     if (isSanSebastien) {
       openSanSebastienSelectorModal(menuItem);
+      return;
+    }
+    const isGlace = catId === "glace" || upperName.includes("BOULE DE GLACE") || upperName.includes("BOULES DE GLACE") || upperName.includes("COUPE GREY CORNER") || upperName.includes("COUPE AMOR") || upperName.includes("COUPE ENFANT");
+    if (isGlace) {
+      openGlaceSelectorModal(menuItem);
       return;
     }
     addToCart(menuItem);
@@ -5791,6 +5857,7 @@
   window.closeTableModal = closeTableModal;
   window.showTableSelectorModal = showTableSelectorModal;
   window.openSanSebastienSelectorModal = openSanSebastienSelectorModal;
+  window.openGlaceSelectorModal = openGlaceSelectorModal;
   window.setTable = setTable;
   window.openBurgerMenu = openBurgerMenu;
   window.closeBurgerMenu = closeBurgerMenu;

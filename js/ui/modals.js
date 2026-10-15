@@ -56,6 +56,15 @@ export const SAN_SEBASTIEN_FLAVOR_OPTIONS = [
   { fr: "Caramel", en: "Caramel", de: "Karamell", es: "Caramelo", ar: "كراميل" }
 ];
 
+export const GLACE_FLAVOR_OPTIONS = [
+  { fr: "Yaourt", en: "Yogurt", de: "Joghurt", es: "Yogur", ar: "ياغورت (زبادي)" },
+  { fr: "Vanille", en: "Vanilla", de: "Vanille", es: "Vainilla", ar: "فانيليا" },
+  { fr: "Pistache", en: "Pistachio", de: "Pistazie", es: "Pistacho", ar: "فستق" },
+  { fr: "Chocolat", en: "Chocolate", de: "Schokolade", es: "Chocolate", ar: "شوكولاتة" },
+  { fr: "Fraise", en: "Strawberry", de: "Erdbeere", es: "Fresa", ar: "فراولة" },
+  { fr: "Nougat", en: "Nougat", de: "Nougat", es: "Turrón Nougat", ar: "نوغا" }
+];
+
 let selectedOptionMenuItem = null;
 
 function renderOptionList(listContainerId, counterId, confirmBtnId, optionsArray, limit, modalEl) {
@@ -401,6 +410,69 @@ export function openSanSebastienSelectorModal(menuItem) {
   renderOptionList("sanSebastienList", "sanSebastienCounter", "sanSebastienConfirmBtn", SAN_SEBASTIEN_FLAVOR_OPTIONS, limit, modal);
 }
 
+export function getGlaceFlavorLimit(menuItem) {
+  const nameFr = (menuItem?.name && menuItem.name.fr ? menuItem.name.fr : String(menuItem?.name || "")).toUpperCase();
+  if (nameFr.includes("GREY CORNER")) return 4;
+  if (nameFr.includes("AMOR")) return 3;
+  if (nameFr.includes("ENFANT")) return 2;
+  if (nameFr.includes("2 BOULE") || nameFr.startsWith("2 ")) return 2;
+  if (nameFr.includes("1 BOULE") || nameFr.startsWith("1 ")) return 1;
+  return 1;
+}
+
+export function openGlaceSelectorModal(menuItem) {
+  playTapSound();
+  selectedOptionMenuItem = menuItem;
+  const modal = document.getElementById("glaceModalOverlay");
+  if (!modal) return;
+
+  modal.style.display = "flex";
+
+  if (!modal._hasBackdropListener) {
+    modal._hasBackdropListener = true;
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        playTapSound();
+        modal.style.display = "none";
+      }
+    });
+  }
+
+  const limit = getGlaceFlavorLimit(menuItem);
+
+  const titleEl = document.getElementById("glaceModalTitle");
+  const subtitleEl = document.getElementById("glaceModalSubtitle");
+
+  const titles = {
+    fr: limit > 1 ? `Choisissez vos ${limit} parfums` : "Choisissez votre parfum",
+    en: limit > 1 ? `Choose your ${limit} flavors` : "Choose your flavor",
+    de: limit > 1 ? `Wählen Sie Ihre ${limit} Sorten` : "Wählen Sie Ihre Sorte",
+    es: limit > 1 ? `Elija sus ${limit} sabores` : "Elija su sabor",
+    ar: limit > 1 ? `اختر ${limit} نكهات` : "اختر النكهة"
+  };
+
+  const subtitles = {
+    fr: `Veuillez sélectionner ${limit} parfum(s) au choix pour "${menuItem.name[currentLang] || menuItem.name.fr}".`,
+    en: `Please select ${limit} flavor(s) of your choice for "${menuItem.name[currentLang] || menuItem.name.fr}".`,
+    de: `Bitte wählen Sie ${limit} Sorte(n) Ihrer Wahl für "${menuItem.name[currentLang] || menuItem.name.fr}".`,
+    es: `Por favor, seleccione ${limit} sabor(es) a su elección para "${menuItem.name[currentLang] || menuItem.name.fr}".`,
+    ar: `يرجى اختيار ${limit} نكهة(نكهات) من اختيارك لـ "${menuItem.name[currentLang] || menuItem.name.fr}".`
+  };
+
+  if (titleEl) titleEl.textContent = titles[currentLang] || titles.fr;
+  if (subtitleEl) subtitleEl.textContent = subtitles[currentLang] || subtitles.fr;
+
+  const closeBtn = document.getElementById("glaceCloseBtn");
+  if (closeBtn) {
+    closeBtn.onclick = () => {
+      playTapSound();
+      modal.style.display = "none";
+    };
+  }
+
+  renderOptionList("glaceList", "glaceCounter", "glaceConfirmBtn", GLACE_FLAVOR_OPTIONS, limit, modal);
+}
+
 export function checkItemOptionsAndAdd(menuItem) {
   if (!menuItem) return;
   const nameFr = menuItem.name && menuItem.name.fr ? menuItem.name.fr : String(menuItem.name || "");
@@ -461,6 +533,13 @@ export function checkItemOptionsAndAdd(menuItem) {
   const isSanSebastien = (upperName === "SAN SEBASTIEN" || upperName === "SAN SEBASTIAN" || (upperName.includes("SAN SEBAST") && !upperName.includes("NUTELLA")));
   if (isSanSebastien) {
     openSanSebastienSelectorModal(menuItem);
+    return;
+  }
+
+  // 5. GLACES -> Flavor selection (Yaourt, Vanille, Pistache, Chocolat, Fraise, Nougat)
+  const isGlace = (catId === "glace" || upperName.includes("BOULE DE GLACE") || upperName.includes("BOULES DE GLACE") || upperName.includes("COUPE GREY CORNER") || upperName.includes("COUPE AMOR") || upperName.includes("COUPE ENFANT"));
+  if (isGlace) {
+    openGlaceSelectorModal(menuItem);
     return;
   }
 
@@ -959,6 +1038,7 @@ window.openTableModal = openTableModal;
 window.closeTableModal = closeTableModal;
 window.showTableSelectorModal = showTableSelectorModal;
 window.openSanSebastienSelectorModal = openSanSebastienSelectorModal;
+window.openGlaceSelectorModal = openGlaceSelectorModal;
 window.setTable = setTable;
 window.openBurgerMenu = openBurgerMenu;
 window.closeBurgerMenu = closeBurgerMenu;

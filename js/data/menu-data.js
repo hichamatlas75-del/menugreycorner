@@ -3056,11 +3056,11 @@ export const menuData = [
           "es": "COPA GREY CORNER"
         },
         "description": {
-          "fr": "Vanille, nougat, yaourt,pistache.",
-          "en": "Vanilla, nougat, yogurt,pistachio.",
-          "de": "Vanille, Nougat, Waldbeerjoghurt,pistazie.",
-          "ar": "فانيليا، نوغا، زبادي بالفواكه (ياغورت)، وفستق حلبي مع التزيين الراقي.",
-          "es": "Vainilla, turrón nougat, yogur y pistacho con decoración artesanal."
+          "fr": "4 parfums au choix : Yaourt, Vanille, Pistache, Chocolat, Fraise, Nougat.",
+          "en": "4 flavors of choice: Yogurt, Vanilla, Pistachio, Chocolate, Strawberry, Nougat.",
+          "de": "4 Sorten nach Wahl: Joghurt, Vanille, Pistazie, Schokolade, Erdbeere, Nougat.",
+          "ar": "4 نكهات من اختيارك: ياغورت، فانيليا، فستق، شوكولاتة، فراولة، أو نوغا مع التزيين الراقي.",
+          "es": "4 sabores a elegir: Yogur, Vainilla, Pistacho, Chocolate, Fresa o Nougat."
         },
         "price": "65",
         "image": "images/glace-gc.webp"
@@ -3074,11 +3074,11 @@ export const menuData = [
           "es": "COPA AMOR"
         },
         "description": {
-          "fr": "Fraise, yaourt,nougat.",
-          "en": "Strawberry, yogurt, nougat.",
-          "de": "Erdbeere, Joghurt, nougat.",
-          "ar": "مثلجات الفراولة، زبادي،ونوغا مع التزيين وصلصة الفواكه.",
-          "es": "Fresa, yogur y turrón nougat con coulis de frutas."
+          "fr": "3 parfums au choix : Yaourt, Vanille, Pistache, Chocolat, Fraise, Nougat.",
+          "en": "3 flavors of choice: Yogurt, Vanilla, Pistachio, Chocolate, Strawberry, Nougat.",
+          "de": "3 Sorten nach Wahl: Joghurt, Vanille, Pistazie, Schokolade, Erdbeere, Nougat.",
+          "ar": "3 نكهات من اختيارك: ياغورت، فانيليا، فستق، شوكولاتة، فراولة، أو نوغا مع التزيين وصلصة الفواكه.",
+          "es": "3 sabores a elegir: Yogur, Vainilla, Pistacho, Chocolate, Fresa o Nougat."
         },
         "price": "45",
         "image": "images/glace-amor.webp"
@@ -3092,11 +3092,11 @@ export const menuData = [
           "es": "COPA INFANTIL"
         },
         "description": {
-          "fr": "chocolat, fraise, Chantilly.",
-          "en": "chocolate, Strawberry, whipped cream.",
-          "de": "schokolade, Erdbeere, Schlagsahne.",
-          "ar": "مثلجات الشوكولاتة، فراولة، وكريمة الشانتيي مع حلوى ملونة.",
-          "es": "Helado de chocolate y fresa con nata montada y topping divertido."
+          "fr": "2 parfums au choix avec chantilly : Yaourt, Vanille, Pistache, Chocolat, Fraise, Nougat.",
+          "en": "2 flavors of choice with whipped cream: Yogurt, Vanilla, Pistachio, Chocolate, Strawberry, Nougat.",
+          "de": "2 Sorten nach Wahl mit Schlagsahne: Joghurt, Vanille, Pistazie, Schokolade, Erdbeere, Nougat.",
+          "ar": "نكهتان من اختيارك مع كريمة الشانتيي: ياغورت، فانيليا، فستق، شوكولاتة، فراولة، أو نوغا.",
+          "es": "2 sabores a elegir con nata montada: Yogur, Vainilla, Pistacho, Chocolate, Fresa o Nougat."
         },
         "price": "40",
         "image": "images/glace-enfant.webp"
@@ -3110,11 +3110,11 @@ export const menuData = [
           "es": "2 Bolas de Helado"
         },
         "description": {
-          "fr": "Parfums au choix : Vanille, chocolat, nougat, pistache, bubble, yaourt fruit des bois, fraise, caramel.",
-          "en": "Flavors of choice: Vanilla, chocolate, nougat, pitachio, bubble, forest fruit yogurt, strawberry, caramel.",
-          "de": "Geschmacksrichtungen nach Wahl: Vanille, Schokolade, Nougat, pistazie, bubble, Waldbeerjoghurt, Erdbeere, Karamell.",
-          "ar": "نكهتان من اختيارك: فانيليا، شوكولاتة، نوغا، فستق، بابل، زبادي فواكه الغابة، فراولة، أو كراميل.",
-          "es": "Sabores a elegir: Vainilla, chocolate, nougat, pistacho, chicle (bubble), yogur con frutos del bosque, fresa o caramelo."
+          "fr": "2 boules au choix : Yaourt, Vanille, Pistache, Chocolat, Fraise, Nougat.",
+          "en": "2 scoops of choice: Yogurt, Vanilla, Pistachio, Chocolate, Strawberry, Nougat.",
+          "de": "2 Kugeln nach Wahl: Joghurt, Vanille, Pistazie, Schokolade, Erdbeere, Nougat.",
+          "ar": "كرتان من اختيارك: ياغورت، فانيليا، فستق، شوكولاتة، فراولة، أو نوغا.",
+          "es": "2 bolas a elegir: Yogur, Vainilla, Pistacho, Chocolate, Fresa o Nougat."
         },
         "price": "30",
         "image": "images/glace-2boules.webp"
@@ -3128,11 +3128,11 @@ export const menuData = [
           "es": "1 Bola de Helado"
         },
         "description": {
-          "fr": "Parfum au choix : Vanille, chocolat, nougat, pitache, bubble, yaourt fruit des bois, fraise, caramel.",
-          "en": "Flavor of choice: Vanilla, chocolate, nougat, pistachio, bubble, forest fruit yogurt, strawberry, caramel.",
-          "de": "Geschmack nach Wahl: Vanille, Schokolade, Nougat, pistazie, Bubble, Waldbeerjoghurt, Erdbeere, Karamell.",
-          "ar": "نكهة واحدة من اختيارك: فانيليا، شوكولاتة، نوغا، فستق، بابل، زبادي فواكه الغابة، فراولة، أو كراميل.",
-          "es": "Sabor a elegir: Vainilla, chocolate, nougat, pistacho, chicle (bubble), yogur con frutos del bosque, fresa o caramelo."
+          "fr": "1 boule au choix : Yaourt, Vanille, Pistache, Chocolat, Fraise, Nougat.",
+          "en": "1 scoop of choice: Yogurt, Vanilla, Pistachio, Chocolate, Strawberry, Nougat.",
+          "de": "1 Kugel nach Wahl: Joghurt, Vanille, Pistazie, Schokolade, Erdbeere, Nougat.",
+          "ar": "كرة واحدة من اختيارك: ياغورت، فانيليا، فستق، شوكولاتة، فراولة، أو نوغا.",
+          "es": "1 bola a elegir: Yogur, Vainilla, Pistacho, Chocolate, Fresa o Nougat."
         },
         "price": "16",
         "image": "images/glace-1boule.webp"

@@ -565,6 +565,33 @@
     </div>
 
     <!-- ======================================================================
+         ICE CREAM FLAVOR SELECTOR MODAL (PARFUMS GLACE : YAOURT, VANILLE, PISTACHE, CHOCOLAT, FRAISE, NOUGAT)
+    ======================================================================= -->
+    <div class="table-modal-overlay" id="glaceModalOverlay" style="display: none; z-index: 10007;">
+        <div class="table-modal" style="max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; padding: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 id="glaceModalTitle" style="margin: 0; text-align: left; font-size: 1.25rem; font-family: 'Playfair Display', serif; color: var(--primary);" data-i18n data-fr="Choix des Parfums" data-en="Choice of Flavors" data-de="Geschmackswahl" data-es="Elección de Sabores" data-ar="اختيار النكهات">Choix des Parfums</h3>
+                <button id="glaceCloseBtn" style="background: none; border: none; color: var(--muted); font-size: 24px; cursor: pointer; outline: none; line-height: 1;">&times;</button>
+            </div>
+            <p id="glaceModalSubtitle" style="text-align: left; margin: 0 0 16px; font-size: 0.82rem; color: var(--muted); font-family: 'Poppins', sans-serif;" data-i18n data-fr="Veuillez sélectionner vos parfums de glace :" data-en="Please select your ice cream flavors:" data-de="Bitte wählen Sie Ihre Eissorten:" data-es="Seleccione sus sabores de helado:" data-ar="يرجى اختيار نكهات الآيس كريم المفضلة لديك :">
+                Veuillez sélectionner vos parfums de glace :
+            </p>
+            
+            <div class="hot-drink-counter" id="glaceCounter" style="font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: var(--primary); text-transform: uppercase; text-align: left; margin-bottom: 8px; border-bottom: 1px solid rgba(45,35,33,0.08); padding-bottom: 4px;">
+                Sélection : 0 / 1
+            </div>
+            
+            <div id="glaceList" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px; max-height: 280px; margin-bottom: 16px;">
+                <!-- Dynamic scrolling list of ice cream flavors -->
+            </div>
+            
+            <button class="cd-submit-btn" id="glaceConfirmBtn" disabled style="margin-top: auto;" data-i18n data-fr="Confirmer" data-en="Confirm" data-de="Bestätigen" data-es="Confirmar" data-ar="تأكيد">
+                Confirmer
+            </button>
+        </div>
+    </div>
+
+    <!-- ======================================================================
          SMART FEEDBACK & WHATSAPP MODAL
     ======================================================================= -->
     <div class="feedback-modal-overlay" id="feedbackModal" aria-hidden="true" role="dialog" aria-labelledby="fbModalTitle">
