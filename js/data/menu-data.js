@@ -1615,11 +1615,11 @@ export const menuData = [
           "es": "TARTA DE QUESO SAN SEBASTIÁN"
         },
         "description": {
-          "fr": "Parfums : fruits rouge, caramel, pistache, chocolat noir, miel.",
-          "en": "Flavors: red fruits, caramel, pistachio, dark chocolate, honey.",
-          "de": "Geschmacksrichtungen: rote Früchte, Karamell, Pistazie, dunkle Schokolade, Honig.",
-          "ar": "نكهات حسب الاختيار: فواكه حمراء، كراميل، فستق، شوكولاتة سوداء، أو عسل.",
-          "es": "Tarta de queso vasca horneada al estilo San Sebastián. Sabores a elegir: frutos rojos, caramelo, pistacho, chocolate negro o miel."
+          "fr": "Parfum au choix : Pistache, Fruits rouges, Caramel.",
+          "en": "Flavor of choice: Pistachio, Red berries, Caramel.",
+          "de": "Geschmack nach Wahl: Pistazie, Rote Früchte, Karamell.",
+          "ar": "نكهات حسب الاختيار: فستق، فواكه حمراء، أو كراميل.",
+          "es": "Sabor a elegir: Pistacho, Frutos rojos o Caramelo."
         },
         "price": "45",
         "image": "images/gateau-sanseb-vari.webp"

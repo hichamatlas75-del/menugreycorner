@@ -538,6 +538,33 @@
     </div>
 
     <!-- ======================================================================
+         SAN SEBASTIEN FLAVOR SELECTOR MODAL (PARFUMS : PISTACHE, FRUITS ROUGES, CARAMEL)
+    ======================================================================= -->
+    <div class="table-modal-overlay" id="sanSebastienModalOverlay" style="display: none; z-index: 10006;">
+        <div class="table-modal" style="max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; padding: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 id="sanSebastienModalTitle" style="margin: 0; text-align: left; font-size: 1.25rem; font-family: 'Playfair Display', serif; color: var(--primary);" data-i18n data-fr="Choix du Parfum" data-en="Choice of Flavor" data-de="Geschmackswahl" data-es="Elección de Sabor" data-ar="اختيار النكهة">Choix du Parfum</h3>
+                <button id="sanSebastienCloseBtn" style="background: none; border: none; color: var(--muted); font-size: 24px; cursor: pointer; outline: none; line-height: 1;">&times;</button>
+            </div>
+            <p id="sanSebastienModalSubtitle" style="text-align: left; margin: 0 0 16px; font-size: 0.82rem; color: var(--muted); font-family: 'Poppins', sans-serif;" data-i18n data-fr="Choisissez le parfum pour votre San Sébastien :" data-en="Choose the flavor for your San Sebastian:" data-de="Wählen Sie den Geschmack für Ihren San Sebastian:" data-es="Elija el sabor para su San Sebastián:" data-ar="اختر النكهة لتشيز كيك سان سيباستيان الخاص بك :">
+                Choisissez le parfum pour votre San Sébastien :
+            </p>
+            
+            <div class="hot-drink-counter" id="sanSebastienCounter" style="font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: var(--primary); text-transform: uppercase; text-align: left; margin-bottom: 8px; border-bottom: 1px solid rgba(45,35,33,0.08); padding-bottom: 4px;">
+                Sélection : 0 / 1
+            </div>
+            
+            <div id="sanSebastienList" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px; max-height: 280px; margin-bottom: 16px;">
+                <!-- Dynamic scrolling list of flavors -->
+            </div>
+            
+            <button class="cd-submit-btn" id="sanSebastienConfirmBtn" disabled style="margin-top: auto;" data-i18n data-fr="Confirmer" data-en="Confirm" data-de="Bestätigen" data-es="Confirmar" data-ar="تأكيد">
+                Confirmer
+            </button>
+        </div>
+    </div>
+
+    <!-- ======================================================================
          SMART FEEDBACK & WHATSAPP MODAL
     ======================================================================= -->
     <div class="feedback-modal-overlay" id="feedbackModal" aria-hidden="true" role="dialog" aria-labelledby="fbModalTitle">

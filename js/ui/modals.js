@@ -50,6 +50,12 @@ export const PASTA_OPTIONS = [
   { fr: "Linguines", en: "Linguine", de: "Linguine", es: "Linguine", ar: "لينغويني" }
 ];
 
+export const SAN_SEBASTIEN_FLAVOR_OPTIONS = [
+  { fr: "Pistache", en: "Pistachio", de: "Pistazie", es: "Pistacho", ar: "فستق" },
+  { fr: "Fruits Rouges", en: "Red Berries", de: "Rote Früchte", es: "Frutos Rojos", ar: "فواكه حمراء" },
+  { fr: "Caramel", en: "Caramel", de: "Karamell", es: "Caramelo", ar: "كراميل" }
+];
+
 let selectedOptionMenuItem = null;
 
 function renderOptionList(listContainerId, counterId, confirmBtnId, optionsArray, limit, modalEl) {
@@ -342,6 +348,59 @@ export function openPastaSelectorModal(menuItem) {
   renderOptionList("pastaList", "pastaCounter", "pastaConfirmBtn", PASTA_OPTIONS, limit, modal);
 }
 
+export function openSanSebastienSelectorModal(menuItem) {
+  playTapSound();
+  selectedOptionMenuItem = menuItem;
+  const modal = document.getElementById("sanSebastienModalOverlay");
+  if (!modal) return;
+
+  modal.style.display = "flex";
+
+  if (!modal._hasBackdropListener) {
+    modal._hasBackdropListener = true;
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        playTapSound();
+        modal.style.display = "none";
+      }
+    });
+  }
+
+  const limit = 1;
+
+  const titleEl = document.getElementById("sanSebastienModalTitle");
+  const subtitleEl = document.getElementById("sanSebastienModalSubtitle");
+
+  const titles = {
+    fr: "Choisissez votre parfum",
+    en: "Choose your flavor",
+    de: "Wählen Sie Ihren Geschmack",
+    es: "Elija su sabor",
+    ar: "اختر النكهة"
+  };
+
+  const subtitles = {
+    fr: `Veuillez sélectionner le parfum pour votre gâteau "${menuItem.name[currentLang] || menuItem.name.fr}".`,
+    en: `Please select the flavor for your "${menuItem.name[currentLang] || menuItem.name.fr}" cake.`,
+    de: `Bitte wählen Sie den Geschmack für Ihren Kuchen "${menuItem.name[currentLang] || menuItem.name.fr}".`,
+    es: `Por favor, seleccione el sabor para su tarta "${menuItem.name[currentLang] || menuItem.name.fr}".`,
+    ar: `يرجى اختيار النكهة لكعكة "${menuItem.name[currentLang] || menuItem.name.fr}".`
+  };
+
+  if (titleEl) titleEl.textContent = titles[currentLang] || titles.fr;
+  if (subtitleEl) subtitleEl.textContent = subtitles[currentLang] || subtitles.fr;
+
+  const closeBtn = document.getElementById("sanSebastienCloseBtn");
+  if (closeBtn) {
+    closeBtn.onclick = () => {
+      playTapSound();
+      modal.style.display = "none";
+    };
+  }
+
+  renderOptionList("sanSebastienList", "sanSebastienCounter", "sanSebastienConfirmBtn", SAN_SEBASTIEN_FLAVOR_OPTIONS, limit, modal);
+}
+
 export function checkItemOptionsAndAdd(menuItem) {
   if (!menuItem) return;
   const nameFr = menuItem.name && menuItem.name.fr ? menuItem.name.fr : String(menuItem.name || "");
@@ -395,6 +454,13 @@ export function checkItemOptionsAndAdd(menuItem) {
   // 3. PLATS -> 2 Sides selection (excluding Menu Enfant)
   if (catId === "plats" && upperName !== "MENU ENFANT") {
     openSidesSelectorModal(menuItem);
+    return;
+  }
+
+  // 4. SAN SÉBASTIEN -> Flavor selection (Pistache, Fruits rouges, Caramel)
+  const isSanSebastien = (upperName === "SAN SEBASTIEN" || upperName === "SAN SEBASTIAN" || (upperName.includes("SAN SEBAST") && !upperName.includes("NUTELLA")));
+  if (isSanSebastien) {
+    openSanSebastienSelectorModal(menuItem);
     return;
   }
 
@@ -892,6 +958,7 @@ window.closeCartDrawer = closeCartDrawer;
 window.openTableModal = openTableModal;
 window.closeTableModal = closeTableModal;
 window.showTableSelectorModal = showTableSelectorModal;
+window.openSanSebastienSelectorModal = openSanSebastienSelectorModal;
 window.setTable = setTable;
 window.openBurgerMenu = openBurgerMenu;
 window.closeBurgerMenu = closeBurgerMenu;

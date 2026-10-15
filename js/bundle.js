@@ -2211,11 +2211,11 @@
             "es": "TARTA DE QUESO SAN SEBASTI\xC1N"
           },
           "description": {
-            "fr": "Parfums : fruits rouge, caramel, pistache, chocolat noir, miel.",
-            "en": "Flavors: red fruits, caramel, pistachio, dark chocolate, honey.",
-            "de": "Geschmacksrichtungen: rote Fr\xFCchte, Karamell, Pistazie, dunkle Schokolade, Honig.",
-            "ar": "\u0646\u0643\u0647\u0627\u062A \u062D\u0633\u0628 \u0627\u0644\u0627\u062E\u062A\u064A\u0627\u0631: \u0641\u0648\u0627\u0643\u0647 \u062D\u0645\u0631\u0627\u0621\u060C \u0643\u0631\u0627\u0645\u064A\u0644\u060C \u0641\u0633\u062A\u0642\u060C \u0634\u0648\u0643\u0648\u0644\u0627\u062A\u0629 \u0633\u0648\u062F\u0627\u0621\u060C \u0623\u0648 \u0639\u0633\u0644.",
-            "es": "Tarta de queso vasca horneada al estilo San Sebasti\xE1n. Sabores a elegir: frutos rojos, caramelo, pistacho, chocolate negro o miel."
+            "fr": "Parfum au choix : Pistache, Fruits rouges, Caramel.",
+            "en": "Flavor of choice: Pistachio, Red berries, Caramel.",
+            "de": "Geschmack nach Wahl: Pistazie, Rote Fr\xFCchte, Karamell.",
+            "ar": "\u0646\u0643\u0647\u0627\u062A \u062D\u0633\u0628 \u0627\u0644\u0627\u062E\u062A\u064A\u0627\u0631: \u0641\u0633\u062A\u0642\u060C \u0641\u0648\u0627\u0643\u0647 \u062D\u0645\u0631\u0627\u0621\u060C \u0623\u0648 \u0643\u0631\u0627\u0645\u064A\u0644.",
+            "es": "Sabor a elegir: Pistacho, Frutos rojos o Caramelo."
           },
           "price": "45",
           "image": "images/gateau-sanseb-vari.webp"
@@ -4879,8 +4879,10 @@
         clientCart.forEach((item) => {
           const itemDiv = document.createElement("div");
           itemDiv.className = "cd-item";
-          const isDrinkItem = item.categoryNameFr && (item.categoryNameFr.toLowerCase().includes("boisson") || item.categoryNameFr.toLowerCase().includes("petit-d") || item.categoryNameFr.toLowerCase().includes("caf\xE9"));
-          const choiceIcon = isDrinkItem ? "\u2615" : "\u{1F37D}\uFE0F";
+          const catLower = (item.categoryNameFr || "").toLowerCase();
+          const isDrinkItem = catLower.includes("boisson") || catLower.includes("petit-d") || catLower.includes("caf\xE9");
+          const isDessertItem = catLower.includes("gateau") || catLower.includes("g\xE2teau") || catLower.includes("cr\xEApe") || catLower.includes("crepe");
+          const choiceIcon = isDrinkItem ? "\u2615" : isDessertItem ? "\u{1F370}" : "\u{1F37D}\uFE0F";
           const drinkChoicesStr = item.drinkChoices && item.drinkChoices.length > 0 ? `<div style="font-size:0.75rem; color:var(--sc-gold-light); margin-top:2px;">${choiceIcon} ${item.drinkChoices.join(", ")}</div>` : "";
           const itemCatId = item.categoryId || (item.categoryNameFr ? item.categoryNameFr.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") : "");
           const itemNameFr = item.name && item.name.fr ? item.name.fr : String(item.name || "");
@@ -5014,6 +5016,11 @@
     { fr: "Tagliatelles", en: "Tagliatelle", de: "Tagliatelle", es: "Tagliatelle", ar: "\u062A\u0627\u0644\u064A\u0627\u062A\u064A\u0644\u064A" },
     { fr: "Spaghettis", en: "Spaghetti", de: "Spaghetti", es: "Espaguetis", ar: "\u0633\u0628\u0627\u063A\u064A\u062A\u064A" },
     { fr: "Linguines", en: "Linguine", de: "Linguine", es: "Linguine", ar: "\u0644\u064A\u0646\u063A\u0648\u064A\u0646\u064A" }
+  ];
+  var SAN_SEBASTIEN_FLAVOR_OPTIONS = [
+    { fr: "Pistache", en: "Pistachio", de: "Pistazie", es: "Pistacho", ar: "\u0641\u0633\u062A\u0642" },
+    { fr: "Fruits Rouges", en: "Red Berries", de: "Rote Fr\xFCchte", es: "Frutos Rojos", ar: "\u0641\u0648\u0627\u0643\u0647 \u062D\u0645\u0631\u0627\u0621" },
+    { fr: "Caramel", en: "Caramel", de: "Karamell", es: "Caramelo", ar: "\u0643\u0631\u0627\u0645\u064A\u0644" }
   ];
   var selectedOptionMenuItem = null;
   function renderOptionList(listContainerId, counterId, confirmBtnId, optionsArray, limit, modalEl) {
@@ -5260,6 +5267,49 @@
     }
     renderOptionList("pastaList", "pastaCounter", "pastaConfirmBtn", PASTA_OPTIONS, limit, modal);
   }
+  function openSanSebastienSelectorModal(menuItem) {
+    playTapSound();
+    selectedOptionMenuItem = menuItem;
+    const modal = document.getElementById("sanSebastienModalOverlay");
+    if (!modal) return;
+    modal.style.display = "flex";
+    if (!modal._hasBackdropListener) {
+      modal._hasBackdropListener = true;
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+          playTapSound();
+          modal.style.display = "none";
+        }
+      });
+    }
+    const limit = 1;
+    const titleEl = document.getElementById("sanSebastienModalTitle");
+    const subtitleEl = document.getElementById("sanSebastienModalSubtitle");
+    const titles = {
+      fr: "Choisissez votre parfum",
+      en: "Choose your flavor",
+      de: "W\xE4hlen Sie Ihren Geschmack",
+      es: "Elija su sabor",
+      ar: "\u0627\u062E\u062A\u0631 \u0627\u0644\u0646\u0643\u0647\u0629"
+    };
+    const subtitles = {
+      fr: `Veuillez s\xE9lectionner le parfum pour votre g\xE2teau "${menuItem.name[currentLang] || menuItem.name.fr}".`,
+      en: `Please select the flavor for your "${menuItem.name[currentLang] || menuItem.name.fr}" cake.`,
+      de: `Bitte w\xE4hlen Sie den Geschmack f\xFCr Ihren Kuchen "${menuItem.name[currentLang] || menuItem.name.fr}".`,
+      es: `Por favor, seleccione el sabor para su tarta "${menuItem.name[currentLang] || menuItem.name.fr}".`,
+      ar: `\u064A\u0631\u062C\u0649 \u0627\u062E\u062A\u064A\u0627\u0631 \u0627\u0644\u0646\u0643\u0647\u0629 \u0644\u0643\u0639\u0643\u0629 "${menuItem.name[currentLang] || menuItem.name.fr}".`
+    };
+    if (titleEl) titleEl.textContent = titles[currentLang] || titles.fr;
+    if (subtitleEl) subtitleEl.textContent = subtitles[currentLang] || subtitles.fr;
+    const closeBtn = document.getElementById("sanSebastienCloseBtn");
+    if (closeBtn) {
+      closeBtn.onclick = () => {
+        playTapSound();
+        modal.style.display = "none";
+      };
+    }
+    renderOptionList("sanSebastienList", "sanSebastienCounter", "sanSebastienConfirmBtn", SAN_SEBASTIEN_FLAVOR_OPTIONS, limit, modal);
+  }
   function checkItemOptionsAndAdd(menuItem) {
     if (!menuItem) return;
     const nameFr = menuItem.name && menuItem.name.fr ? menuItem.name.fr : String(menuItem.name || "");
@@ -5301,6 +5351,11 @@
     }
     if (catId === "plats" && upperName !== "MENU ENFANT") {
       openSidesSelectorModal(menuItem);
+      return;
+    }
+    const isSanSebastien = upperName === "SAN SEBASTIEN" || upperName === "SAN SEBASTIAN" || upperName.includes("SAN SEBAST") && !upperName.includes("NUTELLA");
+    if (isSanSebastien) {
+      openSanSebastienSelectorModal(menuItem);
       return;
     }
     addToCart(menuItem);
@@ -5735,6 +5790,7 @@
   window.openTableModal = openTableModal;
   window.closeTableModal = closeTableModal;
   window.showTableSelectorModal = showTableSelectorModal;
+  window.openSanSebastienSelectorModal = openSanSebastienSelectorModal;
   window.setTable = setTable;
   window.openBurgerMenu = openBurgerMenu;
   window.closeBurgerMenu = closeBurgerMenu;

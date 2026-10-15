@@ -181,12 +181,15 @@ export function updateCartUI() {
       clientCart.forEach(item => {
         const itemDiv = document.createElement("div");
         itemDiv.className = "cd-item";
-        const isDrinkItem = item.categoryNameFr && (
-          item.categoryNameFr.toLowerCase().includes("boisson") ||
-          item.categoryNameFr.toLowerCase().includes("petit-d") ||
-          item.categoryNameFr.toLowerCase().includes("café")
-        );
-        const choiceIcon = isDrinkItem ? '☕' : '🍽️';
+        const catLower = (item.categoryNameFr || "").toLowerCase();
+        const isDrinkItem = catLower.includes("boisson") ||
+          catLower.includes("petit-d") ||
+          catLower.includes("café");
+        const isDessertItem = catLower.includes("gateau") ||
+          catLower.includes("gâteau") ||
+          catLower.includes("crêpe") ||
+          catLower.includes("crepe");
+        const choiceIcon = isDrinkItem ? '☕' : (isDessertItem ? '🍰' : '🍽️');
         const drinkChoicesStr = item.drinkChoices && item.drinkChoices.length > 0
           ? `<div style="font-size:0.75rem; color:var(--sc-gold-light); margin-top:2px;">${choiceIcon} ${item.drinkChoices.join(', ')}</div>`
           : '';
