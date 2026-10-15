@@ -8,7 +8,7 @@ import {
   getKitchenBlockedMessage,
   getBreakfastBlockedMessage
 } from '../services/schedule.js';
-import { playTableSelectSound, playTapSound } from '../services/sound.js';
+import { playTableSelectSound, playTapSound, playAddToCartSound } from '../services/sound.js';
 
 export let clientTable = null;
 export let pendingActionAfterTableSelect = null;
@@ -115,25 +115,43 @@ function renderOptionList(listContainerId, counterId, confirmBtnId, optionsArray
     const decBtn = item.querySelector(".hdo-dec");
     const incBtn = item.querySelector(".hdo-inc");
 
-    decBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      if (counts[idx] > 0) {
-        counts[idx]--;
-        updateListUI();
-      }
-    });
-
-    incBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
+    function handleIncrement() {
       const totalSelected = Object.values(counts).reduce((a, b) => a + b, 0);
       if (totalSelected < limit) {
         counts[idx]++;
+        playAddToCartSound();
         updateListUI();
       } else if (limit === 1) {
         optionsArray.forEach((_, i) => { counts[i] = 0; });
         counts[idx] = 1;
+        playAddToCartSound();
+        updateListUI();
+      } else {
+        playTapSound();
+      }
+    }
+
+    function handleDecrement() {
+      if (counts[idx] > 0) {
+        counts[idx]--;
+        playTapSound();
         updateListUI();
       }
+    }
+
+    decBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      handleDecrement();
+    });
+
+    incBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      handleIncrement();
+    });
+
+    item.style.cursor = "pointer";
+    item.addEventListener("click", () => {
+      handleIncrement();
     });
 
     listContainer.appendChild(item);
@@ -144,6 +162,7 @@ function renderOptionList(listContainerId, counterId, confirmBtnId, optionsArray
   const confirmBtn = document.getElementById(confirmBtnId);
   if (confirmBtn) {
     confirmBtn.onclick = () => {
+      playAddToCartSound();
       const finalChoices = [];
       optionsArray.forEach((opt, idx) => {
         const qty = counts[idx];
@@ -161,11 +180,22 @@ function renderOptionList(listContainerId, counterId, confirmBtnId, optionsArray
 }
 
 export function openHotDrinkSelectorModal(menuItem) {
+  playTapSound();
   selectedOptionMenuItem = menuItem;
   const modal = document.getElementById("hotDrinkModalOverlay");
   if (!modal) return;
 
   modal.style.display = "flex";
+
+  if (!modal._hasBackdropListener) {
+    modal._hasBackdropListener = true;
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        playTapSound();
+        modal.style.display = "none";
+      }
+    });
+  }
 
   const isBrunchDuo = (menuItem.name && menuItem.name.fr === "BRUNCH DUO");
   const limit = isBrunchDuo ? 2 : 1;
@@ -194,18 +224,32 @@ export function openHotDrinkSelectorModal(menuItem) {
 
   const closeBtn = document.getElementById("hotDrinkCloseBtn");
   if (closeBtn) {
-    closeBtn.onclick = () => { modal.style.display = "none"; };
+    closeBtn.onclick = () => {
+      playTapSound();
+      modal.style.display = "none";
+    };
   }
 
   renderOptionList("hotDrinksList", "hotDrinkCounter", "hotDrinkConfirmBtn", HOT_DRINKS_OPTIONS, limit, modal);
 }
 
 export function openSidesSelectorModal(menuItem) {
+  playTapSound();
   selectedOptionMenuItem = menuItem;
   const modal = document.getElementById("sidesModalOverlay");
   if (!modal) return;
 
   modal.style.display = "flex";
+
+  if (!modal._hasBackdropListener) {
+    modal._hasBackdropListener = true;
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        playTapSound();
+        modal.style.display = "none";
+      }
+    });
+  }
 
   const limit = 2;
 
@@ -233,18 +277,32 @@ export function openSidesSelectorModal(menuItem) {
 
   const closeBtn = document.getElementById("sidesCloseBtn");
   if (closeBtn) {
-    closeBtn.onclick = () => { modal.style.display = "none"; };
+    closeBtn.onclick = () => {
+      playTapSound();
+      modal.style.display = "none";
+    };
   }
 
   renderOptionList("sidesList", "sidesCounter", "sidesConfirmBtn", SIDES_OPTIONS, limit, modal);
 }
 
 export function openPastaSelectorModal(menuItem) {
+  playTapSound();
   selectedOptionMenuItem = menuItem;
   const modal = document.getElementById("pastaModalOverlay");
   if (!modal) return;
 
   modal.style.display = "flex";
+
+  if (!modal._hasBackdropListener) {
+    modal._hasBackdropListener = true;
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        playTapSound();
+        modal.style.display = "none";
+      }
+    });
+  }
 
   const limit = 1;
 
@@ -272,7 +330,10 @@ export function openPastaSelectorModal(menuItem) {
 
   const closeBtn = document.getElementById("pastaCloseBtn");
   if (closeBtn) {
-    closeBtn.onclick = () => { modal.style.display = "none"; };
+    closeBtn.onclick = () => {
+      playTapSound();
+      modal.style.display = "none";
+    };
   }
 
   renderOptionList("pastaList", "pastaCounter", "pastaConfirmBtn", PASTA_OPTIONS, limit, modal);
@@ -286,6 +347,15 @@ export function checkItemOptionsAndAdd(menuItem) {
 
   // If item is ACCOMPAGNEMENTS (informational item with price 'Inclus'), do not add or prompt
   if (upperName === "ACCOMPAGNEMENTS" && (menuItem.price === "Inclus" || isNaN(parseFloat(menuItem.price)))) {
+    playTapSound();
+    const infoMsgs = {
+      fr: "2 accompagnements sont inclus au choix avec chacun de nos plats.",
+      en: "2 accompaniments are included of your choice with each of our main courses.",
+      de: "2 Beilagen nach Wahl sind bei jedem unserer Hauptgerichte inbegriffen.",
+      es: "Se incluyen 2 guarniciones a elegir con cada uno de nuestros platos.",
+      ar: "مرافقتان من اختيارك مشمولتان مجاناً مع كل طبق رئيسي."
+    };
+    showToast(infoMsgs[currentLang] || infoMsgs.fr);
     return;
   }
 

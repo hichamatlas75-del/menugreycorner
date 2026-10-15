@@ -4898,26 +4898,41 @@
     `;
       const decBtn = item.querySelector(".hdo-dec");
       const incBtn = item.querySelector(".hdo-inc");
-      decBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        if (counts[idx] > 0) {
-          counts[idx]--;
-          updateListUI();
-        }
-      });
-      incBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
+      function handleIncrement() {
         const totalSelected = Object.values(counts).reduce((a, b) => a + b, 0);
         if (totalSelected < limit) {
           counts[idx]++;
+          playAddToCartSound();
           updateListUI();
         } else if (limit === 1) {
           optionsArray.forEach((_, i) => {
             counts[i] = 0;
           });
           counts[idx] = 1;
+          playAddToCartSound();
+          updateListUI();
+        } else {
+          playTapSound();
+        }
+      }
+      function handleDecrement() {
+        if (counts[idx] > 0) {
+          counts[idx]--;
+          playTapSound();
           updateListUI();
         }
+      }
+      decBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        handleDecrement();
+      });
+      incBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        handleIncrement();
+      });
+      item.style.cursor = "pointer";
+      item.addEventListener("click", () => {
+        handleIncrement();
       });
       listContainer.appendChild(item);
     });
@@ -4925,6 +4940,7 @@
     const confirmBtn = document.getElementById(confirmBtnId);
     if (confirmBtn) {
       confirmBtn.onclick = () => {
+        playAddToCartSound();
         const finalChoices = [];
         optionsArray.forEach((opt, idx) => {
           const qty = counts[idx];
@@ -4940,10 +4956,20 @@
     }
   }
   function openHotDrinkSelectorModal(menuItem) {
+    playTapSound();
     selectedOptionMenuItem = menuItem;
     const modal = document.getElementById("hotDrinkModalOverlay");
     if (!modal) return;
     modal.style.display = "flex";
+    if (!modal._hasBackdropListener) {
+      modal._hasBackdropListener = true;
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+          playTapSound();
+          modal.style.display = "none";
+        }
+      });
+    }
     const isBrunchDuo = menuItem.name && menuItem.name.fr === "BRUNCH DUO";
     const limit = isBrunchDuo ? 2 : 1;
     const titleEl = document.getElementById("hotDrinkModalTitle");
@@ -4967,16 +4993,27 @@
     const closeBtn = document.getElementById("hotDrinkCloseBtn");
     if (closeBtn) {
       closeBtn.onclick = () => {
+        playTapSound();
         modal.style.display = "none";
       };
     }
     renderOptionList("hotDrinksList", "hotDrinkCounter", "hotDrinkConfirmBtn", HOT_DRINKS_OPTIONS, limit, modal);
   }
   function openSidesSelectorModal(menuItem) {
+    playTapSound();
     selectedOptionMenuItem = menuItem;
     const modal = document.getElementById("sidesModalOverlay");
     if (!modal) return;
     modal.style.display = "flex";
+    if (!modal._hasBackdropListener) {
+      modal._hasBackdropListener = true;
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+          playTapSound();
+          modal.style.display = "none";
+        }
+      });
+    }
     const limit = 2;
     const titleEl = document.getElementById("sidesModalTitle");
     const subtitleEl = document.getElementById("sidesModalSubtitle");
@@ -4999,16 +5036,27 @@
     const closeBtn = document.getElementById("sidesCloseBtn");
     if (closeBtn) {
       closeBtn.onclick = () => {
+        playTapSound();
         modal.style.display = "none";
       };
     }
     renderOptionList("sidesList", "sidesCounter", "sidesConfirmBtn", SIDES_OPTIONS, limit, modal);
   }
   function openPastaSelectorModal(menuItem) {
+    playTapSound();
     selectedOptionMenuItem = menuItem;
     const modal = document.getElementById("pastaModalOverlay");
     if (!modal) return;
     modal.style.display = "flex";
+    if (!modal._hasBackdropListener) {
+      modal._hasBackdropListener = true;
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+          playTapSound();
+          modal.style.display = "none";
+        }
+      });
+    }
     const limit = 1;
     const titleEl = document.getElementById("pastaModalTitle");
     const subtitleEl = document.getElementById("pastaModalSubtitle");
@@ -5031,6 +5079,7 @@
     const closeBtn = document.getElementById("pastaCloseBtn");
     if (closeBtn) {
       closeBtn.onclick = () => {
+        playTapSound();
         modal.style.display = "none";
       };
     }
@@ -5042,6 +5091,15 @@
     const upperName = nameFr.toUpperCase().trim();
     const catId = menuItem.categoryId || "";
     if (upperName === "ACCOMPAGNEMENTS" && (menuItem.price === "Inclus" || isNaN(parseFloat(menuItem.price)))) {
+      playTapSound();
+      const infoMsgs = {
+        fr: "2 accompagnements sont inclus au choix avec chacun de nos plats.",
+        en: "2 accompaniments are included of your choice with each of our main courses.",
+        de: "2 Beilagen nach Wahl sind bei jedem unserer Hauptgerichte inbegriffen.",
+        es: "Se incluyen 2 guarniciones a elegir con cada uno de nuestros platos.",
+        ar: "\u0645\u0631\u0627\u0641\u0642\u062A\u0627\u0646 \u0645\u0646 \u0627\u062E\u062A\u064A\u0627\u0631\u0643 \u0645\u0634\u0645\u0648\u0644\u062A\u0627\u0646 \u0645\u062C\u0627\u0646\u0627\u064B \u0645\u0639 \u0643\u0644 \u0637\u0628\u0642 \u0631\u0626\u064A\u0633\u064A."
+      };
+      showToast(infoMsgs[currentLang] || infoMsgs.fr);
       return;
     }
     if (isKitchenCategory(catId) && !isKitchenAvailable()) {
