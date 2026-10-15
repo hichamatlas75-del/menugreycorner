@@ -1,12 +1,24 @@
 /**
- * GREY CORNER — ELEGANT SOUND SERVICE (Web Audio API)
- * Micro-synthèse sonore haute fidélité pour une expérience tactile et auditive luxueuse.
+ * GREY CORNER — ELEGANT SOUND SERVICE (Web Audio API - Pre-rendered PCM Buffers)
+ * Architecture audio de précision pour garantir une régularité absolue des sons,
+ * sans décalage, sans coupure et avec reprise instantanée lors de la réactivation.
  */
 
 let audioCtx = null;
+let masterGain = null;
+let masterCompressor = null;
 let isMuted = false;
 
-// Initialiser l'état depuis le localStorage
+// Cache des buffers audio pré-synthétisés en mémoire
+const soundBuffers = {
+  tap: null,
+  addToCart: null,
+  tableSelect: null,
+  serviceCall: null,
+  orderSuccess: null
+};
+
+// Initialiser l'état sourdine depuis le localStorage
 try {
   isMuted = localStorage.getItem("gc_sound_muted") === "true";
 } catch (e) {
@@ -14,20 +26,157 @@ try {
 }
 
 /**
- * Récupère ou instancie l'AudioContext singleton
+ * Récupère ou instancie l'AudioContext singleton avec chaîne Master Gain + Compresseur
  */
 function getAudioContext() {
   if (typeof window === "undefined") return null;
+
   if (!audioCtx) {
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
     if (AudioContextClass) {
       audioCtx = new AudioContextClass();
+
+      // Limiteur / Compresseur pour éliminer toute saturation lors de clics rapides
+      masterCompressor = audioCtx.createDynamicsCompressor();
+      masterCompressor.threshold.setValueAtTime(-18, audioCtx.currentTime);
+      masterCompressor.knee.setValueAtTime(12, audioCtx.currentTime);
+      masterCompressor.ratio.setValueAtTime(10, audioCtx.currentTime);
+      masterCompressor.attack.setValueAtTime(0.003, audioCtx.currentTime);
+      masterCompressor.release.setValueAtTime(0.15, audioCtx.currentTime);
+      masterCompressor.connect(audioCtx.destination);
+
+      // Master Gain
+      masterGain = audioCtx.createGain();
+      masterGain.gain.setValueAtTime(isMuted ? 0 : 1, audioCtx.currentTime);
+      masterGain.connect(masterCompressor);
+
+      // Générer immédiatement les formes d'ondes en mémoire
+      buildAllSoundBuffers(audioCtx);
     }
   }
-  if (audioCtx && audioCtx.state === "suspended") {
-    audioCtx.resume().catch(() => {});
-  }
+
   return audioCtx;
+}
+
+/**
+ * Pré-génération mathématique des 5 sons (formes d'ondes PCM 100% stables et régulières)
+ */
+function buildAllSoundBuffers(ctx) {
+  if (!ctx) return;
+  const sampleRate = ctx.sampleRate || 44100;
+
+  // 1. TAP (Soft Wood Tap - 45ms)
+  try {
+    const dur = 0.045;
+    const len = Math.floor(sampleRate * dur);
+    const buf = ctx.createBuffer(1, len, sampleRate);
+    const d = buf.getChannelData(0);
+    let phase = 0;
+    for (let i = 0; i < len; i++) {
+      const t = i / sampleRate;
+      const freq = 420 - (200 * (t / dur));
+      phase += (2 * Math.PI * freq) / sampleRate;
+      const attack = Math.min(1, i / (sampleRate * 0.002));
+      const decay = Math.exp(-t * 90);
+      d[i] = Math.sin(phase) * attack * decay * 0.15;
+    }
+    soundBuffers.tap = buf;
+  } catch (e) {}
+
+  // 2. ADD TO CART (Marimba Chime - 360ms, F#4 -> C#5)
+  try {
+    const dur = 0.36;
+    const len = Math.floor(sampleRate * dur);
+    const buf = ctx.createBuffer(1, len, sampleRate);
+    const d = buf.getChannelData(0);
+    let p1 = 0;
+    let p2 = 0;
+    const note2Start = 0.07;
+    for (let i = 0; i < len; i++) {
+      const t = i / sampleRate;
+      let s = 0;
+      if (t < 0.24) {
+        p1 += (2 * Math.PI * 369.99) / sampleRate;
+        const a1 = Math.min(1, t / 0.003);
+        const dec1 = Math.exp(-t * 22);
+        s += (Math.sin(p1) + 0.14 * Math.sin(p1 * 2)) * a1 * dec1 * 0.18;
+      }
+      if (t >= note2Start) {
+        const t2 = t - note2Start;
+        p2 += (2 * Math.PI * 554.37) / sampleRate;
+        const a2 = Math.min(1, t2 / 0.003);
+        const dec2 = Math.exp(-t2 * 14);
+        s += (Math.sin(p2) + 0.12 * Math.sin(p2 * 2)) * a2 * dec2 * 0.22;
+      }
+      d[i] = s;
+    }
+    soundBuffers.addToCart = buf;
+  } catch (e) {}
+
+  // 3. TABLE SELECT (Crystal Ping - 250ms, 880Hz)
+  try {
+    const dur = 0.25;
+    const len = Math.floor(sampleRate * dur);
+    const buf = ctx.createBuffer(1, len, sampleRate);
+    const d = buf.getChannelData(0);
+    let p = 0;
+    for (let i = 0; i < len; i++) {
+      const t = i / sampleRate;
+      p += (2 * Math.PI * 880) / sampleRate;
+      const attack = Math.min(1, t / 0.002);
+      const decay = Math.exp(-t * 18);
+      d[i] = Math.sin(p) * attack * decay * 0.16;
+    }
+    soundBuffers.tableSelect = buf;
+  } catch (e) {}
+
+  // 4. SERVICE CALL (Concierge Bell - 600ms, E6 1318Hz + E7 2637Hz)
+  try {
+    const dur = 0.60;
+    const len = Math.floor(sampleRate * dur);
+    const buf = ctx.createBuffer(1, len, sampleRate);
+    const d = buf.getChannelData(0);
+    let p1 = 0;
+    let p2 = 0;
+    for (let i = 0; i < len; i++) {
+      const t = i / sampleRate;
+      p1 += (2 * Math.PI * 1318.51) / sampleRate;
+      p2 += (2 * Math.PI * 2637.02) / sampleRate;
+      const attack = Math.min(1, t / 0.002);
+      const d1 = Math.exp(-t * 6.5);
+      const d2 = Math.exp(-t * 12);
+      d[i] = (Math.sin(p1) * d1 * 0.19 + Math.sin(p2) * d2 * 0.08) * attack;
+    }
+    soundBuffers.serviceCall = buf;
+  } catch (e) {}
+
+  // 5. ORDER SUCCESS (Golden Triad Arpeggio - 850ms, C5 -> E5 -> G5 -> C6)
+  try {
+    const dur = 0.85;
+    const len = Math.floor(sampleRate * dur);
+    const buf = ctx.createBuffer(1, len, sampleRate);
+    const d = buf.getChannelData(0);
+
+    const notes = [
+      { freq: 523.25, start: 0.00, gain: 0.15, decay: 7 },
+      { freq: 659.25, start: 0.09, gain: 0.17, decay: 6.5 },
+      { freq: 783.99, start: 0.18, gain: 0.19, decay: 6 },
+      { freq: 1046.50, start: 0.27, gain: 0.22, decay: 4.5 }
+    ];
+
+    notes.forEach(n => {
+      let phase = 0;
+      const startIndex = Math.floor(n.start * sampleRate);
+      for (let i = startIndex; i < len; i++) {
+        const t = (i - startIndex) / sampleRate;
+        phase += (2 * Math.PI * n.freq) / sampleRate;
+        const attack = Math.min(1, t / 0.003);
+        const dec = Math.exp(-t * n.decay);
+        d[i] += Math.sin(phase) * attack * dec * n.gain;
+      }
+    });
+    soundBuffers.orderSuccess = buf;
+  } catch (e) {}
 }
 
 /**
@@ -37,12 +186,7 @@ if (typeof window !== "undefined") {
   const unlockAudio = () => {
     try {
       const ctx = getAudioContext();
-      if (ctx && ctx.state !== "running") {
-        const buffer = ctx.createBuffer(1, 1, 22050);
-        const source = ctx.createBufferSource();
-        source.buffer = buffer;
-        source.connect(ctx.destination);
-        source.start(0);
+      if (ctx && ctx.state === "suspended") {
         ctx.resume().catch(() => {});
       }
     } catch (e) {}
@@ -58,203 +202,110 @@ if (typeof window !== "undefined") {
 }
 
 /**
- * Déclenche une micro-vibration haptique subtile (Android)
+ * Joue un buffer PCM pré-calculé avec réveil garanti de l'AudioContext
  */
-function triggerHaptic(duration = 15) {
+function playBuffer(buf, hapticDuration = 12) {
   if (isMuted) return;
-  if (typeof navigator !== "undefined" && navigator.vibrate) {
-    try {
-      navigator.vibrate(duration);
-    } catch (e) {}
+
+  const ctx = getAudioContext();
+  if (!ctx) return;
+
+  // Si les buffers n'étaient pas encore prêts, les générer
+  if (!buf) {
+    buildAllSoundBuffers(ctx);
+  }
+
+  const targetBuf = buf;
+  if (!targetBuf) return;
+
+  // Si le contexte s'est mis en veille (ex: après un temps sans son ou réveil d'onglet)
+  if (ctx.state === "suspended") {
+    ctx.resume().then(() => {
+      actuallyPlayBuffer(ctx, targetBuf, hapticDuration);
+    }).catch(() => {});
+    return;
+  }
+
+  actuallyPlayBuffer(ctx, targetBuf, hapticDuration);
+}
+
+/**
+ * Déclenchement instantané du buffer sans latence
+ */
+function actuallyPlayBuffer(ctx, buffer, hapticDuration) {
+  if (isMuted || !buffer) return;
+
+  try {
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(masterGain || ctx.destination);
+    source.start(0);
+
+    // Déconnexion propre pour éviter toute accumulation en mémoire
+    source.onended = () => {
+      try { source.disconnect(); } catch (e) {}
+    };
+
+    if (hapticDuration && typeof navigator !== "undefined" && navigator.vibrate) {
+      try { navigator.vibrate(hapticDuration); } catch (e) {}
+    }
+  } catch (e) {
+    console.warn("Audio buffer play error:", e);
   }
 }
 
-/**
- * 1. CLIC & TOUCHER LÉGER (Soft Wood Tap)
- * Pour +, -, ouvrir/fermer le panier, déplier catégorie.
- * Onde sinusoïdale très douce avec pitch sweep 400Hz -> 200Hz sur 35ms.
- */
+// ── FONCTIONS EXPORTÉES ──────────────────────────────────────────────────────
+
 export function playTapSound() {
-  if (isMuted) return;
-  try {
-    const ctx = getAudioContext();
-    if (!ctx) return;
-    const now = ctx.currentTime;
-
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    osc.type = "sine";
-    osc.frequency.setValueAtTime(420, now);
-    osc.frequency.exponentialRampToValueAtTime(220, now + 0.035);
-
-    gain.gain.setValueAtTime(0.12, now);
-    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
-
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-
-    osc.start(now);
-    osc.stop(now + 0.045);
-    triggerHaptic(10);
-  } catch (e) {}
+  playBuffer(soundBuffers.tap, 10);
 }
 
-/**
- * 2. AJOUTER UN ARTICLE AU PANIER (Marimba Chime)
- * Deux notes douces ascendantes et rondes : F#4 (370Hz) -> C#5 (554Hz)
- * Toucher gourmand et velouté.
- */
 export function playAddToCartSound() {
-  if (isMuted) return;
-  try {
-    const ctx = getAudioContext();
-    if (!ctx) return;
-    const now = ctx.currentTime;
-
-    // Note 1 : F#4 (369.99 Hz)
-    const osc1 = ctx.createOscillator();
-    const gain1 = ctx.createGain();
-    osc1.type = "sine";
-    osc1.frequency.setValueAtTime(369.99, now);
-    gain1.gain.setValueAtTime(0.18, now);
-    gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
-    osc1.connect(gain1);
-    gain1.connect(ctx.destination);
-    osc1.start(now);
-    osc1.stop(now + 0.23);
-
-    // Note 2 : C#5 (554.37 Hz) avec léger décalage (80ms)
-    const osc2 = ctx.createOscillator();
-    const gain2 = ctx.createGain();
-    osc2.type = "sine";
-    osc2.frequency.setValueAtTime(554.37, now + 0.08);
-    gain2.gain.setValueAtTime(0.22, now + 0.08);
-    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
-    osc2.connect(gain2);
-    gain2.connect(ctx.destination);
-    osc2.start(now + 0.08);
-    osc2.stop(now + 0.39);
-
-    triggerHaptic(18);
-  } catch (e) {}
+  playBuffer(soundBuffers.addToCart, 18);
 }
 
-/**
- * 3. CHOISIR SA TABLE (Pure Crystal Ping)
- * Résonance cristalline très pure (A5 - 880Hz), apaisante et nette.
- */
 export function playTableSelectSound() {
-  if (isMuted) return;
-  try {
-    const ctx = getAudioContext();
-    if (!ctx) return;
-    const now = ctx.currentTime;
-
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    osc.type = "sine";
-    osc.frequency.setValueAtTime(880, now); // A5
-
-    gain.gain.setValueAtTime(0.15, now);
-    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
-
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-
-    osc.start(now);
-    osc.stop(now + 0.26);
-
-    triggerHaptic(16);
-  } catch (e) {}
+  playBuffer(soundBuffers.tableSelect, 16);
 }
 
-/**
- * 4. APPEL SERVEUR / EAU / ADDITION (Concierge Bell)
- * Clochette de majordome argentée : Mi6 (1318Hz) + harmonique Mi7 (2637Hz)
- * Style hôtel de prestige, raffiné et poli.
- */
 export function playServiceCallSound() {
-  if (isMuted) return;
-  try {
-    const ctx = getAudioContext();
-    if (!ctx) return;
-    const now = ctx.currentTime;
-
-    // Fondamentale : E6 (1318.51 Hz)
-    const osc1 = ctx.createOscillator();
-    const gain1 = ctx.createGain();
-    osc1.type = "sine";
-    osc1.frequency.setValueAtTime(1318.51, now);
-    gain1.gain.setValueAtTime(0.20, now);
-    gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
-    osc1.connect(gain1);
-    gain1.connect(ctx.destination);
-    osc1.start(now);
-    osc1.stop(now + 0.66);
-
-    // Harmonique claire : E7 (2637.02 Hz)
-    const osc2 = ctx.createOscillator();
-    const gain2 = ctx.createGain();
-    osc2.type = "sine";
-    osc2.frequency.setValueAtTime(2637.02, now);
-    gain2.gain.setValueAtTime(0.08, now);
-    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-    osc2.connect(gain2);
-    gain2.connect(ctx.destination);
-    osc2.start(now);
-    osc2.stop(now + 0.36);
-
-    triggerHaptic([15, 30, 15]);
-  } catch (e) {}
+  playBuffer(soundBuffers.serviceCall, [15, 30, 15]);
 }
 
-/**
- * 5. CONFIRMATION & ENVOI DE LA COMMANDE (Golden Arpeggio)
- * Arpège triphonique majeur céleste : Do5 (523Hz) -> Mi5 (659Hz) -> Sol5 (784Hz) -> Do6 (1046Hz)
- * Chaleureux, rassurant et noble.
- */
 export function playOrderSuccessSound() {
-  if (isMuted) return;
-  try {
-    const ctx = getAudioContext();
-    if (!ctx) return;
-    const now = ctx.currentTime;
-
-    const notes = [
-      { freq: 523.25, time: 0.00, dur: 0.45, gain: 0.16 }, // C5
-      { freq: 659.25, time: 0.09, dur: 0.48, gain: 0.18 }, // E5
-      { freq: 783.99, time: 0.18, dur: 0.52, gain: 0.20 }, // G5
-      { freq: 1046.50, time: 0.27, dur: 0.75, gain: 0.22 } // C6
-    ];
-
-    notes.forEach(n => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(n.freq, now + n.time);
-      gain.gain.setValueAtTime(n.gain, now + n.time);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + n.time + n.dur);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(now + n.time);
-      osc.stop(now + n.time + n.dur);
-    });
-
-    triggerHaptic([25, 35, 25]);
-  } catch (e) {}
+  playBuffer(soundBuffers.orderSuccess, [25, 35, 25]);
 }
 
 /**
- * Basculer l'état muet / sonore
+ * Basculer l'état muet / sonore de manière propre et réactive
  */
-export function toggleSoundMute() {
+export async function toggleSoundMute() {
   isMuted = !isMuted;
+
   try {
     localStorage.setItem("gc_sound_muted", isMuted ? "true" : "false");
   } catch (e) {}
+
+  const ctx = getAudioContext();
+  if (ctx) {
+    if (masterGain) {
+      masterGain.gain.setValueAtTime(isMuted ? 0 : 1, ctx.currentTime);
+    }
+    // Si on réactive le son, réveiller immédiatement le contexte audio suspendu
+    if (!isMuted && ctx.state === "suspended") {
+      try {
+        await ctx.resume();
+      } catch (e) {}
+    }
+  }
+
   updateSoundUI();
+
+  // Signal sonore doux de confirmation lors de la réactivation
+  if (!isMuted) {
+    playTapSound();
+  }
+
   return isMuted;
 }
 
@@ -262,17 +313,29 @@ export function isSoundMuted() {
   return isMuted;
 }
 
+/**
+ * Met à jour tous les boutons d'affichage son (Header & Panier)
+ */
 export function updateSoundUI() {
   if (typeof document === "undefined") return;
+
   const btns = document.querySelectorAll(".gc-sound-toggle-btn");
   btns.forEach(btn => {
-    btn.innerHTML = isMuted ? "🔇" : "🔊";
+    const iconEl = btn.querySelector(".gc-sound-icon");
+    const iconText = isMuted ? "🔇" : "🔊";
+
+    if (iconEl) {
+      iconEl.textContent = iconText;
+    } else {
+      btn.innerHTML = iconText;
+    }
+
     btn.setAttribute("aria-label", isMuted ? "Activer le son" : "Couper le son");
     btn.classList.toggle("muted", isMuted);
   });
 }
 
-// Exposer globalement sur window pour un usage universel
+// Exposer globalement sur window pour rétrocompatibilité
 if (typeof window !== "undefined") {
   window.GC_Sound = {
     playTap: playTapSound,

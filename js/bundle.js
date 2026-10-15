@@ -4419,7 +4419,16 @@
 
   // js/services/sound.js
   var audioCtx = null;
+  var masterGain = null;
+  var masterCompressor = null;
   var isMuted = false;
+  var soundBuffers = {
+    tap: null,
+    addToCart: null,
+    tableSelect: null,
+    serviceCall: null,
+    orderSuccess: null
+  };
   try {
     isMuted = localStorage.getItem("gc_sound_muted") === "true";
   } catch (e) {
@@ -4431,24 +4440,136 @@
       const AudioContextClass = window.AudioContext || window.webkitAudioContext;
       if (AudioContextClass) {
         audioCtx = new AudioContextClass();
+        masterCompressor = audioCtx.createDynamicsCompressor();
+        masterCompressor.threshold.setValueAtTime(-18, audioCtx.currentTime);
+        masterCompressor.knee.setValueAtTime(12, audioCtx.currentTime);
+        masterCompressor.ratio.setValueAtTime(10, audioCtx.currentTime);
+        masterCompressor.attack.setValueAtTime(3e-3, audioCtx.currentTime);
+        masterCompressor.release.setValueAtTime(0.15, audioCtx.currentTime);
+        masterCompressor.connect(audioCtx.destination);
+        masterGain = audioCtx.createGain();
+        masterGain.gain.setValueAtTime(isMuted ? 0 : 1, audioCtx.currentTime);
+        masterGain.connect(masterCompressor);
+        buildAllSoundBuffers(audioCtx);
       }
     }
-    if (audioCtx && audioCtx.state === "suspended") {
-      audioCtx.resume().catch(() => {
-      });
-    }
     return audioCtx;
+  }
+  function buildAllSoundBuffers(ctx) {
+    if (!ctx) return;
+    const sampleRate = ctx.sampleRate || 44100;
+    try {
+      const dur = 0.045;
+      const len = Math.floor(sampleRate * dur);
+      const buf = ctx.createBuffer(1, len, sampleRate);
+      const d = buf.getChannelData(0);
+      let phase = 0;
+      for (let i = 0; i < len; i++) {
+        const t2 = i / sampleRate;
+        const freq = 420 - 200 * (t2 / dur);
+        phase += 2 * Math.PI * freq / sampleRate;
+        const attack = Math.min(1, i / (sampleRate * 2e-3));
+        const decay = Math.exp(-t2 * 90);
+        d[i] = Math.sin(phase) * attack * decay * 0.15;
+      }
+      soundBuffers.tap = buf;
+    } catch (e) {
+    }
+    try {
+      const dur = 0.36;
+      const len = Math.floor(sampleRate * dur);
+      const buf = ctx.createBuffer(1, len, sampleRate);
+      const d = buf.getChannelData(0);
+      let p1 = 0;
+      let p2 = 0;
+      const note2Start = 0.07;
+      for (let i = 0; i < len; i++) {
+        const t2 = i / sampleRate;
+        let s = 0;
+        if (t2 < 0.24) {
+          p1 += 2 * Math.PI * 369.99 / sampleRate;
+          const a1 = Math.min(1, t2 / 3e-3);
+          const dec1 = Math.exp(-t2 * 22);
+          s += (Math.sin(p1) + 0.14 * Math.sin(p1 * 2)) * a1 * dec1 * 0.18;
+        }
+        if (t2 >= note2Start) {
+          const t22 = t2 - note2Start;
+          p2 += 2 * Math.PI * 554.37 / sampleRate;
+          const a2 = Math.min(1, t22 / 3e-3);
+          const dec2 = Math.exp(-t22 * 14);
+          s += (Math.sin(p2) + 0.12 * Math.sin(p2 * 2)) * a2 * dec2 * 0.22;
+        }
+        d[i] = s;
+      }
+      soundBuffers.addToCart = buf;
+    } catch (e) {
+    }
+    try {
+      const dur = 0.25;
+      const len = Math.floor(sampleRate * dur);
+      const buf = ctx.createBuffer(1, len, sampleRate);
+      const d = buf.getChannelData(0);
+      let p = 0;
+      for (let i = 0; i < len; i++) {
+        const t2 = i / sampleRate;
+        p += 2 * Math.PI * 880 / sampleRate;
+        const attack = Math.min(1, t2 / 2e-3);
+        const decay = Math.exp(-t2 * 18);
+        d[i] = Math.sin(p) * attack * decay * 0.16;
+      }
+      soundBuffers.tableSelect = buf;
+    } catch (e) {
+    }
+    try {
+      const dur = 0.6;
+      const len = Math.floor(sampleRate * dur);
+      const buf = ctx.createBuffer(1, len, sampleRate);
+      const d = buf.getChannelData(0);
+      let p1 = 0;
+      let p2 = 0;
+      for (let i = 0; i < len; i++) {
+        const t2 = i / sampleRate;
+        p1 += 2 * Math.PI * 1318.51 / sampleRate;
+        p2 += 2 * Math.PI * 2637.02 / sampleRate;
+        const attack = Math.min(1, t2 / 2e-3);
+        const d1 = Math.exp(-t2 * 6.5);
+        const d2 = Math.exp(-t2 * 12);
+        d[i] = (Math.sin(p1) * d1 * 0.19 + Math.sin(p2) * d2 * 0.08) * attack;
+      }
+      soundBuffers.serviceCall = buf;
+    } catch (e) {
+    }
+    try {
+      const dur = 0.85;
+      const len = Math.floor(sampleRate * dur);
+      const buf = ctx.createBuffer(1, len, sampleRate);
+      const d = buf.getChannelData(0);
+      const notes = [
+        { freq: 523.25, start: 0, gain: 0.15, decay: 7 },
+        { freq: 659.25, start: 0.09, gain: 0.17, decay: 6.5 },
+        { freq: 783.99, start: 0.18, gain: 0.19, decay: 6 },
+        { freq: 1046.5, start: 0.27, gain: 0.22, decay: 4.5 }
+      ];
+      notes.forEach((n) => {
+        let phase = 0;
+        const startIndex = Math.floor(n.start * sampleRate);
+        for (let i = startIndex; i < len; i++) {
+          const t2 = (i - startIndex) / sampleRate;
+          phase += 2 * Math.PI * n.freq / sampleRate;
+          const attack = Math.min(1, t2 / 3e-3);
+          const dec = Math.exp(-t2 * n.decay);
+          d[i] += Math.sin(phase) * attack * dec * n.gain;
+        }
+      });
+      soundBuffers.orderSuccess = buf;
+    } catch (e) {
+    }
   }
   if (typeof window !== "undefined") {
     const unlockAudio = () => {
       try {
         const ctx = getAudioContext();
-        if (ctx && ctx.state !== "running") {
-          const buffer = ctx.createBuffer(1, 1, 22050);
-          const source = ctx.createBufferSource();
-          source.buffer = buffer;
-          source.connect(ctx.destination);
-          source.start(0);
+        if (ctx && ctx.state === "suspended") {
           ctx.resume().catch(() => {
           });
         }
@@ -4462,155 +4583,84 @@
     document.addEventListener("click", unlockAudio, { once: true, passive: true });
     document.addEventListener("pointerdown", unlockAudio, { once: true, passive: true });
   }
-  function triggerHaptic(duration = 15) {
+  function playBuffer(buf, hapticDuration = 12) {
     if (isMuted) return;
-    if (typeof navigator !== "undefined" && navigator.vibrate) {
-      try {
-        navigator.vibrate(duration);
-      } catch (e) {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    if (!buf) {
+      buildAllSoundBuffers(ctx);
+    }
+    const targetBuf = buf;
+    if (!targetBuf) return;
+    if (ctx.state === "suspended") {
+      ctx.resume().then(() => {
+        actuallyPlayBuffer(ctx, targetBuf, hapticDuration);
+      }).catch(() => {
+      });
+      return;
+    }
+    actuallyPlayBuffer(ctx, targetBuf, hapticDuration);
+  }
+  function actuallyPlayBuffer(ctx, buffer, hapticDuration) {
+    if (isMuted || !buffer) return;
+    try {
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+      source.connect(masterGain || ctx.destination);
+      source.start(0);
+      source.onended = () => {
+        try {
+          source.disconnect();
+        } catch (e) {
+        }
+      };
+      if (hapticDuration && typeof navigator !== "undefined" && navigator.vibrate) {
+        try {
+          navigator.vibrate(hapticDuration);
+        } catch (e) {
+        }
       }
+    } catch (e) {
+      console.warn("Audio buffer play error:", e);
     }
   }
   function playTapSound() {
-    if (isMuted) return;
-    try {
-      const ctx = getAudioContext();
-      if (!ctx) return;
-      const now = ctx.currentTime;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(420, now);
-      osc.frequency.exponentialRampToValueAtTime(220, now + 0.035);
-      gain.gain.setValueAtTime(0.12, now);
-      gain.gain.exponentialRampToValueAtTime(1e-3, now + 0.04);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(now);
-      osc.stop(now + 0.045);
-      triggerHaptic(10);
-    } catch (e) {
-    }
+    playBuffer(soundBuffers.tap, 10);
   }
   function playAddToCartSound() {
-    if (isMuted) return;
-    try {
-      const ctx = getAudioContext();
-      if (!ctx) return;
-      const now = ctx.currentTime;
-      const osc1 = ctx.createOscillator();
-      const gain1 = ctx.createGain();
-      osc1.type = "sine";
-      osc1.frequency.setValueAtTime(369.99, now);
-      gain1.gain.setValueAtTime(0.18, now);
-      gain1.gain.exponentialRampToValueAtTime(1e-3, now + 0.22);
-      osc1.connect(gain1);
-      gain1.connect(ctx.destination);
-      osc1.start(now);
-      osc1.stop(now + 0.23);
-      const osc2 = ctx.createOscillator();
-      const gain2 = ctx.createGain();
-      osc2.type = "sine";
-      osc2.frequency.setValueAtTime(554.37, now + 0.08);
-      gain2.gain.setValueAtTime(0.22, now + 0.08);
-      gain2.gain.exponentialRampToValueAtTime(1e-3, now + 0.38);
-      osc2.connect(gain2);
-      gain2.connect(ctx.destination);
-      osc2.start(now + 0.08);
-      osc2.stop(now + 0.39);
-      triggerHaptic(18);
-    } catch (e) {
-    }
+    playBuffer(soundBuffers.addToCart, 18);
   }
   function playTableSelectSound() {
-    if (isMuted) return;
-    try {
-      const ctx = getAudioContext();
-      if (!ctx) return;
-      const now = ctx.currentTime;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(880, now);
-      gain.gain.setValueAtTime(0.15, now);
-      gain.gain.exponentialRampToValueAtTime(1e-3, now + 0.25);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(now);
-      osc.stop(now + 0.26);
-      triggerHaptic(16);
-    } catch (e) {
-    }
+    playBuffer(soundBuffers.tableSelect, 16);
   }
   function playServiceCallSound() {
-    if (isMuted) return;
-    try {
-      const ctx = getAudioContext();
-      if (!ctx) return;
-      const now = ctx.currentTime;
-      const osc1 = ctx.createOscillator();
-      const gain1 = ctx.createGain();
-      osc1.type = "sine";
-      osc1.frequency.setValueAtTime(1318.51, now);
-      gain1.gain.setValueAtTime(0.2, now);
-      gain1.gain.exponentialRampToValueAtTime(1e-3, now + 0.65);
-      osc1.connect(gain1);
-      gain1.connect(ctx.destination);
-      osc1.start(now);
-      osc1.stop(now + 0.66);
-      const osc2 = ctx.createOscillator();
-      const gain2 = ctx.createGain();
-      osc2.type = "sine";
-      osc2.frequency.setValueAtTime(2637.02, now);
-      gain2.gain.setValueAtTime(0.08, now);
-      gain2.gain.exponentialRampToValueAtTime(1e-3, now + 0.35);
-      osc2.connect(gain2);
-      gain2.connect(ctx.destination);
-      osc2.start(now);
-      osc2.stop(now + 0.36);
-      triggerHaptic([15, 30, 15]);
-    } catch (e) {
-    }
+    playBuffer(soundBuffers.serviceCall, [15, 30, 15]);
   }
   function playOrderSuccessSound() {
-    if (isMuted) return;
-    try {
-      const ctx = getAudioContext();
-      if (!ctx) return;
-      const now = ctx.currentTime;
-      const notes = [
-        { freq: 523.25, time: 0, dur: 0.45, gain: 0.16 },
-        // C5
-        { freq: 659.25, time: 0.09, dur: 0.48, gain: 0.18 },
-        // E5
-        { freq: 783.99, time: 0.18, dur: 0.52, gain: 0.2 },
-        // G5
-        { freq: 1046.5, time: 0.27, dur: 0.75, gain: 0.22 }
-        // C6
-      ];
-      notes.forEach((n) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(n.freq, now + n.time);
-        gain.gain.setValueAtTime(n.gain, now + n.time);
-        gain.gain.exponentialRampToValueAtTime(1e-3, now + n.time + n.dur);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start(now + n.time);
-        osc.stop(now + n.time + n.dur);
-      });
-      triggerHaptic([25, 35, 25]);
-    } catch (e) {
-    }
+    playBuffer(soundBuffers.orderSuccess, [25, 35, 25]);
   }
-  function toggleSoundMute() {
+  async function toggleSoundMute() {
     isMuted = !isMuted;
     try {
       localStorage.setItem("gc_sound_muted", isMuted ? "true" : "false");
     } catch (e) {
     }
+    const ctx = getAudioContext();
+    if (ctx) {
+      if (masterGain) {
+        masterGain.gain.setValueAtTime(isMuted ? 0 : 1, ctx.currentTime);
+      }
+      if (!isMuted && ctx.state === "suspended") {
+        try {
+          await ctx.resume();
+        } catch (e) {
+        }
+      }
+    }
     updateSoundUI();
+    if (!isMuted) {
+      playTapSound();
+    }
     return isMuted;
   }
   function isSoundMuted() {
@@ -4620,7 +4670,13 @@
     if (typeof document === "undefined") return;
     const btns = document.querySelectorAll(".gc-sound-toggle-btn");
     btns.forEach((btn) => {
-      btn.innerHTML = isMuted ? "\u{1F507}" : "\u{1F50A}";
+      const iconEl = btn.querySelector(".gc-sound-icon");
+      const iconText = isMuted ? "\u{1F507}" : "\u{1F50A}";
+      if (iconEl) {
+        iconEl.textContent = iconText;
+      } else {
+        btn.innerHTML = iconText;
+      }
       btn.setAttribute("aria-label", isMuted ? "Activer le son" : "Couper le son");
       btn.classList.toggle("muted", isMuted);
     });
@@ -7222,8 +7278,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     document.querySelectorAll(".gc-sound-toggle-btn").forEach((btn) => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
-        const muted = toggleSoundMute();
-        if (!muted) playTapSound();
+        toggleSoundMute();
       });
     });
     const btt = document.getElementById("backToTop");

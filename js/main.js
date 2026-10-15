@@ -47,8 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".gc-sound-toggle-btn").forEach(btn => {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
-      const muted = toggleSoundMute();
-      if (!muted) playTapSound();
+      toggleSoundMute();
     });
   });
 
