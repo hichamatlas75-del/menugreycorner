@@ -170,6 +170,22 @@ function initAdminStreams() {
 
     initSystemFreezeListener();
 
+    // Nettoyage automatique des appels et commandes archivés (> 24h) une fois par jour
+    try {
+        const lastAutoClean = localStorage.getItem("gc_last_auto_cleanup");
+        const now = Date.now();
+        if (!lastAutoClean || (now - parseInt(lastAutoClean, 10)) > 12 * 60 * 60 * 1000) {
+            localStorage.setItem("gc_last_auto_cleanup", String(now));
+            setTimeout(() => {
+                if (typeof dbService !== "undefined" && dbService.cleanupOldData) {
+                    dbService.cleanupOldData((ok) => {
+                        if (ok) console.log("🧹 Auto-cleanup Firestore (>24h) effectué.");
+                    });
+                }
+            }, 6000);
+        }
+    } catch (e) {}
+
     // Initial render from local cache to avoid empty views on load
     activePreOrdersList = loadPreOrdersCache();
     if (activePreOrdersList.length > 0) {

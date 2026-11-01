@@ -20,7 +20,7 @@
         firebase.initializeApp(firebaseConfig);
       }
       db = firebase.firestore();
-      db.enablePersistence().catch((err) => {
+      db.enablePersistence({ synchronizeTabs: true }).catch((err) => {
         console.warn("\u26A0\uFE0F Persistence disabled:", err.code);
       });
       isFirebaseActive = true;
@@ -330,6 +330,34 @@
         }
       });
     },
+    onSingleCallChange(callId, callback) {
+      if (!callId) return () => {
+      };
+      if (isFirebaseActive && db) {
+        return db.collection("waiters_calls").doc(String(callId)).onSnapshot((doc) => {
+          if (doc.exists) {
+            const data = doc.data();
+            callback({
+              id: doc.id,
+              ...data,
+              createdAt: data.createdAt ? typeof data.createdAt.toDate === "function" ? data.createdAt.toDate().toISOString() : data.createdAt : (/* @__PURE__ */ new Date()).toISOString()
+            });
+          }
+        }, (err) => console.warn("Single call stream error:", err));
+      } else {
+        const check = () => {
+          const calls = getLocalCollection("calls");
+          const found = calls.find((c) => String(c.id) === String(callId));
+          if (found) callback(found);
+        };
+        check();
+        this.registerSimListener((col) => {
+          if (col === "calls") check();
+        });
+        return () => {
+        };
+      }
+    },
     onCallsChange(callback) {
       if (isFirebaseActive) {
         const activeCallsMap = /* @__PURE__ */ new Map();
@@ -338,7 +366,8 @@
           calls.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
           callback(calls);
         };
-        const unsubWaiters = db.collection("waiters_calls").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+        const unsubWaiters = db.collection("waiters_calls").orderBy("createdAt", "desc").limit(50).onSnapshot((snapshot) => {
+          activeCallsMap.clear();
           snapshot.forEach((doc) => {
             const data = doc.data();
             activeCallsMap.set(doc.id, {
@@ -349,7 +378,7 @@
           });
           emit();
         }, (err) => console.error("\u274C Calls stream error (waiters_calls):", err));
-        const unsubNative = db.collection("waiter_calls").onSnapshot((snapshot) => {
+        const unsubNative = db.collection("waiter_calls").orderBy("createdAt", "desc").limit(50).onSnapshot((snapshot) => {
           let hasChange = false;
           snapshot.forEach((doc) => {
             const data = doc.data();
@@ -467,9 +496,37 @@
         }
       });
     },
+    onSinglePreOrderChange(orderId, callback) {
+      if (!orderId) return () => {
+      };
+      if (isFirebaseActive && db) {
+        return db.collection("pre_orders").doc(String(orderId)).onSnapshot((doc) => {
+          if (doc.exists) {
+            const data = doc.data();
+            callback({
+              id: doc.id,
+              ...data,
+              createdAt: data.createdAt ? typeof data.createdAt.toDate === "function" ? data.createdAt.toDate().toISOString() : data.createdAt : (/* @__PURE__ */ new Date()).toISOString()
+            });
+          }
+        }, (err) => console.warn("Single pre_order stream error:", err));
+      } else {
+        const check = () => {
+          const orders = getLocalCollection("pre_orders");
+          const found = orders.find((o) => String(o.id) === String(orderId));
+          if (found) callback(found);
+        };
+        check();
+        this.registerSimListener((col) => {
+          if (col === "pre_orders") check();
+        });
+        return () => {
+        };
+      }
+    },
     onPreOrdersChange(callback) {
       if (isFirebaseActive) {
-        return db.collection("pre_orders").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+        return db.collection("pre_orders").orderBy("createdAt", "desc").limit(50).onSnapshot((snapshot) => {
           const orders = [];
           snapshot.forEach((doc) => {
             const data = doc.data();
@@ -561,23 +618,26 @@
     },
     cleanupOldData(callback) {
       const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1e3);
-      if (isFirebaseActive) {
-        db.collection("waiters_calls").where("createdAt", "<", cutoff).get().then((snapshot) => {
+      if (isFirebaseActive && db) {
+        db.collection("waiters_calls").where("createdAt", "<", cutoff).limit(400).get().then((snapshot) => {
+          if (snapshot.empty) return;
           const batch = db.batch();
           snapshot.forEach((doc) => batch.delete(doc.ref));
           return batch.commit();
-        }).then(() => db.collection("waiter_calls").where("createdAt", "<", cutoff).get()).then((snapshot) => {
+        }).then(() => db.collection("waiter_calls").where("createdAt", "<", cutoff).limit(400).get()).then((snapshot) => {
+          if (!snapshot || snapshot.empty) return;
           const batch = db.batch();
           snapshot.forEach((doc) => batch.delete(doc.ref));
           return batch.commit();
-        }).then(() => db.collection("pre_orders").where("createdAt", "<", cutoff).get()).then((snapshot) => {
+        }).then(() => db.collection("pre_orders").where("createdAt", "<", cutoff).limit(400).get()).then((snapshot) => {
+          if (!snapshot || snapshot.empty) return;
           const batch = db.batch();
           snapshot.forEach((doc) => batch.delete(doc.ref));
           return batch.commit();
         }).then(() => {
           if (callback) callback(true);
         }).catch((e) => {
-          console.error(e);
+          console.error("\u274C Cleanup error:", e);
           if (callback) callback(false);
         });
       } else {
@@ -5879,7 +5939,6 @@
   // js/services/notifications.js
   var memoryNotifications = [];
   var cooldowns = {};
-  var unsubscribersList = [];
   var notifiedCallIds = /* @__PURE__ */ new Set();
   var notifiedOrderIds = /* @__PURE__ */ new Set();
   function checkCallCooldown(type) {
@@ -5936,9 +5995,13 @@
         };
         showToast(okMsgs[currentLang] || okMsgs.fr);
         if (callId) {
-          localStorage.setItem(`last_call_${type}`, String(callId));
+          try {
+            localStorage.setItem(`last_call_${type}`, String(callId));
+            localStorage.setItem(`last_call_${type}_time`, String(Date.now()));
+          } catch (e) {
+          }
+          listenToClientCall(callId, type, clientTable2);
         }
-        subscribeToActiveWaiterEvents(clientTable2);
       } else {
         showToast("Erreur de connexion. Veuillez r\xE9essayer.");
       }
@@ -6068,101 +6131,118 @@
       bellBadge.style.display = "block";
     }
   }
+  var activeClientCallUnsubs = /* @__PURE__ */ new Map();
+  var activeClientOrderUnsubs = /* @__PURE__ */ new Map();
+  function listenToClientCall(callId, type, clientTable2) {
+    if (!callId) return;
+    const key = String(callId);
+    if (activeClientCallUnsubs.has(key)) return;
+    const unsub = dbService.onSingleCallChange(callId, (c) => {
+      if (!c || c.status !== "accepted") return;
+      if (notifiedCallIds.has(String(c.id))) return;
+      notifiedCallIds.add(String(c.id));
+      try {
+        localStorage.removeItem(`last_call_${c.type || type}`);
+        localStorage.removeItem(`last_call_${c.type || type}_time`);
+      } catch (e) {
+      }
+      const typeNames = {
+        waiter: "Appel serveur",
+        water: "Demande d'eau",
+        bill: "Demande d'addition"
+      };
+      const typeLabel = typeNames[c.type || type] || "Demande";
+      const acceptedMsgs = {
+        fr: `\u{1F514} Le serveur a accept\xE9 votre ${typeLabel} et arrive \xE0 votre table !`,
+        en: `\u{1F514} The waiter accepted your ${typeLabel} and is coming to your table!`,
+        de: `\u{1F514} Ihr Kellner hat Ihre ${typeLabel} angenommen und kommt zu Ihrem Tisch!`,
+        es: `\u{1F514} \xA1El camarero ha aceptado su petici\xF3n y se dirige a su mesa!`,
+        ar: `\u{1F514} \u0644\u0642\u062F \u0642\u0628\u0644 \u0627\u0644\u0646\u0627\u062F\u0644 \u0637\u0644\u0628\u0643 \u0648\u0647\u0648 \u0641\u064A \u0627\u0644\u0637\u0631\u064A\u0642 \u0625\u0644\u0649 \u0637\u0627\u0648\u0644\u062A\u0643 !`
+      };
+      const msg = acceptedMsgs[currentLang] || acceptedMsgs.fr;
+      showToast(msg);
+      playChimeSound();
+      triggerHapticVibrate();
+      addNotificationToHistory(msg, clientTable2 || c.table);
+      const u = activeClientCallUnsubs.get(key);
+      if (typeof u === "function") {
+        try {
+          u();
+        } catch (e) {
+        }
+      }
+      activeClientCallUnsubs.delete(key);
+    });
+    if (typeof unsub === "function") {
+      activeClientCallUnsubs.set(key, unsub);
+    }
+  }
+  function listenToClientOrder(orderId, clientTable2) {
+    if (!orderId) return;
+    const key = String(orderId);
+    if (activeClientOrderUnsubs.has(key)) return;
+    const unsub = dbService.onSinglePreOrderChange(orderId, (o) => {
+      if (!o || o.status !== "accepted") return;
+      if (notifiedOrderIds.has(String(o.id))) return;
+      notifiedOrderIds.add(String(o.id));
+      try {
+        localStorage.removeItem("last_pre_order_id");
+        localStorage.removeItem("last_pre_order_time");
+      } catch (e) {
+      }
+      const acceptedMsgs = {
+        fr: "\u{1F468}\u200D\u{1F373} Le serveur a valid\xE9 votre pr\xE9commande !",
+        en: "\u{1F468}\u200D\u{1F373} The waiter confirmed your pre-order!",
+        de: "\u{1F468}\u200D\u{1F373} Der Kellner hat Ihre Vorbestellung best\xE4tigt!",
+        es: "\u{1F468}\u200D\u{1F373} \xA1El camarero ha confirmado su prepedido!",
+        ar: "\u{1F468}\u200D\u{1F373} \u0644\u0642\u062F \u0648\u0627\u0641\u0642 \u0627\u0644\u0646\u0627\u062F\u0644 \u0639\u0644\u0649 \u0637\u0644\u0628\u0643 \u0627\u0644\u0645\u0633\u0628\u0642 !"
+      };
+      const msg = acceptedMsgs[currentLang] || acceptedMsgs.fr;
+      showToast(msg);
+      playChimeSound();
+      triggerHapticVibrate();
+      addNotificationToHistory(msg, clientTable2 || o.table);
+      const u = activeClientOrderUnsubs.get(key);
+      if (typeof u === "function") {
+        try {
+          u();
+        } catch (e) {
+        }
+      }
+      activeClientOrderUnsubs.delete(key);
+    });
+    if (typeof unsub === "function") {
+      activeClientOrderUnsubs.set(key, unsub);
+    }
+  }
   function subscribeToActiveWaiterEvents(clientTable2) {
     if (!clientTable2) return;
-    if (window._currentSubscribedTable === String(clientTable2) && unsubscribersList.length > 0) {
-      return;
-    }
-    window._currentSubscribedTable = String(clientTable2);
-    unsubscribersList.forEach((unsub) => {
+    const callTypes = ["waiter", "water", "bill"];
+    const now = Date.now();
+    callTypes.forEach((t2) => {
       try {
-        unsub();
+        const callId = localStorage.getItem(`last_call_${t2}`);
+        const callTime = parseInt(localStorage.getItem(`last_call_${t2}_time`) || "0", 10);
+        if (callId && (!callTime || now - callTime < 15 * 60 * 1e3)) {
+          listenToClientCall(callId, t2, clientTable2);
+        } else if (callId && callTime && now - callTime >= 15 * 60 * 1e3) {
+          localStorage.removeItem(`last_call_${t2}`);
+          localStorage.removeItem(`last_call_${t2}_time`);
+        }
       } catch (e) {
       }
     });
-    unsubscribersList = [];
-    const unsubCalls = dbService.onCallsChange((calls) => {
-      if (!Array.isArray(calls)) return;
-      calls.forEach((c) => {
-        if (String(c.table) !== String(clientTable2)) return;
-        if (c.status !== "accepted") return;
-        if (notifiedCallIds.has(String(c.id))) return;
-        const lastCallId = localStorage.getItem(`last_call_${c.type}`);
-        const isMyCall = lastCallId && String(lastCallId) === String(c.id);
-        let isRecent = false;
-        if (c.acceptedAt) {
-          const acceptedTime = new Date(c.acceptedAt).getTime();
-          if (!isNaN(acceptedTime) && Date.now() - acceptedTime < 3e5) {
-            isRecent = true;
-          }
-        } else {
-          isRecent = true;
-        }
-        if (isMyCall || isRecent) {
-          notifiedCallIds.add(String(c.id));
-          if (isMyCall) {
-            localStorage.removeItem(`last_call_${c.type}`);
-          }
-          const typeNames = {
-            waiter: "Appel serveur",
-            water: "Demande d'eau",
-            bill: "Demande d'addition"
-          };
-          const typeLabel = typeNames[c.type] || "Demande";
-          const acceptedMsgs = {
-            fr: `\u{1F514} Le serveur a accept\xE9 votre ${typeLabel} et arrive \xE0 votre table !`,
-            en: `\u{1F514} The waiter accepted your ${typeLabel} and is coming to your table!`,
-            de: `\u{1F514} Ihr Kellner hat Ihre ${typeLabel} angenommen und kommt zu Ihrem Tisch!`,
-            es: `\u{1F514} \xA1El camarero ha aceptado su petici\xF3n y se dirige a su mesa!`,
-            ar: `\u{1F514} \u0644\u0642\u062F \u0642\u0628\u0644 \u0627\u0644\u0646\u0627\u062F\u0644 \u0637\u0644\u0628\u0643 \u0648\u0647\u0648 \u0641\u064A \u0627\u0644\u0637\u0631\u064A\u0642 \u0625\u0644\u0649 \u0637\u0627\u0648\u0644\u062A\u0643 !`
-          };
-          const msg = acceptedMsgs[currentLang] || acceptedMsgs.fr;
-          showToast(msg);
-          playChimeSound();
-          triggerHapticVibrate();
-          addNotificationToHistory(msg, clientTable2);
-        }
-      });
-    });
-    if (typeof unsubCalls === "function") unsubscribersList.push(unsubCalls);
-    const unsubOrders = dbService.onPreOrdersChange((orders) => {
-      if (!Array.isArray(orders)) return;
-      orders.forEach((o) => {
-        if (String(o.table) !== String(clientTable2)) return;
-        if (o.status !== "accepted") return;
-        if (notifiedOrderIds.has(String(o.id))) return;
-        const lastOrderId = localStorage.getItem("last_pre_order_id");
-        const isMyOrder = lastOrderId && String(lastOrderId) === String(o.id);
-        let isRecent = false;
-        if (o.acceptedAt) {
-          const acceptedTime = new Date(o.acceptedAt).getTime();
-          if (!isNaN(acceptedTime) && Date.now() - acceptedTime < 3e5) {
-            isRecent = true;
-          }
-        } else {
-          isRecent = true;
-        }
-        if (isMyOrder || isRecent) {
-          notifiedOrderIds.add(String(o.id));
-          if (isMyOrder) {
-            localStorage.removeItem("last_pre_order_id");
-          }
-          const acceptedMsgs = {
-            fr: "\u{1F468}\u200D\u{1F373} Le serveur a valid\xE9 votre pr\xE9commande !",
-            en: "\u{1F468}\u200D\u{1F373} The waiter confirmed your pre-order!",
-            de: "\u{1F468}\u200D\u{1F373} Der Kellner hat Ihre Vorbestellung best\xE4tigt!",
-            es: "\u{1F468}\u200D\u{1F373} \xA1El camarero ha confirmado su prepedido!",
-            ar: "\u{1F468}\u200D\u{1F373} \u0644\u0642\u062F \u0648\u0627\u0641\u0642 \u0627\u0644\u0646\u0627\u062F\u0644 \u0639\u0644\u0649 \u0637\u0644\u0628\u0643 \u0627\u0644\u0645\u0633\u0628\u0642 !"
-          };
-          const msg = acceptedMsgs[currentLang] || acceptedMsgs.fr;
-          showToast(msg);
-          playChimeSound();
-          triggerHapticVibrate();
-          addNotificationToHistory(msg, clientTable2);
-        }
-      });
-    });
-    if (typeof unsubOrders === "function") unsubscribersList.push(unsubOrders);
+    try {
+      const orderId = localStorage.getItem("last_pre_order_id");
+      const orderTime = parseInt(localStorage.getItem("last_pre_order_time") || "0", 10);
+      if (orderId && (!orderTime || now - orderTime < 30 * 60 * 1e3)) {
+        listenToClientOrder(orderId, clientTable2);
+      } else if (orderId && orderTime && now - orderTime >= 30 * 60 * 1e3) {
+        localStorage.removeItem("last_pre_order_id");
+        localStorage.removeItem("last_pre_order_time");
+      }
+    } catch (e) {
+    }
   }
   function renderNotificationHistory(clientTable2) {
     const ndContentFeed = document.getElementById("ndContentFeed");
@@ -6231,6 +6311,8 @@
   window.triggerQuickServiceCall = triggerQuickServiceCall;
   window.renderNotificationHistory = renderNotificationHistory;
   window.subscribeToActiveWaiterEvents = subscribeToActiveWaiterEvents;
+  window.listenToClientCall = listenToClientCall;
+  window.listenToClientOrder = listenToClientOrder;
   window.playChimeSound = playChimeSound;
   window.triggerHapticVibrate = triggerHapticVibrate;
 
@@ -6380,9 +6462,17 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
         if (cdOverlay) cdOverlay.classList.remove("active");
         if (cdDrawer) cdDrawer.classList.remove("active");
         document.body.classList.remove("no-scroll");
-        localStorage.setItem("last_pre_order_id", orderId);
+        try {
+          localStorage.setItem("last_pre_order_id", String(orderId));
+          localStorage.setItem("last_pre_order_time", String(Date.now()));
+        } catch (e) {
+        }
         armBackupOrderReminder(orderId, clientTable2, totalPrice);
-        subscribeToActiveWaiterEvents(clientTable2);
+        if (typeof listenToClientOrder === "function") {
+          listenToClientOrder(orderId, clientTable2);
+        } else {
+          subscribeToActiveWaiterEvents(clientTable2);
+        }
       } else {
         const errMsgs = {
           fr: "Erreur de connexion. Veuillez r\xE9essayer.",

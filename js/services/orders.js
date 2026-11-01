@@ -6,7 +6,7 @@ import { currentLang } from './i18n.js';
 import { clientCart, saveClientCart, clearCart, showToast, checkCartBlockedItems } from './cart.js';
 import { db, dbService, sendFcmToWaiters, getTableZoneName } from '../config/firebase.js';
 import { showTableSelectorModal, setPendingActionAfterTableSelect } from '../ui/modals.js';
-import { subscribeToActiveWaiterEvents } from './notifications.js';
+import { subscribeToActiveWaiterEvents, listenToClientOrder } from './notifications.js';
 import { playOrderSuccessSound } from './sound.js';
 
 export const WHATSAPP_NUMBER = '212666265160';
@@ -173,13 +173,20 @@ export function submitPreOrder(clientTable, onComplete) {
       if (cdDrawer) cdDrawer.classList.remove("active");
       document.body.classList.remove("no-scroll");
 
-      localStorage.setItem("last_pre_order_id", orderId);
+      try {
+        localStorage.setItem("last_pre_order_id", String(orderId));
+        localStorage.setItem("last_pre_order_time", String(Date.now()));
+      } catch (e) {}
 
       // Armement de la notification de secours au cas où le serveur n'a pas réagi
       armBackupOrderReminder(orderId, clientTable, totalPrice);
 
-      // Subscribe to real-time status updates from waiter
-      subscribeToActiveWaiterEvents(clientTable);
+      // Subscribe strictly to this pre-order status update
+      if (typeof listenToClientOrder === "function") {
+        listenToClientOrder(orderId, clientTable);
+      } else {
+        subscribeToActiveWaiterEvents(clientTable);
+      }
     } else {
       const errMsgs = {
         fr: "Erreur de connexion. Veuillez réessayer.",

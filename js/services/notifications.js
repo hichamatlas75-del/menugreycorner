@@ -75,11 +75,12 @@ export function triggerQuickServiceCall(clientTable, type) {
       };
       showToast(okMsgs[currentLang] || okMsgs.fr);
       if (callId) {
-        localStorage.setItem(`last_call_${type}`, String(callId));
+        try {
+          localStorage.setItem(`last_call_${type}`, String(callId));
+          localStorage.setItem(`last_call_${type}_time`, String(Date.now()));
+        } catch (e) {}
+        listenToClientCall(callId, type, clientTable);
       }
-
-      // Ensure listener is active for current table
-      subscribeToActiveWaiterEvents(clientTable);
     } else {
       showToast("Erreur de connexion. Veuillez réessayer.");
     }
@@ -224,117 +225,129 @@ export function addNotificationToHistory(message, tableId) {
   }
 }
 
+let activeClientCallUnsubs = new Map();
+let activeClientOrderUnsubs = new Map();
+
+export function listenToClientCall(callId, type, clientTable) {
+  if (!callId) return;
+  const key = String(callId);
+  if (activeClientCallUnsubs.has(key)) return;
+
+  const unsub = dbService.onSingleCallChange(callId, (c) => {
+    if (!c || c.status !== "accepted") return;
+    if (notifiedCallIds.has(String(c.id))) return;
+    notifiedCallIds.add(String(c.id));
+
+    try {
+      localStorage.removeItem(`last_call_${c.type || type}`);
+      localStorage.removeItem(`last_call_${c.type || type}_time`);
+    } catch (e) {}
+
+    const typeNames = {
+      waiter: "Appel serveur",
+      water: "Demande d'eau",
+      bill: "Demande d'addition"
+    };
+    const typeLabel = typeNames[c.type || type] || "Demande";
+    const acceptedMsgs = {
+      fr: `🔔 Le serveur a accepté votre ${typeLabel} et arrive à votre table !`,
+      en: `🔔 The waiter accepted your ${typeLabel} and is coming to your table!`,
+      de: `🔔 Ihr Kellner hat Ihre ${typeLabel} angenommen und kommt zu Ihrem Tisch!`,
+      es: `🔔 ¡El camarero ha aceptado su petición y se dirige a su mesa!`,
+      ar: `🔔 لقد قبل النادل طلبك وهو في الطريق إلى طاولتك !`
+    };
+    const msg = acceptedMsgs[currentLang] || acceptedMsgs.fr;
+
+    showToast(msg);
+    playChimeSound();
+    triggerHapticVibrate();
+    addNotificationToHistory(msg, clientTable || c.table);
+
+    // Arrêt immédiat de l'écoute dès que l'appel a été accepté
+    const u = activeClientCallUnsubs.get(key);
+    if (typeof u === "function") {
+      try { u(); } catch (e) {}
+    }
+    activeClientCallUnsubs.delete(key);
+  });
+
+  if (typeof unsub === "function") {
+    activeClientCallUnsubs.set(key, unsub);
+  }
+}
+
+export function listenToClientOrder(orderId, clientTable) {
+  if (!orderId) return;
+  const key = String(orderId);
+  if (activeClientOrderUnsubs.has(key)) return;
+
+  const unsub = dbService.onSinglePreOrderChange(orderId, (o) => {
+    if (!o || o.status !== "accepted") return;
+    if (notifiedOrderIds.has(String(o.id))) return;
+    notifiedOrderIds.add(String(o.id));
+
+    try {
+      localStorage.removeItem("last_pre_order_id");
+      localStorage.removeItem("last_pre_order_time");
+    } catch (e) {}
+
+    const acceptedMsgs = {
+      fr: "👨‍🍳 Le serveur a validé votre précommande !",
+      en: "👨‍🍳 The waiter confirmed your pre-order!",
+      de: "👨‍🍳 Der Kellner hat Ihre Vorbestellung bestätigt!",
+      es: "👨‍🍳 ¡El camarero ha confirmado su prepedido!",
+      ar: "👨‍🍳 لقد وافق النادل على طلبك المسبق !"
+    };
+    const msg = acceptedMsgs[currentLang] || acceptedMsgs.fr;
+
+    showToast(msg);
+    playChimeSound();
+    triggerHapticVibrate();
+    addNotificationToHistory(msg, clientTable || o.table);
+
+    // Arrêt immédiat de l'écoute dès que la commande a été acceptée
+    const u = activeClientOrderUnsubs.get(key);
+    if (typeof u === "function") {
+      try { u(); } catch (e) {}
+    }
+    activeClientOrderUnsubs.delete(key);
+  });
+
+  if (typeof unsub === "function") {
+    activeClientOrderUnsubs.set(key, unsub);
+  }
+}
+
 export function subscribeToActiveWaiterEvents(clientTable) {
   if (!clientTable) return;
 
-  // Don't re-subscribe if already actively listening for the same table
-  if (window._currentSubscribedTable === String(clientTable) && unsubscribersList.length > 0) {
-    return;
-  }
-  window._currentSubscribedTable = String(clientTable);
-
-  unsubscribersList.forEach(unsub => {
-    try { unsub(); } catch (e) {}
+  // Optimisation Firestore : Écouter UNIQUEMENT les appels du client s'il en a fait un récemment (< 15 min)
+  const callTypes = ["waiter", "water", "bill"];
+  const now = Date.now();
+  callTypes.forEach(t => {
+    try {
+      const callId = localStorage.getItem(`last_call_${t}`);
+      const callTime = parseInt(localStorage.getItem(`last_call_${t}_time`) || "0", 10);
+      if (callId && (!callTime || (now - callTime) < 15 * 60 * 1000)) {
+        listenToClientCall(callId, t, clientTable);
+      } else if (callId && callTime && (now - callTime) >= 15 * 60 * 1000) {
+        localStorage.removeItem(`last_call_${t}`);
+        localStorage.removeItem(`last_call_${t}_time`);
+      }
+    } catch (e) {}
   });
-  unsubscribersList = [];
 
-  // 1. Listen to Calls (Appel serveur, besoin d'eau, addition)
-  const unsubCalls = dbService.onCallsChange((calls) => {
-    if (!Array.isArray(calls)) return;
-
-    calls.forEach(c => {
-      if (String(c.table) !== String(clientTable)) return;
-      if (c.status !== "accepted") return;
-      if (notifiedCallIds.has(String(c.id))) return;
-
-      const lastCallId = localStorage.getItem(`last_call_${c.type}`);
-      const isMyCall = lastCallId && String(lastCallId) === String(c.id);
-
-      let isRecent = false;
-      if (c.acceptedAt) {
-        const acceptedTime = new Date(c.acceptedAt).getTime();
-        if (!isNaN(acceptedTime) && (Date.now() - acceptedTime) < 300000) {
-          isRecent = true;
-        }
-      } else {
-        isRecent = true;
-      }
-
-      if (isMyCall || isRecent) {
-        notifiedCallIds.add(String(c.id));
-        if (isMyCall) {
-          localStorage.removeItem(`last_call_${c.type}`);
-        }
-
-        const typeNames = {
-          waiter: "Appel serveur",
-          water: "Demande d'eau",
-          bill: "Demande d'addition"
-        };
-        const typeLabel = typeNames[c.type] || "Demande";
-        const acceptedMsgs = {
-          fr: `🔔 Le serveur a accepté votre ${typeLabel} et arrive à votre table !`,
-          en: `🔔 The waiter accepted your ${typeLabel} and is coming to your table!`,
-          de: `🔔 Ihr Kellner hat Ihre ${typeLabel} angenommen und kommt zu Ihrem Tisch!`,
-          es: `🔔 ¡El camarero ha aceptado su petición y se dirige a su mesa!`,
-          ar: `🔔 لقد قبل النادل طلبك وهو في الطريق إلى طاولتك !`
-        };
-        const msg = acceptedMsgs[currentLang] || acceptedMsgs.fr;
-
-        showToast(msg);
-        playChimeSound();
-        triggerHapticVibrate();
-        addNotificationToHistory(msg, clientTable);
-      }
-    });
-  });
-  if (typeof unsubCalls === "function") unsubscribersList.push(unsubCalls);
-
-  // 2. Listen to Pre-orders (Validation de précommande)
-  const unsubOrders = dbService.onPreOrdersChange((orders) => {
-    if (!Array.isArray(orders)) return;
-
-    orders.forEach(o => {
-      if (String(o.table) !== String(clientTable)) return;
-      if (o.status !== "accepted") return;
-      if (notifiedOrderIds.has(String(o.id))) return;
-
-      const lastOrderId = localStorage.getItem("last_pre_order_id");
-      const isMyOrder = lastOrderId && String(lastOrderId) === String(o.id);
-
-      let isRecent = false;
-      if (o.acceptedAt) {
-        const acceptedTime = new Date(o.acceptedAt).getTime();
-        if (!isNaN(acceptedTime) && (Date.now() - acceptedTime) < 300000) {
-          isRecent = true;
-        }
-      } else {
-        isRecent = true;
-      }
-
-      if (isMyOrder || isRecent) {
-        notifiedOrderIds.add(String(o.id));
-        if (isMyOrder) {
-          localStorage.removeItem("last_pre_order_id");
-        }
-
-        const acceptedMsgs = {
-          fr: "👨‍🍳 Le serveur a validé votre précommande !",
-          en: "👨‍🍳 The waiter confirmed your pre-order!",
-          de: "👨‍🍳 Der Kellner hat Ihre Vorbestellung bestätigt!",
-          es: "👨‍🍳 ¡El camarero ha confirmado su prepedido!",
-          ar: "👨‍🍳 لقد وافق النادل على طلبك المسبق !"
-        };
-        const msg = acceptedMsgs[currentLang] || acceptedMsgs.fr;
-
-        showToast(msg);
-        playChimeSound();
-        triggerHapticVibrate();
-        addNotificationToHistory(msg, clientTable);
-      }
-    });
-  });
-  if (typeof unsubOrders === "function") unsubscribersList.push(unsubOrders);
+  // Écouter UNIQUEMENT la précommande du client s'il en a fait une récemment (< 30 min)
+  try {
+    const orderId = localStorage.getItem("last_pre_order_id");
+    const orderTime = parseInt(localStorage.getItem("last_pre_order_time") || "0", 10);
+    if (orderId && (!orderTime || (now - orderTime) < 30 * 60 * 1000)) {
+      listenToClientOrder(orderId, clientTable);
+    } else if (orderId && orderTime && (now - orderTime) >= 30 * 60 * 1000) {
+      localStorage.removeItem("last_pre_order_id");
+      localStorage.removeItem("last_pre_order_time");
+    }
+  } catch (e) {}
 }
 
 export function renderNotificationHistory(clientTable) {
@@ -414,5 +427,7 @@ export function setupNotificationDrawer(getClientTable) {
 window.triggerQuickServiceCall = triggerQuickServiceCall;
 window.renderNotificationHistory = renderNotificationHistory;
 window.subscribeToActiveWaiterEvents = subscribeToActiveWaiterEvents;
+window.listenToClientCall = listenToClientCall;
+window.listenToClientOrder = listenToClientOrder;
 window.playChimeSound = playChimeSound;
 window.triggerHapticVibrate = triggerHapticVibrate;

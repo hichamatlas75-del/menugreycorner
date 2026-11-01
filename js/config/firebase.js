@@ -27,7 +27,7 @@ if (typeof firebase !== "undefined" && hasValidFirebaseKeys()) {
             firebase.initializeApp(firebaseConfig);
         }
         db = firebase.firestore();
-        db.enablePersistence().catch(err => {
+        db.enablePersistence({ synchronizeTabs: true }).catch(err => {
             console.warn("⚠️ Persistence disabled:", err.code);
         });
         isFirebaseActive = true;
@@ -315,6 +315,31 @@ export const dbService = {
             }
         });
     },
+    onSingleCallChange(callId, callback) {
+        if (!callId) return () => {};
+        if (isFirebaseActive && db) {
+            return db.collection("waiters_calls").doc(String(callId))
+                .onSnapshot(doc => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        callback({
+                            id: doc.id,
+                            ...data,
+                            createdAt: data.createdAt ? (typeof data.createdAt.toDate === "function" ? data.createdAt.toDate().toISOString() : data.createdAt) : new Date().toISOString()
+                        });
+                    }
+                }, err => console.warn("Single call stream error:", err));
+        } else {
+            const check = () => {
+                const calls = getLocalCollection("calls");
+                const found = calls.find(c => String(c.id) === String(callId));
+                if (found) callback(found);
+            };
+            check();
+            this.registerSimListener(col => { if (col === "calls") check(); });
+            return () => {};
+        }
+    },
     onCallsChange(callback) {
         if (isFirebaseActive) {
             const activeCallsMap = new Map();
@@ -326,7 +351,9 @@ export const dbService = {
 
             const unsubWaiters = db.collection("waiters_calls")
                 .orderBy("createdAt", "desc")
+                .limit(50)
                 .onSnapshot(snapshot => {
+                    activeCallsMap.clear();
                     snapshot.forEach(doc => {
                         const data = doc.data();
                         activeCallsMap.set(doc.id, {
@@ -340,6 +367,8 @@ export const dbService = {
 
             // Sync from waiter_calls in case native Android APK accepted via notification
             const unsubNative = db.collection("waiter_calls")
+                .orderBy("createdAt", "desc")
+                .limit(50)
                 .onSnapshot(snapshot => {
                     let hasChange = false;
                     snapshot.forEach(doc => {
@@ -446,10 +475,36 @@ export const dbService = {
             }
         });
     },
+    onSinglePreOrderChange(orderId, callback) {
+        if (!orderId) return () => {};
+        if (isFirebaseActive && db) {
+            return db.collection("pre_orders").doc(String(orderId))
+                .onSnapshot(doc => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        callback({
+                            id: doc.id,
+                            ...data,
+                            createdAt: data.createdAt ? (typeof data.createdAt.toDate === "function" ? data.createdAt.toDate().toISOString() : data.createdAt) : new Date().toISOString()
+                        });
+                    }
+                }, err => console.warn("Single pre_order stream error:", err));
+        } else {
+            const check = () => {
+                const orders = getLocalCollection("pre_orders");
+                const found = orders.find(o => String(o.id) === String(orderId));
+                if (found) callback(found);
+            };
+            check();
+            this.registerSimListener(col => { if (col === "pre_orders") check(); });
+            return () => {};
+        }
+    },
     onPreOrdersChange(callback) {
         if (isFirebaseActive) {
             return db.collection("pre_orders")
                 .orderBy("createdAt", "desc")
+                .limit(50)
                 .onSnapshot(snapshot => {
                     const orders = [];
                     snapshot.forEach(doc => {
@@ -526,27 +581,30 @@ export const dbService = {
     },
     cleanupOldData(callback) {
         const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000);
-        if (isFirebaseActive) {
-            db.collection("waiters_calls").where("createdAt", "<", cutoff).get()
+        if (isFirebaseActive && db) {
+            db.collection("waiters_calls").where("createdAt", "<", cutoff).limit(400).get()
                 .then(snapshot => {
+                    if (snapshot.empty) return;
                     const batch = db.batch();
                     snapshot.forEach(doc => batch.delete(doc.ref));
                     return batch.commit();
                 })
-                .then(() => db.collection("waiter_calls").where("createdAt", "<", cutoff).get())
+                .then(() => db.collection("waiter_calls").where("createdAt", "<", cutoff).limit(400).get())
                 .then(snapshot => {
+                    if (!snapshot || snapshot.empty) return;
                     const batch = db.batch();
                     snapshot.forEach(doc => batch.delete(doc.ref));
                     return batch.commit();
                 })
-                .then(() => db.collection("pre_orders").where("createdAt", "<", cutoff).get())
+                .then(() => db.collection("pre_orders").where("createdAt", "<", cutoff).limit(400).get())
                 .then(snapshot => {
+                    if (!snapshot || snapshot.empty) return;
                     const batch = db.batch();
                     snapshot.forEach(doc => batch.delete(doc.ref));
                     return batch.commit();
                 })
                 .then(() => { if (callback) callback(true); })
-                .catch(e => { console.error(e); if (callback) callback(false); });
+                .catch(e => { console.error("❌ Cleanup error:", e); if (callback) callback(false); });
         } else {
             const calls = getLocalCollection("calls").filter(c => new Date(c.createdAt) >= cutoff);
             setLocalCollection("calls", calls);
