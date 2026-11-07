@@ -696,104 +696,195 @@
     <!-- ======================================================================
          GPS BLOCKED MODAL — Guide activation Multi-Mobile (Android & iPhone)
     ======================================================================= -->
-    <div id="gpsBlockedOverlay" style="
-        display:none; position:fixed; inset:0; z-index:99995;
-        background:rgba(7,6,10,0.92); backdrop-filter:blur(12px);
-        -webkit-backdrop-filter:blur(12px);
-        align-items:flex-end; justify-content:center;">
-        <div id="gpsBlockedSheet" style="
-            width:100%; max-width:480px; margin:0 auto;
-            background:#0f0e13; border-top:1px solid rgba(255,107,0,0.3);
-            border-radius:20px 20px 0 0; padding:24px 20px 32px;
-            font-family:'DM Sans',sans-serif;
-            transform:translateY(100%); transition:transform 0.38s cubic-bezier(.22,1,.36,1);
-            max-height: 90vh; overflow-y: auto;">
-            <div style="width:36px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;margin:0 auto 20px;"></div>
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-                <div style="width:44px;height:44px;border-radius:12px;background:rgba(255,107,0,0.12);border:1px solid rgba(255,107,0,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.3rem;">📍</div>
-                <div>
-                    <h3 style="font-family:'Playfair Display',serif;color:#f0ead8;font-size:1.1rem;margin:0 0 2px;font-weight:600;" data-i18n data-fr="Localisation désactivée" data-en="Location disabled" data-de="Standort deaktiviert" data-es="Ubicación desactivada" data-ar="خدمة الموقع معطلة">Localisation désactivée</h3>
-                    <p style="color:rgba(240,234,216,0.48);font-size:0.75rem;margin:0;" data-i18n data-fr="Activez-la pour commander directement depuis votre table" data-en="Enable it to order directly from your table" data-de="Aktivieren Sie ihn, um direkt von Ihrem Tisch zu bestellen" data-es="Actívela para pedir directamente desde su mesa" data-ar="قم بتفعيلها للطلب مباشرة من طاولتك">Activez-la pour commander directement depuis votre table</p>
-                    <p id="gpsBlockedHint" style="display:none;font-size:0.72rem;margin:4px 0 0;font-weight:500;">Accès refusé → suivez les étapes ci-dessous</p>
+    <div id="gpsBlockedOverlay" class="gps-blocked-overlay">
+        <div id="gpsBlockedSheet" class="gps-blocked-sheet">
+            <div class="gps-sheet-handle"></div>
+
+            <!-- En-tête -->
+            <div class="gps-header-row">
+                <div class="gps-header-icon">📍</div>
+                <div style="flex:1;">
+                    <h3 class="gps-header-title" data-i18n data-fr="Localisation requise" data-en="Location required" data-de="Standort erforderlich" data-es="Ubicación requerida" data-ar="تحديد الموقع مطلوب">Localisation requise</h3>
+                    <p class="gps-header-subtitle" data-i18n data-fr="Activez-la pour commander directement depuis votre table" data-en="Enable it to order directly from your table" data-de="Aktivieren Sie ihn, um direkt von Ihrem Tisch zu bestellen" data-es="Actívela para pedir directamente desde su mesa" data-ar="قم بتفعيلها للطلب مباشرة من طاولتك">Activez-la pour commander directement depuis votre table</p>
+                    <div id="gpsBlockedHint" class="gps-blocked-hint">⚠️ Suivez les 3 étapes ci-dessous pour débloquer l'accès</div>
                 </div>
             </div>
-            <div style="height:1px;background:rgba(255,255,255,0.06);margin:0 0 16px;"></div>
 
-            <!-- Sélection du type de téléphone (Android vs iPhone) -->
-            <p style="color:rgba(240,234,216,0.4);font-size:0.64rem;letter-spacing:0.12em;text-transform:uppercase;margin:0 0 8px;" data-i18n data-fr="Comment activer sur votre mobile :" data-en="How to enable on your phone:" data-de="So aktivieren Sie es auf Ihrem Telefon:" data-es="Cómo activar en su móvil :" data-ar="طريقة التفعيل على هاتفك :">Comment activer sur votre mobile :</p>
-            <div style="display:flex; gap:8px; margin-bottom:16px; background:rgba(255,255,255,0.03); padding:4px; border-radius:10px; border:1px solid rgba(255,255,255,0.06);">
-                <button id="gpsTabAndroid" onclick="GC_switchGpsTab('android')" style="flex:1; padding:8px 10px; border-radius:8px; border:none; background:rgba(201,168,76,0.18); color:#C9A84C; font-family:'DM Sans',sans-serif; font-size:0.76rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; transition:all 0.2s ease;">
-                    🤖 Android (Chrome)
-                </button>
-                <button id="gpsTabIos" onclick="GC_switchGpsTab('ios')" style="flex:1; padding:8px 10px; border-radius:8px; border:none; background:transparent; color:rgba(240,234,216,0.5); font-family:'DM Sans',sans-serif; font-size:0.76rem; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; transition:all 0.2s ease;">
+            <div class="gps-divider"></div>
+
+            <!-- Sélecteur OS Mobile (iPhone / Android) -->
+            <p class="gps-os-switcher-label" data-i18n data-fr="Comment activer sur votre mobile :" data-en="How to enable on your phone:" data-de="So aktivieren Sie es auf Ihrem Telefon:" data-es="Cómo activar en su móvil :" data-ar="طريقة التفعيل على هاتفك :">Comment activer sur votre mobile :</p>
+            <div class="gps-os-tabs">
+                <button id="gpsTabIos" onclick="GC_switchGpsTab('ios')" class="gps-tab-btn active">
                     📱 iPhone (Safari)
                 </button>
+                <button id="gpsTabAndroid" onclick="GC_switchGpsTab('android')" class="gps-tab-btn">
+                    🤖 Android (Chrome)
+                </button>
             </div>
 
-            <!-- Guide Android -->
-            <div id="gpsGuideAndroid" style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;">
-                <div style="display:flex;align-items:flex-start;gap:12px;">
-                    <div style="width:26px;height:26px;border-radius:50%;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.75rem;font-weight:700;color:#C9A84C;">1</div>
-                    <div style="padding-top:2px;">
-                        <p style="color:#f0ead8;font-size:0.82rem;margin:0 0 2px;font-weight:500;" data-i18n data-fr="Cliquez sur l'icône à gauche du lien" data-en="Click icon to the left of link" data-de="Klicken Sie auf das Symbol links vom Link" data-es="Haga clic en el icono a la izquierda del enlace" data-ar="اضغط على الأيقونة على يسار الرابط">Cliquez sur l'icône à gauche du lien</p>
-                        <p style="color:rgba(240,234,216,0.45);font-size:0.74rem;margin:0;" data-i18n data-fr="Appuyez sur 🔒 Cadenas ou ⚙️ Réglages (dans la barre d'adresse URL)" data-en="Tap 🔒 Padlock or ⚙️ Settings (in URL bar)" data-de="Tippen Sie auf 🔒 Schloss oder ⚙️ Einstellungen (in URL-Leiste)" data-es="Pulse en 🔒 Candado o ⚙️ Ajustes (en la barra de direcciones)" data-ar="اضغط على 🔒 القفل أو ⚙️ الإعدادات (في شريط العناوين)">Appuyez sur 🔒 Cadenas ou ⚙️ Réglages (dans la barre d'adresse URL)</p>
+            <!-- ==========================================================
+                 GUIDE iPHONE (SAFARI) — MÉTHODE ULTRA-RAPIDE EN 3 SECONDES
+            =========================================================== -->
+            <div id="gpsGuideIos" style="display:flex; flex-direction:column; margin-bottom:14px;">
+                <div id="gpsSafariQuickCard" class="gps-guide-card">
+                    
+                    <!-- Badge rapidité -->
+                    <div class="gps-quick-badge">
+                        <span data-i18n data-fr="⚡ En 3 secondes directement dans Safari :" data-en="⚡ In 3 seconds directly in Safari:" data-de="⚡ In 3 Sekunden direkt in Safari:" data-es="⚡ En 3 segundos directamente en Safari:" data-ar="⚡ في 3 ثوانٍ مباشرة داخل Safari :">⚡ En 3 secondes directement dans Safari :</span>
                     </div>
-                </div>
-                <div style="display:flex;align-items:flex-start;gap:12px;">
-                    <div style="width:26px;height:26px;border-radius:50%;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.75rem;font-weight:700;color:#C9A84C;">2</div>
-                    <div style="padding-top:2px;">
-                        <p style="color:#f0ead8;font-size:0.82rem;margin:0 0 2px;font-weight:500;" data-i18n data-fr="Autoriser la localisation du site" data-en="Allow site location" data-de="Standort der Website zulassen" data-es="Permitir la ubicación del sitio" data-ar="السماح بتحديد موقع الموقع">Autoriser la localisation du site</p>
-                        <p style="color:rgba(240,234,216,0.45);font-size:0.74rem;margin:0;">Allez dans <span style="color:#C9A84C;font-weight:600;">Autorisations → Position → Autoriser</span></p>
+
+                    <!-- Mockup visuel barre d'adresse iOS Safari -->
+                    <div class="safari-mockup-bar" title="Barre d'adresse Safari">
+                        <div class="safari-mockup-aa">aA</div>
+                        <div class="safari-mockup-url">
+                            <span class="lock">🔒</span>
+                            <span>greycorner.ma</span>
+                        </div>
+                        <div class="safari-mockup-action">↻</div>
                     </div>
-                </div>
-                <div style="display:flex;align-items:flex-start;gap:12px;">
-                    <div style="width:26px;height:26px;border-radius:50%;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.75rem;font-weight:700;color:#C9A84C;">3</div>
-                    <div style="padding-top:2px;">
-                        <p style="color:#f0ead8;font-size:0.82rem;margin:0 0 2px;font-weight:500;" data-i18n data-fr="Vérifiez les réglages généraux Android" data-en="Check general Android settings" data-de="Allgemeine Android-Einstellungen prüfen" data-es="Compruebe los ajustes generales de Android" data-ar="تحقق من إعدادات أندرويد العامة">Vérifiez les réglages généraux Android</p>
-                        <p style="color:rgba(240,234,216,0.45);font-size:0.74rem;margin:0;">⚙️ Paramètres → Applications → Chrome → Position</p>
+
+                    <!-- 3 Étapes Ultra-Rapides dans Safari -->
+                    <div class="gps-steps-list">
+                        <!-- Étape 1 -->
+                        <div class="gps-step-item">
+                            <div class="gps-step-number">1</div>
+                            <div class="gps-step-content">
+                                <p class="gps-step-title" data-i18n data-fr="Touchez « aA » dans la barre d'adresse" data-en="Tap 'aA' in the address bar" data-de="Tippen Sie auf 'aA' in der Adressleiste" data-es="Toque 'aA' en la barra de direcciones" data-ar="اضغط على « aA » في شريط العناوين">Touchez « aA » dans la barre d'adresse</p>
+                                <p class="gps-step-desc" data-i18n data-fr="L'icône située à gauche dans la barre d'URL (en haut ou en bas)" data-en="The icon located on the left of the URL bar (top or bottom)" data-de="Das Symbol links in der URL-Leiste (oben oder unten)" data-es="El icono a la izquierda de la barra de direcciones (arriba o abajo)" data-ar="الأيقونة الموجودة على يسار شريط الروابط (أعلى أو أسفل)">L'icône située à gauche dans la barre d'URL (en haut ou en bas)</p>
+                            </div>
+                        </div>
+
+                        <!-- Étape 2 -->
+                        <div class="gps-step-item">
+                            <div class="gps-step-number">2</div>
+                            <div class="gps-step-content">
+                                <p class="gps-step-title" data-i18n data-fr="Sélectionnez « Réglages du site web »" data-en="Select 'Website Settings'" data-de="Wählen Sie 'Website-Einstellungen'" data-es="Seleccione 'Ajustes del sitio web'" data-ar="اختر « إعدادات موقع الويب »">Sélectionnez « Réglages du site web »</p>
+                                <p class="gps-step-desc" data-i18n data-fr="Dans le menu contextuel qui s'ouvre sur Safari" data-en="In the popup menu that appears on Safari" data-de="Im Popup-Menü, das in Safari geöffnet wird" data-es="En el menú emergente de Safari" data-ar="في القائمة المنبثقة على Safari">Dans le menu contextuel qui s'ouvre sur Safari</p>
+                            </div>
+                        </div>
+
+                        <!-- Étape 3 -->
+                        <div class="gps-step-item">
+                            <div class="gps-step-number">3</div>
+                            <div class="gps-step-content">
+                                <p class="gps-step-title" data-i18n data-fr="Réglez Emplacement sur « Autoriser »" data-en="Set Location to 'Allow'" data-de="Standort auf 'Erlauben' setzen" data-es="Defina Ubicación en 'Permitir'" data-ar="اضبط الموقع على « السماح »">Réglez Emplacement sur « Autoriser »</p>
+                                <p class="gps-step-desc" data-i18n data-fr="Ou sur « Demander » pour débloquer immédiatement votre table" data-en="Or 'Ask' to immediately unblock your table" data-de="Oder 'Fragen', um Ihren Tisch sofort freizuschalten" data-es="O 'Preguntar' para desbloquear inmediatamente su mesa" data-ar="أو « السؤال » لتفعيل طاولتك فوراً">Ou sur « Demander » pour débloquer immédiatement votre table</p>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- Accordéon repliable : Réglages Système iPhone -->
+                    <details class="gps-system-accordion">
+                        <summary class="gps-system-summary">
+                            <span data-i18n data-fr="Localisation désactivée au niveau de l'iPhone ? Voir la procédure" data-en="Location disabled in iPhone settings? View steps" data-de="Standort in iPhone-Einstellungen deaktiviert? Schritte anzeigen" data-es="¿Ubicación desactivada en los ajustes del iPhone? Ver pasos" data-ar="خدمة الموقع معطلة في إعدادات الآيفون؟ عرض الخطوات">Localisation désactivée au niveau de l'iPhone ? Voir la procédure</span>
+                            <svg class="gps-accordion-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </summary>
+                        <div class="gps-system-content">
+                            <div class="gps-substep">
+                                <span class="gps-substep-bullet">1.</span>
+                                <div><span data-i18n data-fr="Ouvrez l'application ⚙️ Réglages de votre iPhone" data-en="Open ⚙️ Settings on your iPhone" data-de="Öffnen Sie ⚙️ Einstellungen auf Ihrem iPhone" data-es="Abra los ⚙️ Ajustes de su iPhone" data-ar="افتح تطبيق ⚙️ الإعدادات على الآيفون">Ouvrez l'application ⚙️ Réglages de votre iPhone</span></div>
+                            </div>
+                            <div class="gps-substep">
+                                <span class="gps-substep-bullet">2.</span>
+                                <div><span data-i18n data-fr="Allez dans Confidentialité et sécurité → Service de localisation (activer le bouton vert)" data-en="Go to Privacy & Security → Location Services (turn green switch on)" data-de="Gehen Sie zu Datenschutz & Sicherheit → Ortungsdienste (grünen Schalter aktivieren)" data-es="Vaya a Privacidad y seguridad → Localización (active el botón verde)" data-ar="انتقل إلى الخصوصية والأمان ← خدمات الموقع (تفعيل المفتاح الأخضر)">Allez dans Confidentialité et sécurité → Service de localisation (activer le bouton vert)</span></div>
+                            </div>
+                            <div class="gps-substep">
+                                <span class="gps-substep-bullet">3.</span>
+                                <div><span data-i18n data-fr="Faites défiler jusqu'à Safari → choisissez « Lorsque l'app est active »" data-en="Scroll down to Safari → choose 'While Using the App'" data-de="Scrollen Sie zu Safari → wählen Sie 'Beim Verwenden der App'" data-es="Desplácese hasta Safari → elija 'Cuando se use la app'" data-ar="انزل لأسفل حتى Safari ← اختر « أثناء استخدام التطبيق »">Faites défiler jusqu'à Safari → choisissez « Lorsque l'app est active »</span></div>
+                            </div>
+                        </div>
+                    </details>
                 </div>
             </div>
 
-            <!-- Guide iPhone (iOS) -->
-            <div id="gpsGuideIos" style="display:none; flex-direction:column; gap:10px; margin-bottom:20px;">
-                <div style="display:flex;align-items:flex-start;gap:12px;">
-                    <div style="width:26px;height:26px;border-radius:50%;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.75rem;font-weight:700;color:#C9A84C;">1</div>
-                    <div style="padding-top:2px;">
-                        <p style="color:#f0ead8;font-size:0.82rem;margin:0 0 2px;font-weight:500;" data-i18n data-fr="Ouvrez les Réglages iPhone" data-en="Open iPhone Settings" data-de="iPhone-Einstellungen öffnen" data-es="Abra los Ajustes del iPhone" data-ar="افتح إعدادات الآيفون">Ouvrez les Réglages iPhone</p>
-                        <p style="color:rgba(240,234,216,0.45);font-size:0.74rem;margin:0;">⚙️ Réglages → Confidentialité et sécurité → Localisation</p>
+            <!-- ==========================================================
+                 GUIDE ANDROID (CHROME)
+            =========================================================== -->
+            <div id="gpsGuideAndroid" style="display:none; flex-direction:column; margin-bottom:14px;">
+                <div id="gpsAndroidQuickCard" class="gps-guide-card">
+                    <!-- Badge rapidité -->
+                    <div class="gps-quick-badge">
+                        <span data-i18n data-fr="⚡ En 3 secondes directement dans Chrome :" data-en="⚡ In 3 seconds directly in Chrome:" data-de="⚡ In 3 Sekunden direkt in Chrome:" data-es="⚡ En 3 segundos directamente en Chrome:" data-ar="⚡ في 3 ثوانٍ مباشرة داخل Chrome :">⚡ En 3 secondes directement dans Chrome :</span>
                     </div>
-                </div>
-                <div style="display:flex;align-items:flex-start;gap:12px;">
-                    <div style="width:26px;height:26px;border-radius:50%;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.75rem;font-weight:700;color:#C9A84C;">2</div>
-                    <div style="padding-top:2px;">
-                        <p style="color:#f0ead8;font-size:0.82rem;margin:0 0 2px;font-weight:500;" data-i18n data-fr="Service de localisation → Safari" data-en="Location Services → Safari" data-de="Ortungsdienste → Safari" data-es="Localización → Safari" data-ar="خدمات الموقع ← Safari">Service de localisation → Safari</p>
-                        <p style="color:rgba(240,234,216,0.45);font-size:0.74rem;margin:0;">Choisir <span style="color:#C9A84C;font-weight:600;">« Lors de l'utilisation »</span></p>
+
+                    <!-- Mockup barre Chrome -->
+                    <div class="safari-mockup-bar" title="Barre d'adresse Chrome">
+                        <div class="safari-mockup-aa" style="padding:2px 6px;">🔒</div>
+                        <div class="safari-mockup-url">
+                            <span>greycorner.ma</span>
+                        </div>
+                        <div class="safari-mockup-action">⋮</div>
                     </div>
-                </div>
-                <div style="display:flex;align-items:flex-start;gap:12px;">
-                    <div style="width:26px;height:26px;border-radius:50%;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.75rem;font-weight:700;color:#C9A84C;">3</div>
-                    <div style="padding-top:2px;">
-                        <p style="color:#f0ead8;font-size:0.82rem;margin:0 0 2px;font-weight:500;" data-i18n data-fr="Ou directement dans Safari" data-en="Or directly in Safari" data-de="Oder direkt in Safari" data-es="O directamente en Safari" data-ar="أو مباشرة في Safari">Ou directement dans Safari</p>
-                        <p style="color:rgba(240,234,216,0.45);font-size:0.74rem;margin:0;">Touchez <span style="color:#C9A84C;font-weight:600;">aA</span> à gauche du lien → Réglages du site → Localisation</p>
+
+                    <!-- Étapes Android Chrome -->
+                    <div class="gps-steps-list">
+                        <div class="gps-step-item">
+                            <div class="gps-step-number">1</div>
+                            <div class="gps-step-content">
+                                <p class="gps-step-title" data-i18n data-fr="Touchez l'icône 🔒 à gauche du lien" data-en="Tap the 🔒 icon on the left of URL" data-de="Tippen Sie auf das 🔒-Symbol links neben der URL" data-es="Toque el icono 🔒 a la izquierda del enlace" data-ar="اضغط على أيقونة 🔒 على يسار الرابط">Touchez l'icône 🔒 à gauche du lien</p>
+                                <p class="gps-step-desc" data-i18n data-fr="Appuyez sur le cadenas ou les réglages dans la barre d'adresse" data-en="Tap padlock or settings in the address bar" data-de="Tippen Sie auf das Schloss oder die Einstellungen in der Adressleiste" data-es="Pulse en el candado o ajustes en la barra de direcciones" data-ar="اضغط على القفل أو الإعدادات في شريط العناوين">Appuyez sur le cadenas ou les réglages dans la barre d'adresse</p>
+                            </div>
+                        </div>
+
+                        <div class="gps-step-item">
+                            <div class="gps-step-number">2</div>
+                            <div class="gps-step-content">
+                                <p class="gps-step-title" data-i18n data-fr="Autorisez la localisation du site" data-en="Allow site location" data-de="Standort für die Website erlauben" data-es="Permita la ubicación del sitio" data-ar="اسمح بتحديد موقع الموقع">Autorisez la localisation du site</p>
+                                <p class="gps-step-desc" data-i18n data-fr="Touchez Autorisations → Position → Autoriser" data-en="Tap Permissions → Location → Allow" data-de="Tippen Sie auf Berechtigungen → Standort → Erlauben" data-es="Toque Permisos → Ubicación → Permitir" data-ar="اضغط على الأذونات ← الموقع ← السماح">Touchez Autorisations → Position → Autoriser</p>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- Accordéon Réglages Généraux Android -->
+                    <details class="gps-system-accordion">
+                        <summary class="gps-system-summary">
+                            <span data-i18n data-fr="Localisation désactivée sur Android ? Voir la procédure" data-en="Location disabled on Android? View steps" data-de="Standort auf Android deaktiviert? Schritte anzeigen" data-es="¿Ubicación desactivada en Android? Ver pasos" data-ar="خدمة الموقع معطلة في أندرويد؟ عرض الخطوات">Localisation désactivée sur Android ? Voir la procédure</span>
+                            <svg class="gps-accordion-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </summary>
+                        <div class="gps-system-content">
+                            <div class="gps-substep">
+                                <span class="gps-substep-bullet">1.</span>
+                                <div><span data-i18n data-fr="Ouvrez Paramètres Android → Applications → Chrome" data-en="Open Android Settings → Apps → Chrome" data-de="Öffnen Sie Android-Einstellungen → Apps → Chrome" data-es="Abra Ajustes de Android → Aplicaciones → Chrome" data-ar="افتح إعدادات أندرويد ← التطبيقات ← Chrome">Ouvrez Paramètres Android → Applications → Chrome</span></div>
+                            </div>
+                            <div class="gps-substep">
+                                <span class="gps-substep-bullet">2.</span>
+                                <div><span data-i18n data-fr="Touchez Autorisations → Position → « Toujours autoriser »" data-en="Tap Permissions → Location → 'Allow while using the app'" data-de="Tippen Sie auf Berechtigungen → Standort → 'Zugriff immer zulassen'" data-es="Toque Permisos → Ubicación → 'Permitir siempre'" data-ar="اضغط على الأذونات ← الموقع ← « السماح عند استخدام التطبيق »">Touchez Autorisations → Position → « Toujours autoriser »</span></div>
+                            </div>
+                        </div>
+                    </details>
                 </div>
             </div>
 
-            <!-- Actions -->
-            <div style="display:flex; flex-direction:column; gap:10px;">
-                <!-- Bouton 1 : Activer la localisation -->
-                <button onclick="GC_requestGpsAgain()" style="width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#C9A84C,#a07c2a);border:none;color:#07060a;font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:700;letter-spacing:0.04em;cursor:pointer;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 12px rgba(201,168,76,0.25);">
-                    <span style="font-size:1.1rem;">📍</span> <span data-i18n data-fr="Activer la localisation" data-en="Enable location" data-de="Standort aktivieren" data-es="Activar la ubicación" data-ar="تفعيل الموقع">Activer la localisation</span>
+            <!-- ==========================================================
+                 ACTIONS DU BAS (AVEC PORTE DE SORTIE SAISIE DE TABLE)
+            =========================================================== -->
+            <div class="gps-actions-stack">
+                <!-- Action 1 (Primaire) : Activer la localisation -->
+                <button id="gpsBtnActivate" onclick="GC_requestGpsAgain()" class="gps-btn-primary">
+                    <span style="font-size:1.15rem;">📍</span>
+                    <span id="gpsBtnActivateLabel" data-i18n data-fr="Activer la localisation" data-en="Enable location" data-de="Standort aktivieren" data-es="Activar la ubicación" data-ar="تفعيل الموقع">Activer la localisation</span>
+                    <span id="gpsBtnSpinner" class="gps-btn-spinner" style="display:none;"></span>
                 </button>
 
-                <!-- Bouton 2 : CONTINUER EN MODE CONSULTATION -->
-                <button onclick="GC_dismissGpsBlocked()" style="width:100%;padding:14px 18px;border-radius:12px;background:rgba(201,168,76,0.14);border:1.5px solid #C9A84C;color:#F5E5C9;font-family:'DM Sans',sans-serif;font-size:0.92rem;font-weight:700;letter-spacing:0.03em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(201,168,76,0.15);transition:all 0.2s ease;-webkit-tap-highlight-color:transparent;">
-                    <span>📖</span> <span data-i18n data-fr="Continuer en mode consultation" data-en="Continue in view-only mode" data-de="Weiter im Nur-Lese-Modus" data-es="Continuar en modo consulta" data-ar="المتابعة في وضع التصفح فقط">Continuer en mode consultation</span>
+                <!-- Action 2 (Secondaire - Porte de Sortie) : Saisie manuelle de table sans GPS -->
+                <button id="gpsBtnTableFallback" onclick="GC_chooseTableFallback()" class="gps-btn-table-fallback">
+                    <span style="font-size:1.1rem;">🔢</span>
+                    <span data-i18n data-fr="Saisir mon numéro de table" data-en="Enter my table number" data-de="Tischnummer eingeben" data-es="Introducir mi número de mesa" data-ar="إدخال رقم طاولتي">Saisir mon numéro de table</span>
                 </button>
 
-                <!-- Bouton 3 : Recharger -->
-                <button onclick="location.reload()" style="width:100%;padding:11px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(240,234,216,0.5);font-family:'DM Sans',sans-serif;font-size:0.8rem;cursor:pointer;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center;gap:6px;">
+                <!-- Action 3 (Tertiaire) : Continuer en mode consultation -->
+                <button onclick="GC_dismissGpsBlocked()" class="gps-btn-view-only">
+                    <span>📖</span>
+                    <span data-i18n data-fr="Continuer en mode consultation" data-en="Continue in view-only mode" data-de="Weiter im Nur-Lese-Modus" data-es="Continuar en modo consulta" data-ar="المتابعة في وضع التصفح فقط">Continuer en mode consultation</span>
+                </button>
+
+                <!-- Action 4 (Lien discret) : Recharger la page -->
+                <button onclick="location.reload()" class="gps-btn-reload">
                     <span data-i18n data-fr="↩️ Recharger la page" data-en="↩️ Reload page" data-de="↩️ Seite neu laden" data-es="↩️ Recargar la página" data-ar="↩️ إعادة تحميل الصفحة">↩️ Recharger la page</span>
                 </button>
             </div>

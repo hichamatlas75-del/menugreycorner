@@ -4587,18 +4587,26 @@
       } else if (state === "denied") {
         badge.classList.add("gps-denied");
         text.textContent = currentLangTexts.denied;
-        this.toggleInteractiveControls(false);
-        if (!window._GC_gpsBlockedShown && typeof window.GC_showGpsBlocked === "function") {
-          window._GC_gpsBlockedShown = true;
-          window.GC_showGpsBlocked();
+        if (window.GC_manualTableEntry) {
+          this.toggleInteractiveControls(true);
+        } else {
+          this.toggleInteractiveControls(false);
+          if (!window._GC_gpsBlockedShown && typeof window.GC_showGpsBlocked === "function") {
+            window._GC_gpsBlockedShown = true;
+            window.GC_showGpsBlocked();
+          }
         }
       } else {
         badge.classList.add("gps-error");
         text.textContent = currentLangTexts.error;
-        this.toggleInteractiveControls(false);
-        if (!window._GC_gpsBlockedShown && typeof window.GC_showGpsBlocked === "function") {
-          window._GC_gpsBlockedShown = true;
-          window.GC_showGpsBlocked();
+        if (window.GC_manualTableEntry) {
+          this.toggleInteractiveControls(true);
+        } else {
+          this.toggleInteractiveControls(false);
+          if (!window._GC_gpsBlockedShown && typeof window.GC_showGpsBlocked === "function") {
+            window._GC_gpsBlockedShown = true;
+            window.GC_showGpsBlocked();
+          }
         }
       }
     },
@@ -5731,26 +5739,14 @@
     const guideAndroid = document.getElementById("gpsGuideAndroid");
     const guideIos = document.getElementById("gpsGuideIos");
     if (!btnAndroid || !btnIos || !guideAndroid || !guideIos) return;
-    const ACTIVE_BG = "rgba(201,168,76,0.18)";
-    const ACTIVE_COLOR = "#C9A84C";
-    const INACTIVE_BG = "transparent";
-    const INACTIVE_COLOR = "rgba(240,234,216,0.5)";
     if (type === "ios") {
-      btnIos.style.background = ACTIVE_BG;
-      btnIos.style.color = ACTIVE_COLOR;
-      btnIos.style.fontWeight = "700";
-      btnAndroid.style.background = INACTIVE_BG;
-      btnAndroid.style.color = INACTIVE_COLOR;
-      btnAndroid.style.fontWeight = "600";
+      btnIos.classList.add("active");
+      btnAndroid.classList.remove("active");
       guideIos.style.display = "flex";
       guideAndroid.style.display = "none";
     } else {
-      btnAndroid.style.background = ACTIVE_BG;
-      btnAndroid.style.color = ACTIVE_COLOR;
-      btnAndroid.style.fontWeight = "700";
-      btnIos.style.background = INACTIVE_BG;
-      btnIos.style.color = INACTIVE_COLOR;
-      btnIos.style.fontWeight = "600";
+      btnAndroid.classList.add("active");
+      btnIos.classList.remove("active");
       guideAndroid.style.display = "flex";
       guideIos.style.display = "none";
     }
@@ -5837,10 +5833,36 @@
   }
   function GC_requestGpsAgain() {
     if (!navigator.geolocation) {
+      alert("La g\xE9olocalisation n'est pas support\xE9e par votre navigateur.");
       return;
     }
+    const btn = document.getElementById("gpsBtnActivate");
+    const spinner = document.getElementById("gpsBtnSpinner");
+    const label = document.getElementById("gpsBtnActivateLabel");
+    const hint = document.getElementById("gpsBlockedHint");
+    if (btn) btn.disabled = true;
+    if (spinner) spinner.style.display = "inline-block";
+    if (label) {
+      label.dataset.originalText = label.textContent;
+      const loadingTexts = {
+        fr: "V\xE9rification en cours...",
+        en: "Checking location...",
+        de: "Standort wird gepr\xFCft...",
+        es: "Comprobando ubicaci\xF3n...",
+        ar: "\u062C\u0627\u0631\u064A \u0627\u0644\u062A\u062D\u0642\u0642 \u0645\u0646 \u0627\u0644\u0645\u0648\u0642\u0639..."
+      };
+      label.textContent = loadingTexts[currentLang] || loadingTexts.fr;
+    }
+    const restoreBtn = () => {
+      if (btn) btn.disabled = false;
+      if (spinner) spinner.style.display = "none";
+      if (label && label.dataset.originalText) {
+        label.textContent = label.dataset.originalText;
+      }
+    };
     navigator.geolocation.getCurrentPosition(
-      () => {
+      (pos) => {
+        restoreBtn();
         GC_hideGpsBlocked();
         if (typeof window.GPSService !== "undefined" && typeof window.GPSService.checkLocation === "function") {
           window.GPSService.checkLocation();
@@ -5849,18 +5871,63 @@
         }
       },
       (err) => {
-        if (err.code === 1) {
-          const hint = document.getElementById("gpsBlockedHint");
-          if (hint) {
-            hint.style.display = "block";
-            hint.style.color = "#e87c3e";
+        restoreBtn();
+        const ua = navigator.userAgent || "";
+        const isIOS = /iPhone|iPad|iPod/i.test(ua) || navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
+        if (isIOS) {
+          GC_switchGpsTab("ios");
+          const card = document.getElementById("gpsSafariQuickCard");
+          if (card) {
+            card.classList.remove("gps-guide-pulse");
+            void card.offsetWidth;
+            card.classList.add("gps-guide-pulse");
+            setTimeout(() => card.classList.remove("gps-guide-pulse"), 1400);
+            card.scrollIntoView({ behavior: "smooth", block: "nearest" });
           }
         } else {
-          location.reload();
+          GC_switchGpsTab("android");
+          const card = document.getElementById("gpsAndroidQuickCard");
+          if (card) {
+            card.classList.remove("gps-guide-pulse");
+            void card.offsetWidth;
+            card.classList.add("gps-guide-pulse");
+            setTimeout(() => card.classList.remove("gps-guide-pulse"), 1400);
+            card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          }
+        }
+        if (hint) {
+          hint.style.display = "block";
+          const hintTexts = {
+            fr: "\u26A0\uFE0F Position toujours bloqu\xE9e : suivez les 3 \xE9tapes rapides ci-dessus",
+            en: "\u26A0\uFE0F Location still blocked: Follow the 3 quick steps above",
+            de: "\u26A0\uFE0F Standort noch blockiert: Bitte die 3 Schritte oben ausf\xFChren",
+            es: "\u26A0\uFE0F Ubicaci\xF3n a\xFAn bloqueada: Siga los 3 pasos anteriores",
+            ar: "\u26A0\uFE0F \u0627\u0644\u0645\u0648\u0642\u0639 \u0645\u0627 \u0632\u0627\u0644 \u0645\u0639\u0637\u0644\u0627\u064B: \u064A\u0631\u062C\u0649 \u0627\u062A\u0628\u0627\u0639 \u0627\u0644\u062E\u0637\u0648\u0627\u062A \u0627\u0644\u0640 3 \u0623\u0639\u0644\u0627\u0647"
+          };
+          hint.textContent = hintTexts[currentLang] || hintTexts.fr;
+        }
+        if (typeof navigator !== "undefined" && navigator.vibrate) {
+          try {
+            navigator.vibrate([40, 60, 40]);
+          } catch (e) {
+          }
         }
       },
-      { timeout: 8e3, enableHighAccuracy: true }
+      { timeout: 1e4, enableHighAccuracy: true, maximumAge: 0 }
     );
+  }
+  function GC_chooseTableFallback() {
+    playTapSound();
+    GC_hideGpsBlocked();
+    window.GC_manualTableEntry = true;
+    if (typeof window.GPSService !== "undefined" && typeof window.GPSService.toggleInteractiveControls === "function") {
+      window.GPSService.toggleInteractiveControls(true);
+    }
+    if (typeof openTableModal === "function") {
+      openTableModal();
+    } else if (typeof showTableSelectorModal === "function") {
+      showTableSelectorModal();
+    }
   }
   function GC_patchSubmitButton() {
     const btn = document.getElementById("cdSubmitBtn");
@@ -5932,6 +5999,7 @@
   window.GC_confirmMode = GC_confirmMode;
   window.GC_dismissModal = GC_dismissModal;
   window.GC_requestGpsAgain = GC_requestGpsAgain;
+  window.GC_chooseTableFallback = GC_chooseTableFallback;
   window.GC_patchSubmitButton = GC_patchSubmitButton;
   window.GC_applyPreorderUI = GC_applyPreorderUI;
   window.GC_applyReadonlyUI = GC_applyReadonlyUI;

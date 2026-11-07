@@ -208,18 +208,26 @@ export const GPSService = {
     } else if (state === 'denied') {
       badge.classList.add("gps-denied");
       text.textContent = currentLangTexts.denied;
-      this.toggleInteractiveControls(false);
-      if (!window._GC_gpsBlockedShown && typeof window.GC_showGpsBlocked === "function") {
-        window._GC_gpsBlockedShown = true;
-        window.GC_showGpsBlocked();
+      if (window.GC_manualTableEntry) {
+        this.toggleInteractiveControls(true);
+      } else {
+        this.toggleInteractiveControls(false);
+        if (!window._GC_gpsBlockedShown && typeof window.GC_showGpsBlocked === "function") {
+          window._GC_gpsBlockedShown = true;
+          window.GC_showGpsBlocked();
+        }
       }
     } else {
       badge.classList.add("gps-error");
       text.textContent = currentLangTexts.error;
-      this.toggleInteractiveControls(false);
-      if (!window._GC_gpsBlockedShown && typeof window.GC_showGpsBlocked === "function") {
-        window._GC_gpsBlockedShown = true;
-        window.GC_showGpsBlocked();
+      if (window.GC_manualTableEntry) {
+        this.toggleInteractiveControls(true);
+      } else {
+        this.toggleInteractiveControls(false);
+        if (!window._GC_gpsBlockedShown && typeof window.GC_showGpsBlocked === "function") {
+          window._GC_gpsBlockedShown = true;
+          window.GC_showGpsBlocked();
+        }
       }
     }
   },

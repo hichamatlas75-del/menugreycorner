@@ -15,7 +15,8 @@ import {
   showTableSelectorModal, parseTableFromUrl, clientTable, updateTableUI,
   setupBurgerMenu,
   GC_showGpsBlocked, GC_hideGpsBlocked, GC_switchGpsTab, GC_dismissGpsBlocked,
-  GC_showPreorderModal, GC_hidePreorderModal
+  GC_showPreorderModal, GC_hidePreorderModal,
+  GC_chooseTableFallback, GC_requestGpsAgain
 } from './ui/modals.js';
 import { renderMenu, toggleCategoryDrawer, openDrawer, closeDrawer, updateFloatingButtons, setupFloatingButtons } from './ui/menu-render.js';
 import { initFeedbackWidget, updateFeedbackTexts } from './ui/feedback.js';

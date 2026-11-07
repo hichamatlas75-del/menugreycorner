@@ -834,35 +834,19 @@ export function GC_switchGpsTab(type) {
 
   if (!btnAndroid || !btnIos || !guideAndroid || !guideIos) return;
 
-  const ACTIVE_BG = 'rgba(201,168,76,0.18)';
-  const ACTIVE_COLOR = '#C9A84C';
-  const INACTIVE_BG = 'transparent';
-  const INACTIVE_COLOR = 'rgba(240,234,216,0.5)';
-
   if (type === 'ios') {
-    btnIos.style.background = ACTIVE_BG;
-    btnIos.style.color = ACTIVE_COLOR;
-    btnIos.style.fontWeight = '700';
-
-    btnAndroid.style.background = INACTIVE_BG;
-    btnAndroid.style.color = INACTIVE_COLOR;
-    btnAndroid.style.fontWeight = '600';
-
+    btnIos.classList.add('active');
+    btnAndroid.classList.remove('active');
     guideIos.style.display = 'flex';
     guideAndroid.style.display = 'none';
   } else {
-    btnAndroid.style.background = ACTIVE_BG;
-    btnAndroid.style.color = ACTIVE_COLOR;
-    btnAndroid.style.fontWeight = '700';
-
-    btnIos.style.background = INACTIVE_BG;
-    btnIos.style.color = INACTIVE_COLOR;
-    btnIos.style.fontWeight = '600';
-
+    btnAndroid.classList.add('active');
+    btnIos.classList.remove('active');
     guideAndroid.style.display = 'flex';
     guideIos.style.display = 'none';
   }
 }
+
 
 export function GC_showGpsBlocked() {
   const overlay = document.getElementById('gpsBlockedOverlay');
@@ -951,9 +935,42 @@ export function GC_dismissModal() {
 }
 
 export function GC_requestGpsAgain() {
-  if (!navigator.geolocation) { return; }
+  if (!navigator.geolocation) {
+    alert("La géolocalisation n'est pas supportée par votre navigateur.");
+    return;
+  }
+
+  const btn = document.getElementById('gpsBtnActivate');
+  const spinner = document.getElementById('gpsBtnSpinner');
+  const label = document.getElementById('gpsBtnActivateLabel');
+  const hint = document.getElementById('gpsBlockedHint');
+
+  // État de chargement visuel immédiat
+  if (btn) btn.disabled = true;
+  if (spinner) spinner.style.display = 'inline-block';
+  if (label) {
+    label.dataset.originalText = label.textContent;
+    const loadingTexts = {
+      fr: "Vérification en cours...",
+      en: "Checking location...",
+      de: "Standort wird geprüft...",
+      es: "Comprobando ubicación...",
+      ar: "جاري التحقق من الموقع..."
+    };
+    label.textContent = loadingTexts[currentLang] || loadingTexts.fr;
+  }
+
+  const restoreBtn = () => {
+    if (btn) btn.disabled = false;
+    if (spinner) spinner.style.display = 'none';
+    if (label && label.dataset.originalText) {
+      label.textContent = label.dataset.originalText;
+    }
+  };
+
   navigator.geolocation.getCurrentPosition(
-    () => {
+    (pos) => {
+      restoreBtn();
       GC_hideGpsBlocked();
       if (typeof window.GPSService !== 'undefined' && typeof window.GPSService.checkLocation === 'function') {
         window.GPSService.checkLocation();
@@ -962,19 +979,78 @@ export function GC_requestGpsAgain() {
       }
     },
     (err) => {
-      if (err.code === 1) {
-        const hint = document.getElementById('gpsBlockedHint');
-        if (hint) {
-          hint.style.display = 'block';
-          hint.style.color = '#e87c3e';
+      restoreBtn();
+
+      // Détecter l'environnement iOS / iPhone pour orienter l'attention
+      const ua = navigator.userAgent || '';
+      const isIOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+      if (isIOS) {
+        GC_switchGpsTab('ios');
+        const card = document.getElementById('gpsSafariQuickCard');
+        if (card) {
+          card.classList.remove('gps-guide-pulse');
+          void card.offsetWidth; // Forcer le reflow du navigateur pour relancer l'animation
+          card.classList.add('gps-guide-pulse');
+          setTimeout(() => card.classList.remove('gps-guide-pulse'), 1400);
+          card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
       } else {
-        location.reload();
+        GC_switchGpsTab('android');
+        const card = document.getElementById('gpsAndroidQuickCard');
+        if (card) {
+          card.classList.remove('gps-guide-pulse');
+          void card.offsetWidth;
+          card.classList.add('gps-guide-pulse');
+          setTimeout(() => card.classList.remove('gps-guide-pulse'), 1400);
+          card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+
+      if (hint) {
+        hint.style.display = 'block';
+        const hintTexts = {
+          fr: "⚠️ Position toujours bloquée : suivez les 3 étapes rapides ci-dessus",
+          en: "⚠️ Location still blocked: Follow the 3 quick steps above",
+          de: "⚠️ Standort noch blockiert: Bitte die 3 Schritte oben ausführen",
+          es: "⚠️ Ubicación aún bloqueada: Siga los 3 pasos anteriores",
+          ar: "⚠️ الموقع ما زال معطلاً: يرجى اتباع الخطوات الـ 3 أعلاه"
+        };
+        hint.textContent = hintTexts[currentLang] || hintTexts.fr;
+      }
+
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        try { navigator.vibrate([40, 60, 40]); } catch (e) {}
       }
     },
-    { timeout: 8000, enableHighAccuracy: true }
+    { timeout: 10000, enableHighAccuracy: true, maximumAge: 0 }
   );
 }
+
+/**
+ * Porte de sortie : Permet au client de saisir directement son numéro de table
+ * sans être bloqué par le refus ou l'impossibilité de la géolocalisation
+ */
+export function GC_chooseTableFallback() {
+  playTapSound();
+  GC_hideGpsBlocked();
+
+  // Marquer la saisie manuelle de table
+  window.GC_manualTableEntry = true;
+
+  // Débloquer immédiatement les contrôles interactifs
+  if (typeof window.GPSService !== 'undefined' && typeof window.GPSService.toggleInteractiveControls === 'function') {
+    window.GPSService.toggleInteractiveControls(true);
+  }
+
+  // Ouvrir le sélecteur / pavé de table
+  if (typeof openTableModal === 'function') {
+    openTableModal();
+  } else if (typeof showTableSelectorModal === 'function') {
+    showTableSelectorModal();
+  }
+}
+
 
 export function GC_patchSubmitButton() {
   const btn = document.getElementById('cdSubmitBtn');
@@ -1053,6 +1129,8 @@ window.GC_selectMode = GC_selectMode;
 window.GC_confirmMode = GC_confirmMode;
 window.GC_dismissModal = GC_dismissModal;
 window.GC_requestGpsAgain = GC_requestGpsAgain;
+window.GC_chooseTableFallback = GC_chooseTableFallback;
 window.GC_patchSubmitButton = GC_patchSubmitButton;
 window.GC_applyPreorderUI = GC_applyPreorderUI;
 window.GC_applyReadonlyUI = GC_applyReadonlyUI;
+
