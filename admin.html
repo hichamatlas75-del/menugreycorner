@@ -17,6 +17,33 @@
 
 <body>
 
+<!-- 🔒 AUTHENTICATION OVERLAY (CODE: greycorner2024) -->
+<div id="adminAuthOverlay" class="admin-auth-overlay">
+    <div class="admin-auth-card" id="adminAuthCard">
+        <div class="admin-auth-brand">
+            <img src="images/logo-gold.webp" alt="Grey Corner" class="admin-auth-logo" onerror="this.src='images/logo.png'">
+            <h1 class="admin-auth-title">Grey Corner</h1>
+            <span class="admin-auth-badge">Console Administrateur</span>
+        </div>
+        <p class="admin-auth-desc">Accès sécurisé réservé à la direction. Veuillez saisir le code d'accès.</p>
+        
+        <form id="adminAuthForm" onsubmit="handleAdminAuth(event)">
+            <div class="admin-auth-input-wrap">
+                <input type="password" id="adminAuthCodeInput" class="admin-auth-input" placeholder="Code d'accès administrateur" autocomplete="current-password" autofocus required>
+                <button type="button" id="adminAuthToggleVisibility" class="admin-auth-toggle-pwd" aria-label="Afficher/Masquer le code">👁️</button>
+            </div>
+            <div id="adminAuthError" class="admin-auth-error" style="display:none;"></div>
+            <button type="submit" id="adminAuthSubmitBtn" class="admin-auth-submit-btn">
+                <span>Déverrouiller la console</span>
+                <span class="admin-auth-btn-arrow">→</span>
+            </button>
+        </form>
+        <div class="admin-auth-footer">
+            <span>🔒 Session sécurisée Grey Corner</span>
+        </div>
+    </div>
+</div>
+
 <!-- 🔴 FROZEN OVERLAY -->
 <div id="systemFreezeOverlay" class="system-freeze-overlay hidden">
     <div class="freeze-box">
@@ -25,7 +52,7 @@
     </div>
 </div>
 
-<div class="admin-container">
+<div class="admin-container" id="adminMainContainer" style="display:none;">
 
     <!-- HEADER -->
     <header class="admin-header">
@@ -39,6 +66,7 @@
         <div style="display:flex; gap:12px; align-items:center;">
             <button id="toggleFreezeBtn" class="freeze-btn">Freeze OFF</button>
             <button id="dbCleanupBtn" class="cleanup-btn">Purger</button>
+            <button id="adminLogoutBtn" class="logout-btn" title="Verrouiller la console">🔒 Déconnexion</button>
         </div>
     </header>
 
