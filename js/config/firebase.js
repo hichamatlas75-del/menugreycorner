@@ -27,7 +27,7 @@ if (typeof firebase !== "undefined" && hasValidFirebaseKeys()) {
             firebase.initializeApp(firebaseConfig);
         }
         db = firebase.firestore();
-        db.enablePersistence().catch(err => {
+        db.enablePersistence({ synchronizeTabs: true }).catch(err => {
             console.warn("⚠️ Persistence disabled:", err.code);
         });
         isFirebaseActive = true;
@@ -148,16 +148,53 @@ export function getTableZoneName(tableNum) {
     return `Table ${num}`;
 }
 
+export const FIREBASE_VAPID_KEY = "BO5FSWfM-nUZt6OZV4uGCbTmEi_dErg_FCVW52oxYi8Y__v0dBreH3KTY1Eo4NjzhZ83g09dESoSlegDI3vBH1I";
+if (typeof window !== "undefined") {
+    window.FIREBASE_VAPID_KEY = FIREBASE_VAPID_KEY;
+}
+
+export const WORKER_URL = "https://greycorner-fcm.hichamatlas75.workers.dev";
+export const WORKER_SECRET = "greycorner_secure_2026";
+
 export function sendFcmToWaiters(type, title, body, tableId, docId) {
-    fetch("https://fcm.googleapis.com/fcm/send", {
+    if (typeof fetch === "undefined") return;
+
+    const payload = {
+        type: type,
+        title: title,
+        body: body,
+        table: String(tableId),
+        tableId: String(tableId),
+        docId: String(docId)
+    };
+
+    // 1. Appel du Worker Cloudflare opérationnel (greycorner-fcm)
+    fetch(WORKER_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            to: "/topics/waiters",
-            notification: { title: title, body: body, sound: "default" },
-            data: { type: type, tableId: String(tableId), docId: String(docId) }
-        })
-    }).catch(e => console.warn("⚠️ FCM notification error:", e));
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${WORKER_SECRET}`
+        },
+        body: JSON.stringify(payload)
+    }).then(res => {
+        if (res.ok) {
+            console.log("🚀 FCM Push relayé avec succès via greycorner-fcm Worker");
+        } else {
+            console.warn("⚠️ Worker greycorner-fcm a renvoyé:", res.status, "— repli sur /api/send-fcm");
+            fetch("/api/send-fcm", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            }).catch(() => {});
+        }
+    }).catch(err => {
+        console.warn("⚠️ Échec réseau greycorner-fcm:", err.message, "— repli sur /api/send-fcm");
+        fetch("/api/send-fcm", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        }).catch(() => {});
+    });
 }
 
 export const dbService = {
@@ -300,55 +337,82 @@ export const dbService = {
             }
         });
     },
+    onSingleCallChange(callId, callback) {
+        if (!callId) return () => {};
+        if (isFirebaseActive && db) {
+            return db.collection("waiters_calls").doc(String(callId))
+                .onSnapshot(doc => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        callback({
+                            id: doc.id,
+                            ...data,
+                            createdAt: data.createdAt ? (typeof data.createdAt.toDate === "function" ? data.createdAt.toDate().toISOString() : data.createdAt) : new Date().toISOString()
+                        });
+                    }
+                }, err => console.warn("Single call stream error:", err));
+        } else {
+            const check = () => {
+                const calls = getLocalCollection("calls");
+                const found = calls.find(c => String(c.id) === String(callId));
+                if (found) callback(found);
+            };
+            check();
+            this.registerSimListener(col => { if (col === "calls") check(); });
+            return () => {};
+        }
+    },
     onCallsChange(callback) {
         if (isFirebaseActive) {
-            const callsMap = new Map();
-
-            const notify = () => {
-                const calls = Array.from(callsMap.values());
+            const activeCallsMap = new Map();
+            const emit = () => {
+                const calls = Array.from(activeCallsMap.values());
                 calls.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                 callback(calls);
             };
 
-            const processSnap = (snapshot, sourceCol) => {
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    const existing = callsMap.get(doc.id);
-                    const createdAtIso = data.createdAt 
-                        ? (typeof data.createdAt.toDate === "function" ? data.createdAt.toDate().toISOString() : data.createdAt) 
-                        : (existing?.createdAt || new Date().toISOString());
-
-                    // Synchronisation bidirectionnelle : si un statut est différent entre les deux collections
-                    if (existing && existing.status !== data.status) {
-                        const targetCol = sourceCol === "waiters_calls" ? "waiter_calls" : "waiters_calls";
-                        db.collection(targetCol).doc(doc.id).update({
-                            status: data.status,
-                            acceptedAt: data.acceptedAt || null,
-                            completedAt: data.completedAt || null
-                        }).catch(() => {});
-                    }
-
-                    callsMap.set(doc.id, {
-                        id: doc.id,
-                        ...existing,
-                        ...data,
-                        createdAt: createdAtIso
+            const unsubWaiters = db.collection("waiters_calls")
+                .orderBy("createdAt", "desc")
+                .limit(50)
+                .onSnapshot(snapshot => {
+                    activeCallsMap.clear();
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        activeCallsMap.set(doc.id, {
+                            id: doc.id,
+                            ...data,
+                            createdAt: data.createdAt ? (typeof data.createdAt.toDate === "function" ? data.createdAt.toDate().toISOString() : data.createdAt) : new Date().toISOString()
+                        });
                     });
-                });
-                notify();
-            };
+                    emit();
+                }, err => console.error("❌ Calls stream error (waiters_calls):", err));
 
-            const unsub1 = db.collection("waiters_calls")
+            // Sync from waiter_calls in case native Android APK accepted via notification
+            const unsubNative = db.collection("waiter_calls")
                 .orderBy("createdAt", "desc")
-                .onSnapshot(s => processSnap(s, "waiters_calls"), err => console.error("❌ Waiters_calls stream error:", err));
-
-            const unsub2 = db.collection("waiter_calls")
-                .orderBy("createdAt", "desc")
-                .onSnapshot(s => processSnap(s, "waiter_calls"), err => console.error("❌ Waiter_calls stream error:", err));
+                .limit(50)
+                .onSnapshot(snapshot => {
+                    let hasChange = false;
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        const existing = activeCallsMap.get(doc.id);
+                        if (existing && existing.status !== data.status) {
+                            existing.status = data.status;
+                            if (data.assignedTo) existing.assignedTo = data.assignedTo;
+                            hasChange = true;
+                            // Propagate back to waiters_calls
+                            db.collection("waiters_calls").doc(doc.id).update({
+                                status: data.status,
+                                assignedTo: data.assignedTo || existing.assignedTo || ""
+                            }).catch(() => {});
+                        }
+                    });
+                    if (hasChange) emit();
+                }, () => {});
 
             return () => {
-                if (unsub1) unsub1();
-                if (unsub2) unsub2();
+                unsubWaiters();
+                unsubNative();
             };
         } else {
             const trigger = () => {
@@ -370,12 +434,14 @@ export const dbService = {
         };
         if (waiterId) updateData.assignedTo = waiterId;
         if (isFirebaseActive) {
-            Promise.all([
-                db.collection("waiters_calls").doc(callId).update(updateData).catch(() => {}),
-                db.collection("waiter_calls").doc(callId).update(updateData).catch(() => {})
-            ])
-            .then(() => { if (callback) callback(true); })
-            .catch(e => { console.error(e); if (callback) callback(false); });
+            db.collection("waiters_calls").doc(callId).update(updateData)
+                .then(() => {
+                    try {
+                        db.collection("waiter_calls").doc(callId).update(updateData).catch(() => {});
+                    } catch (e) {}
+                    if (callback) callback(true);
+                })
+                .catch(e => { console.error(e); if (callback) callback(false); });
         } else {
             const calls = getLocalCollection("calls");
             const idx = calls.findIndex(c => c.id === callId);
@@ -410,7 +476,13 @@ export const dbService = {
                     db.collection("pre_orders").add(data)
                         .then(docRef => {
                             const zoneName = getTableZoneName(tableId);
-                            sendFcmToWaiters("PRE_ORDER", `👨‍🍳 Nouvelle Précommande : ${zoneName}`, `Total : ${totalPrice} MAD`, tableId, docRef.id);
+                            let itemsSummary = "";
+                            if (Array.isArray(items) && items.length > 0) {
+                                const preview = items.slice(0, 3).map(it => `${it.qty || 1}x ${it.name || "Article"}`).join(", ");
+                                const extra = items.length > 3 ? ` (+${items.length - 3})` : "";
+                                itemsSummary = `${preview}${extra} • `;
+                            }
+                            sendFcmToWaiters("PRE_ORDER", `👨‍🍳 Nouvelle Précommande : ${zoneName}`, `${itemsSummary}Total : ${totalPrice} MAD`, tableId, docRef.id);
                             if (callback) callback(true, docRef.id);
                         })
                         .catch(e => { console.error(e); if (callback) callback(false); });
@@ -432,10 +504,36 @@ export const dbService = {
             }
         });
     },
+    onSinglePreOrderChange(orderId, callback) {
+        if (!orderId) return () => {};
+        if (isFirebaseActive && db) {
+            return db.collection("pre_orders").doc(String(orderId))
+                .onSnapshot(doc => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        callback({
+                            id: doc.id,
+                            ...data,
+                            createdAt: data.createdAt ? (typeof data.createdAt.toDate === "function" ? data.createdAt.toDate().toISOString() : data.createdAt) : new Date().toISOString()
+                        });
+                    }
+                }, err => console.warn("Single pre_order stream error:", err));
+        } else {
+            const check = () => {
+                const orders = getLocalCollection("pre_orders");
+                const found = orders.find(o => String(o.id) === String(orderId));
+                if (found) callback(found);
+            };
+            check();
+            this.registerSimListener(col => { if (col === "pre_orders") check(); });
+            return () => {};
+        }
+    },
     onPreOrdersChange(callback) {
         if (isFirebaseActive) {
             return db.collection("pre_orders")
                 .orderBy("createdAt", "desc")
+                .limit(50)
                 .onSnapshot(snapshot => {
                     const orders = [];
                     snapshot.forEach(doc => {
@@ -512,21 +610,30 @@ export const dbService = {
     },
     cleanupOldData(callback) {
         const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000);
-        if (isFirebaseActive) {
-            db.collection("waiters_calls").where("createdAt", "<", cutoff).get()
+        if (isFirebaseActive && db) {
+            db.collection("waiters_calls").where("createdAt", "<", cutoff).limit(400).get()
                 .then(snapshot => {
+                    if (snapshot.empty) return;
                     const batch = db.batch();
                     snapshot.forEach(doc => batch.delete(doc.ref));
                     return batch.commit();
                 })
-                .then(() => db.collection("pre_orders").where("createdAt", "<", cutoff).get())
+                .then(() => db.collection("waiter_calls").where("createdAt", "<", cutoff).limit(400).get())
                 .then(snapshot => {
+                    if (!snapshot || snapshot.empty) return;
+                    const batch = db.batch();
+                    snapshot.forEach(doc => batch.delete(doc.ref));
+                    return batch.commit();
+                })
+                .then(() => db.collection("pre_orders").where("createdAt", "<", cutoff).limit(400).get())
+                .then(snapshot => {
+                    if (!snapshot || snapshot.empty) return;
                     const batch = db.batch();
                     snapshot.forEach(doc => batch.delete(doc.ref));
                     return batch.commit();
                 })
                 .then(() => { if (callback) callback(true); })
-                .catch(e => { console.error(e); if (callback) callback(false); });
+                .catch(e => { console.error("❌ Cleanup error:", e); if (callback) callback(false); });
         } else {
             const calls = getLocalCollection("calls").filter(c => new Date(c.createdAt) >= cutoff);
             setLocalCollection("calls", calls);

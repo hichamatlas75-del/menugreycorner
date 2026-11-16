@@ -7,6 +7,7 @@
 
 import { currentLang } from '../services/i18n.js';
 import { clientTable } from './modals.js';
+import { showToast } from '../services/cart.js';
 
 const MANAGER_PHONE = "212666265160";
 const GOOGLE_REVIEW_URL = "https://g.page/r/CXF0QNm04m-ZEAE/review";
@@ -111,6 +112,31 @@ const FEEDBACK_I18N = {
     waRatingLabel: "Bewertung",
     waTableLabel: "Tisch",
     waCommentPrompt: "Mein Kommentar / Feedback: "
+  },
+  es: {
+    fabLabel: "Opinión y Servicio al Cliente",
+    fabSub: "Su opinión importa • Respuesta inmediata del gerente",
+    fabCta: "Calificar ➜",
+    title: "Su opinión nos importa",
+    subtitle: "¿Cómo fue su experiencia en Grey Corner?",
+    note1: "Decepcionante",
+    note2: "Aceptable",
+    note3: "Regular",
+    note4: "Muy bueno",
+    note5: "¡Excelente!",
+    stepUnhappyTitle: "Atención inmediata",
+    stepUnhappyText: "Lo sentimos sinceramente. Nuestro gerente atiende personalmente su mensaje en WhatsApp para responderle al instante.",
+    openWhatsAppBtn: "Contactar al Gerente por WhatsApp 💬",
+    stepHappyTitle: "¡Muchísimas gracias! 😍",
+    stepHappyText: "Su satisfacción es nuestra mayor recompensa. ¡Apoye a nuestro equipo publicando su reseña de 5 estrellas en Google!",
+    googleBtn: "Publicar mi opinión en Google ⭐",
+    whatsappHappyBtn: "Enviar un mensaje al Gerente 💬",
+    tableNone: "No especificada",
+    waUnhappyPrefix: "Hola Grey Corner, les escribo tras mi visita",
+    waHappyPrefix: "¡Hola Grey Corner, felicitaciones por su acogida y excelente servicio!",
+    waRatingLabel: "Calificación",
+    waTableLabel: "Mesa",
+    waCommentPrompt: "Mi comentario / opinión : "
   }
 };
 
@@ -216,29 +242,39 @@ export function updateFeedbackTexts() {
 
 export function handleFeedbackRating(stars, clickedBtn) {
   currentSelectedRating = stars;
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
+  const modal = document.getElementById("feedbackModal");
+  if (modal) {
+    modal.querySelectorAll(".fb-rate-btn").forEach(btn => btn.classList.remove("selected"));
+  }
   if (clickedBtn) {
     clickedBtn.classList.add("selected");
   }
 
-  // Feedback visuel et tactile rapide (180ms) puis redirection immédiate sans popup-blocker
-  setTimeout(() => {
-    if (stars <= 3) {
-      // Notes 1 à 3 : Traitement direct Manager WhatsApp (+212666265160)
-      const waUrl = buildWhatsAppUrl(stars, false);
-      closeFeedbackModal();
-      if (isMobile) {
-        window.location.href = waUrl;
-      } else {
-        window.open(waUrl, "_blank", "noopener");
-      }
-    } else {
-      // Notes 4 et 5 : Avis Google Reviews 5 étoiles
-      closeFeedbackModal();
+  const stepRating = document.getElementById("fbStepRating");
+  const stepUnhappy = document.getElementById("fbStepUnhappy");
+  const stepHappy = document.getElementById("fbStepHappy");
+
+  if (stepRating) stepRating.style.display = "none";
+
+  if (stars <= 3) {
+    if (stepUnhappy) stepUnhappy.style.display = "block";
+    if (stepHappy) stepHappy.style.display = "none";
+  } else {
+    // 4 ou 5 étoiles : Redirection DIRECTE vers Google Maps / Avis
+    closeFeedbackModal();
+    const redirectMsgs = {
+      fr: `⭐ Merci pour vos ${stars} étoiles ! Redirection vers Google Maps...`,
+      en: `⭐ Thank you for your ${stars}-star rating! Redirecting to Google Maps...`,
+      de: `⭐ Vielen Dank für Ihre ${stars}-Sterne-Bewertung! Weiterleitung zu Google Maps...`,
+      es: `⭐ ¡Gracias por su calificación de ${stars} estrellas! Redirigiendo a Google Maps...`,
+      ar: `⭐ شكراً جزيلاً لتقييمكم الممتاز (${stars} نجوم) ! جاري توجيهكم إلى Google Maps...`
+    };
+    showToast(redirectMsgs[currentLang] || redirectMsgs.fr);
+    setTimeout(() => {
       window.open(GOOGLE_REVIEW_URL, "_blank", "noopener");
-    }
-  }, 180);
+    }, 450);
+  }
 }
 
 function buildWhatsAppUrl(stars, isHappy) {
@@ -310,6 +346,36 @@ export function initFeedbackWidget() {
       }
     });
   });
+
+  // Action buttons: Unhappy WhatsApp, Happy Google Reviews, Happy WhatsApp
+  const openWaBtn = document.getElementById("fbOpenWhatsAppBtn");
+  if (openWaBtn && !openWaBtn._hasClickListener) {
+    openWaBtn._hasClickListener = true;
+    openWaBtn.addEventListener("click", () => {
+      const waUrl = buildWhatsAppUrl(currentSelectedRating || 3, false);
+      closeFeedbackModal();
+      window.open(waUrl, "_blank", "noopener");
+    });
+  }
+
+  const googleBtn = document.getElementById("fbGoogleReviewBtn");
+  if (googleBtn && !googleBtn._hasClickListener) {
+    googleBtn._hasClickListener = true;
+    googleBtn.addEventListener("click", () => {
+      closeFeedbackModal();
+      window.open(GOOGLE_REVIEW_URL, "_blank", "noopener");
+    });
+  }
+
+  const waHappyBtn = document.getElementById("fbWhatsAppHappyBtn");
+  if (waHappyBtn && !waHappyBtn._hasClickListener) {
+    waHappyBtn._hasClickListener = true;
+    waHappyBtn.addEventListener("click", () => {
+      const waUrl = buildWhatsAppUrl(currentSelectedRating || 5, true);
+      closeFeedbackModal();
+      window.open(waUrl, "_blank", "noopener");
+    });
+  }
 
   // Escape key closes modal
   document.addEventListener("keydown", (e) => {
