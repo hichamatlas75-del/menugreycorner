@@ -682,46 +682,96 @@
         if (callback) callback(null);
         return;
       }
-      if (isFirebaseActive) {
-        db.collection("loyalty_members").doc(phone).get().then((doc) => {
-          if (doc.exists) {
-            callback({ phone: doc.id, ...doc.data() });
-          } else {
-            callback(null);
-          }
-        }).catch((err) => {
-          console.error("\u274C getLoyaltyMember error:", err);
-          if (callback) callback(null);
-        });
-      } else {
+      const checkLocal = () => {
         const members = getLocalCollection("loyalty_members", []);
         const found = members.find((m) => m.phone === phone);
-        if (callback) callback(found ? { ...found } : null);
+        if (found) return { ...found };
+        const storedPhone = typeof localStorage !== "undefined" ? localStorage.getItem("gc_loyalty_phone") : null;
+        if (storedPhone === phone) {
+          return {
+            phone,
+            firstName: localStorage.getItem("gc_loyalty_name") || "Client",
+            points: parseInt(localStorage.getItem("gc_loyalty_pts")) || 50,
+            totalEarned: 50,
+            rewardsClaimed: 0,
+            source: "qr_menu"
+          };
+        }
+        return null;
+      };
+      if (isFirebaseActive && db) {
+        whenAuthReady(() => {
+          db.collection("loyalty_members").doc(phone).get().then((doc) => {
+            if (doc.exists) {
+              const data = { phone: doc.id, ...doc.data() };
+              const members = getLocalCollection("loyalty_members", []);
+              const idx = members.findIndex((m) => m.phone === phone);
+              if (idx >= 0) members[idx] = data;
+              else members.push(data);
+              setLocalCollection("loyalty_members", members);
+              if (callback) callback(data);
+            } else {
+              if (callback) callback(checkLocal());
+            }
+          }).catch((err) => {
+            console.warn("\u26A0\uFE0F getLoyaltyMember Firestore error (repli local):", err.message || err);
+            if (callback) callback(checkLocal());
+          });
+        });
+      } else {
+        if (callback) callback(checkLocal());
       }
     },
     onLoyaltyMemberChange(rawPhone, callback) {
       const phone = normalizePhone(rawPhone);
       if (!phone) return () => {
       };
-      if (isFirebaseActive) {
-        return db.collection("loyalty_members").doc(phone).onSnapshot((doc) => {
-          if (doc.exists) {
-            callback({ phone: doc.id, ...doc.data() });
-          } else {
-            callback(null);
-          }
-        }, (err) => {
-          console.error("\u274C onLoyaltyMemberChange error:", err);
-        });
-      } else {
-        const trigger = () => {
-          const members = getLocalCollection("loyalty_members", []);
-          const found = members.find((m) => m.phone === phone);
-          callback(found ? { ...found } : null);
+      const checkLocal = () => {
+        const members = getLocalCollection("loyalty_members", []);
+        const found = members.find((m) => m.phone === phone);
+        if (found) {
+          callback(found);
+          return;
+        }
+        const storedPhone = typeof localStorage !== "undefined" ? localStorage.getItem("gc_loyalty_phone") : null;
+        if (storedPhone === phone) {
+          callback({
+            phone,
+            firstName: localStorage.getItem("gc_loyalty_name") || "Client",
+            points: parseInt(localStorage.getItem("gc_loyalty_pts")) || 50,
+            totalEarned: 50,
+            rewardsClaimed: 0,
+            source: "qr_menu"
+          });
+        }
+      };
+      if (isFirebaseActive && db) {
+        let unsub = () => {
         };
-        trigger();
+        whenAuthReady(() => {
+          unsub = db.collection("loyalty_members").doc(phone).onSnapshot((doc) => {
+            if (doc.exists) {
+              const data = { phone: doc.id, ...doc.data() };
+              callback(data);
+            } else {
+              checkLocal();
+            }
+          }, (err) => {
+            console.warn("\u26A0\uFE0F onLoyaltyMemberChange error (repli local):", err.message || err);
+            checkLocal();
+          });
+        });
+        checkLocal();
+        return () => {
+          try {
+            unsub();
+          } catch (e) {
+          }
+        };
+      } else {
+        checkLocal();
         this.registerSimListener((col) => {
-          if (col === "loyalty_members") trigger();
+          if (col === "loyalty_members") checkLocal();
         });
         return () => {
         };
@@ -735,48 +785,70 @@
       }
       const cleanName = (firstName || "Client").trim();
       const src = source || "qr_menu";
-      this.getLoyaltyMember(phone, (existing) => {
-        if (existing) {
-          if (callback) callback(true, existing, false);
-          return;
-        }
-        const welcomePts = 50;
-        const newMember = {
-          phone,
-          firstName: cleanName,
-          points: welcomePts,
-          totalEarned: welcomePts,
-          rewardsClaimed: 0,
-          source: src,
-          createdAt: isFirebaseActive ? firebase.firestore.FieldValue.serverTimestamp() : (/* @__PURE__ */ new Date()).toISOString(),
-          updatedAt: isFirebaseActive ? firebase.firestore.FieldValue.serverTimestamp() : (/* @__PURE__ */ new Date()).toISOString()
-        };
-        const tx = {
-          phone,
-          type: "WELCOME",
-          pointsDelta: welcomePts,
-          amountDH: 0,
-          validatedBy: src === "waiter_direct" ? "waiter" : src === "admin" ? "admin" : "system",
-          note: "Cadeau de bienvenue (+50 pts offerts)",
-          createdAt: isFirebaseActive ? firebase.firestore.FieldValue.serverTimestamp() : (/* @__PURE__ */ new Date()).toISOString()
-        };
-        if (isFirebaseActive) {
-          db.collection("loyalty_members").doc(phone).set(newMember).then(() => db.collection("loyalty_transactions").add(tx)).then(() => {
-            console.log(`\u{1F451} Membre fid\xE9lit\xE9 cr\xE9\xE9 : ${cleanName} (${phone}) +50 pts`);
-            if (callback) callback(true, { ...newMember, createdAt: (/* @__PURE__ */ new Date()).toISOString(), updatedAt: (/* @__PURE__ */ new Date()).toISOString() }, true);
-          }).catch((err) => {
-            console.error("\u274C Erreur cr\xE9ation membre fid\xE9lit\xE9:", err);
-            if (callback) callback(false, err, false);
-          });
-        } else {
-          const members = getLocalCollection("loyalty_members", []);
-          members.push(newMember);
+      const welcomePts = 50;
+      const newMember = {
+        phone,
+        firstName: cleanName,
+        points: welcomePts,
+        totalEarned: welcomePts,
+        rewardsClaimed: 0,
+        source: src,
+        createdAt: isFirebaseActive ? firebase.firestore.FieldValue.serverTimestamp() : (/* @__PURE__ */ new Date()).toISOString(),
+        updatedAt: isFirebaseActive ? firebase.firestore.FieldValue.serverTimestamp() : (/* @__PURE__ */ new Date()).toISOString()
+      };
+      const tx = {
+        phone,
+        type: "WELCOME",
+        pointsDelta: welcomePts,
+        amountDH: 0,
+        validatedBy: src === "waiter_direct" ? "waiter" : src === "admin" ? "admin" : "system",
+        note: "Cadeau de bienvenue (+50 pts offerts)",
+        createdAt: isFirebaseActive ? firebase.firestore.FieldValue.serverTimestamp() : (/* @__PURE__ */ new Date()).toISOString()
+      };
+      const saveLocalFallback = (existing) => {
+        const members = getLocalCollection("loyalty_members", []);
+        let target = existing;
+        if (!target) {
+          target = {
+            ...newMember,
+            createdAt: (/* @__PURE__ */ new Date()).toISOString(),
+            updatedAt: (/* @__PURE__ */ new Date()).toISOString()
+          };
+          const idx = members.findIndex((m) => m.phone === phone);
+          if (idx >= 0) members[idx] = target;
+          else members.push(target);
           setLocalCollection("loyalty_members", members);
           const txs = getLocalCollection("loyalty_transactions", []);
           txs.push({ id: "tx_" + Date.now(), ...tx });
           setLocalCollection("loyalty_transactions", txs);
-          if (callback) callback(true, newMember, true);
         }
+        try {
+          localStorage.setItem("gc_loyalty_phone", target.phone);
+          localStorage.setItem("gc_loyalty_name", target.firstName);
+          localStorage.setItem("gc_loyalty_pts", String(target.points || welcomePts));
+        } catch (e) {
+        }
+        if (callback) callback(true, target, !existing);
+      };
+      whenAuthReady(() => {
+        this.getLoyaltyMember(phone, (existing) => {
+          if (existing) {
+            saveLocalFallback(existing);
+            return;
+          }
+          if (isFirebaseActive && db) {
+            db.collection("loyalty_members").doc(phone).set(newMember).then(() => db.collection("loyalty_transactions").add(tx)).then(() => {
+              console.log(`\u{1F451} Membre fid\xE9lit\xE9 cr\xE9\xE9 : ${cleanName} (${phone}) +50 pts`);
+              const saved = { ...newMember, createdAt: (/* @__PURE__ */ new Date()).toISOString(), updatedAt: (/* @__PURE__ */ new Date()).toISOString() };
+              saveLocalFallback(saved);
+            }).catch((err) => {
+              console.warn("\u26A0\uFE0F Erreur Firestore (quota/r\xE9seau) lors de la cr\xE9ation membre fid\xE9lit\xE9:", err.message || err);
+              saveLocalFallback(null);
+            });
+          } else {
+            saveLocalFallback(null);
+          }
+        });
       });
     },
     creditLoyaltyPoints(rawPhone, amountDH, tableNumber, validatedBy, orderId, callback) {
@@ -802,51 +874,65 @@
         note: `Encaissement ${amount} DH (+${pointsToAdd} pts)`,
         createdAt: isFirebaseActive ? firebase.firestore.FieldValue.serverTimestamp() : (/* @__PURE__ */ new Date()).toISOString()
       };
-      if (isFirebaseActive) {
-        const memberRef = db.collection("loyalty_members").doc(phone);
-        memberRef.update({
-          points: firebase.firestore.FieldValue.increment(pointsToAdd),
-          totalEarned: firebase.firestore.FieldValue.increment(pointsToAdd),
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        }).then(() => db.collection("loyalty_transactions").add(tx)).then(() => {
-          if (orderId) {
-            db.collection("pre_orders").doc(orderId).update({ loyaltyCredited: true }).catch(() => {
-            });
-          }
-          return memberRef.get();
-        }).then((doc) => {
-          const updatedData = doc.exists ? doc.data() : null;
-          if (callback) callback(true, pointsToAdd, updatedData ? updatedData.points : null);
-        }).catch((err) => {
-          console.error("\u274C creditLoyaltyPoints error:", err);
-          if (callback) callback(false, err);
-        });
-      } else {
+      const updateLocal = () => {
         const members = getLocalCollection("loyalty_members", []);
-        const idx = members.findIndex((m) => m.phone === phone);
-        let newPts = 0;
-        if (idx !== -1) {
+        let idx = members.findIndex((m) => m.phone === phone);
+        let newTotal = pointsToAdd;
+        if (idx >= 0) {
           members[idx].points = (members[idx].points || 0) + pointsToAdd;
           members[idx].totalEarned = (members[idx].totalEarned || 0) + pointsToAdd;
           members[idx].updatedAt = (/* @__PURE__ */ new Date()).toISOString();
-          newPts = members[idx].points;
-          setLocalCollection("loyalty_members", members);
+          newTotal = members[idx].points;
+        } else {
+          newTotal = 50 + pointsToAdd;
+          members.push({
+            phone,
+            firstName: "Client",
+            points: newTotal,
+            totalEarned: newTotal,
+            rewardsClaimed: 0,
+            source: "waiter_direct",
+            createdAt: (/* @__PURE__ */ new Date()).toISOString(),
+            updatedAt: (/* @__PURE__ */ new Date()).toISOString()
+          });
         }
+        setLocalCollection("loyalty_members", members);
         const txs = getLocalCollection("loyalty_transactions", []);
         txs.push({ id: "tx_" + Date.now(), ...tx });
         setLocalCollection("loyalty_transactions", txs);
-        if (orderId) {
-          const orders = getLocalCollection("pre_orders", []);
-          const oIdx = orders.findIndex((o) => o.id === orderId);
-          if (oIdx !== -1) {
-            orders[oIdx].loyaltyCredited = true;
-            setLocalCollection("pre_orders", orders);
+        try {
+          if (localStorage.getItem("gc_loyalty_phone") === phone) {
+            localStorage.setItem("gc_loyalty_pts", String(newTotal));
           }
+        } catch (e) {
         }
-        if (callback) callback(true, pointsToAdd, newPts);
+        if (callback) callback(true, pointsToAdd, newTotal);
+      };
+      if (isFirebaseActive && db) {
+        whenAuthReady(() => {
+          const memberRef = db.collection("loyalty_members").doc(phone);
+          memberRef.update({
+            points: firebase.firestore.FieldValue.increment(pointsToAdd),
+            totalEarned: firebase.firestore.FieldValue.increment(pointsToAdd),
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }).then(() => db.collection("loyalty_transactions").add(tx)).then(() => {
+            if (orderId) {
+              db.collection("pre_orders").doc(orderId).update({ loyaltyCredited: true }).catch(() => {
+              });
+            }
+            return memberRef.get();
+          }).then((doc) => {
+            updateLocal();
+          }).catch((err) => {
+            console.warn("\u26A0\uFE0F creditLoyaltyPoints Firestore error (repli local):", err.message || err);
+            updateLocal();
+          });
+        });
+      } else {
+        updateLocal();
       }
     },
-    redeemLoyaltyReward(rawPhone, validatedBy, callback) {
+    redeemLoyaltyReward(rawPhone, waiterName, callback) {
       const phone = normalizePhone(rawPhone);
       if (!phone) {
         if (callback) callback(false, "Num\xE9ro invalide");
@@ -858,84 +944,92 @@
         type: "REDEEM",
         pointsDelta: -cost,
         amountDH: 0,
-        validatedBy: validatedBy || "waiter",
+        validatedBy: waiterName || "waiter",
         note: "Consommation gratuite offerte (-500 pts)",
         createdAt: isFirebaseActive ? firebase.firestore.FieldValue.serverTimestamp() : (/* @__PURE__ */ new Date()).toISOString()
       };
-      if (isFirebaseActive) {
-        const memberRef = db.collection("loyalty_members").doc(phone);
-        memberRef.update({
-          points: firebase.firestore.FieldValue.increment(-cost),
-          rewardsClaimed: firebase.firestore.FieldValue.increment(1),
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        }).then(() => db.collection("loyalty_transactions").add(tx)).then(() => memberRef.get()).then((doc) => {
-          const updated = doc.exists ? doc.data() : null;
-          if (callback) callback(true, updated ? updated.points : null);
-        }).catch((err) => {
-          console.error("\u274C redeemLoyaltyReward error:", err);
-          if (callback) callback(false, err);
-        });
-      } else {
+      const updateLocal = () => {
         const members = getLocalCollection("loyalty_members", []);
         const idx = members.findIndex((m) => m.phone === phone);
-        let remaining = 0;
-        if (idx !== -1) {
+        let resPts = 0;
+        if (idx >= 0) {
+          if ((members[idx].points || 0) < cost) {
+            if (callback) callback(false, "Solde insuffisant (minimum 500 pts)");
+            return;
+          }
           members[idx].points = Math.max(0, (members[idx].points || 0) - cost);
           members[idx].rewardsClaimed = (members[idx].rewardsClaimed || 0) + 1;
           members[idx].updatedAt = (/* @__PURE__ */ new Date()).toISOString();
-          remaining = members[idx].points;
+          resPts = members[idx].points;
           setLocalCollection("loyalty_members", members);
         }
         const txs = getLocalCollection("loyalty_transactions", []);
         txs.push({ id: "tx_" + Date.now(), ...tx });
         setLocalCollection("loyalty_transactions", txs);
-        if (callback) callback(true, remaining);
+        try {
+          if (localStorage.getItem("gc_loyalty_phone") === phone) {
+            localStorage.setItem("gc_loyalty_pts", String(resPts));
+          }
+        } catch (e) {
+        }
+        if (callback) callback(true, resPts);
+      };
+      if (isFirebaseActive && db) {
+        whenAuthReady(() => {
+          const memberRef = db.collection("loyalty_members").doc(phone);
+          memberRef.get().then((doc) => {
+            if (!doc.exists) {
+              updateLocal();
+              return;
+            }
+            const currentPts = doc.data().points || 0;
+            if (currentPts < cost) {
+              if (callback) callback(false, "Solde insuffisant (minimum 500 pts)");
+              return;
+            }
+            memberRef.update({
+              points: firebase.firestore.FieldValue.increment(-cost),
+              rewardsClaimed: firebase.firestore.FieldValue.increment(1),
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => db.collection("loyalty_transactions").add(tx)).then(() => {
+              updateLocal();
+            }).catch((err) => {
+              console.warn("\u26A0\uFE0F redeemLoyaltyReward error (repli local):", err.message || err);
+              updateLocal();
+            });
+          }).catch((err) => {
+            console.warn("\u26A0\uFE0F redeemLoyaltyReward get error (repli local):", err.message || err);
+            updateLocal();
+          });
+        });
+      } else {
+        updateLocal();
       }
     },
-    adjustLoyaltyPoints(rawPhone, deltaPoints, reason, validatedBy, callback) {
+    adjustLoyaltyPoints(rawPhone, delta, reason, adminName, callback) {
       const phone = normalizePhone(rawPhone);
       if (!phone) {
         if (callback) callback(false, "Num\xE9ro invalide");
         return;
       }
-      const delta = parseInt(deltaPoints, 10);
-      if (isNaN(delta) || delta === 0) {
-        if (callback) callback(false, "Delta invalide");
-        return;
-      }
+      const pointsDelta = parseInt(delta) || 0;
       const tx = {
         phone,
         type: "ADMIN_ADJUST",
-        pointsDelta: delta,
+        pointsDelta,
         amountDH: 0,
-        validatedBy: validatedBy || "admin",
-        note: reason || `Ajustement manuel admin (${delta > 0 ? "+" : ""}${delta} pts)`,
+        validatedBy: adminName || "admin",
+        note: reason || `Ajustement manuel (${pointsDelta >= 0 ? "+" : ""}${pointsDelta} pts)`,
         createdAt: isFirebaseActive ? firebase.firestore.FieldValue.serverTimestamp() : (/* @__PURE__ */ new Date()).toISOString()
       };
-      if (isFirebaseActive) {
-        const memberRef = db.collection("loyalty_members").doc(phone);
-        const updateObj = {
-          points: firebase.firestore.FieldValue.increment(delta),
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        };
-        if (delta > 0) {
-          updateObj.totalEarned = firebase.firestore.FieldValue.increment(delta);
-        }
-        memberRef.update(updateObj).then(() => db.collection("loyalty_transactions").add(tx)).then(() => memberRef.get()).then((doc) => {
-          const updated = doc.exists ? doc.data() : null;
-          if (callback) callback(true, updated ? updated.points : null);
-        }).catch((err) => {
-          console.error("\u274C adjustLoyaltyPoints error:", err);
-          if (callback) callback(false, err);
-        });
-      } else {
+      const updateLocal = () => {
         const members = getLocalCollection("loyalty_members", []);
         const idx = members.findIndex((m) => m.phone === phone);
         let resPts = 0;
-        if (idx !== -1) {
-          members[idx].points = Math.max(0, (members[idx].points || 0) + delta);
-          if (delta > 0) {
-            members[idx].totalEarned = (members[idx].totalEarned || 0) + delta;
+        if (idx >= 0) {
+          members[idx].points = Math.max(0, (members[idx].points || 0) + pointsDelta);
+          if (pointsDelta > 0) {
+            members[idx].totalEarned = (members[idx].totalEarned || 0) + pointsDelta;
           }
           members[idx].updatedAt = (/* @__PURE__ */ new Date()).toISOString();
           resPts = members[idx].points;
@@ -945,27 +1039,58 @@
         txs.push({ id: "tx_" + Date.now(), ...tx });
         setLocalCollection("loyalty_transactions", txs);
         if (callback) callback(true, resPts);
+      };
+      if (isFirebaseActive && db) {
+        whenAuthReady(() => {
+          const memberRef = db.collection("loyalty_members").doc(phone);
+          const updates = {
+            points: firebase.firestore.FieldValue.increment(pointsDelta),
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          };
+          if (pointsDelta > 0) {
+            updates.totalEarned = firebase.firestore.FieldValue.increment(pointsDelta);
+          }
+          memberRef.update(updates).then(() => db.collection("loyalty_transactions").add(tx)).then(() => memberRef.get()).then((doc) => updateLocal()).catch((err) => {
+            console.warn("\u26A0\uFE0F adjustLoyaltyPoints error (repli local):", err.message || err);
+            updateLocal();
+          });
+        });
+      } else {
+        updateLocal();
       }
     },
     onAllLoyaltyMembersChange(callback) {
-      if (isFirebaseActive) {
-        return db.collection("loyalty_members").onSnapshot((snapshot) => {
-          const list = [];
-          snapshot.forEach((doc) => {
-            list.push({ phone: doc.id, ...doc.data() });
-          });
-          callback(list);
-        }, (err) => {
-          console.error("\u274C onAllLoyaltyMembersChange error:", err);
-        });
-      } else {
-        const trigger = () => {
-          const members = getLocalCollection("loyalty_members", []);
-          callback(members);
+      const triggerLocal = () => {
+        const members = getLocalCollection("loyalty_members", []);
+        callback(members);
+      };
+      if (isFirebaseActive && db) {
+        let unsub = () => {
         };
-        trigger();
+        whenAuthReady(() => {
+          unsub = db.collection("loyalty_members").onSnapshot((snapshot) => {
+            const list = [];
+            snapshot.forEach((doc) => {
+              list.push({ phone: doc.id, ...doc.data() });
+            });
+            setLocalCollection("loyalty_members", list);
+            callback(list);
+          }, (err) => {
+            console.warn("\u26A0\uFE0F onAllLoyaltyMembersChange error (repli local):", err.message || err);
+            triggerLocal();
+          });
+        });
+        triggerLocal();
+        return () => {
+          try {
+            unsub();
+          } catch (e) {
+          }
+        };
+      } else {
+        triggerLocal();
         this.registerSimListener((col) => {
-          if (col === "loyalty_members") trigger();
+          if (col === "loyalty_members") triggerLocal();
         });
         return () => {
         };
@@ -973,50 +1098,70 @@
     },
     getLoyaltyTransactions(rawPhone, callback) {
       const phone = normalizePhone(rawPhone);
-      if (isFirebaseActive) {
-        let q = db.collection("loyalty_transactions");
-        if (phone) {
-          q = q.where("phone", "==", phone);
-        }
-        q.get().then((snapshot) => {
-          const list = [];
-          snapshot.forEach((doc) => {
-            const data = doc.data();
-            list.push({
-              id: doc.id,
-              ...data,
-              createdAt: data.createdAt ? typeof data.createdAt.toDate === "function" ? data.createdAt.toDate().toISOString() : data.createdAt : (/* @__PURE__ */ new Date()).toISOString()
-            });
-          });
-          list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-          if (callback) callback(list);
-        }).catch((err) => {
-          console.error("\u274C getLoyaltyTransactions error:", err);
-          if (callback) callback([]);
-        });
-      } else {
+      const triggerLocal = () => {
         let txs = getLocalCollection("loyalty_transactions", []);
         if (phone) {
           txs = txs.filter((t2) => t2.phone === phone);
         }
         txs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         if (callback) callback(txs);
+      };
+      if (isFirebaseActive && db) {
+        whenAuthReady(() => {
+          let q = db.collection("loyalty_transactions");
+          if (phone) {
+            q = q.where("phone", "==", phone);
+          }
+          q.limit(100).get().then((snapshot) => {
+            const list = [];
+            snapshot.forEach((doc) => {
+              const data = doc.data();
+              list.push({
+                id: doc.id,
+                ...data,
+                createdAt: data.createdAt ? typeof data.createdAt.toDate === "function" ? data.createdAt.toDate().toISOString() : data.createdAt : (/* @__PURE__ */ new Date()).toISOString()
+              });
+            });
+            list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            if (callback) callback(list);
+          }).catch((err) => {
+            console.warn("\u26A0\uFE0F getLoyaltyTransactions error (repli local):", err.message || err);
+            triggerLocal();
+          });
+        });
+      } else {
+        triggerLocal();
       }
     },
     onLoyaltySettingsChange(callback) {
-      if (isFirebaseActive) {
-        return db.collection("system").doc("loyalty_config").onSnapshot((doc) => {
-          const data = doc.exists ? doc.data() : { rewardThreshold: 500, welcomeBonus: 50, pointsPerDH: 1 };
-          callback(data);
-        }, (err) => console.error("\u274C onLoyaltySettingsChange error:", err));
-      } else {
-        const trigger = () => {
-          const cfg = getLocalCollection("loyalty_settings", { rewardThreshold: 500, welcomeBonus: 50, pointsPerDH: 1 });
-          callback(cfg);
+      const triggerLocal = () => {
+        const cfg = getLocalCollection("loyalty_settings", { rewardThreshold: 500, welcomeBonus: 50, pointsPerDH: 1 });
+        callback(cfg);
+      };
+      if (isFirebaseActive && db) {
+        let unsub = () => {
         };
-        trigger();
+        whenAuthReady(() => {
+          unsub = db.collection("system").doc("loyalty_config").onSnapshot((doc) => {
+            const data = doc.exists ? doc.data() : { rewardThreshold: 500, welcomeBonus: 50, pointsPerDH: 1 };
+            setLocalCollection("loyalty_settings", data);
+            callback(data);
+          }, (err) => {
+            console.warn("\u26A0\uFE0F onLoyaltySettingsChange error (repli local):", err.message || err);
+            triggerLocal();
+          });
+        });
+        triggerLocal();
+        return () => {
+          try {
+            unsub();
+          } catch (e) {
+          }
+        };
+      } else {
+        triggerLocal();
         this.registerSimListener((col) => {
-          if (col === "loyalty_settings") trigger();
+          if (col === "loyalty_settings") triggerLocal();
         });
         return () => {
         };
@@ -1029,15 +1174,17 @@
         pointsPerDH: parseFloat(settings.pointsPerDH) || 1,
         updatedAt: isFirebaseActive ? firebase.firestore.FieldValue.serverTimestamp() : (/* @__PURE__ */ new Date()).toISOString()
       };
-      if (isFirebaseActive) {
-        db.collection("system").doc("loyalty_config").set(data, { merge: true }).then(() => {
-          if (callback) callback(true);
-        }).catch((err) => {
-          console.error(err);
-          if (callback) callback(false, err);
+      setLocalCollection("loyalty_settings", data);
+      if (isFirebaseActive && db) {
+        whenAuthReady(() => {
+          db.collection("system").doc("loyalty_config").set(data, { merge: true }).then(() => {
+            if (callback) callback(true);
+          }).catch((err) => {
+            console.warn("\u26A0\uFE0F setLoyaltySettings error:", err.message || err);
+            if (callback) callback(true);
+          });
         });
       } else {
-        setLocalCollection("loyalty_settings", data);
         if (callback) callback(true);
       }
     },
