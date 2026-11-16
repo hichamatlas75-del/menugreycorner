@@ -528,10 +528,16 @@ export async function onRequest(context) {
 
                 const amountDH = parseFloat(body.amountDH || body.amount) || 0;
                 const pointsToAdd = Math.max(1, Math.round(amountDH));
-                const tableNumber = body.tableNumber ? String(body.tableNumber) : "";
+                const tableNumber = body.tableNumber ? String(body.tableNumber).trim() : "";
                 const orderId = body.orderId || "";
                 const validatedBy = body.validatedBy || "waiter";
                 const now = new Date().toISOString();
+
+                // 🚨 RÈGLE DE SÉCURITÉ & CONTRÔLE DIRECTION :
+                // Si un serveur saisit un montant supérieur à 100 (> 100 pts), le NUMÉRO DE TABLE est OBLIGATOIRE !
+                if (pointsToAdd > 100 && validatedBy !== "admin" && !tableNumber) {
+                    return errorResponse("⚠️ RÈGLE DE CONTRÔLE DIRECTION : Pour toute attribution supérieure à 100 points, le NUMÉRO DE TABLE est obligatoire pour permettre un audit ultérieur.", 400);
+                }
 
                 // S'assurer que le membre existe
                 let member = await db.prepare("SELECT * FROM loyalty_members WHERE phone = ?").bind(phone).first();
@@ -551,12 +557,18 @@ export async function onRequest(context) {
                     member.totalEarned += pointsToAdd;
                 }
 
+                // Note avec flag explicite pour contrôle admin si > 100 pts
+                let noteText = body.note ? String(body.note) : `Encaissement ${amountDH} DH (+${pointsToAdd} pts)`;
+                if (pointsToAdd > 100 && validatedBy !== "admin") {
+                    noteText = `⚠️ [CONTRÔLE >100 PTS] ${noteText} — Table ${tableNumber}`;
+                }
+
                 // Enregistrer la transaction
                 const txId = generateId("tx");
                 await db.prepare(`
                     INSERT INTO loyalty_transactions (id, phone, type, pointsDelta, amountDH, tableNumber, orderId, validatedBy, note, createdAt)
                     VALUES (?, ?, 'EARN', ?, ?, ?, ?, ?, ?, ?)
-                `).bind(txId, phone, pointsToAdd, amountDH, tableNumber, orderId, validatedBy, `Encaissement ${amountDH} DH (+${pointsToAdd} pts)`, now).run();
+                `).bind(txId, phone, pointsToAdd, amountDH, tableNumber, orderId, validatedBy, noteText, now).run();
 
                 // Si lié à une commande, marquer comme crédité
                 if (orderId) {
@@ -567,7 +579,8 @@ export async function onRequest(context) {
                     success: true,
                     pointsAdded: pointsToAdd,
                     newTotal: member.points,
-                    member
+                    member,
+                    flaggedReview: pointsToAdd > 100 && validatedBy !== "admin"
                 });
             }
 
@@ -661,6 +674,38 @@ export async function onRequest(context) {
                     await db.prepare("INSERT OR REPLACE INTO system_config (key, value, updatedAt) VALUES ('loyalty_config', ?, ?)")
                         .bind(JSON.stringify(body), now).run();
                     return jsonResponse({ success: true, settings: body });
+                }
+            }
+
+            // G. Alertes & Contrôle Serveurs (/api/loyalty/alerts) — Transactions > 100 pts
+            if (sub === "alerts") {
+                if (request.method === "GET") {
+                    const rows = (await db.prepare(`
+                        SELECT t.*, m.firstName as memberName
+                        FROM loyalty_transactions t
+                        LEFT JOIN loyalty_members m ON t.phone = m.phone
+                        WHERE t.pointsDelta > 100 
+                          AND t.validatedBy NOT LIKE '%admin%' 
+                          AND t.validatedBy NOT LIKE '%VÉRIFIÉ%'
+                          AND t.note NOT LIKE '%[RECTIFIÉ]%'
+                        ORDER BY t.createdAt DESC
+                        LIMIT 50
+                    `).all()).results;
+                    return jsonResponse({ success: true, alerts: rows || [] });
+                }
+                if (request.method === "POST") {
+                    const body = await request.json();
+                    const txId = body.txId;
+                    const action = body.action || "verify";
+                    if (txId && action === "verify") {
+                        await db.prepare(`
+                            UPDATE loyalty_transactions 
+                            SET validatedBy = validatedBy || ' [VÉRIFIÉ ADMIN]' 
+                            WHERE id = ?
+                        `).bind(txId).run();
+                        return jsonResponse({ success: true, message: "Alerte marquée comme vérifiée." });
+                    }
+                    return errorResponse("Action ou ID de transaction manquant.");
                 }
             }
         }
