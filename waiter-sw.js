@@ -3,7 +3,7 @@
  * Offline Asset Caching, Native Push Notifications & Keep-Alive Daemon
  */
 
-const CACHE_NAME = "grey-waiter-cache-v1";
+const CACHE_NAME = "grey-waiter-cache-v7";
 const OFFLINE_ASSETS = [
   "/waiter.html",
   "/waiter.css",
@@ -15,6 +15,7 @@ const OFFLINE_ASSETS = [
 
 // Installation : mise en cache des assets essentiels
 self.addEventListener("install", (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       console.log("👷 [SW] Pre-caching offline waiter assets...");
@@ -41,18 +42,39 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// Fetch : Cache first avec fallback réseau pour les assets mis en cache
+self.addEventListener("message", (event) => {
+  if (event.data && (event.data.type === "SKIP_WAITING" || event.data === "skipWaiting")) {
+    self.skipWaiting();
+  }
+});
+
+// Fetch : Network-first pour HTML et JS afin de garantir les mises à jour instantanées
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
   const url = new URL(event.request.url);
-  const isTargetAsset = OFFLINE_ASSETS.some((asset) => url.pathname.endsWith(asset));
+  const isHtmlOrJs = url.pathname.endsWith(".html") || url.pathname.endsWith(".js") || url.pathname.endsWith(".css") || event.request.mode === "navigate";
 
+  if (isHtmlOrJs) {
+    event.respondWith(
+      fetch(event.request, { cache: "no-cache" })
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const clone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return networkResponse;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  const isTargetAsset = OFFLINE_ASSETS.some((asset) => url.pathname.endsWith(asset));
   if (isTargetAsset) {
     event.respondWith(
       caches.match(event.request).then((cachedResponse) => {
         if (cachedResponse) {
-          // Revalider en arrière-plan (Stale-while-revalidate)
           fetch(event.request).then((networkResponse) => {
             if (networkResponse && networkResponse.status === 200) {
               caches.open(CACHE_NAME).then((cache) => cache.put(event.request, networkResponse));

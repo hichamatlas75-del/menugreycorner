@@ -3,8 +3,8 @@
 // Reçoit les notifications Push en arrière-plan (application et écran fermés)
 // ============================================================================
 
-const SW_VERSION = "fcm-sw-v6.0";
-const CACHE_NAME = "waiter-cache-v6";
+const SW_VERSION = "fcm-sw-v7.0";
+const CACHE_NAME = "waiter-cache-v7";
 
 // 1. Chargement des bibliothèques officielles Firebase compat
 importScripts("https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js");
