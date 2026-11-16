@@ -26,8 +26,8 @@ function jsonResponse(data, status = 200) {
     });
 }
 
-function errorResponse(message, status = 400) {
-    return jsonResponse({ error: message, success: false }, status);
+function errorResponse(message, status = 400, extra = {}) {
+    return jsonResponse({ error: message, message, success: false, ...extra }, status);
 }
 
 // Normalisation des numéros de téléphone (marocain: 06... / 07...)
@@ -477,23 +477,29 @@ export async function onRequest(context) {
                     if (!member) return jsonResponse({ success: true, member: null });
 
                     // Vérifier si le numéro a été crédité il y a moins de 2h
-                    const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString();
+                    const suffix9 = phone.length >= 9 ? phone.slice(-9) : phone;
                     const recentEarn = await db.prepare(`
                         SELECT * FROM loyalty_transactions
-                        WHERE phone = ? AND type = 'EARN' AND createdAt > ?
+                        WHERE (phone = ? OR phone LIKE ?) AND type = 'EARN'
                         ORDER BY createdAt DESC
                         LIMIT 1
-                    `).bind(phone, twoHoursAgo).first();
+                    `).bind(phone, `%${suffix9}`).first();
 
                     let lockInfo = null;
-                    if (recentEarn) {
-                        const elapsedMs = Date.now() - new Date(recentEarn.createdAt).getTime();
-                        lockInfo = {
-                            isLocked: true,
-                            remainingMinutes: Math.max(1, Math.ceil((2 * 3600 * 1000 - elapsedMs) / 60000)),
-                            tableNumber: recentEarn.tableNumber || "",
-                            lastEarnAt: recentEarn.createdAt
-                        };
+                    if (recentEarn && recentEarn.createdAt) {
+                        const lastTime = new Date(recentEarn.createdAt).getTime();
+                        const nowMs = Date.now();
+                        const elapsedMs = nowMs - lastTime;
+                        const TWO_HOURS_MS = 2 * 60 * 60 * 1000;
+                        if (!isNaN(lastTime) && elapsedMs < TWO_HOURS_MS && elapsedMs >= 0) {
+                            lockInfo = {
+                                isLocked: true,
+                                remainingMinutes: Math.max(1, Math.ceil((TWO_HOURS_MS - elapsedMs) / 60000)),
+                                tableNumber: recentEarn.tableNumber || "",
+                                validatedBy: recentEarn.validatedBy || "",
+                                lastEarnAt: recentEarn.createdAt
+                            };
+                        }
                     }
 
                     return jsonResponse({ success: true, member, lockInfo });
@@ -507,23 +513,29 @@ export async function onRequest(context) {
 
                     const existing = await db.prepare("SELECT * FROM loyalty_members WHERE phone = ?").bind(phone).first();
                     if (existing) {
-                        const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString();
+                        const suffix9 = phone.length >= 9 ? phone.slice(-9) : phone;
                         const recentEarn = await db.prepare(`
                             SELECT * FROM loyalty_transactions
-                            WHERE phone = ? AND type = 'EARN' AND createdAt > ?
+                            WHERE (phone = ? OR phone LIKE ?) AND type = 'EARN'
                             ORDER BY createdAt DESC
                             LIMIT 1
-                        `).bind(phone, twoHoursAgo).first();
+                        `).bind(phone, `%${suffix9}`).first();
 
                         let lockInfo = null;
-                        if (recentEarn) {
-                            const elapsedMs = Date.now() - new Date(recentEarn.createdAt).getTime();
-                            lockInfo = {
-                                isLocked: true,
-                                remainingMinutes: Math.max(1, Math.ceil((2 * 3600 * 1000 - elapsedMs) / 60000)),
-                                tableNumber: recentEarn.tableNumber || "",
-                                lastEarnAt: recentEarn.createdAt
-                            };
+                        if (recentEarn && recentEarn.createdAt) {
+                            const lastTime = new Date(recentEarn.createdAt).getTime();
+                            const nowMs = Date.now();
+                            const elapsedMs = nowMs - lastTime;
+                            const TWO_HOURS_MS = 2 * 60 * 60 * 1000;
+                            if (!isNaN(lastTime) && elapsedMs < TWO_HOURS_MS && elapsedMs >= 0) {
+                                lockInfo = {
+                                    isLocked: true,
+                                    remainingMinutes: Math.max(1, Math.ceil((TWO_HOURS_MS - elapsedMs) / 60000)),
+                                    tableNumber: recentEarn.tableNumber || "",
+                                    validatedBy: recentEarn.validatedBy || "",
+                                    lastEarnAt: recentEarn.createdAt
+                                };
+                            }
                         }
 
                         return jsonResponse({ success: true, member: existing, isNew: false, lockInfo });
@@ -574,33 +586,48 @@ export async function onRequest(context) {
                 const validatedBy = body.validatedBy || "waiter";
                 const now = new Date().toISOString();
 
-                // 🛑 1. RÈGLE ANTIFRAUDE : BLOQUER LE MÊME NUMÉRO SI MOINS DE 2 HEURES (< 120 min)
-                const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString();
-                const recentEarn = await db.prepare(`
+                // 🛑 1. RÈGLE ANTIFRAUDE INFRANCHISSABLE : BLOQUER LE MÊME NUMÉRO SI MOINS DE 2 HEURES (< 120 min)
+                const suffix9 = phone.length >= 9 ? phone.slice(-9) : phone;
+                const lastEarn = await db.prepare(`
                     SELECT * FROM loyalty_transactions
-                    WHERE phone = ? AND type = 'EARN' AND createdAt > ?
+                    WHERE (phone = ? OR phone LIKE ?) AND type = 'EARN'
                     ORDER BY createdAt DESC
                     LIMIT 1
-                `).bind(phone, twoHoursAgo).first();
+                `).bind(phone, `%${suffix9}`).first();
 
-                if (recentEarn) {
-                    const elapsedMs = Date.now() - new Date(recentEarn.createdAt).getTime();
-                    const remainingMin = Math.max(1, Math.ceil((2 * 3600 * 1000 - elapsedMs) / 60000));
-                    const tableInfo = recentEarn.tableNumber ? ` (Table ${recentEarn.tableNumber})` : "";
+                if (lastEarn && lastEarn.createdAt) {
+                    const lastTime = new Date(lastEarn.createdAt).getTime();
+                    const nowMs = Date.now();
+                    const elapsedMs = nowMs - lastTime;
+                    const TWO_HOURS_MS = 2 * 60 * 60 * 1000; // 120 minutes
 
-                    // Serveurs (et QR clients) : BLOCAGE STRICT INFRANCHISSABLE
-                    if (validatedBy !== "admin") {
-                        return errorResponse(`⛔ BLOCAGE ANTIFRAUDE : Ce numéro a déjà reçu des points il y a moins de 2 heures${tableInfo}. Prochain crédit autorisé dans ${remainingMin} minute(s).`, 429);
-                    }
+                    if (!isNaN(lastTime) && elapsedMs < TWO_HOURS_MS && elapsedMs >= 0) {
+                        const remainingMin = Math.max(1, Math.ceil((TWO_HOURS_MS - elapsedMs) / 60000));
+                        const tableInfo = lastEarn.tableNumber ? ` (Table ${lastEarn.tableNumber})` : "";
+                        const byInfo = lastEarn.validatedBy ? ` par ${lastEarn.validatedBy}` : "";
 
-                    // Admin : avertissement avec possibilité de forcer via forceAdmin: true
-                    if (validatedBy === "admin" && !body.forceAdmin) {
-                        return jsonResponse({
-                            success: false,
-                            requiresAdminForce: true,
-                            remainingMinutes: remainingMin,
-                            message: `⚠️ ATTENTION : Ce numéro a déjà reçu des points il y a moins de 2 heures${tableInfo} (${remainingMin} min restantes). Confirmez pour forcer l'ajout.`
-                        }, 409);
+                        // Serveurs (et QR clients) : BLOCAGE STRICT INFRANCHISSABLE (HTTP 429)
+                        if (validatedBy !== "admin") {
+                            return jsonResponse({
+                                success: false,
+                                blocked2h: true,
+                                remainingMinutes: remainingMin,
+                                error: `⛔ BLOCAGE ANTIFRAUDE (Moins de 2h) :\nCe numéro a déjà été crédité il y a moins de 2 heures${tableInfo}${byInfo}.\nNouveau crédit autorisé dans ${remainingMin} minute(s).`,
+                                message: `⛔ BLOCAGE ANTIFRAUDE (Moins de 2h) :\nCe numéro a déjà été crédité il y a moins de 2 heures${tableInfo}${byInfo}.\nNouveau crédit autorisé dans ${remainingMin} minute(s).`
+                            }, 429);
+                        }
+
+                        // Admin : avertissement bloquant avec possibilité de forcer via forceAdmin: true (HTTP 409)
+                        if (validatedBy === "admin" && !body.forceAdmin) {
+                            return jsonResponse({
+                                success: false,
+                                blocked2h: true,
+                                requiresAdminForce: true,
+                                remainingMinutes: remainingMin,
+                                error: `⚠️ DÉLAI ANTIFRAUDE (Moins de 2h) :\nCe numéro a déjà reçu des points il y a moins de 2 heures${tableInfo}${byInfo} (${remainingMin} min restantes).`,
+                                message: `⚠️ DÉLAI ANTIFRAUDE (Moins de 2h) :\nCe numéro a déjà reçu des points il y a moins de 2 heures${tableInfo}${byInfo} (${remainingMin} min restantes).\n\nConfirmez pour forcer l'attribution exceptionnelle.`
+                            }, 409);
+                        }
                     }
                 }
 
@@ -628,10 +655,13 @@ export async function onRequest(context) {
                     member.totalEarned += pointsToAdd;
                 }
 
-                // Note avec flag explicite pour contrôle admin si > 100 pts
+                // Note avec flag explicite pour contrôle admin si > 100 pts ou si forçage admin
                 let noteText = body.note ? String(body.note) : `Encaissement ${amountDH} DH (+${pointsToAdd} pts)`;
                 if (pointsToAdd > 100 && validatedBy !== "admin") {
                     noteText = `⚠️ [CONTRÔLE >100 PTS] ${noteText} — Table ${tableNumber}`;
+                }
+                if (body.forceAdmin) {
+                    noteText = `⚠️ [FORÇAGE ADMIN <2H] ${noteText}`;
                 }
 
                 // Enregistrer la transaction
