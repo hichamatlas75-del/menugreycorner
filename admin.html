@@ -7,42 +7,11 @@
 
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
-<link rel="manifest" href="site.webmanifest"/>
-<meta name="theme-color" content="#07060a"/>
-<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png"/>
-<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png"/>
 <link rel="stylesheet" href="admin.css"/>
 
 </head>
 
 <body>
-
-<!-- 🔒 AUTHENTICATION OVERLAY (CODE: greycorner2024) -->
-<div id="adminAuthOverlay" class="admin-auth-overlay">
-    <div class="admin-auth-card" id="adminAuthCard">
-        <div class="admin-auth-brand">
-            <img src="images/logo-gold.webp" alt="Grey Corner" class="admin-auth-logo" onerror="this.src='images/logo.png'">
-            <h1 class="admin-auth-title">Grey Corner</h1>
-            <span class="admin-auth-badge">Console Administrateur</span>
-        </div>
-        <p class="admin-auth-desc">Accès sécurisé réservé à la direction. Veuillez saisir le code d'accès.</p>
-        
-        <form id="adminAuthForm" onsubmit="handleAdminAuth(event)">
-            <div class="admin-auth-input-wrap">
-                <input type="password" id="adminAuthCodeInput" class="admin-auth-input" placeholder="Code d'accès administrateur" autocomplete="current-password" autofocus required>
-                <button type="button" id="adminAuthToggleVisibility" class="admin-auth-toggle-pwd" aria-label="Afficher/Masquer le code">👁️</button>
-            </div>
-            <div id="adminAuthError" class="admin-auth-error" style="display:none;"></div>
-            <button type="submit" id="adminAuthSubmitBtn" class="admin-auth-submit-btn">
-                <span>Déverrouiller la console</span>
-                <span class="admin-auth-btn-arrow">→</span>
-            </button>
-        </form>
-        <div class="admin-auth-footer">
-            <span>🔒 Session sécurisée Grey Corner</span>
-        </div>
-    </div>
-</div>
 
 <!-- 🔴 FROZEN OVERLAY -->
 <div id="systemFreezeOverlay" class="system-freeze-overlay hidden">
@@ -52,7 +21,7 @@
     </div>
 </div>
 
-<div class="admin-container" id="adminMainContainer" style="display:none;">
+<div class="admin-container">
 
     <!-- HEADER -->
     <header class="admin-header">
@@ -66,7 +35,6 @@
         <div style="display:flex; gap:12px; align-items:center;">
             <button id="toggleFreezeBtn" class="freeze-btn">Freeze OFF</button>
             <button id="dbCleanupBtn" class="cleanup-btn">Purger</button>
-            <button id="adminLogoutBtn" class="logout-btn" title="Verrouiller la console">🔒 Déconnexion</button>
         </div>
     </header>
 
@@ -125,6 +93,7 @@
                 <div class="admin-tabs-nav">
                     <h2 class="admin-tab-btn active" data-tab="adminLiveTab">Live Feed</h2>
                     <h2 class="admin-tab-btn" data-tab="adminHistoryTab">Historique</h2>
+                    <h2 class="admin-tab-btn" data-tab="adminLoyaltyTab">👑 Fidélité (500 pts)</h2>
                 </div>
             </div>
             
@@ -135,10 +104,100 @@
             <div id="adminHistoryTab" class="admin-tab-panel" style="display:none;">
                 <div id="adminHistoryFeed" class="live-activity-feed"></div>
             </div>
+
+            <!-- 👑 NOUVEL ONGLET FIDÉLITÉ (CLUB 500 PTS) -->
+            <div id="adminLoyaltyTab" class="admin-tab-panel" style="display:none;">
+                <!-- 1. KPIs Fidélité -->
+                <div class="admin-loyalty-kpis">
+                    <div class="loyalty-kpi-card">
+                        <span class="kpi-label">Total Membres</span>
+                        <span class="kpi-val" id="kpiLoyaltyTotalMembers">0</span>
+                    </div>
+                    <div class="loyalty-kpi-card">
+                        <span class="kpi-label">Origine Inscription</span>
+                        <span class="kpi-subval" id="kpiLoyaltySourceRatio">QR: 0 • Serveur: 0</span>
+                    </div>
+                    <div class="loyalty-kpi-card">
+                        <span class="kpi-label">Points en Circulation</span>
+                        <span class="kpi-val" id="kpiLoyaltyTotalPoints" style="color:var(--gold,#C9A96E);">0</span>
+                    </div>
+                    <div class="loyalty-kpi-card">
+                        <span class="kpi-label">Conso. Offertes (-500)</span>
+                        <span class="kpi-val" id="kpiLoyaltyRewardsClaimed" style="color:#2ecc71;">0</span>
+                    </div>
+                </div>
+
+                <!-- 2. Paramètres Modifiables -->
+                <div class="admin-loyalty-settings-card">
+                    <div class="settings-card-title">⚙️ Paramètres du Club Fidélité</div>
+                    <div class="settings-inputs-grid">
+                        <div class="setting-field">
+                            <label>Seuil Récompense (pts)</label>
+                            <input type="number" id="settingRewardThreshold" value="500" min="50" step="10" />
+                        </div>
+                        <div class="setting-field">
+                            <label>Bonus Bienvenue (pts)</label>
+                            <input type="number" id="settingWelcomeBonus" value="50" min="0" step="5" />
+                        </div>
+                        <div class="setting-field">
+                            <label>Ratio Points / DH</label>
+                            <input type="number" id="settingPointsPerDH" value="1" min="0.1" step="0.1" />
+                        </div>
+                        <div class="setting-field btn-cell">
+                            <button type="button" id="btnSaveLoyaltySettings" class="btn-save-settings">Enregistrer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Recherche & Tableau des Membres -->
+                <div class="admin-loyalty-table-card">
+                    <div class="table-card-header">
+                        <div style="font-weight:700; font-size:1.05rem; color:#ffffff;">👥 Membres Inscrits</div>
+                        <input type="search" id="adminLoyaltySearchInput" class="admin-search-input" placeholder="Rechercher par prénom ou n° tél..." autocomplete="off" />
+                    </div>
+                    <div class="admin-table-container">
+                        <table class="admin-loyalty-table">
+                            <thead>
+                                <tr>
+                                    <th>Prénom</th>
+                                    <th>Téléphone</th>
+                                    <th>Points (X / 500)</th>
+                                    <th>Cumul Gagné</th>
+                                    <th>Conso. Offertes</th>
+                                    <th>Source</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminLoyaltyTableBody">
+                                <tr>
+                                    <td colspan="7" style="text-align:center; padding:20px; color:rgba(255,255,255,0.4);">
+                                        Chargement des membres...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
 
+</div>
+
+<!-- MODALE HISTORIQUE TRANSACTIONS FIDÉLITÉ (ADMIN) -->
+<div id="adminLoyaltyTxModal" class="admin-tx-modal-overlay" style="display: none;">
+    <div class="admin-tx-modal-sheet">
+        <div class="admin-tx-modal-header">
+            <h3 id="adminTxModalTitle" style="color:var(--gold,#C9A96E); font-size:1.15rem; margin:0;">Historique Transactions</h3>
+            <button type="button" id="btnCloseTxModal" class="btn-close-modal">&times;</button>
+        </div>
+        <div class="admin-tx-modal-body">
+            <div id="adminTxListContainer" class="tx-list-container">
+                Chargement de l'historique...
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Firebase SDK (Compat Mode for smooth global script tag inclusion) -->

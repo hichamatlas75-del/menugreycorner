@@ -6,23 +6,8 @@
 
 import { menuData } from '../data/menu-data.js';
 import { currentLang } from '../services/i18n.js';
-import { addToCart, showToast } from '../services/cart.js';
+import { addToCart } from '../services/cart.js';
 import { closeBurgerMenu, checkItemOptionsAndAdd } from './modals.js';
-import {
-  isBreakfastAvailable,
-  isKitchenAvailable,
-  isKitchenCategory,
-  isCouscousAvailable,
-  isCouscousCategory,
-  getCouscousScheduleInfo,
-  getCouscousNoticeInner,
-  getCouscousBlockedMessage,
-  getKitchenScheduleInfo,
-  getKitchenBlockedMessage,
-  getBreakfastBlockedMessage,
-  getKitchenNoticeInner,
-  getBreakfastNoticeInner
-} from '../services/schedule.js';
 
 export let activeCategoryId = null;
 export let isViewAllMode = false;
@@ -85,36 +70,11 @@ function getCatImage(category) {
 }
 
 /**
- * Determine default initial category:
- * - If during breakfast hours (until 13h weekdays, 14h weekends): starts at "petit-dejeuner"
- * - If outside breakfast hours: skips "petit-dejeuner" and starts directly at "entrees" (Entrées froides)
- */
-export function getDefaultInitialCategoryId() {
-  if (!menuData || menuData.length === 0) return null;
-
-  if (isBreakfastAvailable()) {
-    return getCatId(menuData[0]); // "petit-dejeuner"
-  }
-
-  // Hors horaire petit-déjeuner : sauter le petit-déjeuner et commencer directement sur les entrées froides ("entrees")
-  const entreesCat = menuData.find(c => getCatId(c) === "entrees");
-  if (entreesCat) {
-    return "entrees";
-  }
-
-  return menuData.length > 1 ? getCatId(menuData[1]) : getCatId(menuData[0]);
-}
-
-/**
  * Render the Category Pastilles Hub
  */
 export function renderCategoryPastilles() {
   const container = document.getElementById("hubCategories");
   if (!container || !menuData || !Array.isArray(menuData)) return;
-
-  if (!activeCategoryId && menuData.length > 0) {
-    activeCategoryId = getDefaultInitialCategoryId();
-  }
 
   container.innerHTML = "";
 
@@ -145,12 +105,6 @@ export function renderCategoryPastilles() {
     });
 
     container.appendChild(btn);
-
-    if (isActive) {
-      setTimeout(() => {
-        btn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-      }, 80);
-    }
   });
 }
 
@@ -299,9 +253,6 @@ export function renderDishes(filterTerm = "") {
       catSection.className = "hub-category-section";
       catSection.id = `cat-section-${catId}`;
 
-      const isBreakfastCat = (catId === "petit-dejeuner");
-      const isEntreesCat = (catId === "entrees");
-
       catSection.innerHTML = `
         <div class="hub-section-header">
           <div class="hub-header-left">
@@ -309,21 +260,6 @@ export function renderDishes(filterTerm = "") {
             <span class="hub-section-count">${cat.items?.length || 0}</span>
           </div>
         </div>
-        ${isBreakfastCat ? `
-          <div class="breakfast-service-notice ${!isBreakfastAvailable() ? 'is-ended' : ''}">
-            ${getBreakfastNoticeInner(currentLang)}
-          </div>
-        ` : ""}
-        ${isEntreesCat ? `
-          <div class="entrees-service-notice">
-            ${getKitchenNoticeInner(currentLang)}
-          </div>
-        ` : ""}
-        ${isCouscousCategory(catId) ? `
-          <div class="couscous-service-notice ${!isCouscousAvailable() ? 'is-ended' : ''}">
-            ${getCouscousNoticeInner(currentLang)}
-          </div>
-        ` : ""}
         <div class="hub-dishes-grid"></div>
       `;
 
@@ -343,7 +279,7 @@ export function renderDishes(filterTerm = "") {
 
   // 3. SINGLE CATEGORY MODE (DEFAULT HUB TACTILE)
   if (!activeCategoryId && menuData.length > 0) {
-    activeCategoryId = getDefaultInitialCategoryId();
+    activeCategoryId = getCatId(menuData[0]);
   }
 
   const activeCategory = menuData.find(c => getCatId(c) === activeCategoryId) || menuData[0];
@@ -352,14 +288,11 @@ export function renderDishes(filterTerm = "") {
   const currentCatId = getCatId(activeCategory);
   const catTitle = activeCategory.category[currentLang] || activeCategory.category.fr;
   const items = activeCategory.items || [];
-  const isBreakfastCurrent = (currentCatId === "petit-dejeuner");
-  const isEntreesCurrent = (currentCatId === "entrees");
 
   const voirToutTexts = {
     fr: "Voir tout",
     en: "View all",
     de: "Alle ansehen",
-    es: "Ver todo",
     ar: "عرض الكل"
   };
 
@@ -367,7 +300,6 @@ export function renderDishes(filterTerm = "") {
     fr: `${items.length} plats`,
     en: `${items.length} items`,
     de: `${items.length} Gerichte`,
-    es: `${items.length} platos`,
     ar: `${items.length} أطباق`
   };
 
@@ -383,21 +315,6 @@ export function renderDishes(filterTerm = "") {
           <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
         </button>
       </div>
-      ${isBreakfastCurrent ? `
-        <div class="breakfast-service-notice ${!isBreakfastAvailable() ? 'is-ended' : ''}">
-          ${getBreakfastNoticeInner(currentLang)}
-        </div>
-      ` : ""}
-      ${isKitchenCategory(currentCatId) ? `
-        <div class="entrees-service-notice">
-          ${getKitchenNoticeInner(currentLang)}
-        </div>
-      ` : ""}
-      ${isCouscousCategory(currentCatId) ? `
-        <div class="couscous-service-notice ${!isCouscousAvailable() ? 'is-ended' : ''}">
-          ${getCouscousNoticeInner(currentLang)}
-        </div>
-      ` : ""}
       <div class="hub-dishes-grid"></div>
     </div>
   `;
@@ -420,19 +337,7 @@ export function renderDishes(filterTerm = "") {
  */
 function createDishCard(item, categoryId, itemIndex, categoryBadge = "") {
   const card = document.createElement("article");
-  const isBreakfast = (categoryId === "petit-dejeuner");
-  const isKitchen = isKitchenCategory(categoryId);
-  const isCouscous = isCouscousCategory(categoryId, item.name?.fr || item.name);
-
-  const isBreakfastBlocked = isBreakfast && !isBreakfastAvailable();
-  const isKitchenBlocked = isKitchen && !isKitchenAvailable();
-  const isCouscousBlocked = isCouscous && !isCouscousAvailable();
-  const isOver = isBreakfastBlocked || isKitchenBlocked || isCouscousBlocked;
-
-  card.className = `hub-card menu-item ${isOver ? "hub-card-disabled" : ""}`;
-  if (isOver) {
-    card.dataset.blockedReason = isCouscousBlocked ? "couscous" : isKitchenBlocked ? "kitchen" : "breakfast";
-  }
+  card.className = "hub-card menu-item";
   card.id = `item-${categoryId}-${itemIndex}`;
   card.style.setProperty("--item-index", itemIndex);
   card._menuItem = item;
@@ -443,100 +348,19 @@ function createDishCard(item, categoryId, itemIndex, categoryBadge = "") {
 
   const badgeNewText = currentLang === "en" ? "NEW"
     : currentLang === "de" ? "NEU"
-      : currentLang === "es" ? "NUEVO"
-        : currentLang === "ar" ? "جديد"
-          : "NOUVEAU";
+      : currentLang === "ar" ? "جديد"
+        : "NOUVEAU";
 
-  let orderBtnText = "";
-  let unavailBadgeText = "";
-
-  if (isBreakfastBlocked) {
-    orderBtnText = currentLang === "en" ? "Ended"
-      : currentLang === "de" ? "Beendet"
-        : currentLang === "es" ? "Finalizado"
-          : currentLang === "ar" ? "انتهى"
-            : "Terminé";
-
-    unavailBadgeText = currentLang === "en" ? "🕒 Until 13h (14h w-e)"
-      : currentLang === "de" ? "🕒 Bis 13h (14h WE)"
-        : currentLang === "es" ? "🕒 Hasta las 13h (14h finde)"
-          : currentLang === "ar" ? "🕒 حتى 13:00 (14:00 عطلة)"
-            : "🕒 Servi jusqu'à 13h (14h w-e)";
-  } else if (isCouscousBlocked) {
-    const cInfo = getCouscousScheduleInfo();
-    if (cInfo.isBefore) {
-      orderBtnText = currentLang === "en" ? "From 12:00"
-        : currentLang === "de" ? "Ab 12h"
-          : currentLang === "es" ? "Desde 12h"
-            : currentLang === "ar" ? "من 12:00"
-              : "Dès 12h";
-      unavailBadgeText = currentLang === "en" ? "🕒 Friday at 12:00"
-        : currentLang === "de" ? "🕒 Freitag ab 12h"
-          : currentLang === "es" ? "🕒 Viernes desde 12h"
-            : currentLang === "ar" ? "🕒 الجمعة من 12:00"
-              : "🕒 Vendredi dès 12h";
-    } else if (cInfo.isAfter) {
-      orderBtnText = currentLang === "en" ? "Ended"
-        : currentLang === "de" ? "Beendet"
-          : currentLang === "es" ? "Finalizado"
-            : currentLang === "ar" ? "انتهى"
-              : "Terminé";
-      unavailBadgeText = currentLang === "en" ? "🌙 Service ended"
-        : currentLang === "de" ? "🌙 Service beendet"
-          : currentLang === "es" ? "🌙 Servicio finalizado"
-            : currentLang === "ar" ? "🌙 انتهت الخدمة"
-              : "🌙 Service terminé (17h)";
-    } else {
-      orderBtnText = currentLang === "en" ? "Fridays"
-        : currentLang === "de" ? "Freitags"
-          : currentLang === "es" ? "Viernes"
-            : currentLang === "ar" ? "الجمعة"
-              : "Vendredi";
-      unavailBadgeText = currentLang === "en" ? "📅 Fridays (12h-17h)"
-        : currentLang === "de" ? "📅 Freitags (12-17h)"
-          : currentLang === "es" ? "📅 Viernes (12h-17h)"
-            : currentLang === "ar" ? "📅 الجمعة (12-17)"
-              : "📅 Vendredi (12h-17h)";
-    }
-  } else if (isKitchenBlocked) {
-    const kInfo = getKitchenScheduleInfo();
-    if (kInfo.isClosed) {
-      orderBtnText = currentLang === "en" ? "Closed"
-        : currentLang === "de" ? "Geschlossen"
-          : currentLang === "es" ? "Cerrado"
-            : currentLang === "ar" ? "مغلق"
-              : "Fermé";
-      unavailBadgeText = currentLang === "en" ? "🌙 Closed"
-        : currentLang === "de" ? "🌙 Geschlossen"
-          : currentLang === "es" ? "🌙 Cerrado"
-            : currentLang === "ar" ? "🌙 مغلق"
-              : "🌙 Service fermé";
-    } else {
-      orderBtnText = currentLang === "en" ? `From ${kInfo.startHour}:00`
-        : currentLang === "de" ? `Ab ${kInfo.startHour}h`
-          : currentLang === "es" ? `Desde ${kInfo.startHour}h`
-            : currentLang === "ar" ? `من ${kInfo.startHour}:00`
-              : `Dès ${kInfo.startHour}h`;
-      unavailBadgeText = currentLang === "en" ? `🕒 Kitchen at ${kInfo.startHour}:00`
-        : currentLang === "de" ? `🕒 Küche ab ${kInfo.startHour}h`
-          : currentLang === "es" ? `🕒 Cocina desde las ${kInfo.startHour}h`
-            : currentLang === "ar" ? `🕒 المطبخ من ${kInfo.startHour}:00`
-              : `🕒 Cuisine dès ${kInfo.startHour}h00`;
-    }
-  } else {
-    orderBtnText = currentLang === "en" ? "Order"
-      : currentLang === "de" ? "Bestellen"
-        : currentLang === "es" ? "Pedir"
-          : currentLang === "ar" ? "اطلب"
-            : "Commander";
-  }
+  const orderBtnText = currentLang === "en" ? "Order"
+    : currentLang === "de" ? "Bestellen"
+      : currentLang === "ar" ? "اطلب"
+        : "Commander";
 
   card.innerHTML = `
     <div class="hub-card-media">
       <img src="${item.image}" alt="${itemName}" class="hub-card-img" loading="lazy" />
       <div class="hub-card-gradient"></div>
-      ${isOver ? `<span class="hub-badge-unavailable">${unavailBadgeText}</span>` : ""}
-      ${!isOver && item.isNew ? `<span class="hub-badge-new">${badgeNewText}</span>` : ""}
+      ${item.isNew ? `<span class="hub-badge-new">${badgeNewText}</span>` : ""}
       ${categoryBadge ? `<span class="hub-badge-cat">${categoryBadge}</span>` : ""}
       <div class="hub-card-zoom-hint" title="Agrandir">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
@@ -556,7 +380,7 @@ function createDishCard(item, categoryId, itemIndex, categoryBadge = "") {
         <div class="hub-card-price-wrap">
           <span class="hub-card-price item-price">${item.price}</span>
         </div>
-        <button type="button" class="hub-order-btn add-to-cart-btn ${isOver ? 'btn-disabled' : ''}" ${isOver ? 'disabled aria-disabled="true"' : ''} aria-label="${orderBtnText}">
+        <button type="button" class="hub-order-btn add-to-cart-btn" aria-label="${orderBtnText}">
           <span class="hub-order-btn-label">${orderBtnText}</span>
           <svg class="hub-order-btn-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
@@ -611,98 +435,17 @@ export function activateSearch() {
 /**
  * Setup Lightbox
  */
-
-// ── Mapping ingrédient → emoji ──────────────────────────────────────────────
-const INGREDIENT_EMOJI_MAP = {
-  // Fruits
-  "framboise": "🫐", "raspberry": "🫐", "himbeere": "🫐", "frambuesa": "🫐",
-  "fraise": "🍓", "strawberry": "🍓", "erdbeere": "🍓", "fresa": "🍓",
-  "orange": "🍊", "orangen": "🍊", "naranja": "🍊",
-  "banane": "🍌", "banana": "🍌", "banane ": "🍌", "plátano": "🍌", "platano": "🍌",
-  "ananas": "🍍", "pineapple": "🍍", "piña": "🍍", "pina": "🍍",
-  "mangue": "🥭", "mango": "🥭",
-  "myrtille": "🫐", "blueberry": "🫐", "blaubeere": "🫐", "arándano": "🫐", "arandano": "🫐",
-  "kiwi": "🥝",
-  "avocat": "🥑", "avocado": "🥑", "aguacate": "🥑",
-  "pêche": "🍑", "peach": "🍑", "pfirsich": "🍑", "melocotón": "🍑", "melocoton": "🍑",
-  "poire": "🍐", "pear": "🍐", "birne": "🍐", "pera": "🍐",
-  "citron": "🍋", "lemon": "🍋", "zitrone": "🍋", "limón": "🍋", "limon": "🍋",
-  "noix de coco": "🥥", "coconut": "🥥", "kokosnuss": "🥥", "coco": "🥥",
-  "datte": "🌴", "date": "🌴", "dattel": "🌴", "dátil": "🌴", "datil": "🌴",
-  "fruits secs": "🌰", "fruits sec": "🌰", "dried fruits": "🌰", "trockenfrüchte": "🌰", "frutos secos": "🌰", "fruto seco": "🌰", "فواكه جافة": "🌰",
-  "fruits de saison": "🥝", "fruits de saison en décoration": "🥝", "seasonal fruit": "🥝", "saisonfrüchte": "🥝", "frutas de temporada": "🥝", "fruta de temporada": "🥝", "فواكه موسمية": "🥝",
-  // Légumes
-  "carotte": "🥕", "carrot": "🥕", "karotte": "🥕", "zanahoria": "🥕",
-  // Condiments & aromates
-  "miel": "🍯", "honey": "🍯", "honig": "🍯",
-  "menthe": "🌿", "mint": "🌿", "minze": "🌿", "menta": "🌿",
-  "gingembre": "🫚", "ginger": "🫚", "ingwer": "🫚", "jengibre": "🫚",
-  "bissap": "🌺", "hibiscus": "🌺", "hibisco": "🌺",
-  // Boissons & sirops
-  "sirop bleu curaçao": "💙", "blue curaçao": "💙", "blue-curaçao": "💙", "curaçao azul": "💙",
-  "redbull": "⚡", "red bull": "⚡",
-  "sodawater": "💧",
-};
-
-/**
- * Catégories qui affichent le sticker ingrédients
- */
-const INGREDIENT_STICKER_CATEGORIES = [
-  "cocktails", "mojito", "smoothies", "smoothie-bowl",
-  "boissons", "milkshakes", "ice-coffee", "frappuccino"
-];
-
-/**
- * Génère le HTML du sticker ingrédients à partir d'une description FR
- */
-function buildIngredientSticker(item, lang) {
-  if (!item) return "";
-
-  // Déterminer si cet item mérite un sticker (catégorie boisson/smoothie)
-  // On se base sur la description : elle contient des ingrédients séparés par des virgules
-  const descFr = (item.description && item.description.fr) ? item.description.fr : "";
-  const descLang = (item.description && item.description[lang]) ? item.description[lang] : descFr;
-
-  // Heuristique : si la description FR est une liste d'ingrédients séparés par des virgules
-  const looksLikeIngredients = descFr.length <= 180 && descFr.includes(",");
-  if (!looksLikeIngredients) return "";
-
-  // Parser les ingrédients depuis la description en langue courante
-  const rawIngredients = descLang.split(",").map(s => s.replace(/\.$/, "").trim()).filter(Boolean);
-
-  // Construire la liste avec emojis (sans doublon si l'emoji est déjà présent)
-  const ingredientItems = rawIngredients.map(ing => {
-    const hasEmoji = /\p{Extended_Pictographic}/u.test(ing);
-    if (hasEmoji) {
-      return `<span class="lb-ingr-item">${ing}</span>`;
-    }
-    const ingLower = ing.toLowerCase();
-    let emoji = "✨";
-    for (const [key, em] of Object.entries(INGREDIENT_EMOJI_MAP)) {
-      if (ingLower.includes(key)) { emoji = em; break; }
-    }
-    return `<span class="lb-ingr-item">${emoji} ${ing}</span>`;
-  });
-
-  if (ingredientItems.length === 0) return "";
-
-  const labels = { fr: "Ingrédients", en: "Ingredients", de: "Zutaten", es: "Ingredientes", ar: "المكوّنات" };
-  const label = labels[lang] || labels.fr;
-
-  return `
-    <div class="lb-ingredient-sticker">
-      <div class="lb-ingr-header">${label}</div>
-      <div class="lb-ingr-list">${ingredientItems.join("")}</div>
-    </div>`;
-}
-
 export function closeLightbox() {
   const secureLightbox = document.getElementById("secureLightbox");
   const secureLightboxContent = document.querySelector(".secure-lightbox-content");
   if (!secureLightbox) return;
 
   secureLightbox.classList.remove("active");
-  if (secureLightboxContent) secureLightboxContent.style.backgroundImage = "";
+  if (secureLightboxContent) {
+    secureLightboxContent.style.backgroundImage = "";
+    const oldSticker = secureLightboxContent.querySelector(".lb-ingredient-sticker");
+    if (oldSticker) oldSticker.remove();
+  }
 
   const lbAddBtn = document.getElementById("secureLightboxAddBtn");
   if (lbAddBtn) lbAddBtn.style.display = "none";
@@ -710,12 +453,86 @@ export function closeLightbox() {
   const lbCaption = document.getElementById("secureLightboxCaption");
   if (lbCaption) lbCaption.innerHTML = "";
 
-  // Remove sticker if present
-  const existingSticker = document.querySelector(".lb-ingredient-sticker");
-  if (existingSticker) existingSticker.remove();
-
   document.body.classList.remove("no-scroll");
   document.documentElement.classList.remove("no-scroll");
+}
+
+export const INGREDIENT_EMOJI_MAP = {
+  ananas: "🍍", pineapple: "🍍",
+  poire: "🍐", pear: "🍐", birne: "🍐",
+  citron: "🍋", lemon: "🍋", zitrone: "🍋",
+  menthe: "🌿", mint: "🌿", minze: "🌿",
+  mangue: "🥭", mango: "🥭",
+  banane: "🍌", banana: "🍌",
+  orange: "🍊",
+  bissap: "🌺", hibiscus: "🌺", hibiskus: "🌺",
+  coco: "🥥", coconut: "🥥", kokosnuss: "🥥",
+  gingembre: "🫚", ginger: "🫚", ingwer: "🫚",
+  miel: "🍯", honey: "🍯", honig: "🍯",
+  framboise: "🫐", raspberry: "🫐", himbeere: "🫐",
+  fraise: "🍓", strawberry: "🍓", erdbeere: "🍓",
+  myrtille: "🫐", blueberry: "🫐", blaubeere: "🫐",
+  peche: "🍑", pêche: "🍑", peach: "🍑", pfirsich: "🍑",
+  carotte: "🥕", carrot: "🥕", karotte: "🥕",
+  kiwi: "🥝",
+  avocat: "🥑", avocado: "🥑",
+  datte: "🌴", date: "🌴",
+  "fruits secs": "🌰", "dried fruits": "🌰", trockenfrüchte: "🌰",
+  "fruits de saison": "🥝", "seasonal fruits": "🥝",
+  pomme: "🍏", apple: "🍏", apfel: "🍏",
+  pastèque: "🍉", pasteque: "🍉", watermelon: "🍉",
+  melon: "🍈",
+  poulet: "🍗", chicken: "🍗", hähnchen: "🍗",
+  parmesan: "🧀", fromage: "🧀", cheese: "🧀",
+  tomate: "🍅", tomato: "🍅",
+  croûton: "🥖", crouton: "🥖",
+  laitue: "🥬", lettuce: "🥬", salade: "🥗"
+};
+
+/**
+ * Construit l'élément sticker d'ingrédients pour la Lightbox
+ * Seuil : descFr.length <= 180 && descFr.includes(",")
+ */
+export function buildIngredientSticker(item, lang = "fr") {
+  if (!item || !item.description) return null;
+  const descFr = item.description.fr || "";
+  const looksLikeIngredients = descFr.length <= 180 && descFr.includes(",");
+  if (!looksLikeIngredients) return null;
+
+  const desc = item.description[lang] || descFr;
+  const rawParts = desc.split(/[,،.]/).map(s => s.trim()).filter(s => s.length > 0);
+  if (rawParts.length < 2) return null;
+
+  const itemsHtml = rawParts.slice(0, 8).map(ing => {
+    let text = ing;
+    // Règle anti-doublon d'émoji : Vérifier si l'ingrédient contient déjà un émoji
+    const hasEmoji = /\p{Extended_Pictographic}/u.test(ing);
+    if (!hasEmoji) {
+      const lower = ing.toLowerCase();
+      for (const [key, em] of Object.entries(INGREDIENT_EMOJI_MAP)) {
+        if (lower.includes(key)) {
+          text = `${em} ${ing}`;
+          break;
+        }
+      }
+    }
+    return `<div class="lb-ingr-item"><span>${text}</span></div>`;
+  }).join("");
+
+  const headerTitle = {
+    fr: "INGRÉDIENTS",
+    en: "INGREDIENTS",
+    de: "ZUTATEN",
+    ar: "المكونات"
+  };
+
+  const sticker = document.createElement("div");
+  sticker.className = "lb-ingredient-sticker";
+  sticker.innerHTML = `
+    <div class="lb-ingr-header">${headerTitle[lang] || headerTitle.fr}</div>
+    <div class="lb-ingr-list">${itemsHtml}</div>
+  `;
+  return sticker;
 }
 
 export function openLightboxForItem(item, imgUrl) {
@@ -727,95 +544,38 @@ export function openLightboxForItem(item, imgUrl) {
   const lbCaption = document.getElementById("secureLightboxCaption");
   activeLightboxItem = item;
 
-  secureLightboxContent.style.backgroundImage = `url("${imgUrl}")`;
-
-  // ── Sticker ingrédients ──────────────────────────────────────────────────
-  // Remove old sticker
+  // Nettoyage de l'éventuel sticker précédent
   const oldSticker = secureLightboxContent.querySelector(".lb-ingredient-sticker");
   if (oldSticker) oldSticker.remove();
 
-  if (item) {
-    const stickerHtml = buildIngredientSticker(item, currentLang);
-    if (stickerHtml) {
-      secureLightboxContent.insertAdjacentHTML("beforeend", stickerHtml);
-    }
-  }
+  secureLightboxContent.style.backgroundImage = `url("${imgUrl}")`;
 
-  // ── Caption enrichie (nom + description) ────────────────────────────────
+  // En bas à gauche : afficher le nom du produit en serif doré, le prix et la description
   if (item && lbCaption) {
     const name = item.name[currentLang] || item.name.fr;
-    const descFr = (item.description && item.description.fr) || "";
-    const descLang = (item.description && item.description[currentLang]) || descFr;
-    const looksLikeIngredients = descFr.length <= 180 && descFr.includes(",");
-
-    if (looksLikeIngredients) {
-      // Pour les boissons : afficher le nom + prix uniquement (les ingrédients sont dans le sticker)
-      lbCaption.innerHTML = `<span class="lb-caption-name">${name}</span><span class="lb-caption-price">${item.price} MAD</span>`;
-    } else {
-      // Pour les autres plats : nom + prix + description courte
-      lbCaption.innerHTML = `<span class="lb-caption-name">${name}</span><span class="lb-caption-price">${item.price} MAD</span><span class="lb-caption-desc">${descLang}</span>`;
-    }
+    const desc = item.description ? (item.description[currentLang] || item.description.fr || "") : "";
+    lbCaption.innerHTML = `
+      <div class="lb-product-name">${name}</div>
+      <div class="lb-product-price">${item.price} MAD</div>
+      ${desc ? `<div class="lb-product-desc">${desc}</div>` : ""}
+    `;
   } else if (lbCaption) {
     lbCaption.innerHTML = "";
   }
 
+  // Génération du Sticker en bas à droite de l'image
+  const sticker = buildIngredientSticker(item, currentLang);
+  if (sticker) {
+    secureLightboxContent.appendChild(sticker);
+  }
+
   if (item && lbAddBtn) {
     lbAddBtn.style.display = "block";
-    const isBreakfast = (item.categoryId === "petit-dejeuner");
-    const isKitchen = isKitchenCategory(item.categoryId);
-    const isCouscous = isCouscousCategory(item.categoryId, item.name?.fr || item.name);
-    const isBreakfastBlocked = isBreakfast && !isBreakfastAvailable();
-    const isKitchenBlocked = isKitchen && !isKitchenAvailable();
-    const isCouscousBlocked = isCouscous && !isCouscousAvailable();
-    const isBlocked = isBreakfastBlocked || isKitchenBlocked || isCouscousBlocked;
-
-    if (isBlocked) {
-      lbAddBtn.disabled = true;
-      lbAddBtn.classList.add("btn-disabled");
-      lbAddBtn.style.opacity = "0.55";
-      lbAddBtn.style.cursor = "not-allowed";
-      if (isCouscousBlocked) {
-        const cInfo = getCouscousScheduleInfo();
-        const cText = cInfo.isBefore
-          ? (currentLang === "en" ? "Couscous from 12:00" : currentLang === "ar" ? "الكسكس من 12:00" : "Couscous dès 12h00")
-          : cInfo.isAfter
-            ? (currentLang === "en" ? "Service Ended (17:00)" : currentLang === "ar" ? "انتهت الخدمة (17:00)" : "Service Terminé (17h00)")
-            : (currentLang === "en" ? "Vendredi (12h-17h)" : currentLang === "ar" ? "الجمعة (12-17)" : "Vendredi (12h-17h)");
-        lbAddBtn.textContent = cText;
-      } else if (isKitchenBlocked) {
-        const kInfo = getKitchenScheduleInfo();
-        const kText = kInfo.isClosed
-          ? (currentLang === "en" ? "Kitchen Closed"
-            : currentLang === "de" ? "Küche geschlossen"
-              : currentLang === "es" ? "Cocina cerrada"
-                : currentLang === "ar" ? "المطبخ مغلق"
-                  : "Cuisine Fermée")
-          : (currentLang === "en" ? `Kitchen from ${kInfo.startHour}:00`
-            : currentLang === "de" ? `Küche ab ${kInfo.startHour}:00`
-              : currentLang === "es" ? `Cocina desde las ${kInfo.startHour}:00`
-                : currentLang === "ar" ? `المطبخ ابتداءً من ${kInfo.startHour}:00`
-                  : `Cuisine dès ${kInfo.startHour}h00`);
-        lbAddBtn.textContent = kText;
-      } else {
-        const endText = currentLang === "en" ? "Service Ended"
-          : currentLang === "de" ? "Service Beendet"
-            : currentLang === "es" ? "Servicio Finalizado"
-              : currentLang === "ar" ? "انتهت فترة التقديم"
-                : "Service Terminé";
-        lbAddBtn.textContent = endText;
-      }
-    } else {
-      lbAddBtn.disabled = false;
-      lbAddBtn.classList.remove("btn-disabled");
-      lbAddBtn.style.opacity = "";
-      lbAddBtn.style.cursor = "";
-      const btnText = currentLang === "en" ? "Order"
-        : currentLang === "de" ? "Bestellen"
-          : currentLang === "es" ? "Pedir"
-            : currentLang === "ar" ? "اطلب"
-              : "Commander";
-      lbAddBtn.textContent = btnText;
-    }
+    const btnText = currentLang === "en" ? "Order"
+      : currentLang === "de" ? "Bestellen"
+        : currentLang === "ar" ? "اطلب"
+          : "Commander";
+    lbAddBtn.textContent = btnText;
   } else if (lbAddBtn) {
     lbAddBtn.style.display = "none";
   }
@@ -824,7 +584,6 @@ export function openLightboxForItem(item, imgUrl) {
   document.body.classList.add("no-scroll");
   document.documentElement.classList.add("no-scroll");
 }
-
 
 export function enableSecureLightbox() {
   const secureLightbox = document.getElementById("secureLightbox");
@@ -835,16 +594,6 @@ export function enableSecureLightbox() {
   if (lbAddBtn && !lbAddBtn._hasListener) {
     lbAddBtn._hasListener = true;
     lbAddBtn.addEventListener("click", () => {
-      if (lbAddBtn.disabled) {
-        if (activeLightboxItem && isCouscousCategory(activeLightboxItem.categoryId, activeLightboxItem.name?.fr || activeLightboxItem.name)) {
-          showToast(getCouscousBlockedMessage(currentLang));
-        } else if (activeLightboxItem && isKitchenCategory(activeLightboxItem.categoryId)) {
-          showToast(getKitchenBlockedMessage(currentLang));
-        } else {
-          showToast(getBreakfastBlockedMessage(currentLang));
-        }
-        return;
-      }
       if (activeLightboxItem) {
         checkItemOptionsAndAdd(activeLightboxItem);
         closeLightbox();
@@ -909,7 +658,7 @@ export function renderMenu() {
 
   // Set default active category if none
   if (!activeCategoryId && menuData.length > 0) {
-    activeCategoryId = getDefaultInitialCategoryId();
+    activeCategoryId = getCatId(menuData[0]);
   }
 
   // Render Category Pastilles
@@ -927,16 +676,6 @@ export function renderMenu() {
         e.stopPropagation();
         const card = addBtn.closest(".hub-card");
         if (card && card._menuItem) {
-          if (card.classList.contains("hub-card-disabled") || addBtn.disabled) {
-            if (card.dataset.blockedReason === "couscous" || isCouscousCategory(card._menuItem.categoryId, card._menuItem.name?.fr || card._menuItem.name)) {
-              showToast(getCouscousBlockedMessage(currentLang));
-            } else if (card.dataset.blockedReason === "kitchen" || isKitchenCategory(card._menuItem.categoryId)) {
-              showToast(getKitchenBlockedMessage(currentLang));
-            } else {
-              showToast(getBreakfastBlockedMessage(currentLang));
-            }
-            return;
-          }
           checkItemOptionsAndAdd(card._menuItem);
           // Quick tap animation
           addBtn.style.transform = "scale(0.92)";
@@ -975,4 +714,5 @@ window.showAllDishes = showAllDishes;
 window.closeLightbox = closeLightbox;
 window.setupNavigationListeners = setupNavigationListeners;
 window.toggleCategoryDrawer = toggleCategoryDrawer;
+window.buildIngredientSticker = buildIngredientSticker;
 

@@ -170,22 +170,6 @@ function initAdminStreams() {
 
     initSystemFreezeListener();
 
-    // Nettoyage automatique des appels et commandes archivés (> 24h) une fois par jour
-    try {
-        const lastAutoClean = localStorage.getItem("gc_last_auto_cleanup");
-        const now = Date.now();
-        if (!lastAutoClean || (now - parseInt(lastAutoClean, 10)) > 12 * 60 * 60 * 1000) {
-            localStorage.setItem("gc_last_auto_cleanup", String(now));
-            setTimeout(() => {
-                if (typeof dbService !== "undefined" && dbService.cleanupOldData) {
-                    dbService.cleanupOldData((ok) => {
-                        if (ok) console.log("🧹 Auto-cleanup Firestore (>24h) effectué.");
-                    });
-                }
-            }, 6000);
-        }
-    } catch (e) {}
-
     // Initial render from local cache to avoid empty views on load
     activePreOrdersList = loadPreOrdersCache();
     if (activePreOrdersList.length > 0) {
@@ -569,21 +553,247 @@ function renderAdminHistoryFeed() {
     });
 }
 
-function startAdminApp() {
-    initAdminTabs();
+// ============================================================================
+// 9. ADMIN LOYALTY CLUB (500 PTS) DASHBOARD LOGIC
+// ============================================================================
 
-    // 1. Bind the freeze toggle button
+let cachedAdminLoyaltyMembers = [];
+
+function initAdminLoyaltyDashboard() {
+    const tableBody = document.getElementById("adminLoyaltyTableBody");
+    const searchInput = document.getElementById("adminLoyaltySearchInput");
+    const btnSaveSettings = document.getElementById("btnSaveLoyaltySettings");
+
+    const inputRewardThreshold = document.getElementById("settingRewardThreshold");
+    const inputWelcomeBonus = document.getElementById("settingWelcomeBonus");
+    const inputPointsPerDH = document.getElementById("settingPointsPerDH");
+
+    const modalTx = document.getElementById("adminLoyaltyTxModal");
+    const btnCloseTxModal = document.getElementById("btnCloseTxModal");
+    const txListContainer = document.getElementById("adminTxListContainer");
+    const txModalTitle = document.getElementById("adminTxModalTitle");
+
+    if (btnCloseTxModal && modalTx) {
+        btnCloseTxModal.addEventListener("click", () => {
+            modalTx.style.display = "none";
+        });
+        modalTx.addEventListener("click", (e) => {
+            if (e.target === modalTx) modalTx.style.display = "none";
+        });
+    }
+
+    // 1. Paramètres
+    if (btnSaveSettings) {
+        btnSaveSettings.addEventListener("click", () => {
+            const rewardThreshold = parseInt(inputRewardThreshold.value, 10) || 500;
+            const welcomeBonus = parseInt(inputWelcomeBonus.value, 10) || 50;
+            const pointsPerDH = parseFloat(inputPointsPerDH.value) || 1;
+
+            btnSaveSettings.disabled = true;
+            btnSaveSettings.textContent = "Enregistrement...";
+
+            dbService.setLoyaltySettings({ rewardThreshold, welcomeBonus, pointsPerDH }, (ok) => {
+                btnSaveSettings.disabled = false;
+                btnSaveSettings.textContent = "Enregistrer";
+                if (ok) {
+                    alert("✅ Paramètres du Club Fidélité enregistrés avec succès !");
+                } else {
+                    alert("❌ Erreur lors de l'enregistrement des paramètres.");
+                }
+            });
+        });
+    }
+
+    dbService.onLoyaltySettingsChange((cfg) => {
+        if (!cfg) return;
+        if (inputRewardThreshold && cfg.rewardThreshold) inputRewardThreshold.value = cfg.rewardThreshold;
+        if (inputWelcomeBonus && typeof cfg.welcomeBonus === "number") inputWelcomeBonus.value = cfg.welcomeBonus;
+        if (inputPointsPerDH && cfg.pointsPerDH) inputPointsPerDH.value = cfg.pointsPerDH;
+    });
+
+    // 2. Recherche
+    if (searchInput) {
+        searchInput.addEventListener("input", () => {
+            renderLoyaltyMembersTable();
+        });
+    }
+
+    // 3. Écoute temps réel des membres
+    dbService.onAllLoyaltyMembersChange((members) => {
+        cachedAdminLoyaltyMembers = members || [];
+        updateLoyaltyKPIs(cachedAdminLoyaltyMembers);
+        renderLoyaltyMembersTable();
+    });
+
+    function updateLoyaltyKPIs(members) {
+        const total = members.length;
+        let qrCount = 0;
+        let waiterCount = 0;
+        let totalPts = 0;
+        let totalRewards = 0;
+
+        members.forEach(m => {
+            if (m.source === "qr_menu") qrCount++;
+            else if (m.source === "waiter_direct") waiterCount++;
+            totalPts += (m.points || 0);
+            totalRewards += (m.rewardsClaimed || 0);
+        });
+
+        const elTotal = document.getElementById("kpiLoyaltyTotalMembers");
+        const elRatio = document.getElementById("kpiLoyaltySourceRatio");
+        const elPts = document.getElementById("kpiLoyaltyTotalPoints");
+        const elRewards = document.getElementById("kpiLoyaltyRewardsClaimed");
+
+        if (elTotal) elTotal.textContent = total;
+        if (elRatio) elRatio.textContent = `QR: ${qrCount} • Serveur: ${waiterCount}`;
+        if (elPts) elPts.textContent = totalPts.toLocaleString();
+        if (elRewards) elRewards.textContent = totalRewards;
+    }
+
+    function renderLoyaltyMembersTable() {
+        if (!tableBody) return;
+        const q = (searchInput && searchInput.value ? searchInput.value : "").trim().toLowerCase();
+
+        const filtered = cachedAdminLoyaltyMembers.filter(m => {
+            if (!q) return true;
+            const name = (m.firstName || "").toLowerCase();
+            const phone = (m.phone || "").toLowerCase();
+            return name.includes(q) || phone.includes(q);
+        });
+
+        if (filtered.length === 0) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align:center; padding:30px; color:var(--muted);">
+                        ${q ? "Aucun membre trouvé pour cette recherche." : "Aucun membre inscrit au Club Fidélité pour le moment."}
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        tableBody.innerHTML = "";
+
+        filtered.forEach(m => {
+            const tr = document.createElement("tr");
+            const pts = m.points || 0;
+            const sourceClass = m.source === "qr_menu" ? "qr" : (m.source === "waiter_direct" ? "waiter" : "admin");
+            const sourceLabel = m.source === "qr_menu" ? "Menu QR" : (m.source === "waiter_direct" ? "Serveur" : "Admin");
+
+            tr.innerHTML = `
+                <td><strong>${m.firstName || "Client"}</strong></td>
+                <td><code style="color:var(--gold);">${m.phone}</code></td>
+                <td>
+                    <span style="font-weight:700; ${pts >= 500 ? "color:#2ecc71;" : ""}">${pts} / 500</span>
+                    <div style="width:70px; height:5px; background:rgba(255,255,255,0.1); border-radius:4px; margin-top:4px;">
+                        <div style="height:100%; width:${Math.min(100, (pts/500)*100)}%; background:${pts >= 500 ? "#2ecc71" : "var(--gold)"}; border-radius:4px;"></div>
+                    </div>
+                </td>
+                <td>${m.totalEarned || pts} pts</td>
+                <td style="color:#2ecc71; font-weight:700;">${m.rewardsClaimed || 0} 🎁</td>
+                <td><span class="badge-source ${sourceClass}">${sourceLabel}</span></td>
+                <td>
+                    <button type="button" class="table-btn-action btn-adjust-pts" data-phone="${m.phone}" data-name="${m.firstName}">+/- Pts</button>
+                    ${pts >= 500 ? `<button type="button" class="table-btn-action table-btn-redeem btn-redeem-pts" data-phone="${m.phone}" data-name="${m.firstName}">🎁 Offrir</button>` : ""}
+                    <button type="button" class="table-btn-action btn-history-pts" data-phone="${m.phone}" data-name="${m.firstName}">📜 Tx</button>
+                </td>
+            `;
+
+            // Action +/- Points
+            const btnAdjust = tr.querySelector(".btn-adjust-pts");
+            if (btnAdjust) {
+                btnAdjust.addEventListener("click", () => {
+                    const deltaStr = prompt(`Ajuster les points pour ${m.firstName} (${m.phone}) :\nEntrez un nombre positif (ex: 50) ou négatif (ex: -50) :`);
+                    if (deltaStr === null) return;
+                    const delta = parseInt(deltaStr, 10);
+                    if (isNaN(delta) || delta === 0) {
+                        alert("Montant de points invalide.");
+                        return;
+                    }
+                    const reason = prompt("Motif de l'ajustement (ex: Geste commercial, Correction addition) :") || "Ajustement administrateur";
+
+                    dbService.adjustLoyaltyPoints(m.phone, delta, reason, "admin", (ok, newTotal) => {
+                        if (ok) {
+                            alert(`✅ Points ajustés avec succès !\nNouveau solde de ${m.firstName} : ${newTotal} points.`);
+                        } else {
+                            alert("❌ Erreur lors de l'ajustement des points.");
+                        }
+                    });
+                });
+            }
+
+            // Action Offrir Conso
+            const btnRedeem = tr.querySelector(".btn-redeem-pts");
+            if (btnRedeem) {
+                btnRedeem.addEventListener("click", () => {
+                    if (confirm(`Déduire 500 points pour accorder une consommation gratuite à ${m.firstName} (${m.phone}) ?`)) {
+                        dbService.redeemLoyaltyReward(m.phone, "admin", (ok, newTotal) => {
+                            if (ok) {
+                                alert(`🎉 Consommation gratuite accordée !\nNouveau solde : ${newTotal} points.`);
+                            } else {
+                                alert("❌ Erreur lors de l'attribution de la récompense.");
+                            }
+                        });
+                    }
+                });
+            }
+
+            // Action Historique des Transactions
+            const btnHist = tr.querySelector(".btn-history-pts");
+            if (btnHist) {
+                btnHist.addEventListener("click", () => {
+                    if (txModalTitle) txModalTitle.textContent = `Transactions — ${m.firstName} (${m.phone})`;
+                    if (modalTx) modalTx.style.display = "flex";
+                    if (txListContainer) txListContainer.innerHTML = "Chargement...";
+
+                    dbService.getLoyaltyTransactions(m.phone, (txs) => {
+                        if (!txListContainer) return;
+                        if (!txs || txs.length === 0) {
+                            txListContainer.innerHTML = `<div style="text-align:center; padding:20px; color:var(--muted);">Aucune transaction enregistrée pour ce membre.</div>`;
+                            return;
+                        }
+
+                        txListContainer.innerHTML = txs.map(tx => {
+                            const isPos = tx.pointsDelta >= 0;
+                            const d = tx.createdAt ? new Date(tx.createdAt).toLocaleString("fr-FR", { day:"2-digit", month:"2-digit", year:"2-digit", hour:"2-digit", minute:"2-digit" }) : "";
+                            return `
+                                <div class="tx-item-card">
+                                    <div>
+                                        <div style="font-weight:700; color:#ffffff;">${tx.note || tx.type}</div>
+                                        <div style="font-size:0.75rem; color:var(--muted);">
+                                            ${d} • Validé par : <strong>${tx.validatedBy || "Système"}</strong> ${tx.tableNumber ? `• Table ${tx.tableNumber}` : ""}
+                                        </div>
+                                    </div>
+                                    <div class="${isPos ? "tx-delta-pos" : "tx-delta-neg"}">
+                                        ${isPos ? "+" : ""}${tx.pointsDelta} pts
+                                    </div>
+                                </div>
+                            `;
+                        }).join("");
+                    });
+                });
+            }
+
+            tableBody.appendChild(tr);
+        });
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Initialize tab navigation
+    initAdminTabs();
+    initAdminLoyaltyDashboard();
+
+    // 1. Bind the freeze toggle button FIRST to protect against any database stream startup crashes!
     const btn = document.getElementById("toggleFreezeBtn");
     if (btn) {
         btn.addEventListener("click", () => {
             console.log("⚡ Freeze button clicked");
-            if (typeof dbService !== "undefined") {
-                dbService.setSystemFreeze(!systemFrozen, (success, errorMsg) => {
-                    if (!success) {
-                        alert("Erreur lors de la modification de l'état freeze :\n" + (errorMsg || "Erreur inconnue (Vérifiez votre connexion ou vos permissions Firebase)"));
-                    }
-                });
-            }
+            dbService.setSystemFreeze(!systemFrozen, (success, errorMsg) => {
+                if (!success) {
+                    alert("Erreur lors de la modification de l'état freeze :\n" + (errorMsg || "Erreur inconnue (Vérifiez votre connexion ou vos permissions Firebase)"));
+                }
+            });
         });
     }
 
@@ -592,153 +802,21 @@ function startAdminApp() {
     if (cleanupBtn) {
         cleanupBtn.addEventListener("click", () => {
             if (confirm("Voulez-vous purger de la base de données toutes les données datant de plus de 24 heures ?")) {
-                if (typeof dbService !== "undefined") {
-                    dbService.cleanupOldData((success) => {
-                        if (success) {
-                            alert("Purge effectuée avec succès !");
-                        } else {
-                            alert("Échec de la purge.");
-                        }
-                    });
-                }
+                dbService.cleanupOldData((success) => {
+                    if (success) {
+                        alert("Purge effectuée avec succès !");
+                    } else {
+                        alert("Échec de la purge.");
+                    }
+                });
             }
         });
     }
 
-    // 2. Start streams safely
+    // 2. Now start streams safely
     try {
         initAdminStreams();
     } catch (err) {
         console.error("⚠️ Error starting streams:", err);
     }
-}
-
-// ============================================================================
-// 🔒 ADMIN AUTHENTICATION SECURITY LAYER (CODE: greycorner2024)
-// ============================================================================
-const ADMIN_AUTH_CODE = "greycorner2024";
-const ADMIN_AUTH_STORAGE_KEY = "gc_admin_authenticated";
-
-let adminAppInitialized = false;
-
-function isAdminAuthenticated() {
-    try {
-        return sessionStorage.getItem(ADMIN_AUTH_STORAGE_KEY) === "true";
-    } catch (e) {
-        return false;
-    }
-}
-
-function unlockAdminUI() {
-    const overlay = document.getElementById("adminAuthOverlay");
-    const container = document.getElementById("adminMainContainer");
-    if (overlay) overlay.style.display = "none";
-    if (container) container.style.display = "flex";
-}
-
-function lockAdminUI() {
-    const overlay = document.getElementById("adminAuthOverlay");
-    const container = document.getElementById("adminMainContainer");
-    if (overlay) overlay.style.display = "flex";
-    if (container) container.style.display = "none";
-
-    const input = document.getElementById("adminAuthCodeInput");
-    if (input) {
-        input.value = "";
-        setTimeout(() => input.focus(), 150);
-    }
-}
-
-function launchAdminAppSafely() {
-    if (adminAppInitialized) return;
-    adminAppInitialized = true;
-
-    if (typeof dbService !== "undefined") {
-        startAdminApp();
-    } else {
-        const checkInterval = setInterval(() => {
-            if (typeof dbService !== "undefined") {
-                clearInterval(checkInterval);
-                startAdminApp();
-            }
-        }, 50);
-    }
-}
-
-function handleAdminAuth(event) {
-    if (event) event.preventDefault();
-
-    const input = document.getElementById("adminAuthCodeInput");
-    const errorEl = document.getElementById("adminAuthError");
-    const card = document.getElementById("adminAuthCard");
-    const enteredCode = input ? input.value.trim() : "";
-
-    if (enteredCode === ADMIN_AUTH_CODE) {
-        try {
-            sessionStorage.setItem(ADMIN_AUTH_STORAGE_KEY, "true");
-        } catch (e) {}
-
-        if (errorEl) errorEl.style.display = "none";
-        unlockAdminUI();
-        launchAdminAppSafely();
-    } else {
-        if (errorEl) {
-            errorEl.style.display = "block";
-            errorEl.textContent = "❌ Code d'accès incorrect. Veuillez réessayer.";
-        }
-        if (card) {
-            card.classList.remove("auth-shake");
-            void card.offsetWidth; // Force reflow
-            card.classList.add("auth-shake");
-            setTimeout(() => card.classList.remove("auth-shake"), 500);
-        }
-        if (input) {
-            input.value = "";
-            input.focus();
-        }
-    }
-}
-
-function handleAdminLogout() {
-    if (confirm("Voulez-vous verrouiller la console d'administration ?")) {
-        try {
-            sessionStorage.removeItem(ADMIN_AUTH_STORAGE_KEY);
-        } catch (e) {}
-        location.reload();
-    }
-}
-
-function initAdminSecurity() {
-    // 1. Bouton Afficher / Masquer mot de passe
-    const toggleBtn = document.getElementById("adminAuthToggleVisibility");
-    const codeInput = document.getElementById("adminAuthCodeInput");
-    if (toggleBtn && codeInput) {
-        toggleBtn.addEventListener("click", () => {
-            const isPassword = codeInput.type === "password";
-            codeInput.type = isPassword ? "text" : "password";
-            toggleBtn.textContent = isPassword ? "🔒" : "👁️";
-        });
-    }
-
-    // 2. Bouton Déconnexion dans le Header
-    const logoutBtn = document.getElementById("adminLogoutBtn");
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", handleAdminLogout);
-    }
-
-    // 3. Vérification de l'état d'authentification
-    if (isAdminAuthenticated()) {
-        unlockAdminUI();
-        launchAdminAppSafely();
-    } else {
-        lockAdminUI();
-    }
-}
-
-window.handleAdminAuth = handleAdminAuth;
-window.handleAdminLogout = handleAdminLogout;
-
-document.addEventListener("DOMContentLoaded", () => {
-    initAdminSecurity();
 });
-

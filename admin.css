@@ -729,221 +729,298 @@ button, input, select, .admin-tab-btn, .freeze-btn, .cleanup-btn {
 }
 
 /* ============================================================================
-   LOCK SCREEN & AUTHENTICATION (CODE: greycorner2024)
+   6. ADMIN LOYALTY CLUB (500 PTS) STYLES
    ============================================================================ */
-.admin-auth-overlay {
+.admin-loyalty-kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.loyalty-kpi-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.loyalty-kpi-card .kpi-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+}
+
+.loyalty-kpi-card .kpi-val {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #ffffff;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+}
+
+.loyalty-kpi-card .kpi-subval {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--gold);
+    margin-top: 4px;
+}
+
+.admin-loyalty-settings-card {
+    background: rgba(201, 169, 110, 0.05);
+    border: 1px solid rgba(201, 169, 110, 0.2);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+}
+
+.settings-card-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--gold);
+    margin-bottom: 12px;
+}
+
+.settings-inputs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    align-items: flex-end;
+}
+
+.setting-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.setting-field label {
+    font-size: 0.74rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.setting-field input {
+    height: 38px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    color: #ffffff;
+    padding: 0 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.setting-field input:focus {
+    border-color: var(--gold);
+}
+
+.btn-save-settings {
+    height: 38px;
+    background: var(--gold);
+    color: #07060a;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    padding: 0 16px;
+    cursor: pointer;
+    transition: filter 0.2s;
+}
+
+.btn-save-settings:hover {
+    filter: brightness(1.1);
+}
+
+.admin-loyalty-table-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    padding: 16px;
+}
+
+.table-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.admin-search-input {
+    min-width: 240px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    color: #ffffff;
+    padding: 0 12px;
+    font-size: 0.85rem;
+    outline: none;
+}
+
+.admin-search-input:focus {
+    border-color: var(--gold);
+}
+
+.admin-table-container {
+    overflow-x: auto;
+}
+
+.admin-loyalty-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.84rem;
+    text-align: left;
+}
+
+.admin-loyalty-table th {
+    padding: 10px 12px;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin-loyalty-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    color: #ffffff;
+    vertical-align: middle;
+}
+
+.badge-source {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.badge-source.qr {
+    background: rgba(52, 152, 219, 0.15);
+    color: #3498db;
+    border: 1px solid rgba(52, 152, 219, 0.3);
+}
+
+.badge-source.waiter {
+    background: rgba(201, 169, 110, 0.15);
+    color: var(--gold);
+    border: 1px solid rgba(201, 169, 110, 0.3);
+}
+
+.badge-source.admin {
+    background: rgba(155, 89, 182, 0.15);
+    color: #9b59b6;
+    border: 1px solid rgba(155, 89, 182, 0.3);
+}
+
+.table-btn-action {
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.04);
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-right: 4px;
+    transition: background 0.2s;
+}
+
+.table-btn-action:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.table-btn-redeem {
+    background: rgba(46, 204, 113, 0.15);
+    border-color: rgba(46, 204, 113, 0.4);
+    color: #2ecc71;
+}
+
+.table-btn-redeem:hover {
+    background: rgba(46, 204, 113, 0.3);
+}
+
+/* Modal Historique Transactions */
+.admin-tx-modal-overlay {
     position: fixed;
     inset: 0;
-    z-index: 100000;
-    background: radial-gradient(circle at center, #101826 0%, #070a10 100%);
+    z-index: 10000;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
 }
 
-.admin-auth-card {
+.admin-tx-modal-sheet {
     width: 100%;
-    max-width: 420px;
-    background: rgba(18, 26, 42, 0.95);
-    border: 1px solid rgba(201, 168, 76, 0.35);
-    border-radius: 20px;
-    padding: 36px 30px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.75), 0 0 25px rgba(201, 168, 76, 0.12);
-    text-align: center;
-    transition: all 0.3s ease;
-}
-
-.admin-auth-brand {
+    max-width: 580px;
+    max-height: 80vh;
+    background: #111118;
+    border: 1px solid rgba(201, 169, 110, 0.3);
+    border-radius: 16px;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+}
+
+.admin-tx-modal-header {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 12px;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.admin-auth-logo {
-    width: 58px;
-    height: 58px;
-    object-fit: contain;
-    filter: drop-shadow(0 4px 10px rgba(201, 168, 76, 0.3));
+.admin-tx-modal-body {
+    padding: 16px 20px;
+    overflow-y: auto;
 }
 
-.admin-auth-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--gold);
-    letter-spacing: 0.08em;
-}
-
-.admin-auth-badge {
-    background: rgba(201, 168, 76, 0.12);
-    border: 1px solid rgba(201, 168, 76, 0.3);
-    color: var(--sc-gold-light);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 3px 12px;
-    border-radius: 20px;
-}
-
-.admin-auth-desc {
-    font-family: 'DM Sans', sans-serif;
-    color: var(--muted);
-    font-size: 0.82rem;
-    line-height: 1.5;
-    margin: 8px 0 22px;
-}
-
-.admin-auth-input-wrap {
-    position: relative;
-    width: 100%;
-    margin-bottom: 12px;
-}
-
-.admin-auth-input {
-    width: 100%;
-    background: rgba(10, 15, 26, 0.8);
-    border: 1.5px solid rgba(201, 168, 76, 0.3);
-    border-radius: 12px;
-    padding: 14px 44px 14px 16px;
-    color: #FFFFFF;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    letter-spacing: 0.05em;
-    outline: none;
-    transition: all 0.25s ease;
-}
-
-.admin-auth-input:focus {
-    border-color: var(--gold);
-    box-shadow: 0 0 16px rgba(201, 168, 76, 0.3);
-    background: rgba(10, 15, 26, 0.95);
-}
-
-.admin-auth-toggle-pwd {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
+.btn-close-modal {
     background: transparent;
     border: none;
     color: var(--muted);
-    font-size: 1.1rem;
+    font-size: 1.5rem;
     cursor: pointer;
-    padding: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: color 0.2s ease;
 }
 
-.admin-auth-toggle-pwd:hover {
-    color: var(--sc-gold-light);
+.btn-close-modal:hover {
+    color: #ffffff;
 }
 
-.admin-auth-error {
-    background: rgba(231, 76, 60, 0.15);
-    border: 1px solid rgba(231, 76, 60, 0.4);
-    color: #ff7675;
-    font-size: 0.78rem;
-    font-weight: 500;
-    padding: 8px 12px;
+.tx-item-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 8px;
-    margin-bottom: 14px;
-    text-align: center;
-    animation: authErrorFadeIn 0.25s ease;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.82rem;
 }
 
-@keyframes authErrorFadeIn {
-    from { opacity: 0; transform: translateY(-4px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes authShake {
-    0%, 100% { transform: translateX(0); }
-    20%, 60% { transform: translateX(-9px); }
-    40%, 80% { transform: translateX(9px); }
-}
-
-.auth-shake {
-    animation: authShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-    border-color: rgba(231, 76, 60, 0.7) !important;
-}
-
-.admin-auth-submit-btn {
-    width: 100%;
-    padding: 14px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-    border: none;
-    color: #070a10;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.92rem;
+.tx-delta-pos {
+    color: #2ecc71;
     font-weight: 700;
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    box-shadow: 0 6px 20px rgba(201, 168, 76, 0.32);
-    transition: all 0.2s ease;
+    font-size: 0.95rem;
 }
 
-.admin-auth-submit-btn:hover {
-    background: linear-gradient(135deg, #d4b255 0%, #b38b2d 100%);
-    box-shadow: 0 8px 24px rgba(201, 168, 76, 0.45);
-    transform: translateY(-1px);
-}
-
-.admin-auth-submit-btn:active {
-    transform: scale(0.985);
-}
-
-.admin-auth-btn-arrow {
-    font-size: 1.1rem;
-    transition: transform 0.2s ease;
-}
-
-.admin-auth-submit-btn:hover .admin-auth-btn-arrow {
-    transform: translateX(4px);
-}
-
-.admin-auth-footer {
-    margin-top: 20px;
-    font-size: 0.72rem;
-    color: rgba(240, 234, 216, 0.3);
-    letter-spacing: 0.05em;
-}
-
-/* Bouton Déconnexion dans le Header */
-.logout-btn {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: rgba(240, 234, 216, 0.7);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 600;
-    padding: 7px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.2s ease;
-    outline: none;
-}
-
-.logout-btn:hover {
-    background: rgba(231, 76, 60, 0.14);
-    border-color: rgba(231, 76, 60, 0.4);
-    color: #ff6b6b;
-}
-
-.logout-btn:active {
-    transform: scale(0.96);
+.tx-delta-neg {
+    color: #e74c3c;
+    font-weight: 700;
+    font-size: 0.95rem;
 }

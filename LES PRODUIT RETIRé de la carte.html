@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Note de Service — Grey Corner</title>
+<style>
+:root {
+  --bg: #F4EFE7;
+  --bg-card: #FFFFFF;
+  --dark: #241E1B;
+  --gold: #8A5A2B;
+  --gold-light: #B99A5B;
+  --grey: #6B5D4F;
+  --line: #E4D9C4;
+  --green: #3E7A4E;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1B1714;
+    --bg-card: #241E1B;
+    --dark: #F4EFE7;
+    --gold: #D4A85C;
+    --gold-light: #D4A85C;
+    --grey: #C9BBA6;
+    --line: #3A322B;
+    --green: #6FBF83;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1B1714;
+  --bg-card: #241E1B;
+  --dark: #F4EFE7;
+  --gold: #D4A85C;
+  --gold-light: #D4A85C;
+  --grey: #C9BBA6;
+  --line: #3A322B;
+  --green: #6FBF83;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--dark);
+  font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.45;
+  padding-bottom: 40px;
+}
+.hero {
+  background: #241E1B;
+  color: #F4EFE7;
+  padding: 32px 20px 26px 20px;
+  text-align: center;
+}
+.hero .kicker {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: #B99A5B;
+  margin-bottom: 10px;
+}
+.hero h1 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 26px;
+  margin: 0 0 6px 0;
+  letter-spacing: 1px;
+}
+.hero .sub {
+  font-size: 13px;
+  color: #D9CBB0;
+  font-style: italic;
+}
+.wrap { max-width: 640px; margin: 0 auto; padding: 0 14px; }
+.meta {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin: -16px 0 20px 0;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+.meta-row { display: flex; padding: 5px 0; font-size: 13.5px; border-bottom: 1px solid var(--line); }
+.meta-row:last-child { border-bottom: none; }
+.meta-label { width: 90px; flex-shrink: 0; color: var(--gold); font-weight: 700; }
+.meta-val { color: var(--dark); }
+.intro { font-size: 15px; color: var(--dark); margin-bottom: 22px; }
+h2.section {
+  font-family: Georgia, serif;
+  font-size: 19px;
+  color: var(--dark);
+  margin: 28px 0 6px 0;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--gold);
+}
+.section-note {
+  font-size: 13.5px;
+  color: var(--grey);
+  margin-bottom: 12px;
+}
+.alert-box {
+  background: var(--bg-card);
+  border-left: 4px solid var(--gold);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+.alert-box b { color: var(--gold); }
+.cat-block {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.cat-block summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 12px 14px;
+  font-weight: 700;
+  font-size: 14.5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cat-block summary::-webkit-details-marker { display: none; }
+.cat-block summary::after {
+  content: "+";
+  color: var(--gold);
+  font-size: 18px;
+  font-weight: 400;
+  margin-left: 8px;
+}
+.cat-block[open] summary::after { content: "–"; }
+.cat-block .count {
+  background: var(--gold);
+  color: #fff;
+  border-radius: 20px;
+  font-size: 11px;
+  padding: 2px 8px;
+  font-weight: 700;
+  margin-left: auto;
+  margin-right: 8px;
+}
+.cat-body { padding: 0 14px 8px 14px; }
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 7px 0;
+  border-top: 1px dotted var(--line);
+  font-size: 13.5px;
+  gap: 8px;
+}
+.rname { color: var(--dark); flex: 1; }
+.rprice { color: var(--gold); font-weight: 700; white-space: nowrap; }
+.pold { color: var(--grey); text-decoration: line-through; white-space: nowrap; }
+.parrow { color: var(--grey); }
+.pnew { color: var(--green); font-weight: 700; white-space: nowrap; }
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 10px;
+  text-align: center;
+}
+.stat-num { font-size: 22px; font-weight: 800; color: var(--gold); }
+.stat-label { font-size: 11px; color: var(--grey); margin-top: 2px; }
+.top-row {
+  display: flex; justify-content: space-between;
+  background: var(--bg-card); border: 1px solid var(--line);
+  border-radius: 8px; padding: 9px 12px; margin-bottom: 6px; font-size: 13.5px;
+}
+.top-delta { color: var(--gold); font-weight: 800; }
+ul.consignes { padding-left: 0; list-style: none; margin: 0; }
+ul.consignes li {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 11px 14px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  position: relative;
+  padding-left: 30px;
+}
+ul.consignes li::before {
+  content: "✓";
+  position: absolute; left: 12px; top: 11px;
+  color: var(--green); font-weight: 800;
+}
+.footer-sign {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  color: var(--grey);
+  font-size: 13px;
+}
+.footer-sign b { color: var(--dark); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="kicker">GREY CORNER &middot; FÈS</div>
+  <h1>NOTE DE SERVICE</h1>
+  <div class="sub">Mise à jour de la carte — nouvelle grille tarifaire</div>
+</div>
+
+<div class="wrap">
+  <div class="meta">
+    <div class="meta-row"><span class="meta-label">Date</span><span class="meta-val">18 septembre 2026</span></div>
+    <div class="meta-row"><span class="meta-label">De</span><span class="meta-val">Direction — Grey Corner</span></div>
+    <div class="meta-row"><span class="meta-label">À</span><span class="meta-val">Service, Bar, Cuisine, Caisse, Économat</span></div>
+    <div class="meta-row"><span class="meta-label">Objet</span><span class="meta-val">Produits retirés &amp; prix ajustés</span></div>
+  </div>
+
+  <div class="intro">
+    37 produits quittent la carte et 144 prix sont ajustés (+2.34 DH en moyenne).
+    Deux calendriers différents s'appliquent — lisez bien les deux encarts ci-dessous avant la mise en application.
+  </div>
+
+  <div class="alert-box">
+    🗓️ <b>Retrait des produits :</b> progressif, produit par produit, <b>dès la rupture de son stock</b>. Pas de date unique — tant qu'il reste du stock, le produit peut encore être servi.
+  </div>
+  <div class="alert-box">
+    🗓️ <b>Nouveaux prix :</b> applicables <b>après le Ramadan</b> (Ramadan 2027 estimé du 7 février au 8 mars — dates à confirmer par la direction selon l'annonce officielle). Jusque-là, la carte actuelle reste en vigueur.
+  </div>
+
+  <h2 class="section">1 · Produits retirés (37)</h2>
+  <div class="section-note">Dès qu'un produit ci-dessous est en rupture, retirez-le des ardoises/supports et ne le proposez plus. Touchez une catégorie pour l'ouvrir.</div>
+  
+    <details class="cat-block">
+      <summary><span>Petit-Déjeuner</span><span class="count">2</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">MQUILA MERGUEZ</span><span class="rprice">64 DH</span></div>
+<div class="row"><span class="rname">MQUILA-fruits de mer</span><span class="rprice">78 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Entrées Froides</span><span class="count">4</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">BURRATTA</span><span class="rprice">98 DH</span></div>
+<div class="row"><span class="rname">CERCLE VEGGI</span><span class="rprice">48 DH</span></div>
+<div class="row"><span class="rname">RUSSE</span><span class="rprice">54 DH</span></div>
+<div class="row"><span class="rname">TARTARE SAUMON  </span><span class="rprice">88 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Plats</span><span class="count">3</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">BALLOTINE DE POULET AU CŒUR D&#x27;ÉPINARDS ET FROMAGE </span><span class="rprice">94 DH</span></div>
+<div class="row"><span class="rname">ROULADE DE BŒUF AUX SAVEURS DE L&#x27;ATLAS </span><span class="rprice">120 DH</span></div>
+<div class="row"><span class="rname">SUPRÊME DE POULET AUX CHAMPIGNONS ET PERSILLADE </span><span class="rprice">98 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Burgers</span><span class="count">2</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">AVOCADO FORESTIER</span><span class="rprice">54 DH</span></div>
+<div class="row"><span class="rname">EGG ET CHEESEBURGER</span><span class="rprice">56 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Panini &amp; Wraps</span><span class="count">2</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">CHARCUTERIE</span><span class="rprice">40 DH</span></div>
+<div class="row"><span class="rname">SAUMON</span><span class="rprice">64 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Pizzas</span><span class="count">2</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">BURRATA</span><span class="rprice">110 DH</span></div>
+<div class="row"><span class="rname">SAUMON</span><span class="rprice">94 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Pasta</span><span class="count">3</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">LASAGNE FRUIT DE MER </span><span class="rprice">78 DH</span></div>
+<div class="row"><span class="rname">REGATONI RICOTTA</span><span class="rprice">68 DH</span></div>
+<div class="row"><span class="rname">SPAGHETTIS NOIRS</span><span class="rprice">5 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Crêpes &amp; Gaufres Sucrées</span><span class="count">4</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">CHOCOLAT NOISETTE</span><span class="rprice">42 DH</span></div>
+<div class="row"><span class="rname">EXOTIQUE (fruits saisons)</span><span class="rprice">48 DH</span></div>
+<div class="row"><span class="rname">GREY CORNER (variétés gourmandises)</span><span class="rprice">52 DH</span></div>
+<div class="row"><span class="rname">POMME CARAMELISÉE</span><span class="rprice">40 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Crêpes Salées</span><span class="count">3</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">Crêpe BOLOGNAISE</span><span class="rprice">54 DH</span></div>
+<div class="row"><span class="rname">Crêpe FROMAGE</span><span class="rprice">45 DH</span></div>
+<div class="row"><span class="rname">Crêpe NORVÉGIENNE</span><span class="rprice">58 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Gâteaux &amp; Pâtisseries</span><span class="count">2</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">CHEESECAKE (Lotus, Citron)</span><span class="rprice">40 DH</span></div>
+<div class="row"><span class="rname">TIRAMISU</span><span class="rprice">38 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Boissons Chaudes</span><span class="count">1</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">VERVEINE AROMATISÉE</span><span class="rprice">18 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Cocktails</span><span class="count">1</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">COCKTAIL GREY CORNER</span><span class="rprice">48 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Smoothies</span><span class="count">1</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">JELLY ALMOND</span><span class="rprice">48 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Milkshakes</span><span class="count">3</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">MILKSHAKE COOKIES</span><span class="rprice">42 DH</span></div>
+<div class="row"><span class="rname">MILKSHAKE KITKAT</span><span class="rprice">42 DH</span></div>
+<div class="row"><span class="rname">MILKSHAKE OREO</span><span class="rprice">42 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Coupes de Glace</span><span class="count">1</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">BANANA SPLIT</span><span class="rprice">50 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>ORANGESHAKE</span><span class="count">1</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">ORANGESHAKE</span><span class="rprice">42 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Jus Frais</span><span class="count">2</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">ZA3ZA3</span><span class="rprice">46 DH</span></div>
+<div class="row"><span class="rname">PANACHÉ AU LAIT</span><span class="rprice">38 DH</span></div></div>
+    </details>
+
+  <h2 class="section">2 · Résumé des prix ajustés</h2>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-num">144</div><div class="stat-label">produits ajustés</div></div>
+    <div class="stat-card"><div class="stat-num">+2.34 DH</div><div class="stat-label">écart moyen</div></div>
+  </div>
+  <div class="section-note">Plus fortes hausses :</div>
+  <div class="top-row"><span class="rname">LE FILET DE BŒUF ÉMINCÉ</span><span class="top-delta">+5 DH</span></div><div class="top-row"><span class="rname">Couscous poulet avec petit lait</span><span class="top-delta">+5 DH</span></div><div class="top-row"><span class="rname">Couscous viande avec petit lait</span><span class="top-delta">+5 DH</span></div><div class="top-row"><span class="rname">LASAGNE POULET CHAMPIGNON</span><span class="top-delta">+5 DH</span></div><div class="top-row"><span class="rname">AMERICAIN</span><span class="top-delta">+4 DH</span></div>
+
+  <h2 class="section">3 · Détail par catégorie (144)</h2>
+  <div class="section-note">À appliquer en caisse seulement après le Ramadan. Touchez une catégorie pour l'ouvrir.</div>
+  
+    <details class="cat-block">
+      <summary><span>Petit-Déjeuner</span><span class="count">17</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">AMERICAIN</span><span class="pold">68</span><span class="parrow">&rarr;</span><span class="pnew">72 DH</span></div>
+<div class="row"><span class="rname">BELDI</span><span class="pold">45</span><span class="parrow">&rarr;</span><span class="pnew">47 DH</span></div>
+<div class="row"><span class="rname">BERBÈRE</span><span class="pold">54</span><span class="parrow">&rarr;</span><span class="pnew">56 DH</span></div>
+<div class="row"><span class="rname">BRUNCH DUO</span><span class="pold">144</span><span class="parrow">&rarr;</span><span class="pnew">148 DH</span></div>
+<div class="row"><span class="rname">BRUNCH GREYCORNER</span><span class="pold">85</span><span class="parrow">&rarr;</span><span class="pnew">88 DH</span></div>
+<div class="row"><span class="rname">COMPAGNARD</span><span class="pold">52</span><span class="parrow">&rarr;</span><span class="pnew">56 DH</span></div>
+<div class="row"><span class="rname">ESPAGNOL</span><span class="pold">64</span><span class="parrow">&rarr;</span><span class="pnew">68 DH</span></div>
+<div class="row"><span class="rname">EXPRESS</span><span class="pold">44</span><span class="parrow">&rarr;</span><span class="pnew">45 DH</span></div>
+<div class="row"><span class="rname">FASSI</span><span class="pold">55</span><span class="parrow">&rarr;</span><span class="pnew">58 DH</span></div>
+<div class="row"><span class="rname">HOLLANDAIS</span><span class="pold">52</span><span class="parrow">&rarr;</span><span class="pnew">54 DH</span></div>
+<div class="row"><span class="rname">MENU ENFANT</span><span class="pold">40</span><span class="parrow">&rarr;</span><span class="pnew">42 DH</span></div>
+<div class="row"><span class="rname">NORVÉGIEN</span><span class="pold">68</span><span class="parrow">&rarr;</span><span class="pnew">70 DH</span></div>
+<div class="row"><span class="rname">OMELETTE CONTINENTAL</span><span class="pold">52</span><span class="parrow">&rarr;</span><span class="pnew">54 DH</span></div>
+<div class="row"><span class="rname">OMELETTE DU CHEF</span><span class="pold">58</span><span class="parrow">&rarr;</span><span class="pnew">60 DH</span></div>
+<div class="row"><span class="rname">OMELETTE FROMAGE</span><span class="pold">52</span><span class="parrow">&rarr;</span><span class="pnew">54 DH</span></div>
+<div class="row"><span class="rname">OMELETTE NATURE</span><span class="pold">42</span><span class="parrow">&rarr;</span><span class="pnew">44 DH</span></div>
+<div class="row"><span class="rname">OMELETTE VEGETARIENNE</span><span class="pold">52</span><span class="parrow">&rarr;</span><span class="pnew">54 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Entrées Froides</span><span class="count">3</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">CESAR</span><span class="pold">65</span><span class="parrow">&rarr;</span><span class="pnew">67 DH</span></div>
+<div class="row"><span class="rname">QUINOA</span><span class="pold">68</span><span class="parrow">&rarr;</span><span class="pnew">70 DH</span></div>
+<div class="row"><span class="rname">TERRE MER</span><span class="pold">78</span><span class="parrow">&rarr;</span><span class="pnew">80 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Entrées Chaudes</span><span class="count">3</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">BOULETTES DE POULET FROMAGE</span><span class="pold">52</span><span class="parrow">&rarr;</span><span class="pnew">54 DH</span></div>
+<div class="row"><span class="rname">CROUSTILLON GAMBAS</span><span class="pold">68</span><span class="parrow">&rarr;</span><span class="pnew">70 DH</span></div>
+<div class="row"><span class="rname">PIL PIL ESPAGNOL</span><span class="pold">68</span><span class="parrow">&rarr;</span><span class="pnew">70 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Plats</span><span class="count">7</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">BROCHETTES DE POULET MARINÉES</span><span class="pold">84</span><span class="parrow">&rarr;</span><span class="pnew">88 DH</span></div>
+<div class="row"><span class="rname">ESCALOPE A LA MILANAISE</span><span class="pold">85</span><span class="parrow">&rarr;</span><span class="pnew">88 DH</span></div>
+<div class="row"><span class="rname">FILET DE BŒUF AUX HERBES DE L&#x27;ATLAS</span><span class="pold">135</span><span class="parrow">&rarr;</span><span class="pnew">138 DH</span></div>
+<div class="row"><span class="rname">LE FILET DE BŒUF ÉMINCÉ</span><span class="pold">115</span><span class="parrow">&rarr;</span><span class="pnew">120 DH</span></div>
+<div class="row"><span class="rname">MENU ENFANT</span><span class="pold">58</span><span class="parrow">&rarr;</span><span class="pnew">60 DH</span></div>
+<div class="row"><span class="rname">PAVÉ DE SAUMON À LA PLANCHA</span><span class="pold">145</span><span class="parrow">&rarr;</span><span class="pnew">148 DH</span></div>
+<div class="row"><span class="rname">ÉMINCÉ DE POULET À LA CRÈME DE CHAMPIGNONS</span><span class="pold">88</span><span class="parrow">&rarr;</span><span class="pnew">90 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Couscous du Vendredi</span><span class="count">2</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">Couscous poulet avec petit lait</span><span class="pold">54</span><span class="parrow">&rarr;</span><span class="pnew">59 DH</span></div>
+<div class="row"><span class="rname">Couscous viande avec petit lait</span><span class="pold">64</span><span class="parrow">&rarr;</span><span class="pnew">69 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Sandwichs Ciabatta</span><span class="count">5</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">FRUITS DE MER</span><span class="pold">65</span><span class="parrow">&rarr;</span><span class="pnew">68 DH</span></div>
+<div class="row"><span class="rname">POULARD</span><span class="pold">54</span><span class="parrow">&rarr;</span><span class="pnew">58 DH</span></div>
+<div class="row"><span class="rname">POULET</span><span class="pold">48</span><span class="parrow">&rarr;</span><span class="pnew">50 DH</span></div>
+<div class="row"><span class="rname">SANDWICH CHEESE STEAK</span><span class="pold">65</span><span class="parrow">&rarr;</span><span class="pnew">68 DH</span></div>
+<div class="row"><span class="rname">VIANDE HACHÉE</span><span class="pold">54</span><span class="parrow">&rarr;</span><span class="pnew">58 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Burgers</span><span class="count">4</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">BIG BURGER</span><span class="pold">68</span><span class="parrow">&rarr;</span><span class="pnew">72 DH</span></div>
+<div class="row"><span class="rname">BURGER ROYAL</span><span class="pold">70</span><span class="parrow">&rarr;</span><span class="pnew">74 DH</span></div>
+<div class="row"><span class="rname">CHEESE BURGER</span><span class="pold">54</span><span class="parrow">&rarr;</span><span class="pnew">56 DH</span></div>
+<div class="row"><span class="rname">CHICKEN BURGER</span><span class="pold">50</span><span class="parrow">&rarr;</span><span class="pnew">52 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Panini &amp; Wraps</span><span class="count">7</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">FRUIT DE MER</span><span class="pold">64</span><span class="parrow">&rarr;</span><span class="pnew">68 DH</span></div>
+<div class="row"><span class="rname">MIXTE</span><span class="pold">58</span><span class="parrow">&rarr;</span><span class="pnew">62 DH</span></div>
+<div class="row"><span class="rname">POULET</span><span class="pold">44</span><span class="parrow">&rarr;</span><span class="pnew">46 DH</span></div>
+<div class="row"><span class="rname">VIANDE HACHÉE</span><span class="pold">54</span><span class="parrow">&rarr;</span><span class="pnew">57 DH</span></div>
+<div class="row"><span class="rname">WRAP GOURMAND</span><span class="pold">64</span><span class="parrow">&rarr;</span><span class="pnew">66 DH</span></div>
+<div class="row"><span class="rname">WRAP POULET</span><span class="pold">58</span><span class="parrow">&rarr;</span><span class="pnew">59 DH</span></div>
+<div class="row"><span class="rname">WRAP VIANDE HACHÉE</span><span class="pold">62</span><span class="parrow">&rarr;</span><span class="pnew">64 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Pizzas</span><span class="count">11</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">4 SAISONS</span><span class="pold">88</span><span class="parrow">&rarr;</span><span class="pnew">90 DH</span></div>
+<div class="row"><span class="rname">5 FROMAGES</span><span class="pold">78</span><span class="parrow">&rarr;</span><span class="pnew">80 DH</span></div>
+<div class="row"><span class="rname">FRUITS DE MER</span><span class="pold">88</span><span class="parrow">&rarr;</span><span class="pnew">90 DH</span></div>
+<div class="row"><span class="rname">MARGARITA</span><span class="pold">52</span><span class="parrow">&rarr;</span><span class="pnew">55 DH</span></div>
+<div class="row"><span class="rname">MOITIÉ MOITIÉ</span><span class="pold">88</span><span class="parrow">&rarr;</span><span class="pnew">90 DH</span></div>
+<div class="row"><span class="rname">PEPPERONI</span><span class="pold">74</span><span class="parrow">&rarr;</span><span class="pnew">76 DH</span></div>
+<div class="row"><span class="rname">POULET SAUCE BLANCHE</span><span class="pold">78</span><span class="parrow">&rarr;</span><span class="pnew">80 DH</span></div>
+<div class="row"><span class="rname">REGINA</span><span class="pold">68</span><span class="parrow">&rarr;</span><span class="pnew">70 DH</span></div>
+<div class="row"><span class="rname">THON</span><span class="pold">65</span><span class="parrow">&rarr;</span><span class="pnew">67 DH</span></div>
+<div class="row"><span class="rname">VEGETARIENNE</span><span class="pold">62</span><span class="parrow">&rarr;</span><span class="pnew">64 DH</span></div>
+<div class="row"><span class="rname">VIANDE HACHÉE</span><span class="pold">78</span><span class="parrow">&rarr;</span><span class="pnew">80 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Pasta</span><span class="count">9</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">5 FROMAGE</span><span class="pold">70</span><span class="parrow">&rarr;</span><span class="pnew">74 DH</span></div>
+<div class="row"><span class="rname">BOLOGNAISE</span><span class="pold">75</span><span class="parrow">&rarr;</span><span class="pnew">78 DH</span></div>
+<div class="row"><span class="rname">CARBONARA</span><span class="pold">65</span><span class="parrow">&rarr;</span><span class="pnew">68 DH</span></div>
+<div class="row"><span class="rname">FRUITS DE MER</span><span class="pold">88</span><span class="parrow">&rarr;</span><span class="pnew">92 DH</span></div>
+<div class="row"><span class="rname">LASAGNE BOLOGNAISE</span><span class="pold">72</span><span class="parrow">&rarr;</span><span class="pnew">75 DH</span></div>
+<div class="row"><span class="rname">LASAGNE POULET CHAMPIGNON</span><span class="pold">60</span><span class="parrow">&rarr;</span><span class="pnew">65 DH</span></div>
+<div class="row"><span class="rname">POULET CHAMPIGNON / EPINARD</span><span class="pold">75</span><span class="parrow">&rarr;</span><span class="pnew">78 DH</span></div>
+<div class="row"><span class="rname">SAUMON</span><span class="pold">98</span><span class="parrow">&rarr;</span><span class="pnew">99 DH</span></div>
+<div class="row"><span class="rname">VEGETARIEN</span><span class="pold">60</span><span class="parrow">&rarr;</span><span class="pnew">64 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Crêpes &amp; Gaufres Sucrées</span><span class="count">3</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">BANANE-NUTELLA</span><span class="pold">42</span><span class="parrow">&rarr;</span><span class="pnew">45 DH</span></div>
+<div class="row"><span class="rname">KUNAFA PISTACHE</span><span class="pold">48</span><span class="parrow">&rarr;</span><span class="pnew">52 DH</span></div>
+<div class="row"><span class="rname">NUTELLA</span><span class="pold">38</span><span class="parrow">&rarr;</span><span class="pnew">42 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Crêpes Salées</span><span class="count">4</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">Crêpe CHARCUTERIE</span><span class="pold">45</span><span class="parrow">&rarr;</span><span class="pnew">47 DH</span></div>
+<div class="row"><span class="rname">Crêpe GREY CORNER (MIXTE)</span><span class="pold">58</span><span class="parrow">&rarr;</span><span class="pnew">62 DH</span></div>
+<div class="row"><span class="rname">Crêpe POULET-CHAMPIGNON</span><span class="pold">48</span><span class="parrow">&rarr;</span><span class="pnew">50 DH</span></div>
+<div class="row"><span class="rname">Crêpe PÊCHEUR</span><span class="pold">58</span><span class="parrow">&rarr;</span><span class="pnew">62 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Gâteaux &amp; Pâtisseries</span><span class="count">4</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">CHEESECAKE (Chocolat, Pistache, Framboise)</span><span class="pold">45</span><span class="parrow">&rarr;</span><span class="pnew">48 DH</span></div>
+<div class="row"><span class="rname">FONDANT AU CHOCOLAT</span><span class="pold">40</span><span class="parrow">&rarr;</span><span class="pnew">42 DH</span></div>
+<div class="row"><span class="rname">SAN SEBASTIEN</span><span class="pold">45</span><span class="parrow">&rarr;</span><span class="pnew">48 DH</span></div>
+<div class="row"><span class="rname">SAN SEBASTIEN (Nutella)</span><span class="pold">40</span><span class="parrow">&rarr;</span><span class="pnew">43 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Boissons Chaudes</span><span class="count">13</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">CAFÉ AMERICAIN</span><span class="pold">17</span><span class="parrow">&rarr;</span><span class="pnew">18 DH</span></div>
+<div class="row"><span class="rname">CAFÉ AU LAIT</span><span class="pold">19</span><span class="parrow">&rarr;</span><span class="pnew">20 DH</span></div>
+<div class="row"><span class="rname">CAFÉ LATTE</span><span class="pold">19</span><span class="parrow">&rarr;</span><span class="pnew">20 DH</span></div>
+<div class="row"><span class="rname">CAFÉ NESPRESSO</span><span class="pold">22</span><span class="parrow">&rarr;</span><span class="pnew">23 DH</span></div>
+<div class="row"><span class="rname">CAFÉ NOIR</span><span class="pold">16</span><span class="parrow">&rarr;</span><span class="pnew">17 DH</span></div>
+<div class="row"><span class="rname">CAPPUCCINO AVEC CHANTILLY</span><span class="pold">22</span><span class="parrow">&rarr;</span><span class="pnew">23 DH</span></div>
+<div class="row"><span class="rname">CAPPUCCINO ITALIEN</span><span class="pold">19</span><span class="parrow">&rarr;</span><span class="pnew">20 DH</span></div>
+<div class="row"><span class="rname">CHOCOLAT AU LAIT</span><span class="pold">18</span><span class="parrow">&rarr;</span><span class="pnew">20 DH</span></div>
+<div class="row"><span class="rname">CHOCOLAT AVEC CHANTILLY</span><span class="pold">22</span><span class="parrow">&rarr;</span><span class="pnew">24 DH</span></div>
+<div class="row"><span class="rname">CHOCOLAT FONDUE</span><span class="pold">26</span><span class="parrow">&rarr;</span><span class="pnew">28 DH</span></div>
+<div class="row"><span class="rname">THÉ NOIR</span><span class="pold">15</span><span class="parrow">&rarr;</span><span class="pnew">16 DH</span></div>
+<div class="row"><span class="rname">THÉ À LA MENTHE</span><span class="pold">16</span><span class="parrow">&rarr;</span><span class="pnew">17 DH</span></div>
+<div class="row"><span class="rname">VERVEINE</span><span class="pold">15</span><span class="parrow">&rarr;</span><span class="pnew">16 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Sodas</span><span class="count">8</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">COCA</span><span class="pold">17</span><span class="parrow">&rarr;</span><span class="pnew">18 DH</span></div>
+<div class="row"><span class="rname">COCA ZERO</span><span class="pold">17</span><span class="parrow">&rarr;</span><span class="pnew">18 DH</span></div>
+<div class="row"><span class="rname">HAWAI</span><span class="pold">17</span><span class="parrow">&rarr;</span><span class="pnew">18 DH</span></div>
+<div class="row"><span class="rname">ORANGINA</span><span class="pold">17</span><span class="parrow">&rarr;</span><span class="pnew">19 DH</span></div>
+<div class="row"><span class="rname">POMS</span><span class="pold">17</span><span class="parrow">&rarr;</span><span class="pnew">18 DH</span></div>
+<div class="row"><span class="rname">REDBULL</span><span class="pold">28</span><span class="parrow">&rarr;</span><span class="pnew">30 DH</span></div>
+<div class="row"><span class="rname">SCHWEPPES CITRON/TONIC</span><span class="pold">17</span><span class="parrow">&rarr;</span><span class="pnew">18 DH</span></div>
+<div class="row"><span class="rname">SPRITE</span><span class="pold">17</span><span class="parrow">&rarr;</span><span class="pnew">18 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Eaux Minérales</span><span class="count">3</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">0.75 l</span><span class="pold">22</span><span class="parrow">&rarr;</span><span class="pnew">23 DH</span></div>
+<div class="row"><span class="rname">OULMES</span><span class="pold">16</span><span class="parrow">&rarr;</span><span class="pnew">17 DH</span></div>
+<div class="row"><span class="rname">OULMES 0.75 l</span><span class="pold">26</span><span class="parrow">&rarr;</span><span class="pnew">27 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Jus Frais</span><span class="count">12</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">COCKTAIL ORANGE</span><span class="pold">42</span><span class="parrow">&rarr;</span><span class="pnew">44 DH</span></div>
+<div class="row"><span class="rname">JUS D&#x27;ANANAS</span><span class="pold">32</span><span class="parrow">&rarr;</span><span class="pnew">35 DH</span></div>
+<div class="row"><span class="rname">JUS D&#x27;AVOCAT</span><span class="pold">32</span><span class="parrow">&rarr;</span><span class="pnew">34 DH</span></div>
+<div class="row"><span class="rname">JUS D&#x27;ORANGE</span><span class="pold">22</span><span class="parrow">&rarr;</span><span class="pnew">24 DH</span></div>
+<div class="row"><span class="rname">JUS DE CAROTTE</span><span class="pold">25</span><span class="parrow">&rarr;</span><span class="pnew">27 DH</span></div>
+<div class="row"><span class="rname">JUS DE CITRON</span><span class="pold">25</span><span class="parrow">&rarr;</span><span class="pnew">27 DH</span></div>
+<div class="row"><span class="rname">JUS DE FRAISE</span><span class="pold">30</span><span class="parrow">&rarr;</span><span class="pnew">32 DH</span></div>
+<div class="row"><span class="rname">JUS DE FRAMBOISE</span><span class="pold">35</span><span class="parrow">&rarr;</span><span class="pnew">38 DH</span></div>
+<div class="row"><span class="rname">JUS DE FRUITS SECS AVOCAT</span><span class="pold">38</span><span class="parrow">&rarr;</span><span class="pnew">42 DH</span></div>
+<div class="row"><span class="rname">JUS DE MANGUE</span><span class="pold">30</span><span class="parrow">&rarr;</span><span class="pnew">32 DH</span></div>
+<div class="row"><span class="rname">JUS DE POMME / BANANE</span><span class="pold">28</span><span class="parrow">&rarr;</span><span class="pnew">30 DH</span></div>
+<div class="row"><span class="rname">JUS DE PÊCHE</span><span class="pold">30</span><span class="parrow">&rarr;</span><span class="pnew">32 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Ice Tea</span><span class="count">3</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">ICE TEA CITRON</span><span class="pold">28</span><span class="parrow">&rarr;</span><span class="pnew">29 DH</span></div>
+<div class="row"><span class="rname">ICE TEA FRAMBOISE</span><span class="pold">28</span><span class="parrow">&rarr;</span><span class="pnew">29 DH</span></div>
+<div class="row"><span class="rname">ICE TEA PÊCHE</span><span class="pold">28</span><span class="parrow">&rarr;</span><span class="pnew">29 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Ice Coffee</span><span class="count">2</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">CAFÉ GLACÉ AROMATISÉ</span><span class="pold">23</span><span class="parrow">&rarr;</span><span class="pnew">25 DH</span></div>
+<div class="row"><span class="rname">CAFÉ GLACÉ CLASSIQUE</span><span class="pold">20</span><span class="parrow">&rarr;</span><span class="pnew">22 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Frappuccino</span><span class="count">2</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">FRAPPUCCINO AROMATISÉ</span><span class="pold">28</span><span class="parrow">&rarr;</span><span class="pnew">30 DH</span></div>
+<div class="row"><span class="rname">FRAPPUCCINO CLASSIQUE</span><span class="pold">25</span><span class="parrow">&rarr;</span><span class="pnew">27 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Cocktails</span><span class="count">5</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">COCKTAIL GINGEMBRE</span><span class="pold">32</span><span class="parrow">&rarr;</span><span class="pnew">34 DH</span></div>
+<div class="row"><span class="rname">FRAÎCHEUR</span><span class="pold">42</span><span class="parrow">&rarr;</span><span class="pnew">44 DH</span></div>
+<div class="row"><span class="rname">PINA COLADA</span><span class="pold">42</span><span class="parrow">&rarr;</span><span class="pnew">44 DH</span></div>
+<div class="row"><span class="rname">SAN FRANCISCO</span><span class="pold">34</span><span class="parrow">&rarr;</span><span class="pnew">36 DH</span></div>
+<div class="row"><span class="rname">TROPICAL</span><span class="pold">42</span><span class="parrow">&rarr;</span><span class="pnew">44 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Mojitos</span><span class="count">3</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">MOJITO CITRON</span><span class="pold">34</span><span class="parrow">&rarr;</span><span class="pnew">36 DH</span></div>
+<div class="row"><span class="rname">MOJITO REDBULL</span><span class="pold">44</span><span class="parrow">&rarr;</span><span class="pnew">46 DH</span></div>
+<div class="row"><span class="rname">MOJITO TROPICAL</span><span class="pold">38</span><span class="parrow">&rarr;</span><span class="pnew">40 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Smoothies</span><span class="count">5</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">HAWAIEN</span><span class="pold">42</span><span class="parrow">&rarr;</span><span class="pnew">45 DH</span></div>
+<div class="row"><span class="rname">MULTI-VITAMINE</span><span class="pold">42</span><span class="parrow">&rarr;</span><span class="pnew">45 DH</span></div>
+<div class="row"><span class="rname">PINK SMOOTHIE</span><span class="pold">48</span><span class="parrow">&rarr;</span><span class="pnew">50 DH</span></div>
+<div class="row"><span class="rname">TRIPLE BERRY</span><span class="pold">48</span><span class="parrow">&rarr;</span><span class="pnew">50 DH</span></div>
+<div class="row"><span class="rname">ÉNERGÉTIQUE</span><span class="pold">42</span><span class="parrow">&rarr;</span><span class="pnew">45 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Smoothie Bowls</span><span class="count">2</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">EXOTIQUE</span><span class="pold">48</span><span class="parrow">&rarr;</span><span class="pnew">50 DH</span></div>
+<div class="row"><span class="rname">ULTRA – VITAMINES</span><span class="pold">48</span><span class="parrow">&rarr;</span><span class="pnew">50 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Milkshakes</span><span class="count">5</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">MILKSHAKE CARAMEL</span><span class="pold">42</span><span class="parrow">&rarr;</span><span class="pnew">44 DH</span></div>
+<div class="row"><span class="rname">MILKSHAKE CHOCOLAT</span><span class="pold">42</span><span class="parrow">&rarr;</span><span class="pnew">44 DH</span></div>
+<div class="row"><span class="rname">MILKSHAKE FRAISE</span><span class="pold">42</span><span class="parrow">&rarr;</span><span class="pnew">44 DH</span></div>
+<div class="row"><span class="rname">MILKSHAKE NUTELLA</span><span class="pold">42</span><span class="parrow">&rarr;</span><span class="pnew">44 DH</span></div>
+<div class="row"><span class="rname">MILKSHAKE VANILLE</span><span class="pold">42</span><span class="parrow">&rarr;</span><span class="pnew">44 DH</span></div></div>
+    </details>
+    <details class="cat-block">
+      <summary><span>Coupes de Glace</span><span class="count">2</span></summary>
+      <div class="cat-body"><div class="row"><span class="rname">COUPE AMOR</span><span class="pold">45</span><span class="parrow">&rarr;</span><span class="pnew">48 DH</span></div>
+<div class="row"><span class="rname">COUPE GREY CORNER</span><span class="pold">65</span><span class="parrow">&rarr;</span><span class="pnew">68 DH</span></div></div>
+    </details>
+
+  <h2 class="section">4 · Consignes pratiques</h2>
+  <ul class="consignes">
+    <li>Ne retirez un produit de la section 1 qu'une fois son stock réellement épuisé — pas avant.</li>
+    <li>Gardez la carte et la caisse aux prix actuels jusqu'à la fin du Ramadan.</li>
+    <li>La mise à jour de la caisse/POS et de la carte digitale (menugreycorner.pages.dev) sera coordonnée par la direction juste après le Ramadan.</li>
+    <li>Pour un client habitué d'un produit retiré, orientez avec le sourire vers l'équivalent le plus proche.</li>
+    <li>Toute question → remontez directement à la direction.</li>
+  </ul>
+
+  <div class="footer-sign">
+    Merci pour votre implication.<br>
+    <b>— La Direction, Grey Corner</b>
+  </div>
+</div>
+
+</body>
+</html>

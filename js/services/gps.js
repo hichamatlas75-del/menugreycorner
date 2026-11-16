@@ -7,7 +7,7 @@ import { currentLang } from './i18n.js';
 export const GeoFenceManager = {
   CENTER_LAT: 34.0344054,
   CENTER_LNG: -5.0154828,
-  ALLOWED_RADIUS: 65, // meters (adjusted with tolerance for indoor reception)
+  ALLOWED_RADIUS: 50, // meters
 
   calculateDistance(lat1, lon1, lat2, lon2) {
     const R = 6371000; // Earth radius in meters
@@ -21,11 +21,10 @@ export const GeoFenceManager = {
     return R * c;
   },
 
-  isWithinGeofence(lat, lng, accuracy = 0) {
+  isWithinGeofence(lat, lng) {
     const dist = this.calculateDistance(this.CENTER_LAT, this.CENTER_LNG, lat, lng);
-    console.log(`📏 Distance to Grey Corner center: ${dist.toFixed(1)} meters (accuracy: ±${(accuracy || 0).toFixed(1)}m).`);
-    const effectiveDist = Math.max(0, dist - Math.min(accuracy || 0, 25));
-    return effectiveDist <= this.ALLOWED_RADIUS;
+    console.log(`📏 Distance to Grey Corner center: ${dist.toFixed(1)} meters.`);
+    return dist <= this.ALLOWED_RADIUS;
   }
 };
 
@@ -101,7 +100,7 @@ export const GPSService = {
         }
 
         this.isSuspicious = false;
-        const inside = GeoFenceManager.isWithinGeofence(coords.latitude, coords.longitude, coords.accuracy);
+        const inside = GeoFenceManager.isWithinGeofence(coords.latitude, coords.longitude);
         this.isInside = inside;
 
         if (inside) {
@@ -162,13 +161,6 @@ export const GPSService = {
         denied: "GPS erlauben zum Bestellen",
         error: "GPS-Fehler. Einstellungen prüfen"
       },
-      es: {
-        inside: "En Grey Corner Fez",
-        outside: "Modo consulta solamente",
-        suspect: "¡Posición GPS sospechosa!",
-        denied: "Permitir GPS para pedir",
-        error: "Error GPS. Compruebe ajustes"
-      },
       ar: {
         inside: "في غري كورنر فاس",
         outside: "وضع التصفح فقط",
@@ -178,29 +170,16 @@ export const GPSService = {
       }
     };
 
-    this.lastState = state;
     const currentLangTexts = textMap[currentLang] || textMap.fr;
 
     if (state === 'inside') {
       badge.classList.add("gps-inside");
       text.textContent = currentLangTexts.inside;
       this.toggleInteractiveControls(true);
-      window._GC_modalShown = true;
-      window.GC_isPreorder = false;
-      if (typeof window.GC_hidePreorderModal === "function") window.GC_hidePreorderModal();
-      if (typeof window.GC_hideGpsBlocked === "function") window.GC_hideGpsBlocked();
     } else if (state === 'outside') {
-      if (window.GC_isPreorder) {
-        if (typeof window.GC_applyPreorderUI === "function") window.GC_applyPreorderUI();
-      } else {
-        badge.classList.add("gps-outside");
-        text.textContent = currentLangTexts.outside;
-        this.toggleInteractiveControls(false);
-        if (!window._GC_modalShown && typeof window.GC_showPreorderModal === "function") {
-          window._GC_modalShown = true;
-          window.GC_showPreorderModal();
-        }
-      }
+      badge.classList.add("gps-outside");
+      text.textContent = currentLangTexts.outside;
+      this.toggleInteractiveControls(false);
     } else if (state === 'suspect') {
       badge.classList.add("gps-suspect");
       text.textContent = currentLangTexts.suspect;
@@ -208,27 +187,11 @@ export const GPSService = {
     } else if (state === 'denied') {
       badge.classList.add("gps-denied");
       text.textContent = currentLangTexts.denied;
-      if (window.GC_manualTableEntry) {
-        this.toggleInteractiveControls(true);
-      } else {
-        this.toggleInteractiveControls(false);
-        if (!window._GC_gpsBlockedShown && typeof window.GC_showGpsBlocked === "function") {
-          window._GC_gpsBlockedShown = true;
-          window.GC_showGpsBlocked();
-        }
-      }
+      this.toggleInteractiveControls(false);
     } else {
       badge.classList.add("gps-error");
       text.textContent = currentLangTexts.error;
-      if (window.GC_manualTableEntry) {
-        this.toggleInteractiveControls(true);
-      } else {
-        this.toggleInteractiveControls(false);
-        if (!window._GC_gpsBlockedShown && typeof window.GC_showGpsBlocked === "function") {
-          window._GC_gpsBlockedShown = true;
-          window.GC_showGpsBlocked();
-        }
-      }
+      this.toggleInteractiveControls(false);
     }
   },
 
@@ -238,7 +201,8 @@ export const GPSService = {
     const cabBill = document.getElementById("cabRequestBill");
     const cdSubmit = document.getElementById("cdSubmitBtn");
 
-    [cabCall, cabWater, cabBill].forEach(btn => {
+    const buttons = [cabCall, cabWater, cabBill, cdSubmit];
+    buttons.forEach(btn => {
       if (!btn) return;
       if (enable) {
         btn.classList.remove("disabled-gps");
@@ -246,16 +210,6 @@ export const GPSService = {
         btn.classList.add("disabled-gps");
       }
     });
-
-    if (cdSubmit) {
-      if (enable || window.GC_isPreorder) {
-        cdSubmit.classList.remove("disabled-gps");
-        cdSubmit.disabled = false;
-        cdSubmit.removeAttribute("disabled");
-      } else {
-        cdSubmit.classList.add("disabled-gps");
-      }
-    }
 
     const actionBar = document.getElementById("clientActionBar");
     if (actionBar) {
