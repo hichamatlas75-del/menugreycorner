@@ -1,7 +1,7 @@
 /**
  * GREY CORNER — CLIENT LOYALTY CLUB SERVICE (ES Module)
  * Règle d'or : 500 POINTS = 1 CONSOMMATION OFFERTE
- * Bonus bienvenue : +50 POINTS offerts à l'inscription
+ * Bonus bienvenue : +20 POINTS offerts à l'inscription
  * Ratio : 1 DH = 1 POINT
  */
 
@@ -19,7 +19,7 @@ export const LOYALTY_I18N = {
     tagline: "500 pts = 1 consommation offerte !",
     firstNamePlaceholder: "Votre prénom",
     phonePlaceholder: "N° de téléphone (ex: 06...)",
-    joinBtn: "🎁 Rejoindre / Voir mes points (+50 pts offerts)",
+    joinBtn: "🎁 Rejoindre / Voir mes points (+20 pts offerts)",
     hello: "Bonjour",
     pointsRemaining: "Plus que {rem} pts avant votre consommation offerte !",
     rewardUnlocked: "🎉 Félicitations ! Votre consommation gratuite est disponible !",
@@ -29,7 +29,7 @@ export const LOYALTY_I18N = {
     phoneError: "Veuillez entrer un numéro de téléphone valide.",
     nameError: "Veuillez renseigner votre prénom.",
     tablePrompt: "Veuillez choisir votre numéro de table pour recevoir votre consommation gratuite.",
-    welcomeToast: "🎉 Bienvenue au Club ! +50 points offerts !",
+    welcomeToast: "🎉 Bienvenue au Club ! +20 points offerts !",
     welcomeBackToast: "👋 Bon retour parmi nous {name} !"
   },
   ar: {
@@ -37,7 +37,7 @@ export const LOYALTY_I18N = {
     tagline: "500 نقطة = 1 مشروب مجاني !",
     firstNamePlaceholder: "الاسم الشخصي",
     phonePlaceholder: "رقم الهاتف (مثال: 06...)",
-    joinBtn: "🎁 انضمام / رصيد نقاطي (+50 نقطة هدية)",
+    joinBtn: "🎁 انضمام / رصيد نقاطي (+20 نقطة هدية)",
     hello: "مرحباً",
     pointsRemaining: "باقي {rem} نقطة فقط على مشروبكم المجاني !",
     rewardUnlocked: "🎉 تهانينا ! مشروبكم المجاني جاهز للطلب الآن !",
@@ -47,7 +47,7 @@ export const LOYALTY_I18N = {
     phoneError: "يرجى إدخال رقم هاتف صحيح.",
     nameError: "يرجى كتابة الاسم الشخصي.",
     tablePrompt: "يرجى اختيار رقم الطاولة للحصول على مشروبكم المجاني.",
-    welcomeToast: "🎉 أهلاً بكم في نادي الوفاء ! +50 نقطة هدية !",
+    welcomeToast: "🎉 أهلاً بكم في نادي الوفاء ! +20 نقطة هدية !",
     welcomeBackToast: "👋 مرحباً بعودتكم {name} !"
   },
   en: {
@@ -55,7 +55,7 @@ export const LOYALTY_I18N = {
     tagline: "500 pts = 1 free drink!",
     firstNamePlaceholder: "Your first name",
     phonePlaceholder: "Phone number (e.g. 06...)",
-    joinBtn: "🎁 Join / Check Points (+50 pts bonus)",
+    joinBtn: "🎁 Join / Check Points (+20 pts bonus)",
     hello: "Hello",
     pointsRemaining: "{rem} pts left before your free drink!",
     rewardUnlocked: "🎉 Congratulations! Your free drink is ready to claim!",
@@ -65,7 +65,7 @@ export const LOYALTY_I18N = {
     phoneError: "Please enter a valid phone number.",
     nameError: "Please enter your first name.",
     tablePrompt: "Please select your table number to receive your free drink.",
-    welcomeToast: "🎉 Welcome to the Club! +50 bonus points awarded!",
+    welcomeToast: "🎉 Welcome to the Club! +20 bonus points awarded!",
     welcomeBackToast: "👋 Welcome back {name}!"
   },
   de: {
@@ -73,7 +73,7 @@ export const LOYALTY_I18N = {
     tagline: "500 Pkt = 1 Gratis-Getränk!",
     firstNamePlaceholder: "Ihr Vorname",
     phonePlaceholder: "Telefonnummer (z.B. 06...)",
-    joinBtn: "🎁 Beitreten / Punkte prüfen (+50 Pkt)",
+    joinBtn: "🎁 Beitreten / Punkte prüfen (+20 Pkt)",
     hello: "Hallo",
     pointsRemaining: "Noch {rem} Pkt bis zum Gratis-Getränk!",
     rewardUnlocked: "🎉 Glückwunsch! Ihr Gratis-Getränk ist abholbereit!",
@@ -83,7 +83,7 @@ export const LOYALTY_I18N = {
     phoneError: "Bitte geben Sie eine gültige Telefonnummer ein.",
     nameError: "Bitte geben Sie Ihren Vornamen ein.",
     tablePrompt: "Bitte wählen Sie Ihre Tischnummer für das Gratis-Getränk.",
-    welcomeToast: "🎉 Willkommen im Club! +50 Punkte geschenkt!",
+    welcomeToast: "🎉 Willkommen im Club! +20 Punkte geschenkt!",
     welcomeBackToast: "👋 Willkommen zurück {name}!"
   }
 };

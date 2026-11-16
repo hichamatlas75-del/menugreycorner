@@ -160,7 +160,7 @@
   var _cachedOrders = getLocalCollection("pre_orders", []);
   var _cachedTables = getLocalCollection("tables", DEFAULT_TABLES);
   var _cachedFrozen = false;
-  var _cachedLoyaltyConfig = getLocalCollection("loyalty_settings", { rewardThreshold: 500, welcomeBonus: 50, pointsPerDH: 1 });
+  var _cachedLoyaltyConfig = getLocalCollection("loyalty_settings", { rewardThreshold: 500, welcomeBonus: 20, pointsPerDH: 1 });
   var _cachedMembers = getLocalCollection("loyalty_members", []);
   var _callsListeners = /* @__PURE__ */ new Set();
   var _ordersListeners = /* @__PURE__ */ new Set();
@@ -540,8 +540,8 @@
           return {
             phone,
             firstName: localStorage.getItem("gc_loyalty_name") || "Client",
-            points: parseInt(localStorage.getItem("gc_loyalty_pts"), 10) || 50,
-            totalEarned: 50,
+            points: parseInt(localStorage.getItem("gc_loyalty_pts"), 10) || 20,
+            totalEarned: 20,
             rewardsClaimed: 0,
             source: "qr_menu"
           };
@@ -599,7 +599,7 @@
             try {
               localStorage.setItem("gc_loyalty_phone", res.member.phone);
               localStorage.setItem("gc_loyalty_name", res.member.firstName);
-              localStorage.setItem("gc_loyalty_pts", String(res.member.points || 50));
+              localStorage.setItem("gc_loyalty_pts", String(res.member.points || 20));
             } catch (e) {
             }
           }
@@ -7806,7 +7806,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       tagline: "500 pts = 1 consommation offerte !",
       firstNamePlaceholder: "Votre pr\xE9nom",
       phonePlaceholder: "N\xB0 de t\xE9l\xE9phone (ex: 06...)",
-      joinBtn: "\u{1F381} Rejoindre / Voir mes points (+50 pts offerts)",
+      joinBtn: "\u{1F381} Rejoindre / Voir mes points (+20 pts offerts)",
       hello: "Bonjour",
       pointsRemaining: "Plus que {rem} pts avant votre consommation offerte !",
       rewardUnlocked: "\u{1F389} F\xE9licitations ! Votre consommation gratuite est disponible !",
@@ -7816,7 +7816,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       phoneError: "Veuillez entrer un num\xE9ro de t\xE9l\xE9phone valide.",
       nameError: "Veuillez renseigner votre pr\xE9nom.",
       tablePrompt: "Veuillez choisir votre num\xE9ro de table pour recevoir votre consommation gratuite.",
-      welcomeToast: "\u{1F389} Bienvenue au Club ! +50 points offerts !",
+      welcomeToast: "\u{1F389} Bienvenue au Club ! +20 points offerts !",
       welcomeBackToast: "\u{1F44B} Bon retour parmi nous {name} !"
     },
     ar: {
@@ -7824,7 +7824,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       tagline: "500 \u0646\u0642\u0637\u0629 = 1 \u0645\u0634\u0631\u0648\u0628 \u0645\u062C\u0627\u0646\u064A !",
       firstNamePlaceholder: "\u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0634\u062E\u0635\u064A",
       phonePlaceholder: "\u0631\u0642\u0645 \u0627\u0644\u0647\u0627\u062A\u0641 (\u0645\u062B\u0627\u0644: 06...)",
-      joinBtn: "\u{1F381} \u0627\u0646\u0636\u0645\u0627\u0645 / \u0631\u0635\u064A\u062F \u0646\u0642\u0627\u0637\u064A (+50 \u0646\u0642\u0637\u0629 \u0647\u062F\u064A\u0629)",
+      joinBtn: "\u{1F381} \u0627\u0646\u0636\u0645\u0627\u0645 / \u0631\u0635\u064A\u062F \u0646\u0642\u0627\u0637\u064A (+20 \u0646\u0642\u0637\u0629 \u0647\u062F\u064A\u0629)",
       hello: "\u0645\u0631\u062D\u0628\u0627\u064B",
       pointsRemaining: "\u0628\u0627\u0642\u064A {rem} \u0646\u0642\u0637\u0629 \u0641\u0642\u0637 \u0639\u0644\u0649 \u0645\u0634\u0631\u0648\u0628\u0643\u0645 \u0627\u0644\u0645\u062C\u0627\u0646\u064A !",
       rewardUnlocked: "\u{1F389} \u062A\u0647\u0627\u0646\u064A\u0646\u0627 ! \u0645\u0634\u0631\u0648\u0628\u0643\u0645 \u0627\u0644\u0645\u062C\u0627\u0646\u064A \u062C\u0627\u0647\u0632 \u0644\u0644\u0637\u0644\u0628 \u0627\u0644\u0622\u0646 !",
@@ -7834,7 +7834,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       phoneError: "\u064A\u0631\u062C\u0649 \u0625\u062F\u062E\u0627\u0644 \u0631\u0642\u0645 \u0647\u0627\u062A\u0641 \u0635\u062D\u064A\u062D.",
       nameError: "\u064A\u0631\u062C\u0649 \u0643\u062A\u0627\u0628\u0629 \u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0634\u062E\u0635\u064A.",
       tablePrompt: "\u064A\u0631\u062C\u0649 \u0627\u062E\u062A\u064A\u0627\u0631 \u0631\u0642\u0645 \u0627\u0644\u0637\u0627\u0648\u0644\u0629 \u0644\u0644\u062D\u0635\u0648\u0644 \u0639\u0644\u0649 \u0645\u0634\u0631\u0648\u0628\u0643\u0645 \u0627\u0644\u0645\u062C\u0627\u0646\u064A.",
-      welcomeToast: "\u{1F389} \u0623\u0647\u0644\u0627\u064B \u0628\u0643\u0645 \u0641\u064A \u0646\u0627\u062F\u064A \u0627\u0644\u0648\u0641\u0627\u0621 ! +50 \u0646\u0642\u0637\u0629 \u0647\u062F\u064A\u0629 !",
+      welcomeToast: "\u{1F389} \u0623\u0647\u0644\u0627\u064B \u0628\u0643\u0645 \u0641\u064A \u0646\u0627\u062F\u064A \u0627\u0644\u0648\u0641\u0627\u0621 ! +20 \u0646\u0642\u0637\u0629 \u0647\u062F\u064A\u0629 !",
       welcomeBackToast: "\u{1F44B} \u0645\u0631\u062D\u0628\u0627\u064B \u0628\u0639\u0648\u062F\u062A\u0643\u0645 {name} !"
     },
     en: {
@@ -7842,7 +7842,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       tagline: "500 pts = 1 free drink!",
       firstNamePlaceholder: "Your first name",
       phonePlaceholder: "Phone number (e.g. 06...)",
-      joinBtn: "\u{1F381} Join / Check Points (+50 pts bonus)",
+      joinBtn: "\u{1F381} Join / Check Points (+20 pts bonus)",
       hello: "Hello",
       pointsRemaining: "{rem} pts left before your free drink!",
       rewardUnlocked: "\u{1F389} Congratulations! Your free drink is ready to claim!",
@@ -7852,7 +7852,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       phoneError: "Please enter a valid phone number.",
       nameError: "Please enter your first name.",
       tablePrompt: "Please select your table number to receive your free drink.",
-      welcomeToast: "\u{1F389} Welcome to the Club! +50 bonus points awarded!",
+      welcomeToast: "\u{1F389} Welcome to the Club! +20 bonus points awarded!",
       welcomeBackToast: "\u{1F44B} Welcome back {name}!"
     },
     de: {
@@ -7860,7 +7860,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       tagline: "500 Pkt = 1 Gratis-Getr\xE4nk!",
       firstNamePlaceholder: "Ihr Vorname",
       phonePlaceholder: "Telefonnummer (z.B. 06...)",
-      joinBtn: "\u{1F381} Beitreten / Punkte pr\xFCfen (+50 Pkt)",
+      joinBtn: "\u{1F381} Beitreten / Punkte pr\xFCfen (+20 Pkt)",
       hello: "Hallo",
       pointsRemaining: "Noch {rem} Pkt bis zum Gratis-Getr\xE4nk!",
       rewardUnlocked: "\u{1F389} Gl\xFCckwunsch! Ihr Gratis-Getr\xE4nk ist abholbereit!",
@@ -7870,7 +7870,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       phoneError: "Bitte geben Sie eine g\xFCltige Telefonnummer ein.",
       nameError: "Bitte geben Sie Ihren Vornamen ein.",
       tablePrompt: "Bitte w\xE4hlen Sie Ihre Tischnummer f\xFCr das Gratis-Getr\xE4nk.",
-      welcomeToast: "\u{1F389} Willkommen im Club! +50 Punkte geschenkt!",
+      welcomeToast: "\u{1F389} Willkommen im Club! +20 Punkte geschenkt!",
       welcomeBackToast: "\u{1F44B} Willkommen zur\xFCck {name}!"
     }
   };
