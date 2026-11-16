@@ -172,7 +172,6 @@
   var _singleCallListeners = /* @__PURE__ */ new Map();
   var _singleOrderListeners = /* @__PURE__ */ new Map();
   var _isSyncing = false;
-  var _syncIntervalId = null;
   async function syncNow() {
     if (_isSyncing) return;
     _isSyncing = true;
@@ -280,25 +279,35 @@
     } catch (e) {
     }
   }
+  var _syncTimeoutId = null;
+  function scheduleNextSync() {
+    if (_syncTimeoutId) clearTimeout(_syncTimeoutId);
+    if (typeof window === "undefined") return;
+    const hasPending = (_cachedCalls || []).some((c) => c.status === "pending") || (_cachedOrders || []).some((o) => o.status === "pending");
+    const delay = hasPending ? 1200 : 2500;
+    _syncTimeoutId = setTimeout(async () => {
+      if (!document.hidden) {
+        await syncNow();
+        if (_allMembersListeners.size > 0) await syncMembersNow();
+      }
+      scheduleNextSync();
+    }, delay);
+  }
   function startSyncLoop() {
     if (typeof window === "undefined") return;
-    if (_syncIntervalId) clearInterval(_syncIntervalId);
     syncNow();
-    _syncIntervalId = setInterval(() => {
-      if (!document.hidden) {
-        syncNow();
-        if (_allMembersListeners.size > 0) syncMembersNow();
-      }
-    }, 2500);
+    scheduleNextSync();
     document.addEventListener("visibilitychange", () => {
       if (!document.hidden) {
         syncNow();
         syncMembersNow();
+        scheduleNextSync();
       }
     });
     window.addEventListener("online", () => {
       syncNow();
       syncMembersNow();
+      scheduleNextSync();
     });
   }
   var dbService = {
