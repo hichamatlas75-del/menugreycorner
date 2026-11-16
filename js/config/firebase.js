@@ -115,6 +115,7 @@ export function setLocalCollection(name, data) {
     }
 }
 
+
 export function normalizePhone(rawPhone) {
     if (!rawPhone) return "";
     let clean = String(rawPhone).replace(/[^\d+]/g, "").trim();
@@ -128,7 +129,6 @@ export function normalizePhone(rawPhone) {
     clean = clean.replace(/\D/g, "");
     return clean;
 }
-
 if (!isFirebaseActive) {
     getLocalCollection("waiters", DEFAULT_WAITERS);
     getLocalCollection("tables", DEFAULT_TABLES);
@@ -250,20 +250,38 @@ export const dbService = {
                     ...(extraData || {})
                 };
                 if (isFirebaseActive) {
-                    const docRef = db.collection("waiters_calls").doc();
-                    const callId = docRef.id;
-                    Promise.all([
-                        docRef.set(data),
-                        db.collection("waiter_calls").doc(callId).set(data)
-                    ])
-                    .then(() => {
-                        const zoneName = getTableZoneName(tableId);
-                        const typeLabels = { waiter: "Appel Serveur", water: "Besoin d'Eau", bill: "L'Addition", reward: "🎁 Consommation Gratuite (500 pts)" };
-                        const typeLabel = typeLabels[type] || "Appel";
-                        sendFcmToWaiters("WAITER_CALL", `🔔 Nouveau Appel : ${zoneName}`, `Demande : ${typeLabel}`, tableId, callId);
-                        if (callback) callback(true, callId);
-                    })
-                    .catch(e => { console.error(e); if (callback) callback(false); });
+                    db.collection("waiters_calls").add(data)
+                        .then(docRef => {
+                            const zoneName = getTableZoneName(tableId);
+                            const typeLabels = { waiter: "Appel Serveur", water: "Besoin d'Eau", bill: "L'Addition", reward: "🎁 Consommation Gratuite (500 pts)" };
+                            const typeLabel = typeLabels[type] || "Appel";
+                            sendFcmToWaiters("CALL", `🔔 ${typeLabel} : ${zoneName}`, `Table ${tableId} demande de l'assistance`, tableId, docRef.id);
+
+                            // Mirror to 'waiter_calls' for Android native APK background poller compatibility
+                            try {
+                                db.collection("waiter_calls").doc(docRef.id).set({
+                                    ...data,
+                                    id: docRef.id
+                                }).catch(() => {});
+                            } catch (e) {
+                                console.warn("Mirroring call to waiter_calls failed:", e);
+                            }
+
+                            // Notification de secours à 25s si l'appel est toujours en attente
+                            setTimeout(() => {
+                                if (isFirebaseActive && db) {
+                                    db.collection("waiters_calls").doc(docRef.id).get().then(snap => {
+                                        if (snap.exists && snap.data() && snap.data().status === "pending") {
+                                            console.log("🚨 RAPPEL DE SECOURS (25s) : Appel table toujours en attente !");
+                                            sendFcmToWaiters("CALL", `⚠️ RAPPEL DE SECOURS — ${zoneName}`, `Table ${tableId} attend toujours (${typeLabel})`, tableId, docRef.id);
+                                        }
+                                    }).catch(() => {});
+                                }
+                            }, 25000);
+
+                            if (callback) callback(true, docRef.id);
+                        })
+                        .catch(e => { console.error(e); if (callback) callback(false); });
                 } else {
                     const calls = getLocalCollection("calls");
                     const id = "call_" + Math.random().toString(36).substring(2, 9);
@@ -386,8 +404,7 @@ export const dbService = {
                     acceptedAt: null,
                     loyaltyPhone: loyaltyInfo && loyaltyInfo.phone ? loyaltyInfo.phone : "",
                     loyaltyName: loyaltyInfo && loyaltyInfo.name ? loyaltyInfo.name : "",
-                    loyaltyPoints: loyaltyInfo && typeof loyaltyInfo.points === "number" ? loyaltyInfo.points : null,
-                    loyaltyCredited: false
+                    loyaltyPoints: loyaltyInfo && typeof loyaltyInfo.points === "number" ? loyaltyInfo.points : null
                 };
                 if (isFirebaseActive) {
                     db.collection("pre_orders").add(data)
@@ -517,9 +534,6 @@ export const dbService = {
             setLocalCollection("pre_orders", orders);
             if (callback) callback(true);
         }
-    },
-    normalizePhone(raw) {
-        return normalizePhone(raw);
     },
     getLoyaltyMember(rawPhone, callback) {
         const phone = normalizePhone(rawPhone);
@@ -898,6 +912,7 @@ export const dbService = {
             note: "🎁 Consommation Gratuite (500 pts)"
         }, callback);
     }
+
 };
 
 if (!isFirebaseActive) {

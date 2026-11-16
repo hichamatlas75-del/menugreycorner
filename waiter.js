@@ -439,7 +439,7 @@ function processCallsFeed(calls) {
         card.className = `alert-card ${call.status === "pending" ? "call-pending" : "call-accepted"} ${isAcceptedByOther ? "unassigned-card" : ""}`;
         card.dataset.id = call.id;
 
-        const typeLabels = { waiter: "Appel Serveur", water: "Besoin d'Eau", bill: "L'Addition", reward: "🎁 Conso Gratuite (500 pts)" };
+        const typeLabels = { waiter: "Appel Serveur", water: "Besoin d'Eau", bill: "L'Addition", reward: "🎁 Consommation Gratuite (500 pts)" };
         const badgeClasses = { waiter: "badge-waiter", water: "badge-water", bill: "badge-bill", reward: "badge-reward" };
 
         const rewardClientInfo = (call.type === "reward" && call.loyaltyPhone) 
@@ -502,6 +502,26 @@ function processCallsFeed(calls) {
         if (btnComplete) {
             btnComplete.addEventListener("click", () => {
                 dbService.updateCallStatus(call.id, "completed");
+            });
+        }
+
+        const btnRedeemCall = card.querySelector(".redeem-call-btn");
+        if (btnRedeemCall) {
+            btnRedeemCall.addEventListener("click", () => {
+                if (confirm(`Confirmer la déduction de 500 points pour ${call.loyaltyPhone} ?`)) {
+                    btnRedeemCall.disabled = true;
+                    dbService.redeemLoyaltyReward(call.loyaltyPhone, activeWaiterId, (ok, newTotal) => {
+                        if (ok) {
+                            playAlertSound();
+                            triggerHapticVibrate();
+                            alert(`🎉 Consommation offerte accordée ! Nouveau solde: ${newTotal} pts`);
+                            dbService.updateCallStatus(call.id, "completed", activeWaiterId);
+                        } else {
+                            alert("❌ Erreur ou solde insuffisant (minimum 500 points requis).");
+                            btnRedeemCall.disabled = false;
+                        }
+                    });
+                }
             });
         }
 
@@ -682,6 +702,33 @@ function processPreOrdersFeed(orders) {
         if (btnComplete) {
             btnComplete.addEventListener("click", () => {
                 dbService.updatePreOrderStatus(order.id, "completed");
+            });
+        }
+
+        const btnCreditLoyalty = card.querySelector(".action-btn-credit-loyalty");
+        if (btnCreditLoyalty) {
+            btnCreditLoyalty.addEventListener("click", () => {
+                const phone = btnCreditLoyalty.dataset.phone;
+                const amount = parseFloat(btnCreditLoyalty.dataset.amount) || 0;
+                btnCreditLoyalty.disabled = true;
+                btnCreditLoyalty.textContent = "Crédit en cours...";
+
+                dbService.creditLoyaltyPoints(phone, amount, order.table, activeWaiterId, order.id, (ok, added, newTotal) => {
+                    if (ok) {
+                        playAlertSound();
+                        triggerHapticVibrate();
+                        order.loyaltyCredited = true;
+                        const container = document.getElementById(`loyaltyPointsBadge_${order.id}`);
+                        if (container) {
+                            container.innerHTML = `<span style="color:#2ecc71; font-weight:700; font-size:0.82rem;">✓ Points crédités (+${added} pts)</span>`;
+                        }
+                        alert(`👑 ${added} points crédités à ${phone} !\nNouveau solde: ${newTotal} pts`);
+                    } else {
+                        alert("❌ Erreur lors du crédit des points fidélité.");
+                        btnCreditLoyalty.disabled = false;
+                        btnCreditLoyalty.textContent = "Réessayer";
+                    }
+                });
             });
         }
 
@@ -1129,9 +1176,262 @@ function initDirectLoyaltyModule() {
 // INITIALISATION
 // ============================================================================
 
+
+// ============================================================================
+// MODULE FIDÉLITÉ DIRECTE (SERVEUR — SCÉNARIO B : CLIENT SANS QR)
+// ============================================================================
+
+function initDirectLoyaltyModule() {
+    const modal = document.getElementById("directLoyaltyModal");
+    const btnOpen = document.getElementById("btnOpenDirectLoyalty");
+    const btnClose = document.getElementById("btnCloseDirectLoyalty");
+    const searchInput = document.getElementById("directLoyaltySearchInput");
+    const searchBtn = document.getElementById("directLoyaltySearchBtn");
+    const contentArea = document.getElementById("directLoyaltyContentArea");
+
+    if (!modal || !btnOpen) return;
+
+    const openModal = () => {
+        modal.style.display = "flex";
+        if (searchInput) {
+            searchInput.value = "";
+            setTimeout(() => searchInput.focus(), 150);
+        }
+        contentArea.innerHTML = `
+            <div style="text-align: center; color: var(--muted); padding: 24px 10px; font-size: 0.9rem;">
+                💡 Saisissez le numéro de téléphone pour créditer les points de l'addition ou offrir la boisson gratuite.
+            </div>
+        `;
+    };
+
+    const closeModal = () => {
+        modal.style.display = "none";
+    };
+
+    btnOpen.addEventListener("click", openModal);
+    if (btnClose) btnClose.addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+    });
+
+    const performSearch = () => {
+        const query = (searchInput.value || "").trim();
+        if (!query) return;
+
+        contentArea.innerHTML = `<div style="text-align:center; padding:20px; color:var(--muted);"><span class="mini-pulse"></span> Recherche du compte...</div>`;
+
+        // Si 8 chiffres ou plus, on cherche directement le numéro normalisé
+        const cleanPhone = window.normalizePhone ? window.normalizePhone(query) : query.replace(/\D/g, "");
+
+        if (cleanPhone.length >= 8) {
+            dbService.getLoyaltyMember(cleanPhone, (member) => {
+                if (member) {
+                    renderMemberDetails(member);
+                } else {
+                    renderCreateMemberForm(cleanPhone);
+                }
+            });
+        } else {
+            // Recherche par les 4 derniers chiffres ou par liste complète
+            dbService.onAllLoyaltyMembersChange((allMembers) => {
+                const match = allMembers.find(m => m.phone.endsWith(query) || (m.firstName && m.firstName.toLowerCase().includes(query.toLowerCase())));
+                if (match) {
+                    renderMemberDetails(match);
+                } else {
+                    renderCreateMemberForm(query);
+                }
+            });
+        }
+    };
+
+    if (searchBtn) searchBtn.addEventListener("click", performSearch);
+    if (searchInput) {
+        searchInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") performSearch();
+        });
+    }
+
+    function renderMemberDetails(member) {
+        const pts = member.points || 0;
+        const target = 500;
+        const pct = Math.min(100, Math.round((pts / target) * 100));
+        const canRedeem = pts >= target;
+
+        contentArea.innerHTML = `
+            <div class="waiter-member-card">
+                <div class="member-card-header">
+                    <div>
+                        <div class="member-name">👑 ${member.firstName || "Client"}</div>
+                        <div class="member-phone">${member.phone}</div>
+                    </div>
+                    <div class="member-score">
+                        <span class="member-score-pts">${pts}</span>
+                        <span class="member-score-sub">/ 500 pts</span>
+                    </div>
+                </div>
+
+                <div class="member-progress-wrap">
+                    <div class="member-progress-bar" style="width: ${pct}%;"></div>
+                </div>
+
+                <div class="member-status-lbl">
+                    ${canRedeem 
+                        ? `<span style="color:#2ecc71; font-weight:700;">🎉 CE CLIENT A DROIT À 1 CONSOMMATION GRATUITE !</span>` 
+                        : `<span>Encore <strong>${target - pts} pts</strong> pour débloquer la boisson offerte</span>`
+                    }
+                </div>
+
+                ${canRedeem ? `
+                    <div style="margin-top:14px;">
+                        <button type="button" class="btn-redeem-free-drink" id="btnDirectRedeemFreeDrink">
+                            🎁 OFFRIR LA CONSOMMATION (-500 pts)
+                        </button>
+                    </div>
+                ` : ""}
+
+                <div class="direct-credit-section">
+                    <div class="direct-credit-title">⚡ Encaissement Direct (Ajouter des points)</div>
+                    <div class="direct-credit-inputs">
+                        <input type="number" id="directCreditAmount" class="waiter-num-input" placeholder="Montant addition (DH)" min="1" step="1" />
+                        <input type="text" id="directCreditTable" class="waiter-num-input" placeholder="Table (optionnel)" style="max-width:120px;" />
+                    </div>
+                    <button type="button" class="btn-credit-now" id="btnDirectCreditNow">
+                        + Créditer les points (1 DH = 1 pt)
+                    </button>
+                </div>
+            </div>
+        `;
+
+        if (canRedeem) {
+            bindRedeemBtn(member.phone);
+        }
+
+        const btnCreditNow = document.getElementById("btnDirectCreditNow");
+        const inputAmount = document.getElementById("directCreditAmount");
+        const inputTable = document.getElementById("directCreditTable");
+
+        if (btnCreditNow && inputAmount) {
+            btnCreditNow.addEventListener("click", () => {
+                const amount = parseFloat(inputAmount.value) || 0;
+                if (amount <= 0) {
+                    alert("Veuillez saisir un montant d'addition valide.");
+                    return;
+                }
+                const tableNum = (inputTable.value || "").trim();
+                btnCreditNow.disabled = true;
+                btnCreditNow.textContent = "Crédit en cours...";
+
+                dbService.creditLoyaltyPoints(member.phone, amount, tableNum, activeWaiterId, null, (ok, added, newTotal) => {
+                    if (ok) {
+                        playAlertSound();
+                        triggerHapticVibrate();
+                        alert(`✅ Addition de ${amount} DH encaissée !\n\n+${added} points crédités à ${member.firstName || "Client"}.\nNouveau solde : ${newTotal} / 500 pts`);
+                        member.points = newTotal;
+                        renderMemberDetails(member);
+                    } else {
+                        alert("❌ Erreur lors de l'attribution des points.");
+                        btnCreditNow.disabled = false;
+                        btnCreditNow.textContent = "+ Créditer les points";
+                    }
+                });
+            });
+        }
+    }
+
+    function bindRedeemBtn(phone) {
+        const btnRedeem = document.getElementById("btnDirectRedeemFreeDrink");
+        if (!btnRedeem) return;
+
+        btnRedeem.addEventListener("click", () => {
+            if (confirm(`Confirmez-vous déduire 500 points pour offrir 1 consommation gratuite à ce client ?`)) {
+                btnRedeem.disabled = true;
+                btnRedeem.textContent = "Déduction...";
+
+                dbService.redeemLoyaltyReward(phone, activeWaiterId, (ok, newTotal) => {
+                    if (ok) {
+                        playAlertSound();
+                        triggerHapticVibrate();
+                        alert(`🎉 Consommation offerte accordée avec succès !\nNouveau solde : ${newTotal} pts`);
+                        dbService.getLoyaltyMember(phone, (updated) => {
+                            if (updated) renderMemberDetails(updated);
+                        });
+                    } else {
+                        alert("❌ Solde insuffisant ou erreur.");
+                        btnRedeem.disabled = false;
+                        btnRedeem.textContent = "🎁 OFFRIR LA CONSOMMATION (-500 pts)";
+                    }
+                });
+            }
+        });
+    }
+
+    function renderCreateMemberForm(phoneVal) {
+        contentArea.innerHTML = `
+            <div class="waiter-member-card" style="border-color: rgba(201, 169, 110, 0.4);">
+                <div style="text-align: center; margin-bottom: 16px;">
+                    <span style="font-size: 2rem;">👤</span>
+                    <h4 style="margin: 6px 0 2px 0; font-size: 1.1rem; color: var(--gold);">Nouveau Client</h4>
+                    <p style="margin: 0; font-size: 0.8rem; color: var(--muted);">Ce numéro n'est pas encore inscrit au Club.</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;">
+                    <div>
+                        <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase;">Prénom du client</label>
+                        <input type="text" id="directNewFirstName" class="waiter-search-input" style="width: 100%; margin-top: 4px;" placeholder="Ex: Karim" />
+                    </div>
+                    <div>
+                        <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase;">Numéro de téléphone</label>
+                        <input type="tel" id="directNewPhone" class="waiter-search-input" style="width: 100%; margin-top: 4px;" value="${phoneVal}" placeholder="Ex: 0612345678" />
+                    </div>
+                </div>
+
+                <button type="button" id="btnDirectCreateMember" class="btn-credit-now" style="background: linear-gradient(135deg, #C9A96E 0%, #B8860B 100%); color: #000; font-weight: 700;">
+                    🎁 Créer le compte (+50 pts offerts) & Continuer
+                </button>
+            </div>
+        `;
+
+        const btnCreate = document.getElementById("btnDirectCreateMember");
+        const inputName = document.getElementById("directNewFirstName");
+        const inputPhone = document.getElementById("directNewPhone");
+
+        if (btnCreate && inputPhone) {
+            btnCreate.addEventListener("click", () => {
+                const rawPh = inputPhone.value.trim();
+                const cleanPh = window.normalizePhone ? window.normalizePhone(rawPh) : rawPh.replace(/\D/g, "");
+                const name = (inputName ? inputName.value.trim() : "") || "Client";
+
+                if (cleanPh.length < 8) {
+                    alert("Numéro de téléphone invalide (minimum 8 chiffres requis).");
+                    return;
+                }
+
+                btnCreate.disabled = true;
+                btnCreate.textContent = "Création du compte...";
+
+                dbService.createOrGetLoyaltyMember(cleanPh, name, "waiter_direct", (ok, member, isNew) => {
+                    if (ok && member) {
+                        playAlertSound();
+                        triggerHapticVibrate();
+                        alert(`👑 Compte créé pour ${member.firstName} !\n+50 points de bienvenue offerts (Solde: ${member.points} pts).`);
+                        renderMemberDetails(member);
+                    } else {
+                        alert("❌ Erreur lors de la création du compte.");
+                        btnCreate.disabled = false;
+                        btnCreate.textContent = "🎁 Créer le compte (+50 pts) & Continuer";
+                    }
+                });
+            });
+        }
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     initTabNavigation();
     initDirectLoyaltyModule();
+    requestScreenWakeLock();
+    startAndroidKeepAlive();
+    startPendingAlertWatchdog();
 
     // Enregistrement du Service Worker
     if ("serviceWorker" in navigator) {

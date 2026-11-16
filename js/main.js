@@ -19,6 +19,7 @@ import {
 import { renderMenu, toggleCategoryDrawer, openDrawer, closeDrawer, updateFloatingButtons, setupFloatingButtons } from './ui/menu-render.js';
 import { initFeedbackWidget, updateFeedbackTexts } from './ui/feedback.js';
 import { initLoyaltyWidget } from './services/loyalty.js';
+import { updateSoundUI, toggleSoundMute, playTapSound } from './services/sound.js';
 
 document.addEventListener("DOMContentLoaded", () => {
   const table = parseTableFromUrl();
@@ -26,6 +27,9 @@ document.addEventListener("DOMContentLoaded", () => {
   applyLanguageToStaticTexts();
   initFeedbackWidget();
   initLoyaltyWidget();
+  updateHeaderLangUI();
+  updateScheduleUI();
+  setInterval(updateScheduleUI, 60000);
 
   // Set initial active flag state based on currentLang
   document.querySelectorAll(".lang-button[data-lang]").forEach(b => {
@@ -59,6 +63,9 @@ document.addEventListener("DOMContentLoaded", () => {
         updateCartUI();
         updateFeedbackTexts();
         initLoyaltyWidget();
+        if (GPSService && GPSService.lastState) {
+          GPSService.updateUI(GPSService.lastState);
+        }
       }
     });
   });

@@ -406,8 +406,7 @@
             acceptedAt: null,
             loyaltyPhone: loyaltyInfo && loyaltyInfo.phone ? loyaltyInfo.phone : "",
             loyaltyName: loyaltyInfo && loyaltyInfo.name ? loyaltyInfo.name : "",
-            loyaltyPoints: loyaltyInfo && typeof loyaltyInfo.points === "number" ? loyaltyInfo.points : null,
-            loyaltyCredited: false
+            loyaltyPoints: loyaltyInfo && typeof loyaltyInfo.points === "number" ? loyaltyInfo.points : null
           };
           if (isFirebaseActive) {
             db.collection("pre_orders").add(data).then((docRef) => {
@@ -552,9 +551,6 @@
         setLocalCollection("pre_orders", orders);
         if (callback) callback(true);
       }
-    },
-    normalizePhone(raw) {
-      return normalizePhone(raw);
     },
     getLoyaltyMember(rawPhone, callback) {
       const phone = normalizePhone(rawPhone);
@@ -6218,6 +6214,9 @@
     applyLanguageToStaticTexts();
     initFeedbackWidget();
     initLoyaltyWidget();
+    updateHeaderLangUI();
+    updateScheduleUI();
+    setInterval(updateScheduleUI, 6e4);
     document.querySelectorAll(".lang-button[data-lang]").forEach((b) => {
       b.classList.toggle("active", b.dataset.lang === currentLang);
     });
@@ -6242,6 +6241,9 @@
           updateCartUI();
           updateFeedbackTexts();
           initLoyaltyWidget();
+          if (GPSService && GPSService.lastState) {
+            GPSService.updateUI(GPSService.lastState);
+          }
         }
       });
     });
