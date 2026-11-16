@@ -371,9 +371,10 @@ export const dbService = {
                 callback(calls);
             };
 
+            // Optimisation anti-quota : Limite stricte à 15 appels récents
             const unsubWaiters = db.collection("waiters_calls")
                 .orderBy("createdAt", "desc")
-                .limit(50)
+                .limit(15)
                 .onSnapshot(snapshot => {
                     activeCallsMap.clear();
                     snapshot.forEach(doc => {
@@ -387,10 +388,10 @@ export const dbService = {
                     emit();
                 }, err => console.error("❌ Calls stream error (waiters_calls):", err));
 
-            // Sync from waiter_calls in case native Android APK accepted via notification
+            // Sync from waiter_calls (limite 15 sans réécriture en boucle)
             const unsubNative = db.collection("waiter_calls")
                 .orderBy("createdAt", "desc")
-                .limit(50)
+                .limit(15)
                 .onSnapshot(snapshot => {
                     let hasChange = false;
                     snapshot.forEach(doc => {
@@ -400,11 +401,6 @@ export const dbService = {
                             existing.status = data.status;
                             if (data.assignedTo) existing.assignedTo = data.assignedTo;
                             hasChange = true;
-                            // Propagate back to waiters_calls
-                            db.collection("waiters_calls").doc(doc.id).update({
-                                status: data.status,
-                                assignedTo: data.assignedTo || existing.assignedTo || ""
-                            }).catch(() => {});
                         }
                     });
                     if (hasChange) emit();
@@ -531,9 +527,10 @@ export const dbService = {
     },
     onPreOrdersChange(callback) {
         if (isFirebaseActive) {
+            // Optimisation anti-quota : Limite stricte à 15 précommandes récentes
             return db.collection("pre_orders")
                 .orderBy("createdAt", "desc")
-                .limit(50)
+                .limit(15)
                 .onSnapshot(snapshot => {
                     const orders = [];
                     snapshot.forEach(doc => {

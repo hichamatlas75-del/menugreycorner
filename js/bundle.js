@@ -387,7 +387,7 @@
           calls.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
           callback(calls);
         };
-        const unsubWaiters = db.collection("waiters_calls").orderBy("createdAt", "desc").limit(50).onSnapshot((snapshot) => {
+        const unsubWaiters = db.collection("waiters_calls").orderBy("createdAt", "desc").limit(15).onSnapshot((snapshot) => {
           activeCallsMap.clear();
           snapshot.forEach((doc) => {
             const data = doc.data();
@@ -399,7 +399,7 @@
           });
           emit();
         }, (err) => console.error("\u274C Calls stream error (waiters_calls):", err));
-        const unsubNative = db.collection("waiter_calls").orderBy("createdAt", "desc").limit(50).onSnapshot((snapshot) => {
+        const unsubNative = db.collection("waiter_calls").orderBy("createdAt", "desc").limit(15).onSnapshot((snapshot) => {
           let hasChange = false;
           snapshot.forEach((doc) => {
             const data = doc.data();
@@ -408,11 +408,6 @@
               existing.status = data.status;
               if (data.assignedTo) existing.assignedTo = data.assignedTo;
               hasChange = true;
-              db.collection("waiters_calls").doc(doc.id).update({
-                status: data.status,
-                assignedTo: data.assignedTo || existing.assignedTo || ""
-              }).catch(() => {
-              });
             }
           });
           if (hasChange) emit();
@@ -554,7 +549,7 @@
     },
     onPreOrdersChange(callback) {
       if (isFirebaseActive) {
-        return db.collection("pre_orders").orderBy("createdAt", "desc").limit(50).onSnapshot((snapshot) => {
+        return db.collection("pre_orders").orderBy("createdAt", "desc").limit(15).onSnapshot((snapshot) => {
           const orders = [];
           snapshot.forEach((doc) => {
             const data = doc.data();
