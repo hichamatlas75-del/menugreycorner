@@ -148,7 +148,11 @@ export function submitPreOrder(clientTable, onComplete) {
     };
   });
 
-  dbService.sendPreOrder(clientTable, itemsList, note, totalPrice, (success, orderId) => {
+  const loyaltyPhone = localStorage.getItem("gc_loyalty_phone") || "";
+  const loyaltyName = localStorage.getItem("gc_loyalty_name") || "";
+  const loyaltyInfo = loyaltyPhone ? { phone: loyaltyPhone, name: loyaltyName } : null;
+
+  dbService.sendPreOrder(clientTable, itemsList, note, totalPrice, loyaltyInfo, (success, orderId) => {
     resetBtn();
     if (success) {
       playOrderSuccessSound();

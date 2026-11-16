@@ -20,6 +20,7 @@ import {
 } from './ui/modals.js';
 import { renderMenu, toggleCategoryDrawer, openDrawer, closeDrawer, updateFloatingButtons, setupFloatingButtons } from './ui/menu-render.js';
 import { initFeedbackWidget, updateFeedbackTexts } from './ui/feedback.js';
+import { initLoyaltyWidget } from './services/loyalty.js';
 import { updateSoundUI, toggleSoundMute, playTapSound } from './services/sound.js';
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -27,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initClientCart();
   applyLanguageToStaticTexts();
   initFeedbackWidget();
+  initLoyaltyWidget();
   updateHeaderLangUI();
   updateScheduleUI();
   setInterval(updateScheduleUI, 60000);
@@ -139,6 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
         updateTableUI();
         updateScheduleUI();
         updateFeedbackTexts();
+        initLoyaltyWidget();
         if (GPSService && GPSService.lastState) {
           GPSService.updateUI(GPSService.lastState);
         }

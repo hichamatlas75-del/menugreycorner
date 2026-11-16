@@ -230,6 +230,59 @@
     <div class="sc-toast" id="scToast">Lien copié ✓</div>
 
     <!-- ======================================================================
+         BANDEAU CLUB FIDÉLITÉ (500 pts = 1 consommation offerte)
+    ======================================================================= -->
+    <section class="loyalty-banner-section" id="loyaltyBannerSection">
+        <div class="loyalty-card-banner" id="loyaltyCardBanner">
+            <!-- État 1 : Non connecté -->
+            <div id="loyaltyLoggedOutView" class="loyalty-view-box">
+                <div class="loyalty-header-row">
+                    <div class="loyalty-badge-tag">
+                        <span class="loyalty-crown-icon">👑</span>
+                        <span id="loyaltyBadgeText">Club Fidélité</span>
+                    </div>
+                    <span class="loyalty-tagline" id="loyaltyTaglineText">500 pts = 1 consommation offerte !</span>
+                </div>
+                <div class="loyalty-form-inline">
+                    <input type="text" id="loyaltyFirstNameInput" class="loyalty-input" placeholder="Votre prénom" autocomplete="given-name" />
+                    <input type="tel" id="loyaltyPhoneInput" class="loyalty-input" placeholder="N° de téléphone (ex: 06...)" autocomplete="tel" />
+                    <button type="button" id="loyaltyJoinBtn" class="loyalty-btn-cta">🎁 Rejoindre / Voir mes points (+50 pts offerts)</button>
+                </div>
+            </div>
+
+            <!-- État 2 : Connecté -->
+            <div id="loyaltyLoggedInView" class="loyalty-view-box" style="display: none;">
+                <div class="loyalty-header-row">
+                    <div class="loyalty-user-greeting">
+                        <span class="loyalty-crown-icon">👑</span>
+                        <strong id="loyaltyMemberName">Bonjour Client</strong>
+                    </div>
+                    <div class="loyalty-score-badge">
+                        <span id="loyaltyPointsVal" class="pts-number">50</span>
+                        <span class="pts-target">/ 500 pts</span>
+                    </div>
+                </div>
+
+                <!-- Barre de progression -->
+                <div class="loyalty-progress-track">
+                    <div class="loyalty-progress-fill" id="loyaltyProgressFill" style="width: 10%;"></div>
+                </div>
+
+                <div class="loyalty-footer-row">
+                    <span class="loyalty-status-hint" id="loyaltyStatusText">Plus que 450 pts avant votre consommation offerte !</span>
+                    <button type="button" id="loyaltySwitchAccountBtn" class="loyalty-btn-switch">Changer de compte</button>
+                </div>
+
+                <!-- Box Alerte Éligibilité Récompense -->
+                <div id="loyaltyRewardEligibleBox" class="loyalty-reward-box" style="display: none;">
+                    <button type="button" id="loyaltyClaimBtn" class="loyalty-claim-reward-btn">🎁 Demander ma consommation gratuite (500 pts)</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ======================================================================
          HUB TACTILE — GRANDES PASTILLES CATÉGORIES (MODÈLE HUB TACTILE)
     ======================================================================= -->
     <div class="hub-categories-wrap">

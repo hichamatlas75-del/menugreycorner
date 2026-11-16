@@ -741,6 +741,18 @@
             </div>
         </div>
 
+
+        <!-- ── Module Fidélité Directe (Client sans QR) ──────────────────── -->
+        <div class="waiter-loyalty-quick-bar">
+            <button id="btnOpenDirectLoyalty" class="btn-quick-loyalty" type="button">
+                <span style="display:flex; align-items:center; gap:8px;">
+                    <span class="btn-quick-icon">⚡</span>
+                    <span class="btn-quick-text">Fidélité Directe (Sans QR)</span>
+                </span>
+                <span class="btn-quick-badge">500 pts = 1 Gratuit</span>
+            </button>
+        </div>
+
         <!-- ── Navigation Tabs ────────────────────────────────────────────── -->
         <nav class="hub-tabs">
             <button class="tab-btn active" data-tab="tabCalls">
@@ -790,6 +802,35 @@
             </section>
 
         </main>
+    </div>
+
+
+    <!-- ── MODAL FIDÉLITÉ DIRECTE (SERVEUR — SCÉNARIO B) ───────────────── -->
+    <div id="directLoyaltyModal" class="waiter-modal-overlay" style="display: none;">
+        <div class="waiter-modal-sheet">
+            <div class="waiter-modal-header">
+                <div class="modal-title-row">
+                    <span style="font-size: 1.3rem;">👑</span>
+                    <h3 class="modal-title">Fidélité Directe (Sans QR)</h3>
+                </div>
+                <button type="button" id="btnCloseDirectLoyalty" class="modal-close-btn">&times;</button>
+            </div>
+
+            <div class="waiter-modal-body">
+                <!-- Recherche par téléphone -->
+                <div class="waiter-search-box">
+                    <input type="tel" id="directLoyaltySearchInput" class="waiter-search-input" placeholder="Taper n° tél ou 4 derniers chiffres..." autocomplete="off" />
+                    <button type="button" id="directLoyaltySearchBtn" class="btn-search-loyalty">Chercher</button>
+                </div>
+
+                <!-- Zone dynamique des résultats -->
+                <div id="directLoyaltyContentArea">
+                    <div style="text-align: center; color: var(--muted); padding: 24px 10px; font-size: 0.9rem;">
+                        💡 Entrez le numéro de téléphone pour créditer les points de l'addition ou offrir la boisson gratuite.
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- ── Firebase SDK ────────────────────────────────────────────────────── -->
