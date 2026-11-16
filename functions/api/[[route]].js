@@ -474,10 +474,32 @@ export async function onRequest(context) {
                 if (request.method === "GET" && segments.length === 3) {
                     const phone = normalizePhone(segments[2]);
                     const member = await db.prepare("SELECT * FROM loyalty_members WHERE phone = ?").bind(phone).first();
-                    return jsonResponse({ success: true, member: member || null });
+                    if (!member) return jsonResponse({ success: true, member: null });
+
+                    // Vérifier si le numéro a été crédité il y a moins de 2h
+                    const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString();
+                    const recentEarn = await db.prepare(`
+                        SELECT * FROM loyalty_transactions
+                        WHERE phone = ? AND type = 'EARN' AND createdAt > ?
+                        ORDER BY createdAt DESC
+                        LIMIT 1
+                    `).bind(phone, twoHoursAgo).first();
+
+                    let lockInfo = null;
+                    if (recentEarn) {
+                        const elapsedMs = Date.now() - new Date(recentEarn.createdAt).getTime();
+                        lockInfo = {
+                            isLocked: true,
+                            remainingMinutes: Math.max(1, Math.ceil((2 * 3600 * 1000 - elapsedMs) / 60000)),
+                            tableNumber: recentEarn.tableNumber || "",
+                            lastEarnAt: recentEarn.createdAt
+                        };
+                    }
+
+                    return jsonResponse({ success: true, member, lockInfo });
                 }
 
-                // POST /api/loyalty/members : Créer ou récupérer membre (+50 pts bienvenue)
+                // POST /api/loyalty/members : Créer ou récupérer membre (+20 pts bienvenue)
                 if (request.method === "POST") {
                     const body = await request.json();
                     const phone = normalizePhone(body.phone);
@@ -485,7 +507,26 @@ export async function onRequest(context) {
 
                     const existing = await db.prepare("SELECT * FROM loyalty_members WHERE phone = ?").bind(phone).first();
                     if (existing) {
-                        return jsonResponse({ success: true, member: existing, isNew: false });
+                        const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString();
+                        const recentEarn = await db.prepare(`
+                            SELECT * FROM loyalty_transactions
+                            WHERE phone = ? AND type = 'EARN' AND createdAt > ?
+                            ORDER BY createdAt DESC
+                            LIMIT 1
+                        `).bind(phone, twoHoursAgo).first();
+
+                        let lockInfo = null;
+                        if (recentEarn) {
+                            const elapsedMs = Date.now() - new Date(recentEarn.createdAt).getTime();
+                            lockInfo = {
+                                isLocked: true,
+                                remainingMinutes: Math.max(1, Math.ceil((2 * 3600 * 1000 - elapsedMs) / 60000)),
+                                tableNumber: recentEarn.tableNumber || "",
+                                lastEarnAt: recentEarn.createdAt
+                            };
+                        }
+
+                        return jsonResponse({ success: true, member: existing, isNew: false, lockInfo });
                     }
 
                     const firstName = (body.firstName || body.name || "Client").trim();
@@ -533,7 +574,37 @@ export async function onRequest(context) {
                 const validatedBy = body.validatedBy || "waiter";
                 const now = new Date().toISOString();
 
-                // 🚨 RÈGLE DE SÉCURITÉ & CONTRÔLE DIRECTION :
+                // 🛑 1. RÈGLE ANTIFRAUDE : BLOQUER LE MÊME NUMÉRO SI MOINS DE 2 HEURES (< 120 min)
+                const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString();
+                const recentEarn = await db.prepare(`
+                    SELECT * FROM loyalty_transactions
+                    WHERE phone = ? AND type = 'EARN' AND createdAt > ?
+                    ORDER BY createdAt DESC
+                    LIMIT 1
+                `).bind(phone, twoHoursAgo).first();
+
+                if (recentEarn) {
+                    const elapsedMs = Date.now() - new Date(recentEarn.createdAt).getTime();
+                    const remainingMin = Math.max(1, Math.ceil((2 * 3600 * 1000 - elapsedMs) / 60000));
+                    const tableInfo = recentEarn.tableNumber ? ` (Table ${recentEarn.tableNumber})` : "";
+
+                    // Serveurs (et QR clients) : BLOCAGE STRICT INFRANCHISSABLE
+                    if (validatedBy !== "admin") {
+                        return errorResponse(`⛔ BLOCAGE ANTIFRAUDE : Ce numéro a déjà reçu des points il y a moins de 2 heures${tableInfo}. Prochain crédit autorisé dans ${remainingMin} minute(s).`, 429);
+                    }
+
+                    // Admin : avertissement avec possibilité de forcer via forceAdmin: true
+                    if (validatedBy === "admin" && !body.forceAdmin) {
+                        return jsonResponse({
+                            success: false,
+                            requiresAdminForce: true,
+                            remainingMinutes: remainingMin,
+                            message: `⚠️ ATTENTION : Ce numéro a déjà reçu des points il y a moins de 2 heures${tableInfo} (${remainingMin} min restantes). Confirmez pour forcer l'ajout.`
+                        }, 409);
+                    }
+                }
+
+                // 🚨 2. RÈGLE DE SÉCURITÉ & CONTRÔLE DIRECTION :
                 // Si un serveur saisit un montant supérieur à 100 (> 100 pts), le NUMÉRO DE TABLE est OBLIGATOIRE !
                 if (pointsToAdd > 100 && validatedBy !== "admin" && !tableNumber) {
                     return errorResponse("⚠️ RÈGLE DE CONTRÔLE DIRECTION : Pour toute attribution supérieure à 100 points, le NUMÉRO DE TABLE est obligatoire pour permettre un audit ultérieur.", 400);
