@@ -6983,7 +6983,7 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
       btn.setAttribute("aria-label", catName);
       btn.innerHTML = `
       <div class="hub-cat-circle">
-        <img src="${catImg}" alt="${catName}" class="hub-cat-img" loading="lazy" />
+        <img src="${catImg}" alt="" class="hub-cat-img" loading="lazy" decoding="async" aria-hidden="true" />
         <div class="hub-cat-overlay"></div>
         <div class="hub-cat-icon">${iconSvg}</div>
       </div>
@@ -7259,9 +7259,10 @@ ${lines}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     } else {
       orderBtnText = currentLang === "en" ? "Order" : currentLang === "de" ? "Bestellen" : currentLang === "es" ? "Pedir" : currentLang === "ar" ? "\u0627\u0637\u0644\u0628" : "Commander";
     }
+    const dishAltText = categoryBadge ? `${itemName} (${categoryBadge}) \u2014 Grey Corner Caf\xE9 F\xE8s` : `${itemName} \u2014 Grey Corner Caf\xE9 F\xE8s`;
     card.innerHTML = `
     <div class="hub-card-media">
-      <img src="${item.image}" alt="${itemName}" class="hub-card-img" loading="lazy" />
+      <img src="${item.image}" alt="${dishAltText}" class="hub-card-img" loading="lazy" decoding="async" />
       <div class="hub-card-gradient"></div>
       ${isOver ? `<span class="hub-badge-unavailable">${unavailBadgeText}</span>` : ""}
       ${!isOver && item.isNew ? `<span class="hub-badge-new">${badgeNewText}</span>` : ""}

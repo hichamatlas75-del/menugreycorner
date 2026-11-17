@@ -133,7 +133,7 @@ export function renderCategoryPastilles() {
 
     btn.innerHTML = `
       <div class="hub-cat-circle">
-        <img src="${catImg}" alt="${catName}" class="hub-cat-img" loading="lazy" />
+        <img src="${catImg}" alt="" class="hub-cat-img" loading="lazy" decoding="async" aria-hidden="true" />
         <div class="hub-cat-overlay"></div>
         <div class="hub-cat-icon">${iconSvg}</div>
       </div>
@@ -531,9 +531,13 @@ function createDishCard(item, categoryId, itemIndex, categoryBadge = "") {
             : "Commander";
   }
 
+  const dishAltText = categoryBadge
+    ? `${itemName} (${categoryBadge}) — Grey Corner Café Fès`
+    : `${itemName} — Grey Corner Café Fès`;
+
   card.innerHTML = `
     <div class="hub-card-media">
-      <img src="${item.image}" alt="${itemName}" class="hub-card-img" loading="lazy" />
+      <img src="${item.image}" alt="${dishAltText}" class="hub-card-img" loading="lazy" decoding="async" />
       <div class="hub-card-gradient"></div>
       ${isOver ? `<span class="hub-badge-unavailable">${unavailBadgeText}</span>` : ""}
       ${!isOver && item.isNew ? `<span class="hub-badge-new">${badgeNewText}</span>` : ""}

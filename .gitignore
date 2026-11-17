@@ -20,3 +20,7 @@ android/
 *service_account*.json
 *.pem
 *.key
+
+# Local original image backups
+images/originals/
+scratch/

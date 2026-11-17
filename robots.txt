@@ -4,6 +4,9 @@
 User-agent: *
 Allow: /
 Allow: /index.html
+Allow: /brunch-fes.html
+Allow: /petit-dejeuner-fes.html
+Allow: /pizzas-fes.html
 Allow: /style.css
 Allow: /js/
 Allow: /images/
@@ -19,6 +22,10 @@ Disallow: /waiter.css
 # 2. ChatGPT Search : autoriser l'exploration du menu public
 User-agent: OAI-SearchBot
 Allow: /
+Allow: /index.html
+Allow: /brunch-fes.html
+Allow: /petit-dejeuner-fes.html
+Allow: /pizzas-fes.html
 Disallow: /admin.html
 Disallow: /waiter.html
 Disallow: /admin.js
