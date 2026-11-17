@@ -50,6 +50,35 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <!-- Données structurées SEO : menu officiel du restaurant -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "@id": "https://greycorner.pages.dev/#restaurant",
+      "name": "Grey Corner Café",
+      "url": "https://greycorner.pages.dev/",
+      "hasMenu": {
+        "@type": "Menu",
+        "name": "Menu Grey Corner Café",
+        "url": "https://menugreycorner.pages.dev/"
+      },
+      "telephone": "+212535940168",
+      "servesCuisine": ["Cuisine marocaine", "Cuisine internationale", "Petit-déjeuner", "Brunch"],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "7 RESD AL AMANE PRESTIGIA CHAMPS DE COURSE",
+        "addressLocality": "Fès",
+        "addressCountry": "MA"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 34.0343959,
+        "longitude": -5.0155941
+      }
+    }
+    </script>
+
 </head>
 
 <body>
