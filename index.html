@@ -46,11 +46,13 @@
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png" />
     <link rel="shortcut icon" href="images/favicon.ico" />
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <!-- Données structurées SEO : menu officiel du restaurant -->
+    <!-- Données structurées SEO : menu officiel et restaurant -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -58,23 +60,67 @@
       "@id": "https://greycorner.pages.dev/#restaurant",
       "name": "Grey Corner Café",
       "url": "https://greycorner.pages.dev/",
-      "hasMenu": {
-        "@type": "Menu",
-        "name": "Menu Grey Corner Café",
-        "url": "https://menugreycorner.pages.dev/"
-      },
+      "image": "https://menugreycorner.pages.dev/images/og-preview.webp",
       "telephone": "+212535940168",
-      "servesCuisine": ["Cuisine marocaine", "Cuisine internationale", "Petit-déjeuner", "Brunch"],
+      "servesCuisine": ["Cuisine marocaine", "Cuisine internationale", "Petit-déjeuner", "Brunch", "Pizzas", "Burgers", "Pâtes", "Pâtisserie", "Café"],
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "7 RESD AL AMANE PRESTIGIA CHAMPS DE COURSE",
         "addressLocality": "Fès",
+        "postalCode": "30000",
         "addressCountry": "MA"
       },
       "geo": {
         "@type": "GeoCoordinates",
         "latitude": 34.0343959,
         "longitude": -5.0155941
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "07:00",
+          "closes": "13:00",
+          "description": "Petit-déjeuner & Brunch"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "12:00",
+          "closes": "23:00",
+          "description": "Service restaurant & cuisine"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Saturday", "Sunday"],
+          "opens": "07:00",
+          "closes": "14:00",
+          "description": "Petit-déjeuner & Brunch (Week-end)"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Saturday",
+          "opens": "13:00",
+          "closes": "23:00",
+          "description": "Service restaurant & cuisine (Samedi)"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Sunday",
+          "opens": "14:00",
+          "closes": "23:00",
+          "description": "Service restaurant & cuisine (Dimanche)"
+        }
+      ],
+      "sameAs": [
+        "https://www.instagram.com/greycornerfes/",
+        "https://maps.app.goo.gl/8CH1GGAvo2no6zp27"
+      ],
+      "hasMenu": {
+        "@type": "Menu",
+        "name": "Menu officiel Grey Corner Café",
+        "url": "https://menugreycorner.pages.dev/",
+        "inLanguage": ["fr", "en", "de", "es", "ar"]
       }
     }
     </script>
@@ -171,7 +217,8 @@
         </div>
 
         <div class="container header-center">
-            <img src="images/logo-gold.webp" class="logo-big" alt="Grey Corner Café">
+            <img src="images/logo-gold.webp" class="logo-big" alt="Grey Corner Café — Restaurant, Brunch & Petit-Déjeuner à Fès" fetchpriority="high">
+            <h1 class="header-seo-title">Grey Corner Café — Restaurant, Brunch et Petit-Déjeuner à Fès</h1>
 
             <!-- BADGE HORAIRE DYNAMIQUE -->
             <div class="header-status-badge status-open" id="headerStatusBadge">
@@ -377,6 +424,75 @@
 
     <!-- Grille menu -->
     <main id="menu-grid"></main>
+
+    <!-- ======================================================================
+         SECTION PRÉSENTATION SÉMANTIQUE & LIENS SEO (ACCESSIBLE MOTEURS & UTILISATEURS)
+    ======================================================================= -->
+    <section class="seo-presentation-section" id="aboutGreyCorner" aria-label="À propos du Grey Corner Café à Fès">
+        <div class="container">
+            <div class="seo-content-card">
+                <h2 class="seo-sec-title">Grey Corner Café — L'Art du Brunch, du Petit-Déjeuner et de la Gastronomie à Fès</h2>
+                <p class="seo-sec-desc">
+                    Idéalement situé au cœur du quartier résidentiel des <strong>Champs de Course</strong> (Résidence Al Amane Prestigia) à Fès, 
+                    <strong>Grey Corner Café</strong> est l'adresse de référence pour savourer une cuisine gourmande, fraîche et généreuse dans un cadre raffiné. 
+                    Ouvert 7 jours sur 7 de <strong>07h00 à 23h00</strong>, notre café-restaurant vous accueille pour vos petits-déjeuners traditionnels ou healthy, 
+                    vos brunchs gourmands, déjeuners d'affaires, pauses café d'exception et dîners conviviaux.
+                </p>
+
+                <h3 class="seo-sub-title">Découvrez nos univers culinaires phares</h3>
+                <div class="seo-categories-grid">
+                    <a href="brunch-fes.html" class="seo-category-card">
+                        <div class="seo-cat-badge">Spécialité Fès</div>
+                        <h4>Brunch & Formules Gourmandes</h4>
+                        <p>Brunch Duo complet, formule Grey Corner, pancakes moelleux, gaufres croustillantes et jus d'orange pressé. Servi dès 07h00.</p>
+                        <span class="seo-card-cta">Explorer la carte Brunch ➔</span>
+                    </a>
+
+                    <a href="petit-dejeuner-fes.html" class="seo-category-card">
+                        <div class="seo-cat-badge">Dès 07h00</div>
+                        <h4>Petits-Déjeuners Traditionnels & Healthy</h4>
+                        <p>Formule Beldi (mlaoui, harcha, miel pur), Formule Fassi au Khlii, options Light et Américain avec boissons chaudes au choix.</p>
+                        <span class="seo-card-cta">Voir les petits-déjeuners ➔</span>
+                    </a>
+
+                    <a href="pizzas-fes.html" class="seo-category-card">
+                        <div class="seo-cat-badge">Four & Pâte Fine</div>
+                        <h4>Pizzas Artisanales & Spécialités</h4>
+                        <p>Pizzas fraîches cuites à la perfection : Fruits de Mer, 4 Saisons, 5 Fromages affinés, Pepperoni et Poulet sauce blanche.</p>
+                        <span class="seo-card-cta">Découvrir les pizzas ➔</span>
+                    </a>
+                </div>
+
+                <div class="seo-local-info-bar">
+                    <div class="sli-item">
+                        <span class="sli-icon">📍</span>
+                        <span><strong>Adresse :</strong> 7 Résidence Al Amane Prestigia, Champs de Course, Fès 30000, Maroc</span>
+                    </div>
+                    <div class="sli-item">
+                        <span class="sli-icon">🕒</span>
+                        <span><strong>Horaires :</strong> Tous les jours de 07h00 à 23h00 (Service continu)</span>
+                    </div>
+                    <div class="sli-item">
+                        <span class="sli-icon">📞</span>
+                        <span><strong>Contact :</strong> <a href="tel:+212535940168">+212 535 940 168</a> • WhatsApp : <a href="https://wa.me/212666265160" target="_blank" rel="noopener">+212 666 265 160</a></span>
+                    </div>
+                </div>
+
+                <!-- Fallback exploratoire pour moteurs ou si JavaScript est désactivé -->
+                <noscript>
+                    <div class="seo-noscript-box">
+                        <h3>Accès direct à la carte sans JavaScript</h3>
+                        <p>Notre carte complète comprend plus de 150 références : entrées fraîches, plats de résistance (saumon, filet de bœuf), sandwichs ciabatta, burgers maison, pastas fraîches, crêpes sucrées et salées, gâteaux maison (San Sébastien, cheesecakes), cocktails frais et glaces artisanales.</p>
+                        <ul>
+                            <li><a href="brunch-fes.html">Consulter les formules Brunch à Fès</a></li>
+                            <li><a href="petit-dejeuner-fes.html">Consulter les formules Petit-Déjeuner à Fès</a></li>
+                            <li><a href="pizzas-fes.html">Consulter les Pizzas artisanales à Fès</a></li>
+                        </ul>
+                    </div>
+                </noscript>
+            </div>
+        </div>
+    </section>
 
     <!-- Lightbox protégée -->
     <div id="secureLightbox" class="secure-lightbox">
