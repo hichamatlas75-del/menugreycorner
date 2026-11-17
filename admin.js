@@ -520,6 +520,10 @@ function initAdminNavigation() {
             if (secId === "sectionHistory") {
                 renderAdminHistoryFeed();
             }
+            if (secId === "sectionLoyalty") {
+                if (typeof loadLoyaltyAlerts === "function") loadLoyaltyAlerts();
+                if (typeof dbService !== "undefined" && dbService.syncMembersNow) dbService.syncMembersNow();
+            }
         });
     });
 }
@@ -1091,8 +1095,9 @@ function initAdminLoyaltyDashboard() {
         }
     }
 
-    // Charger les alertes immédiatement
+    // Charger les alertes immédiatement et écoute temps réel continue
     loadLoyaltyAlerts();
+    setInterval(loadLoyaltyAlerts, 3000);
 
     // 3. Écoute temps réel des membres
     dbService.onAllLoyaltyMembersChange((members) => {
