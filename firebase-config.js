@@ -701,7 +701,7 @@
 
                     syncNow();
                     syncMembersNow();
-                    if (callback) callback(true, pointsAdded, newTotal, res.member);
+                    if (callback) callback(true, pointsAdded, newTotal, { ...(res.member || {}), ...res });
                 } else {
                     const errMsg = res ? (res.error || res.message) : "Erreur de crédit";
                     if (callback) callback(false, errMsg, null, res);
@@ -806,6 +806,16 @@
                 })
                 .catch(() => {
                     if (callback) callback(false);
+                });
+        },
+
+        rectifyLoyaltyAlert(txId, newPoints, callback) {
+            apiFetch("/loyalty/alerts", "POST", { txId, action: "rectify", newPoints })
+                .then(res => {
+                    if (callback) callback(res && res.success, res ? res.message : null);
+                })
+                .catch(err => {
+                    if (callback) callback(false, err.message || String(err));
                 });
         },
 

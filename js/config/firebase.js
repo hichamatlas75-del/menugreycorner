@@ -670,10 +670,25 @@ export const dbService = {
             });
     },
 
-    creditLoyaltyPoints(rawPhone, amountDH, tableNumber, validatedBy, orderId, callback) {
+    creditLoyaltyPoints(rawPhone, amountDH, tableNumber, validatedBy, orderId, forceAdmin, callback) {
         if (typeof orderId === "function") {
             callback = orderId;
             orderId = null;
+            forceAdmin = false;
+        } else if (typeof forceAdmin === "function") {
+            callback = forceAdmin;
+            forceAdmin = false;
+        } else if (typeof validatedBy === "function") {
+            callback = validatedBy;
+            validatedBy = "waiter";
+            orderId = null;
+            forceAdmin = false;
+        } else if (typeof tableNumber === "function") {
+            callback = tableNumber;
+            tableNumber = "";
+            validatedBy = "waiter";
+            orderId = null;
+            forceAdmin = false;
         }
         const phone = normalizePhone(rawPhone);
         if (!phone) { if (callback) callback(false, "Numéro invalide"); return; }
@@ -684,7 +699,8 @@ export const dbService = {
             amountDH: amount,
             tableNumber: tableNumber ? String(tableNumber) : "",
             orderId: orderId || "",
-            validatedBy: validatedBy || "waiter"
+            validatedBy: validatedBy || "waiter",
+            forceAdmin: forceAdmin === true
         }).then(res => {
             if (res && res.success) {
                 const newTotal = res.newTotal;
@@ -696,9 +712,10 @@ export const dbService = {
 
                 syncNow();
                 syncMembersNow();
-                if (callback) callback(true, pointsAdded, newTotal, res.member);
+                if (callback) callback(true, pointsAdded, newTotal, { ...(res.member || {}), ...res });
             } else {
-                if (callback) callback(false, res ? res.error : "Erreur de crédit");
+                const errMsg = res ? (res.error || res.message) : "Erreur de crédit";
+                if (callback) callback(false, errMsg, null, res);
             }
         }).catch(err => {
             if (callback) callback(false, err.message || String(err));
@@ -770,6 +787,46 @@ export const dbService = {
             })
             .catch(() => {
                 if (callback) callback([]);
+            });
+    },
+
+    getLoyaltyAlerts(callback) {
+        apiFetch("/loyalty/alerts", "GET")
+            .then(res => {
+                if (callback) callback(res && res.alerts ? res.alerts : []);
+            })
+            .catch(() => {
+                if (callback) callback([]);
+            });
+    },
+
+    verifyLoyaltyAlert(txId, callback) {
+        apiFetch("/loyalty/alerts", "POST", { txId, action: "verify" })
+            .then(res => {
+                if (callback) callback(res && res.success);
+            })
+            .catch(() => {
+                if (callback) callback(false);
+            });
+    },
+
+    rejectLoyaltyAlert(txId, callback) {
+        apiFetch("/loyalty/alerts", "POST", { txId, action: "reject" })
+            .then(res => {
+                if (callback) callback(res && res.success);
+            })
+            .catch(() => {
+                if (callback) callback(false);
+            });
+    },
+
+    rectifyLoyaltyAlert(txId, newPoints, callback) {
+        apiFetch("/loyalty/alerts", "POST", { txId, action: "rectify", newPoints })
+            .then(res => {
+                if (callback) callback(res && res.success, res ? res.message : null);
+            })
+            .catch(err => {
+                if (callback) callback(false, err.message || String(err));
             });
     },
 

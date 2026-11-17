@@ -36,7 +36,9 @@ function normalizePhone(raw) {
     let clean = String(raw).replace(/[^\d+]/g, "").trim();
     if (clean.startsWith("+2120")) clean = clean.substring(4);
     else if (clean.startsWith("+212")) clean = "0" + clean.substring(4);
+    else if (clean.startsWith("002120")) clean = clean.substring(5);
     else if (clean.startsWith("00212")) clean = "0" + clean.substring(5);
+    else if (clean.startsWith("2120") && clean.length >= 12) clean = clean.substring(3);
     else if (clean.startsWith("212") && clean.length >= 11) clean = "0" + clean.substring(3);
     clean = clean.replace(/\D/g, "");
     if (clean.length === 9 && (clean.startsWith("6") || clean.startsWith("7") || clean.startsWith("5"))) {
@@ -507,7 +509,7 @@ export async function onRequest(context) {
                     const canonicalPhone = member.phone;
                     const recentEarn = await db.prepare(`
                         SELECT * FROM loyalty_transactions
-                        WHERE (phone = ? OR phone LIKE ?) AND type = 'EARN'
+                        WHERE (phone = ? OR phone LIKE ?) AND type = 'EARN' AND validatedBy NOT LIKE '%REJETÉ%'
                         ORDER BY createdAt DESC
                         LIMIT 1
                     `).bind(canonicalPhone, `%${suffix9}`).first();
@@ -546,7 +548,7 @@ export async function onRequest(context) {
                         const canonicalPhone = existing.phone;
                         const recentEarn = await db.prepare(`
                             SELECT * FROM loyalty_transactions
-                            WHERE (phone = ? OR phone LIKE ?) AND type = 'EARN'
+                            WHERE (phone = ? OR phone LIKE ?) AND type = 'EARN' AND validatedBy NOT LIKE '%REJETÉ%'
                             ORDER BY createdAt DESC
                             LIMIT 1
                         `).bind(canonicalPhone, `%${suffix9}`).first();
@@ -610,6 +612,7 @@ export async function onRequest(context) {
                 if (!phone || phone.length < 8) return errorResponse("Numéro de téléphone invalide.");
 
                 const amountDH = parseFloat(body.amountDH || body.amount) || 0;
+                if (amountDH <= 0) return errorResponse("Montant de l'addition invalide (doit être supérieur à 0 DH).");
                 const pointsToAdd = Math.max(1, Math.round(amountDH));
                 const tableNumber = body.tableNumber ? String(body.tableNumber).trim() : "";
                 const orderId = body.orderId || "";
@@ -620,7 +623,7 @@ export async function onRequest(context) {
                 const suffix9 = phone.length >= 9 ? phone.slice(-9) : phone;
                 const lastEarn = await db.prepare(`
                     SELECT * FROM loyalty_transactions
-                    WHERE (phone = ? OR phone LIKE ?) AND type = 'EARN'
+                    WHERE (phone = ? OR phone LIKE ?) AND type = 'EARN' AND validatedBy NOT LIKE '%REJETÉ%'
                     ORDER BY createdAt DESC
                     LIMIT 1
                 `).bind(phone, `%${suffix9}`).first();
@@ -843,11 +846,13 @@ export async function onRequest(context) {
                     const rows = (await db.prepare(`
                         SELECT t.*, m.firstName as memberName
                         FROM loyalty_transactions t
-                        LEFT JOIN loyalty_members m ON t.phone = m.phone
+                        LEFT JOIN loyalty_members m ON (t.phone = m.phone OR m.phone LIKE '%' || SUBSTR(t.phone, -9))
                         WHERE t.pointsDelta > 100 
-                          AND t.validatedBy NOT LIKE '%admin%' 
+                          AND t.note LIKE '%[EN ATTENTE VALIDATION ADMIN%'
                           AND t.validatedBy NOT LIKE '%VÉRIFIÉ%'
-                          AND t.note NOT LIKE '%[RECTIFIÉ]%'
+                          AND t.validatedBy NOT LIKE '%RECTIFIÉ%'
+                          AND t.validatedBy NOT LIKE '%REJETÉ%'
+                          AND t.type != 'REJECTED'
                         ORDER BY t.createdAt DESC
                         LIMIT 50
                     `).all()).results;
@@ -857,36 +862,67 @@ export async function onRequest(context) {
                     const body = await request.json();
                     const txId = body.txId;
                     const action = body.action || "verify";
-                    if (txId && action === "verify") {
-                        const tx = await db.prepare("SELECT * FROM loyalty_transactions WHERE id = ?").bind(txId).first();
-                        if (tx) {
-                            if (tx.note && tx.note.includes("[EN ATTENTE VALIDATION ADMIN")) {
-                                const suffix9 = tx.phone.length >= 9 ? tx.phone.slice(-9) : tx.phone;
-                                await db.prepare(`
-                                    UPDATE loyalty_members
-                                    SET points = points + ?, totalEarned = totalEarned + ?, updatedAt = ?
-                                    WHERE phone = ? OR phone LIKE ?
-                                `).bind(tx.pointsDelta, tx.pointsDelta, new Date().toISOString(), tx.phone, `%${suffix9}`).run();
-                            }
-                            await db.prepare(`
-                                UPDATE loyalty_transactions 
-                                SET validatedBy = validatedBy || ' [VÉRIFIÉ & CRÉDITÉ ADMIN]',
-                                    note = REPLACE(note, '[EN ATTENTE VALIDATION ADMIN >100 PTS]', '[VALIDÉ & CRÉDITÉ ADMIN]')
-                                WHERE id = ?
-                            `).bind(txId).run();
-                            return jsonResponse({ success: true, message: "Transaction validée et points crédités au client." });
-                        }
+                    if (!txId) return errorResponse("ID de transaction manquant.");
+
+                    const tx = await db.prepare("SELECT * FROM loyalty_transactions WHERE id = ?").bind(txId).first();
+                    if (!tx) return errorResponse("Transaction introuvable.");
+
+                    if (tx.validatedBy && (tx.validatedBy.includes("VÉRIFIÉ") || tx.validatedBy.includes("RECTIFIÉ") || tx.validatedBy.includes("REJETÉ"))) {
+                        return errorResponse("Cette transaction a déjà été traitée par la direction.");
                     }
-                    if (txId && action === "reject") {
+
+                    const suffix9 = tx.phone.length >= 9 ? tx.phone.slice(-9) : tx.phone;
+                    const now = new Date().toISOString();
+
+                    if (action === "verify") {
+                        if (tx.note && tx.note.includes("[EN ATTENTE VALIDATION ADMIN")) {
+                            await db.prepare(`
+                                UPDATE loyalty_members
+                                SET points = points + ?, totalEarned = totalEarned + ?, updatedAt = ?
+                                WHERE phone = ? OR phone LIKE ?
+                            `).bind(tx.pointsDelta, tx.pointsDelta, now, tx.phone, `%${suffix9}`).run();
+                        }
                         await db.prepare(`
                             UPDATE loyalty_transactions 
-                            SET validatedBy = validatedBy || ' [REJETÉ ADMIN]',
+                            SET validatedBy = validatedBy || ' [VÉRIFIÉ & CRÉDITÉ ADMIN]',
+                                note = REPLACE(note, '[EN ATTENTE VALIDATION ADMIN >100 PTS]', '[VALIDÉ & CRÉDITÉ ADMIN]')
+                            WHERE id = ?
+                        `).bind(txId).run();
+                        return jsonResponse({ success: true, message: `✅ Transaction validée : +${tx.pointsDelta} points crédités au client.` });
+                    }
+
+                    if (action === "rectify") {
+                        const newPoints = Math.max(0, parseInt(body.newPoints, 10) || 0);
+                        if (newPoints > 0) {
+                            await db.prepare(`
+                                UPDATE loyalty_members
+                                SET points = points + ?, totalEarned = totalEarned + ?, updatedAt = ?
+                                WHERE phone = ? OR phone LIKE ?
+                            `).bind(newPoints, newPoints, now, tx.phone, `%${suffix9}`).run();
+                        }
+                        await db.prepare(`
+                            UPDATE loyalty_transactions 
+                            SET pointsDelta = ?,
+                                amountDH = ?,
+                                validatedBy = validatedBy || ' [RECTIFIÉ & CRÉDITÉ ADMIN]',
+                                note = '[RECTIFIÉ & CRÉDITÉ ADMIN +' || ? || ' PTS] (Initialement demandé: ' || ? || ' pts) — ' || COALESCE(note, '')
+                            WHERE id = ?
+                        `).bind(newPoints, newPoints, newPoints, tx.pointsDelta, txId).run();
+                        return jsonResponse({ success: true, message: `✅ Transaction rectifiée : +${newPoints} points crédités au client.` });
+                    }
+
+                    if (action === "reject") {
+                        await db.prepare(`
+                            UPDATE loyalty_transactions 
+                            SET type = 'REJECTED',
+                                validatedBy = validatedBy || ' [REJETÉ ADMIN]',
                                 note = REPLACE(note, '[EN ATTENTE VALIDATION ADMIN >100 PTS]', '[REJETÉ ADMIN]')
                             WHERE id = ?
                         `).bind(txId).run();
                         return jsonResponse({ success: true, message: "Transaction rejetée sans attribution de points." });
                     }
-                    return errorResponse("Action ou ID de transaction manquant.");
+
+                    return errorResponse("Action inconnue.");
                 }
             }
         }

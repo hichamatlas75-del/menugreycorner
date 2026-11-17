@@ -255,10 +255,16 @@ async function handleFcmRequest(request, env) {
                     messageObj.token = target.value;
                 }
 
+                // Pour les événements d'annulation/acquittement, envoyer un push data-only silencieux (sans pop-up ni vibration)
+                const isSilentEvent = (type === "CANCEL_ALERT" || type === "DISMISS" || type === "SILENT_SYNC");
+                if (isSilentEvent) {
+                    delete messageObj.webpush.notification;
+                }
+
                 // Pour les navigateurs Web classiques, on ajoute la racine notification pour assurer l'affichage.
                 // Pour l'APK Android (native ou topic), on NE MET PAS de racine notification afin d'empêcher
                 // Google Play Services d'intercepter le message et permettre à onMessageReceived() d'allumer l'écran.
-                if (!isNativeAndroid) {
+                if (!isNativeAndroid && !isSilentEvent) {
                     messageObj.notification = {
                         title: String(finalTitle),
                         body: String(finalBody)

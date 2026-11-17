@@ -4,6 +4,16 @@
  * ============================================================================
  */
 
+function escapeHtml(str) {
+    if (!str) return "";
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 let globalWaiters = [];
 let activeCallsList = [];
 
@@ -641,7 +651,7 @@ function renderAdminHistoryFeed() {
                 </div>
                 <div class="admin-history-items-list">
                     ${itemsHtml}
-                    ${order.note ? `<div style="font-size: 0.78rem; color: var(--muted); margin-top: 6px; font-style: italic; border-top: 1px solid rgba(255, 255, 255, 0.03); padding-top: 4px;">Note: ${order.note}</div>` : ""}
+                    ${order.note ? `<div style="font-size: 0.78rem; color: var(--muted); margin-top: 6px; font-style: italic; border-top: 1px solid rgba(255, 255, 255, 0.03); padding-top: 4px;">Note: ${escapeHtml(order.note)}</div>` : ""}
                     <div style="display: flex; justify-content: space-between; border-top: 1px solid rgba(255, 255, 255, 0.03); padding-top: 6px; margin-top: 4px; font-weight: 600; font-size: 0.8rem;">
                         <span style="color: var(--muted);">Total</span>
                         <span style="color: var(--gold);">${order.totalPrice} MAD</span>
@@ -1083,36 +1093,39 @@ function initAdminLoyaltyDashboard() {
                     });
                 }
 
-                // Action 2: Rectifier / Déduire des points en cas d'erreur du serveur
+                // Action 2: Rectifier le montant / les points en cas d'erreur de saisie du serveur
                 const btnRectify = card.querySelector(".btn-alert-rectify");
                 if (btnRectify) {
                     btnRectify.addEventListener("click", () => {
                         const currentPts = tx.pointsDelta;
-                        const deductStr = prompt(
-                            `⚠️ RECTIFICATION ERREUR SERVEUR (${tx.validatedBy} - ${tableStr}) :\n\n` +
-                            `Le serveur a saisi une demande de +${currentPts} points pour ${memberName} (${tx.phone}).\n\n` +
-                            `Combien de points souhaitez-vous DÉDUIRE ?\n` +
-                            `(Exemple: si l'addition réelle était de 50 DH au lieu de 500 DH, entrez 450 pour déduire 450 pts) :`,
+                        const rectifyStr = prompt(
+                            `⚠️ RECTIFICATION DE L'ADDITION (${tx.validatedBy} - ${tableStr}) :\n\n` +
+                            `Demande initiale du serveur : +${currentPts} points (${tx.amountDH || currentPts} DH) pour ${memberName} (${tx.phone}).\n\n` +
+                            `Entrez le MONTANT RÉEL de l'addition en DH (= points exacts à créditer au client) :\n` +
+                            `(Exemple : si l'addition réelle était de 50 DH au lieu de 500 DH, entrez 50) :`,
                             String(currentPts)
                         );
-                        if (deductStr === null) return;
-                        const deductVal = parseInt(deductStr, 10);
-                        if (isNaN(deductVal) || deductVal <= 0) {
-                            alert("Montant de déduction invalide.");
+                        if (rectifyStr === null) return;
+                        const newPts = parseInt(rectifyStr, 10);
+                        if (isNaN(newPts) || newPts < 0) {
+                            window.showGreyCornerNotice("Montant invalide", "Veuillez saisir un montant d'addition valide en DH (nombre entier >= 0).", "warning");
                             return;
                         }
 
-                        const reason = `Correction erreur saisie serveur (${tx.validatedBy}) - ${tableStr}`;
                         btnRectify.disabled = true;
-                        dbService.adjustLoyaltyPoints(tx.phone, -deductVal, reason, "admin", (ok, newTotal) => {
+                        btnRectify.textContent = "Rectification...";
+                        dbService.rectifyLoyaltyAlert(tx.id, newPts, (ok, msg) => {
                             if (ok) {
-                                dbService.verifyLoyaltyAlert(tx.id, () => {
-                                    window.showGreyCornerNotice("✅ Rectification effectuée", `-${deductVal} points déduits.\nNouveau solde de ${memberName} : ${newTotal} points.`, "success");
-                                    loadLoyaltyAlerts();
-                                });
+                                window.showGreyCornerNotice(
+                                    "✅ RECTIFICATION EFFECTUÉE",
+                                    `L'addition a été rectifiée à ${newPts} DH.\n+${newPts} points ont été validés et crédités au client ${memberName} (${tx.phone}) !`,
+                                    "success"
+                                );
+                                loadLoyaltyAlerts();
                             } else {
-                                window.showGreyCornerNotice("❌ Erreur", "Erreur lors de la déduction des points.", "error");
+                                window.showGreyCornerNotice("❌ Erreur", msg || "Erreur lors de la rectification des points.", "error");
                                 btnRectify.disabled = false;
+                                btnRectify.textContent = "✏️ Rectifier";
                             }
                         });
                     });
@@ -1190,7 +1203,7 @@ function initAdminLoyaltyDashboard() {
             const sourceLabel = m.source === "qr_menu" ? "Menu QR" : (m.source === "waiter_direct" ? "Serveur" : "Admin");
 
             // Vérifier si ce membre a une alerte active > 100 pts
-            const hasAlert = cachedLoyaltyAlerts.filter(a => a.phone === m.phone);
+            const hasAlert = cachedLoyaltyAlerts.filter(a => (window.isSamePhone ? window.isSamePhone(a.phone, m.phone) : a.phone === m.phone));
             const alertBadge = hasAlert.length > 0 
                 ? `<span class="badge-row-alert" title="Alerte : saisie serveur > 100 pts (${hasAlert[0].tableNumber ? 'Table ' + hasAlert[0].tableNumber : 'Table ?'})">⚠️ Contrôle requis</span>` 
                 : "";
@@ -1206,8 +1219,8 @@ function initAdminLoyaltyDashboard() {
             const waLink = `https://wa.me/${waPhone}?text=${waDefaultMsg}`;
 
             tr.innerHTML = `
-                <td><strong>${m.firstName || "Client"}</strong> ${alertBadge}</td>
-                <td><code style="color:var(--gold);">${m.phone}</code></td>
+                <td><strong>${escapeHtml(m.firstName || "Client")}</strong> ${alertBadge}</td>
+                <td><code style="color:var(--gold);">${escapeHtml(m.phone)}</code></td>
                 <td>
                     <span style="font-weight:700; ${pts >= 500 ? "color:#2ecc71;" : ""}">${pts} / 500</span>
                     <div style="width:70px; height:5px; background:rgba(255,255,255,0.1); border-radius:4px; margin-top:4px;">
