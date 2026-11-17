@@ -10,7 +10,11 @@ Ce document détaille l'architecture complète, les règles métier du **Menu Di
 3. [Règles de l'Application Serveurs (Waiter POS)](#3-règles-de-lapplication-serveurs-waiter-pos)
 4. [Règles d'Or du Club Fidélité (Loyalty)](#4-règles-dor-du-club-fidélité-loyalty)
 5. [Pleins Pouvoirs Administrateur & Direction](#5-pleins-pouvoirs-administrateur--direction)
-6. [Architecture Technique & Base de Données](#6-architecture-technique--base-de-données)
+6. [Architecture Multi-Dépôts & Double Déploiement Cloudflare](#6-architecture-multi-dépôts--double-déploiement-cloudflare)
+7. [Mécanisme Temps Réel des Alertes > 100 Points](#7-mécanisme-temps-réel-des-alertes--100-points)
+8. [Gestion du Cache Navigateur & Versioning (Cache Buster)](#8-gestion-du-cache-navigateur--versioning-cache-buster)
+9. [Architecture Technique & Base de Données D1 SQLite](#9-architecture-technique--base-de-données-d1-sqlite)
+10. [Protocole de Déploiement Anti-Erreur (Checklist)](#10-protocole-de-déploiement-anti-erreur-checklist)
 
 ---
 
@@ -121,7 +125,67 @@ L'administrateur dispose d'une **liberté totale et sans aucune restriction** po
 
 ---
 
-## 6. Architecture Technique & Base de Données
+## 6. Architecture Multi-Dépôts & Double Déploiement Cloudflare
+
+> [!IMPORTANT]
+> **RÈGLE FONDAMENTALE DE DÉPLOIEMENT : IL EXISTE DEUX DÉPÔTS GITHUB DISTINCTS.**
+> Ne jamais modifier l'un sans mettre à jour l'autre ! Toute mise à jour de code partagé doit obligatoirement être poussée sur les deux dépôts.
+
+| Dépôt GitHub | Répertoire Local | Projet Cloudflare Pages | URL Production | Contenu & Rôle Principal |
+| :--- | :--- | :--- | :--- | :--- |
+| **`menugreycorner.git`** | `c:\Users\mplp000\AndroidStudioProjects\menugreycorner` | `menugreycorner` | **https://menugreycorner.pages.dev** | Menu Digital interactif des clients (`index.html`), précommandes, adhésion fidélité, console admin miroir. |
+| **`espace-serveurs.git`** | `C:\Users\mplp000\OneDrive\Dokumente\GitHub\espace-serveurs` | `espace-serveurs-hub` | **https://espace-serveurs-hub.pages.dev** | Hub Opérationnel Serveurs en racine (`index.html` = `waiter.html`), PWA Android/tablettes et **Console Admin Direction (`/admin`)**. |
+
+### Règle de synchronisation des fichiers partagés :
+Lorsque vous modifiez l'un de ces fichiers dans `menugreycorner`, **copiez-le immédiatement** dans `espace-serveurs` :
+- `functions/api/[[route]].js` (Moteur API Cloudflare)
+- `firebase-config.js` (Couche temps réel D1)
+- `admin.html` et `admin.js` (Console direction)
+- `waiter.html` et `waiter.js` (Application serveurs ; noter que dans `espace-serveurs`, `index.html` est une copie conforme de `waiter.html`)
+- `waiter.css` et `admin.css` (Feuilles de style)
+- `js/bundle.js` et `js/config/firebase.js` (Bundle client)
+- `schema.sql` (Structure SQLite D1)
+
+---
+
+## 7. Mécanisme Temps Réel des Alertes > 100 Points
+
+Pour qu'une demande serveur apparaisse instantanément sur la console admin sans nécessiter de rechargement manuel de la page :
+
+1. **Emission par le serveur :**
+   - Lorsqu'une addition > 100 DH est encaissée par un serveur, le backend D1 insère une transaction de type `EARN` avec la note `⏳ [EN ATTENTE VALIDATION ADMIN >100 PTS]` et `pointsDelta > 100`. Le solde du client n'est pas encore incrémenté.
+2. **Détection API :**
+   - L'endpoint `GET /api/loyalty/alerts` renvoie toutes les transactions où `pointsDelta > 100` n'ayant pas encore été validées, rectifiées ou rejetées par l'administrateur, tout en excluant les crédits directs de l'admin.
+3. **Boucle de Polling Actif (3 secondes) :**
+   - Dans `admin.js`, une boucle active tourne en continu :
+     ```javascript
+     loadLoyaltyAlerts();
+     setInterval(loadLoyaltyAlerts, 3000);
+     ```
+   - Dès qu'un serveur enregistre une addition > 100 DH sur son téléphone, la console admin reçoit l'alerte sous 3 secondes maximum.
+   - Le badge `⚠️ N` s'allume sur l'onglet **Club Fidélité** et la section dorée **« Alertes & Contrôle Serveurs »** s'affiche automatiquement.
+4. **Validation et rafraîchissement immédiat de la base membres :**
+   - Lorsque l'admin clique sur `✅ Valider & Créditer`, l'API D1 met à jour `loyalty_members` et `loyalty_transactions`.
+   - Côté client, `verifyLoyaltyAlert` déclenche immédiatement `syncMembersNow()` et `loadLoyaltyAlerts()` : l'alerte disparaît et le nouveau solde du client s'actualise en direct dans le tableau sans décalage.
+
+---
+
+## 8. Gestion du Cache Navigateur & Versioning (Cache Buster)
+
+Les navigateurs modernes (en particulier sur mobile et tablettes de service) mettent agressivement en cache les scripts JavaScript.
+
+### Règle d'incrémentation de version :
+À chaque modification de code JavaScript ou CSS, le paramètre de version dans les balises `<script>` et `<link>` doit être incrémenté sur **toutes les pages HTML** :
+- `admin.html` : `admin.css?v=5.0`, `firebase-config.js?v=5.0`, `admin.js?v=5.0`
+- `waiter.html` / `index.html` : `waiter.css?v=5.0`, `firebase-config.js?v=5.0`, `waiter.js?v=5.0`
+- Recompilation du bundle ESBuild :
+  ```powershell
+  npx esbuild js/main.js --bundle --outfile=js/bundle.js --format=iife
+  ```
+
+---
+
+## 9. Architecture Technique & Base de Données D1 SQLite
 
 ### Schéma des Tables D1 SQLite
 
@@ -154,6 +218,28 @@ L'administrateur dispose d'une **liberté totale et sans aucune restriction** po
 
 5. **`system_config` :**
    - Réglages globaux (`loyalty_config`, `system_frozen`).
+
+---
+
+## 10. Protocole de Déploiement Anti-Erreur (Checklist)
+
+Pour éviter tout désalignement ou bug en production, suivre obligatoirement cette procédure :
+
+- [ ] **1. Validation Syntaxique :**  
+  Exécuter `node --check` sur tous les fichiers JS modifiés (`[[route]].js`, `firebase-config.js`, `admin.js`, `waiter.js`, `bundle.js`).
+- [ ] **2. Recompilation Bundle :**  
+  Si `js/main.js` ou des modules ont été touchés, exécuter `npx esbuild js/main.js --bundle --outfile=js/bundle.js --format=iife`.
+- [ ] **3. Incrémentation Cache Buster :**  
+  Monter la version (`?v=5.X`) dans `admin.html`, `waiter.html`, et `index.html`.
+- [ ] **4. Copie vers `espace-serveurs` :**  
+  Copier les fichiers mis à jour de `menugreycorner` vers `C:\Users\mplp000\OneDrive\Dokumente\GitHub\espace-serveurs` (sans oublier de dupliquer `waiter.html` en `index.html` dans `espace-serveurs`).
+- [ ] **5. Double Commit & Push :**  
+  1. `git -C "c:\Users\mplp000\AndroidStudioProjects\menugreycorner" add -A; git commit -m "..."; git push origin main`
+  2. `git -C "C:\Users\mplp000\OneDrive\Dokumente\GitHub\espace-serveurs" add -A; git commit -m "..."; git push origin main`
+- [ ] **6. Test de Contrôle en Production :**  
+  Tester les deux URL de production :
+  - `https://menugreycorner.pages.dev/api/loyalty/alerts`
+  - `https://espace-serveurs-hub.pages.dev/api/loyalty/alerts`
 
 ---
 
