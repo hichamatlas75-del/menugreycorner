@@ -1,28 +1,33 @@
 # Robots.txt for Grey Corner Café Fès
+
+# 1. Règles générales pour tous les robots (Googlebot, Bingbot, etc.)
 User-agent: *
-Allow: /
-
-# ChatGPT Search : autoriser l'exploration du menu public
-User-agent: OAI-SearchBot
-Allow: /
-
-# GPTBot est distinct de OAI-SearchBot
-User-agent: GPTBot
-Disallow: /
-
-
 Allow: /
 Allow: /index.html
 Allow: /style.css
 Allow: /js/
 Allow: /images/
 
-# Disallow internal staff portals from search engine indexing
+# Interdire l'indexation des espaces internes du personnel
 Disallow: /admin.html
 Disallow: /waiter.html
 Disallow: /admin.js
 Disallow: /waiter.js
 Disallow: /admin.css
 Disallow: /waiter.css
+
+# 2. ChatGPT Search : autoriser l'exploration du menu public
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin.html
+Disallow: /waiter.html
+Disallow: /admin.js
+Disallow: /waiter.js
+Disallow: /admin.css
+Disallow: /waiter.css
+
+# 3. Bloquer GPTBot (entraînement des modèles d'IA)
+User-agent: GPTBot
+Disallow: /
 
 Sitemap: https://menugreycorner.pages.dev/sitemap.xml
