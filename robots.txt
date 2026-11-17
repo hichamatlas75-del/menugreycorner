@@ -1,6 +1,17 @@
 # Robots.txt for Grey Corner Café Fès
 User-agent: *
 Allow: /
+
+# ChatGPT Search : autoriser l'exploration du menu public
+User-agent: OAI-SearchBot
+Allow: /
+
+# GPTBot est distinct de OAI-SearchBot
+User-agent: GPTBot
+Disallow: /
+
+
+Allow: /
 Allow: /index.html
 Allow: /style.css
 Allow: /js/
