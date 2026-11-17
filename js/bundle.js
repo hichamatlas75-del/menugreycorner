@@ -266,7 +266,6 @@
     }
   }
   async function syncMembersNow() {
-    if (_allMembersListeners.size === 0 && _memberListeners.size === 0) return;
     try {
       const data = await apiFetch("/loyalty/members");
       if (data && data.success && Array.isArray(data.members)) {
@@ -279,7 +278,8 @@
           }
         });
         _memberListeners.forEach((callbacks, phone) => {
-          const found = _cachedMembers.find((m) => m.phone === phone);
+          const suffix = phone.length >= 9 ? phone.slice(-9) : phone;
+          const found = _cachedMembers.find((m) => m.phone === phone || m.phone && m.phone.endsWith(suffix));
           if (found) callbacks.forEach((cb) => {
             try {
               cb(found);
@@ -323,6 +323,12 @@
     });
   }
   var dbService = {
+    syncNow() {
+      return syncNow();
+    },
+    syncMembersNow() {
+      return syncMembersNow();
+    },
     isCloud() {
       return true;
     },
@@ -764,20 +770,32 @@
     },
     verifyLoyaltyAlert(txId, callback) {
       apiFetch("/loyalty/alerts", "POST", { txId, action: "verify" }).then((res) => {
-        if (callback) callback(res && res.success);
-      }).catch(() => {
-        if (callback) callback(false);
+        if (res && res.success) {
+          syncNow();
+          syncMembersNow();
+        }
+        if (callback) callback(res && res.success, res ? res.message : null);
+      }).catch((err) => {
+        if (callback) callback(false, err.message || String(err));
       });
     },
     rejectLoyaltyAlert(txId, callback) {
       apiFetch("/loyalty/alerts", "POST", { txId, action: "reject" }).then((res) => {
-        if (callback) callback(res && res.success);
-      }).catch(() => {
-        if (callback) callback(false);
+        if (res && res.success) {
+          syncNow();
+          syncMembersNow();
+        }
+        if (callback) callback(res && res.success, res ? res.message : null);
+      }).catch((err) => {
+        if (callback) callback(false, err.message || String(err));
       });
     },
     rectifyLoyaltyAlert(txId, newPoints, callback) {
       apiFetch("/loyalty/alerts", "POST", { txId, action: "rectify", newPoints }).then((res) => {
+        if (res && res.success) {
+          syncNow();
+          syncMembersNow();
+        }
         if (callback) callback(res && res.success, res ? res.message : null);
       }).catch((err) => {
         if (callback) callback(false, err.message || String(err));

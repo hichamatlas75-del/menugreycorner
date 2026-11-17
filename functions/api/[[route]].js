@@ -622,7 +622,8 @@ export async function onRequest(context) {
                 // 🛑 1. RÈGLE ANTIFRAUDE INFRANCHISSABLE POUR LES SERVEURS ET CLIENTS (< 2h)
                 // L'ADMINISTRATEUR A LES PLEINS POUVOIRS ET CRÉDITE/DÉDUIT LIBREMENT SANS AUCUNE RESTRICTION
                 const suffix9 = phone.length >= 9 ? phone.slice(-9) : phone;
-                if (validatedBy !== "admin") {
+                const isAdmin = String(validatedBy).toLowerCase().includes("admin");
+                if (!isAdmin) {
                     const lastEarn = await db.prepare(`
                         SELECT * FROM loyalty_transactions
                         WHERE (phone = ? OR phone LIKE ?) AND type = 'EARN' AND validatedBy NOT LIKE '%REJETÉ%'
@@ -665,7 +666,7 @@ export async function onRequest(context) {
 
                 // 🚨 2. RÈGLE DE SÉCURITÉ DIRECTION : MONTANT > 100 DH (> 100 PTS) PAR UN SERVEUR
                 // LE MONTANT PASSE TOUJOURS (encaissement validé), mais les points sont mis en attente de validation par l'administrateur !
-                const isPendingAdmin = pointsToAdd > 100 && validatedBy !== "admin";
+                const isPendingAdmin = pointsToAdd > 100 && !isAdmin;
 
                 if (isPendingAdmin) {
                     const noteText = `⏳ [EN ATTENTE VALIDATION ADMIN >100 PTS] Encaissement ${amountDH} DH (+${pointsToAdd} pts) — Table ${tableNumber || 'Non renseignée'}`;
@@ -841,7 +842,7 @@ export async function onRequest(context) {
                         FROM loyalty_transactions t
                         LEFT JOIN loyalty_members m ON (t.phone = m.phone OR m.phone LIKE '%' || SUBSTR(t.phone, -9))
                         WHERE t.pointsDelta > 100 
-                          AND t.note LIKE '%[EN ATTENTE VALIDATION ADMIN%'
+                          AND t.validatedBy NOT LIKE '%admin%'
                           AND t.validatedBy NOT LIKE '%VÉRIFIÉ%'
                           AND t.validatedBy NOT LIKE '%RECTIFIÉ%'
                           AND t.validatedBy NOT LIKE '%REJETÉ%'
@@ -868,7 +869,13 @@ export async function onRequest(context) {
                     const now = new Date().toISOString();
 
                     if (action === "verify") {
-                        if (tx.note && tx.note.includes("[EN ATTENTE VALIDATION ADMIN")) {
+                        const member = await db.prepare("SELECT * FROM loyalty_members WHERE phone = ? OR phone LIKE ? LIMIT 1").bind(tx.phone, `%${suffix9}`).first();
+                        if (!member) {
+                            await db.prepare(`
+                                INSERT INTO loyalty_members (phone, firstName, points, totalEarned, visitsCount, createdAt, updatedAt)
+                                VALUES (?, 'Client', ?, ?, 1, ?, ?)
+                            `).bind(tx.phone, tx.pointsDelta, tx.pointsDelta, now, now).run();
+                        } else {
                             await db.prepare(`
                                 UPDATE loyalty_members
                                 SET points = points + ?, totalEarned = totalEarned + ?, updatedAt = ?
@@ -878,7 +885,7 @@ export async function onRequest(context) {
                         await db.prepare(`
                             UPDATE loyalty_transactions 
                             SET validatedBy = validatedBy || ' [VÉRIFIÉ & CRÉDITÉ ADMIN]',
-                                note = REPLACE(note, '[EN ATTENTE VALIDATION ADMIN >100 PTS]', '[VALIDÉ & CRÉDITÉ ADMIN]')
+                                note = REPLACE(COALESCE(note, ''), '[EN ATTENTE VALIDATION ADMIN >100 PTS]', '[VALIDÉ & CRÉDITÉ ADMIN]')
                             WHERE id = ?
                         `).bind(txId).run();
                         return jsonResponse({ success: true, message: `✅ Transaction validée : +${tx.pointsDelta} points crédités au client.` });
@@ -887,11 +894,19 @@ export async function onRequest(context) {
                     if (action === "rectify") {
                         const newPoints = Math.max(0, parseInt(body.newPoints, 10) || 0);
                         if (newPoints > 0) {
-                            await db.prepare(`
-                                UPDATE loyalty_members
-                                SET points = points + ?, totalEarned = totalEarned + ?, updatedAt = ?
-                                WHERE phone = ? OR phone LIKE ?
-                            `).bind(newPoints, newPoints, now, tx.phone, `%${suffix9}`).run();
+                            const member = await db.prepare("SELECT * FROM loyalty_members WHERE phone = ? OR phone LIKE ? LIMIT 1").bind(tx.phone, `%${suffix9}`).first();
+                            if (!member) {
+                                await db.prepare(`
+                                    INSERT INTO loyalty_members (phone, firstName, points, totalEarned, visitsCount, createdAt, updatedAt)
+                                    VALUES (?, 'Client', ?, ?, 1, ?, ?)
+                                `).bind(tx.phone, newPoints, newPoints, now, now).run();
+                            } else {
+                                await db.prepare(`
+                                    UPDATE loyalty_members
+                                    SET points = points + ?, totalEarned = totalEarned + ?, updatedAt = ?
+                                    WHERE phone = ? OR phone LIKE ?
+                                `).bind(newPoints, newPoints, now, tx.phone, `%${suffix9}`).run();
+                            }
                         }
                         await db.prepare(`
                             UPDATE loyalty_transactions 
@@ -909,7 +924,7 @@ export async function onRequest(context) {
                             UPDATE loyalty_transactions 
                             SET type = 'REJECTED',
                                 validatedBy = validatedBy || ' [REJETÉ ADMIN]',
-                                note = REPLACE(note, '[EN ATTENTE VALIDATION ADMIN >100 PTS]', '[REJETÉ ADMIN]')
+                                note = REPLACE(COALESCE(note, ''), '[EN ATTENTE VALIDATION ADMIN >100 PTS]', '[REJETÉ ADMIN]')
                             WHERE id = ?
                         `).bind(txId).run();
                         return jsonResponse({ success: true, message: "Transaction rejetée sans attribution de points." });
