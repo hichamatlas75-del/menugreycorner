@@ -241,7 +241,7 @@
                         <span class="loyalty-crown-icon">👑</span>
                         <span id="loyaltyBadgeText">Club Fidélité</span>
                     </div>
-                    <span class="loyalty-tagline" id="loyaltyTaglineText">500 pts = 1 consommation offerte !</span>
+                    <span class="loyalty-tagline" id="loyaltyTaglineText">Paliers VIP & Boissons Offertes !</span>
                 </div>
                 <div class="loyalty-form-inline">
                     <input type="text" id="loyaltyFirstNameInput" class="loyalty-input" placeholder="Votre prénom" autocomplete="given-name" />
@@ -256,11 +256,18 @@
                     <div class="loyalty-user-greeting">
                         <span class="loyalty-crown-icon">👑</span>
                         <strong id="loyaltyMemberName">Bonjour Client</strong>
+                        <span id="loyaltyVipBadge" class="loyalty-vip-pill vip-bronze">🥉 Bronze</span>
                     </div>
                     <div class="loyalty-score-badge">
                         <span id="loyaltyPointsVal" class="pts-number">20</span>
-                        <span class="pts-target">/ 500 pts</span>
+                        <span class="pts-target">pts</span>
                     </div>
+                </div>
+
+                <!-- Info Rang VIP & Multiplicateur -->
+                <div class="loyalty-vip-info-row">
+                    <span id="loyaltyVipMultiplierText" class="loyalty-vip-multiplier">Multiplicateur x1.0 (Standard)</span>
+                    <span id="loyaltyVipLifetimeText" class="loyalty-vip-lifetime">Cumul : 20 pts</span>
                 </div>
 
                 <!-- Barre de progression -->
@@ -269,13 +276,18 @@
                 </div>
 
                 <div class="loyalty-footer-row">
-                    <span class="loyalty-status-hint" id="loyaltyStatusText">Plus que 480 pts avant votre consommation offerte !</span>
+                    <span class="loyalty-status-hint" id="loyaltyStatusText">Plus que 480 pts avant votre boisson chaude offerte !</span>
                     <button type="button" id="loyaltySwitchAccountBtn" class="loyalty-btn-switch">Changer de compte</button>
                 </div>
 
-                <!-- Box Alerte Éligibilité Récompense -->
-                <div id="loyaltyRewardEligibleBox" class="loyalty-reward-box" style="display: none;">
-                    <button type="button" id="loyaltyClaimBtn" class="loyalty-claim-reward-btn">🎁 Demander ma consommation gratuite (500 pts)</button>
+                <!-- Box Alerte Éligibilité Récompenses (Palier 1: 500 pts / Palier 2: 1000 pts) -->
+                <div id="loyaltyRewardEligibleBox" class="loyalty-rewards-grid" style="display: none;">
+                    <button type="button" id="loyaltyClaimJuiceBtn" class="loyalty-reward-btn btn-juice" style="display: none;">
+                        🍹 Demander mon Jus au choix (-1 000 pts)
+                    </button>
+                    <button type="button" id="loyaltyClaimDrinkBtn" class="loyalty-reward-btn btn-drink" style="display: none;">
+                        ☕ Demander ma Boisson Chaude (-500 pts)
+                    </button>
                 </div>
             </div>
         </div>
@@ -996,5 +1008,5 @@
     </div>
 
     <!-- Scripts -->
-    <script defer src="js/bundle.js?v=5.0"></script>
+    <script defer src="js/bundle.js?v=5.1"></script>
 </body>
