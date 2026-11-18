@@ -106,8 +106,8 @@ const DEFAULT_WAITERS = [
 ];
 
 const DEFAULT_TABLES = {};
-for (let i = 1; i <= 24; i++) {
-    const num = i <= 12 ? 100 + i : (i <= 18 ? 200 + (i - 12) : 300 + (i - 18));
+for (let i = 1; i <= 57; i++) {
+    const num = i <= 15 ? 100 + i : (i <= 34 ? 200 + (i - 15) : 300 + (i - 34));
     const zone = num < 200 ? "salon" : (num < 300 ? "loge" : "terrasse");
     DEFAULT_TABLES[num] = {
         tableNumber: num,
@@ -457,7 +457,11 @@ export const dbService = {
 
         apiFetch("/calls", "POST", payload)
             .then(res => {
-                const callId = res && res.id ? res.id : `call_${Date.now()}`;
+                if (!res || res.success !== true || !res.id) {
+                    if (callback) callback(false, null, res && (res.error || res.message));
+                    return;
+                }
+                const callId = res.id;
                 // Notification push envoyée nativement et sans doublon par le serveur Cloudflare D1
                 syncNow();
                 if (callback) callback(true, callId);
@@ -539,7 +543,11 @@ export const dbService = {
 
         apiFetch("/orders", "POST", payload)
             .then(res => {
-                const orderId = res && res.id ? res.id : `order_${Date.now()}`;
+                if (!res || res.success !== true || !res.id) {
+                    if (callback) callback(false, null, res && (res.error || res.message));
+                    return;
+                }
+                const orderId = res.id;
                 // Notification push envoyée nativement et sans doublon par le serveur Cloudflare D1
                 syncNow();
                 if (callback) callback(true, orderId);

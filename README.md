@@ -32,11 +32,11 @@ Grey Corner dispose d'un écosystème web connecté en temps réel via Cloudflar
 ## 2. Règles du Menu Digital Client & Commandes
 
 ### A. Sélection de Table & Zone
-- Chaque commande ou appel doit être rattaché à une **Table** (1 à 25) et une **Zone** :
-  - **Zone 1 (RDC) :** Tables 101 à 112 (affichées Tables 1 à 12).
-  - **Zone 2 (Étage) :** Tables 201 à 206 (affichées Tables 13 à 18).
-  - **Zone 3 (Terrasse) :** Tables 301 à 307 (affichées Tables 19 à 25).
-- Si le client scanne un QR code de table avec paramètre d'URL (ex. `?table=5`), la table est pré-sélectionnée automatiquement.
+- Chaque commande ou appel doit être rattaché à une des **57 tables** et une **Zone** :
+  - **Zone 1 (RDC) :** Tables 101 à 115.
+  - **Zone 2 (Étage) :** Tables 201 à 219.
+  - **Zone 3 (Terrasse) :** Tables 301 à 323.
+- Si le client scanne un QR code de table avec paramètre d'URL (ex. `?table=105`), la table est pré-sélectionnée automatiquement.
 
 ### B. Panier & Pré-commandes
 - Le client compose son panier avec choix des options (laits, sirops, cuisson, suppléments).
