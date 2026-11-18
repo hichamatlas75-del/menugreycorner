@@ -16,7 +16,10 @@ const CORS_HEADERS = {
 };
 
 const FCM_WORKER_URL = "https://greycorner-fcm.hichamatlas75.workers.dev";
-const FCM_SECRET = "greycorner_secure_2026";
+// La valeur de repli assure la continuité pendant la rotation du secret. Elle ne
+// doit plus jamais être distribuée au navigateur : configurer FCM_DISPATCH_SECRET
+// dans Pages et dans le Worker FCM, puis retirer cette valeur historique.
+const LEGACY_FCM_DISPATCH_SECRET = "greycorner_secure_2026";
 
 // ── SÉCURITÉ ADMINISTRATEUR ─────────────────────────────────────────────────
 function getAdminKey(env) {
@@ -28,11 +31,11 @@ function getAdminKey(env) {
 
 function getZoneByTableNumber(tableNum) {
     const num = parseInt(tableNum, 10);
-    if (isNaN(num)) return "Salon";
-    if (num >= 101 && num <= 115) return "Salon";
+    if (isNaN(num)) return "Salle";
+    if (num >= 101 && num <= 115) return "Salle";
     if (num >= 201 && num <= 219) return "Loge";
     if (num >= 301 && num <= 323) return "Terrasse";
-    return "Salon";
+    return "Salle";
 }
 
 // Les QR codes historiques utilisent parfois les numéros courts affichés au client.
@@ -42,9 +45,9 @@ function resolveTableNumber(rawTable) {
     if ((value >= 101 && value <= 115) || (value >= 201 && value <= 219) || (value >= 301 && value <= 323)) {
         return value;
     }
-    if (value >= 1 && value <= 12) return 100 + value;
-    if (value >= 13 && value <= 18) return 188 + value;
-    if (value >= 19 && value <= 25) return 282 + value;
+    if (value >= 1 && value <= 15) return 100 + value;
+    if (value >= 16 && value <= 34) return 185 + value;
+    if (value >= 35 && value <= 57) return 266 + value;
     return null;
 }
 
@@ -164,14 +167,19 @@ function generateId(prefix = "id") {
     return `${prefix}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
 }
 
-// Déclencheur FCM asynchrone sans bloquer la requête
-function dispatchFcmNotification(env, type, title, body, tableId, docId) {
-    try {
-        fetch(FCM_WORKER_URL, {
+function getFcmDispatchSecret(env) {
+    return String((env && (env.FCM_DISPATCH_SECRET || env.FCM_SECRET)) || LEGACY_FCM_DISPATCH_SECRET).trim();
+}
+
+// Déclencheur FCM suivi par le runtime Cloudflare : l'appel ne doit pas être
+// abandonné lorsque la réponse API a déjà été renvoyée au client.
+function dispatchFcmNotification(context, type, title, body, tableId, docId) {
+    const secret = getFcmDispatchSecret(context.env);
+    const task = fetch(FCM_WORKER_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${FCM_SECRET}`
+                "Authorization": `Bearer ${secret}`
             },
             body: JSON.stringify({
                 type,
@@ -181,10 +189,15 @@ function dispatchFcmNotification(env, type, title, body, tableId, docId) {
                 tableId: String(tableId),
                 docId: String(docId)
             })
+        }).then(response => {
+            if (!response.ok) console.warn("FCM Dispatch Warning:", response.status);
         }).catch(e => console.warn("FCM Dispatch Warning:", e));
-    } catch (e) {
-        console.warn("FCM Dispatch Warning:", e);
+
+    if (context && typeof context.waitUntil === "function") {
+        context.waitUntil(task);
     }
+
+    return task;
 }
 
 // Initialisation automatique et résiliente des tables D1
@@ -267,9 +280,9 @@ async function ensureDb(db) {
             await db.prepare(sql).run();
         }
 
-        // Peupler les 57 tables complètes (Salon: 101-115, Loge: 201-219, Terrasse: 301-323)
+        // Peupler les 57 tables complètes (Salle: 101-115, Loge: 201-219, Terrasse: 301-323)
         const defaultTables = [];
-        for (let i = 101; i <= 115; i++) defaultTables.push({ id: i, zone: "salon" });
+        for (let i = 101; i <= 115; i++) defaultTables.push({ id: i, zone: "salle" });
         for (let i = 201; i <= 219; i++) defaultTables.push({ id: i, zone: "loge" });
         for (let i = 301; i <= 323; i++) defaultTables.push({ id: i, zone: "terrasse" });
 
@@ -468,7 +481,7 @@ export async function onRequest(context) {
                 // Notification push native FCM
                 const typeLabels = { waiter: "Appel Serveur", water: "Besoin d'Eau", bill: "L'Addition", reward: "🎁 Consommation Gratuite" };
                 const label = note.includes("Jus") ? "🍹 Jus Offert (1000 pts)" : (note.includes("Boisson") ? "☕ Boisson Offerte (500 pts)" : (typeLabels[type] || "Appel"));
-                dispatchFcmNotification(env, "CALL", `🔔 ${label} : Table ${tableNum} (${zoneName})`, note || `Assistance demandée`, tableNum, id);
+                dispatchFcmNotification(context, "CALL", `🔔 ${label} : Table ${tableNum} (${zoneName})`, note || `Assistance demandée`, tableNum, id);
 
                 return jsonResponse({ success: true, id, call: { id, table: tableNum, type, status: "pending", createdAt } });
             }
@@ -482,13 +495,18 @@ export async function onRequest(context) {
                 const now = new Date().toISOString();
 
                 if (status === "accepted") {
-                    await db.prepare("UPDATE waiters_calls SET status = ?, assignedTo = ?, acceptedAt = ? WHERE id = ?")
+                    const result = await db.prepare("UPDATE waiters_calls SET status = ?, assignedTo = ?, acceptedAt = ? WHERE id = ? AND status = 'pending'")
                         .bind(status, waiterId, now, callId).run();
-                    dispatchFcmNotification(env, "CANCEL_ALERT", "Appel pris en charge", "Pris en charge", 0, callId);
+                    if (!result.meta || result.meta.changes !== 1) {
+                        const existing = await db.prepare("SELECT status, assignedTo FROM waiters_calls WHERE id = ?").bind(callId).first();
+                        if (!existing) return errorResponse("Appel introuvable.", 404);
+                        return errorResponse("Cet appel est déjà pris en charge.", 409, { code: "ALREADY_ACCEPTED", status: existing.status, assignedTo: existing.assignedTo || "" });
+                    }
+                    dispatchFcmNotification(context, "CANCEL_ALERT", "Appel pris en charge", "Pris en charge", 0, callId);
                 } else if (status === "completed") {
                     await db.prepare("UPDATE waiters_calls SET status = ?, completedAt = ? WHERE id = ?")
                         .bind(status, now, callId).run();
-                    dispatchFcmNotification(env, "CANCEL_ALERT", "Appel terminé", "Terminé", 0, callId);
+                    dispatchFcmNotification(context, "CANCEL_ALERT", "Appel terminé", "Terminé", 0, callId);
                 } else {
                     await db.prepare("UPDATE waiters_calls SET status = ? WHERE id = ?")
                         .bind(status, callId).run();
@@ -554,8 +572,9 @@ export async function onRequest(context) {
                     const catalogItem = (category ? category.items : menuData.flatMap(entry => entry.items))
                         .find(entry => entry.name && entry.name.fr && entry.name.fr.trim().toLocaleLowerCase() === catalogName.toLocaleLowerCase());
                     if (!catalogItem) return errorResponse(`Article inconnu dans le menu : ${catalogName || itemName}.`);
-                    const catalogPrice = Number(catalogItem.price);
-                    if (!Number.isFinite(catalogPrice) || catalogPrice < 0) return errorResponse(`Le prix de l'article « ${catalogName} » n'est pas disponible.`);
+                    const rawCatalogPrice = catalogItem.price === "Inclus" ? 0 : Number(catalogItem.price);
+                    if (!Number.isFinite(rawCatalogPrice) || rawCatalogPrice < 0) return errorResponse(`Le prix de l'article « ${catalogName} » n'est pas disponible.`);
+                    const catalogPrice = rawCatalogPrice;
                     const roundedPrice = Math.round(catalogPrice * 100) / 100;
                     totalPrice += qty * roundedPrice;
                     normalizedItems.push({
@@ -631,7 +650,7 @@ export async function onRequest(context) {
                         itemsSummary += " • ";
                     }
                 } catch(e) {}
-                dispatchFcmNotification(env, "PRE_ORDER", `👨‍🍳 Nouvelle Précommande : Table ${tableNum} (${zoneName})`, `${itemsSummary}Total : ${totalPrice} MAD`, tableNum, id);
+                dispatchFcmNotification(context, "PRE_ORDER", `👨‍🍳 Nouvelle Précommande : Table ${tableNum} (${zoneName})`, `${itemsSummary}Total : ${totalPrice} MAD`, tableNum, id);
 
                 return jsonResponse({ success: true, id, order: { id, table: tableNum, totalPrice, status: "pending", createdAt } });
             }
@@ -649,13 +668,18 @@ export async function onRequest(context) {
 
                 if (body.status) {
                     if (body.status === "accepted") {
-                        await db.prepare("UPDATE pre_orders SET status = ?, assignedTo = ?, acceptedAt = ? WHERE id = ?")
+                        const result = await db.prepare("UPDATE pre_orders SET status = ?, assignedTo = ?, acceptedAt = ? WHERE id = ? AND status = 'pending'")
                             .bind(body.status, body.waiterId || "", now, orderId).run();
-                        dispatchFcmNotification(env, "CANCEL_ALERT", "Commande validée", "Validée", 0, orderId);
+                        if (!result.meta || result.meta.changes !== 1) {
+                            const existing = await db.prepare("SELECT status, assignedTo FROM pre_orders WHERE id = ?").bind(orderId).first();
+                            if (!existing) return errorResponse("Commande introuvable.", 404);
+                            return errorResponse("Cette commande est déjà prise en charge.", 409, { code: "ALREADY_ACCEPTED", status: existing.status, assignedTo: existing.assignedTo || "" });
+                        }
+                        dispatchFcmNotification(context, "CANCEL_ALERT", "Commande validée", "Validée", 0, orderId);
                     } else if (body.status === "completed") {
                         await db.prepare("UPDATE pre_orders SET status = ?, completedAt = ? WHERE id = ?")
                             .bind(body.status, now, orderId).run();
-                        dispatchFcmNotification(env, "CANCEL_ALERT", "Commande servie", "Servie", 0, orderId);
+                        dispatchFcmNotification(context, "CANCEL_ALERT", "Commande servie", "Servie", 0, orderId);
                     } else {
                         await db.prepare("UPDATE pre_orders SET status = ? WHERE id = ?")
                             .bind(body.status, orderId).run();

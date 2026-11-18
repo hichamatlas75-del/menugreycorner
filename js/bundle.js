@@ -73,7 +73,7 @@
       const res = await fetch(primaryUrl, options);
       if (res.ok || res.status >= 400 && res.status < 500) {
         reportApiStatus(true);
-        return await res.json();
+        return await res.json().catch(() => null);
       }
       if (API_BASE !== FALLBACK_API_BASE) {
         const fallbackUrl = `${FALLBACK_API_BASE}${cleanEndpoint}`;
@@ -110,7 +110,7 @@
   var DEFAULT_TABLES = {};
   for (let i = 1; i <= 57; i++) {
     const num = i <= 15 ? 100 + i : i <= 34 ? 200 + (i - 15) : 300 + (i - 34);
-    const zone = num < 200 ? "salon" : num < 300 ? "loge" : "terrasse";
+    const zone = num < 200 ? "salle" : num < 300 ? "loge" : "terrasse";
     DEFAULT_TABLES[num] = {
       tableNumber: num,
       zone,
@@ -228,7 +228,7 @@
   function getTableZoneName(tableNum) {
     const num = parseInt(tableNum, 10);
     if (isNaN(num)) return `Table ${tableNum}`;
-    if (num >= 101 && num <= 115) return `Salon (Table ${num})`;
+    if (num >= 101 && num <= 115) return `Salle (Table ${num})`;
     if (num >= 201 && num <= 219) return `Loge (Table ${num})`;
     if (num >= 301 && num <= 323) return `Terrasse (Table ${num})`;
     return `Table ${num}`;
@@ -5860,7 +5860,7 @@
     const table = params.get("table") || params.get("t");
     if (table) {
       const rawTable = Number(table);
-      const canonicalTable = Number.isInteger(rawTable) && rawTable > 0 && rawTable <= 25 ? rawTable <= 12 ? 100 + rawTable : rawTable <= 18 ? 188 + rawTable : 282 + rawTable : rawTable;
+      const canonicalTable = Number.isInteger(rawTable) && rawTable > 0 && rawTable <= 57 ? rawTable <= 15 ? 100 + rawTable : rawTable <= 34 ? 185 + rawTable : 266 + rawTable : rawTable;
       const isValidTable = Number.isInteger(canonicalTable) && (canonicalTable >= 101 && canonicalTable <= 115 || canonicalTable >= 201 && canonicalTable <= 219 || canonicalTable >= 301 && canonicalTable <= 323);
       clientTable = isValidTable ? String(canonicalTable) : null;
       try {

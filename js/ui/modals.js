@@ -560,8 +560,8 @@ export function parseTableFromUrl() {
 
   if (table) {
     const rawTable = Number(table);
-    const canonicalTable = Number.isInteger(rawTable) && rawTable > 0 && rawTable <= 25
-      ? (rawTable <= 12 ? 100 + rawTable : rawTable <= 18 ? 188 + rawTable : 282 + rawTable)
+    const canonicalTable = Number.isInteger(rawTable) && rawTable > 0 && rawTable <= 57
+      ? (rawTable <= 15 ? 100 + rawTable : rawTable <= 34 ? 185 + rawTable : 266 + rawTable)
       : rawTable;
     const isValidTable = Number.isInteger(canonicalTable) && (
       (canonicalTable >= 101 && canonicalTable <= 115) ||

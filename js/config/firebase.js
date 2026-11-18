@@ -148,7 +148,7 @@ const DEFAULT_WAITERS = [
 const DEFAULT_TABLES = {};
 for (let i = 1; i <= 57; i++) {
     const num = i <= 15 ? 100 + i : (i <= 34 ? 200 + (i - 15) : 300 + (i - 34));
-    const zone = num < 200 ? "salon" : (num < 300 ? "loge" : "terrasse");
+    const zone = num < 200 ? "salle" : (num < 300 ? "loge" : "terrasse");
     DEFAULT_TABLES[num] = {
         tableNumber: num,
         zone: zone,
@@ -267,7 +267,7 @@ function isSamePhone(p1, p2) {
 export function getTableZoneName(tableNum) {
     const num = parseInt(tableNum, 10);
     if (isNaN(num)) return `Table ${tableNum}`;
-    if (num >= 101 && num <= 115) return `Salon (Table ${num})`;
+    if (num >= 101 && num <= 115) return `Salle (Table ${num})`;
     if (num >= 201 && num <= 219) return `Loge (Table ${num})`;
     if (num >= 301 && num <= 323) return `Terrasse (Table ${num})`;
     return `Table ${num}`;

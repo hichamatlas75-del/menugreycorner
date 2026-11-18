@@ -15,6 +15,21 @@ const CORS_HEADERS = {
     "Access-Control-Allow-Headers": "Content-Type, Authorization"
 };
 
+// Le navigateur ne doit jamais connaître ce secret. La valeur historique est
+// conservée uniquement pour une rotation sans interruption : renseigner
+// FCM_DISPATCH_SECRET dans Pages et dans le Worker FCM, puis retirer ce repli.
+const LEGACY_FCM_DISPATCH_SECRET = "greycorner_secure_2026";
+
+function getDispatchSecret(env) {
+    return String((env && (env.FCM_DISPATCH_SECRET || env.FCM_SECRET)) || LEGACY_FCM_DISPATCH_SECRET).trim();
+}
+
+function isAuthorizedDispatcher(request, env) {
+    const supplied = (request.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "").trim();
+    const expected = getDispatchSecret(env);
+    return Boolean(supplied && expected && supplied === expected);
+}
+
 // Helper : Convertit une clé PEM RSA en ArrayBuffer pour Web Crypto
 function pemToArrayBuffer(pem) {
     if (!pem) throw new Error("Clé privée PEM vide ou manquante.");
@@ -155,6 +170,13 @@ async function handleFcmRequest(request, env) {
         return new Response(null, { status: 204, headers: CORS_HEADERS });
     }
 
+    if (!isAuthorizedDispatcher(request, env)) {
+        return new Response(JSON.stringify({ error: "Non autorisé." }), {
+            status: 401,
+            headers: { ...CORS_HEADERS, "Content-Type": "application/json" }
+        });
+    }
+
     try {
         const payload = await request.json();
         const { type, title, body, tableId, docId } = payload;
@@ -183,11 +205,15 @@ async function handleFcmRequest(request, env) {
         const finalTitle = title || defaultTitle;
         const finalBody = body || (isOrder ? "Nouvelle commande en attente de validation" : `Table ${tableId} sollicite le service.`);
 
-        // Construire la liste des cibles : tokens enregistrés + diffusion de secours sur le topic "waiters"
+        // Un APK Android reçoit uniquement le topic. L'envoi direct est réservé
+        // aux navigateurs Web, sinon le même appareil sonne deux fois.
         const targets = [];
         const seenTokens = new Set();
 
         waiterTokens.forEach((t) => {
+            const isNativeAndroid = t.platform === "android_native"
+                || (t.userAgent && t.userAgent.includes("GreyCornerWaiterApp"));
+            if (isNativeAndroid) return;
             if (t.token && !seenTokens.has(t.token)) {
                 seenTokens.add(t.token);
                 targets.push({
