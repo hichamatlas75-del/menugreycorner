@@ -57,10 +57,16 @@ export function triggerQuickServiceCall(clientTable, type) {
 
   const btnId = type === "waiter" ? "cabCallWaiter" : (type === "water" ? "cabRequestWater" : "cabRequestBill");
   const btn = document.getElementById(btnId);
-  if (btn) btn.classList.add("active");
+  if (btn) {
+    btn.classList.add("active");
+    btn.disabled = true;
+  }
 
-  dbService.sendCall(clientTable, type, (success, callId) => {
-    if (btn) btn.classList.remove("active");
+  dbService.sendCall(clientTable, type, (success, callId, errorMessage) => {
+    if (btn) {
+      btn.classList.remove("active");
+      btn.disabled = false;
+    }
 
     if (success) {
       playServiceCallSound();
@@ -82,7 +88,7 @@ export function triggerQuickServiceCall(clientTable, type) {
         listenToClientCall(callId, type, clientTable);
       }
     } else {
-      showToast("Erreur de connexion. Veuillez réessayer.");
+      showToast(errorMessage || "Erreur de connexion. Veuillez réessayer.");
     }
   });
 }

@@ -559,11 +559,24 @@ export function parseTableFromUrl() {
   const table = params.get("table") || params.get("t");
 
   if (table) {
-    clientTable = String(table);
-    // Mémoriser uniquement pour cet onglet / session active (< 2h)
+    const rawTable = Number(table);
+    const canonicalTable = Number.isInteger(rawTable) && rawTable > 0 && rawTable <= 25
+      ? (rawTable <= 12 ? 100 + rawTable : rawTable <= 18 ? 188 + rawTable : 282 + rawTable)
+      : rawTable;
+    const isValidTable = Number.isInteger(canonicalTable) && (
+      (canonicalTable >= 101 && canonicalTable <= 115) ||
+      (canonicalTable >= 201 && canonicalTable <= 219) ||
+      (canonicalTable >= 301 && canonicalTable <= 323)
+    );
+    clientTable = isValidTable ? String(canonicalTable) : null;
     try {
-      sessionStorage.setItem("gc_session_table", clientTable);
-      sessionStorage.setItem("gc_session_table_time", String(Date.now()));
+      if (clientTable) {
+        sessionStorage.setItem("gc_session_table", clientTable);
+        sessionStorage.setItem("gc_session_table_time", String(Date.now()));
+      } else {
+        sessionStorage.removeItem("gc_session_table");
+        sessionStorage.removeItem("gc_session_table_time");
+      }
     } catch(e) {}
   } else {
     // Si pas de paramètre dans l'URL, vérifier si la session active dans l'onglet est récente (< 2h)

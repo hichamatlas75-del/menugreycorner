@@ -141,6 +141,8 @@ export function submitPreOrder(clientTable, onComplete) {
     return {
       name: nameFr,
       name_lang: nameFr,
+      catalogName: c.name.fr || c.name,
+      categoryId: c.categoryId || "",
       category: c.categoryNameFr || "",
       price: c.price.toString(),
       qty: c.qty,
@@ -152,7 +154,7 @@ export function submitPreOrder(clientTable, onComplete) {
   const loyaltyName = localStorage.getItem("gc_loyalty_name") || "";
   const loyaltyInfo = loyaltyPhone ? { phone: loyaltyPhone, name: loyaltyName } : null;
 
-  dbService.sendPreOrder(clientTable, itemsList, note, totalPrice, loyaltyInfo, (success, orderId) => {
+  dbService.sendPreOrder(clientTable, itemsList, note, totalPrice, loyaltyInfo, (success, orderId, errorMessage) => {
     resetBtn();
     if (success) {
       playOrderSuccessSound();
@@ -199,7 +201,7 @@ export function submitPreOrder(clientTable, onComplete) {
         es: "Error de conexión. Por favor, inténtelo de nuevo.",
         ar: "خطأ في الاتصال. يرجى المحاولة مرة أخرى."
       };
-      showToast(errMsgs[currentLang] || errMsgs.fr);
+      showToast(errorMessage || errMsgs[currentLang] || errMsgs.fr);
     }
   });
 }

@@ -47,6 +47,37 @@ function resolveApiBase() {
 const API_BASE = resolveApiBase();
 const FALLBACK_API_BASE = "https://espace-serveurs-hub.pages.dev/api";
 
+const pendingRequestIds = new Map();
+
+function getClientRequestId(prefix, payload) {
+    const signature = `${prefix}:${JSON.stringify(payload)}`;
+    let id = pendingRequestIds.get(signature);
+    if (!id) {
+        const randomId = typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+            ? crypto.randomUUID()
+            : `${Date.now()}_${Math.random().toString(36).slice(2, 12)}`;
+        id = `${prefix}_${randomId}`;
+        pendingRequestIds.set(signature, id);
+        while (pendingRequestIds.size > 50) pendingRequestIds.delete(pendingRequestIds.keys().next().value);
+    }
+    return { id, signature };
+}
+
+function clearClientRequestId(signature) {
+    pendingRequestIds.delete(signature);
+}
+
+function reportApiStatus(available) {
+    if (typeof window === "undefined") return;
+    const previous = window.GC_API_STATUS || {};
+    const status = {
+        state: available ? "online" : "offline",
+        lastSuccessAt: available ? new Date().toISOString() : (previous.lastSuccessAt || null)
+    };
+    window.GC_API_STATUS = status;
+    window.dispatchEvent(new CustomEvent("gc:api-status", { detail: status }));
+}
+
 // Helper universel pour requêter l'API Cloudflare avec repli automatique
 async function apiFetch(endpoint, method = "GET", body = null) {
     const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
@@ -73,15 +104,20 @@ async function apiFetch(endpoint, method = "GET", body = null) {
 
     try {
         const res = await fetch(primaryUrl, options);
-        if (res.ok) {
-            return await res.json();
+        if (res.ok || (res.status >= 400 && res.status < 500)) {
+            reportApiStatus(true);
+            return await res.json().catch(() => null);
         }
         // Si l'URL relative /api renvoie 404/500, essayer le hub officiel Cloudflare
         if (API_BASE !== FALLBACK_API_BASE) {
             const fallbackUrl = `${FALLBACK_API_BASE}${cleanEndpoint}`;
             const resFallback = await fetch(fallbackUrl, options);
-            if (resFallback.ok) return await resFallback.json();
+            if (resFallback.ok || (resFallback.status >= 400 && resFallback.status < 500)) {
+                reportApiStatus(true);
+                return await resFallback.json();
+            }
         }
+        reportApiStatus(false);
         return await res.json().catch(() => null);
     } catch (err) {
         // En cas d'échec réseau sur l'URL primaire, repli sur le hub
@@ -89,11 +125,15 @@ async function apiFetch(endpoint, method = "GET", body = null) {
             try {
                 const fallbackUrl = `${FALLBACK_API_BASE}${cleanEndpoint}`;
                 const resFallback = await fetch(fallbackUrl, options);
-                if (resFallback.ok) return await resFallback.json();
+                if (resFallback.ok || (resFallback.status >= 400 && resFallback.status < 500)) {
+                    reportApiStatus(true);
+                    return await resFallback.json();
+                }
             } catch (err2) {
                 console.warn(`⚠️ Cloudflare D1 API [${cleanEndpoint}] fallback error:`, err2.message || err2);
             }
         }
+        reportApiStatus(false);
         console.warn(`⚠️ Cloudflare D1 API [${cleanEndpoint}] error:`, err.message || err);
         return null;
     }
@@ -454,6 +494,8 @@ export const dbService = {
             type: type || "waiter",
             ...(extraData || {})
         };
+        const requestKey = getClientRequestId("call", payload);
+        payload.id = requestKey.id;
 
         apiFetch("/calls", "POST", payload)
             .then(res => {
@@ -461,6 +503,7 @@ export const dbService = {
                     if (callback) callback(false, null, res && (res.error || res.message));
                     return;
                 }
+                clearClientRequestId(requestKey.signature);
                 const callId = res.id;
                 // Notification push envoyée nativement et sans doublon par le serveur Cloudflare D1
                 syncNow();
@@ -540,6 +583,8 @@ export const dbService = {
             loyaltyName: loyaltyInfo && loyaltyInfo.name ? loyaltyInfo.name : "",
             loyaltyPoints: loyaltyInfo && typeof loyaltyInfo.points === "number" ? loyaltyInfo.points : null
         };
+        const requestKey = getClientRequestId("order", payload);
+        payload.id = requestKey.id;
 
         apiFetch("/orders", "POST", payload)
             .then(res => {
@@ -547,6 +592,7 @@ export const dbService = {
                     if (callback) callback(false, null, res && (res.error || res.message));
                     return;
                 }
+                clearClientRequestId(requestKey.signature);
                 const orderId = res.id;
                 // Notification push envoyée nativement et sans doublon par le serveur Cloudflare D1
                 syncNow();

@@ -40,6 +40,8 @@ Grey Corner dispose d'un écosystème web connecté en temps réel via Cloudflar
 
 ### B. Panier & Pré-commandes
 - Le client compose son panier avec choix des options (laits, sirops, cuisson, suppléments).
+- L'API valide chaque article contre le menu du serveur et recalcule le total à partir du prix de référence ; les quantités et notes sont aussi limitées.
+- Chaque envoi porte un identifiant stable pendant le repli réseau afin qu'une même requête ne crée pas deux appels ou commandes.
 - Envoi de la commande avec ou sans numéro de fidélité.
 - Statuts de la commande :
   - `pending` : Commande reçue, sonne sur les téléphones des serveurs.
