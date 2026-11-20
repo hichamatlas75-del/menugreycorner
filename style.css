@@ -2118,6 +2118,121 @@ body.seo-landing-page {
     box-shadow: 0 6px 18px rgba(122, 28, 36, 0.5);
 }
 
+/* SEO Landing Header Actions & Multilingual Dropdown */
+.seo-header-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.seo-landing-header .header-lang-wrapper {
+    position: relative;
+    top: auto;
+    right: auto;
+    left: auto;
+    z-index: 1000;
+}
+
+.seo-landing-header .header-lang-btn {
+    padding: 6px 12px;
+    height: 38px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(201, 168, 76, 0.35);
+    color: #FAF7F2;
+    border-radius: 20px;
+}
+
+.seo-landing-header .header-lang-btn:hover {
+    background: rgba(201, 168, 76, 0.2);
+    border-color: #C9A84C;
+}
+
+.seo-landing-header .header-lang-code {
+    color: #FAF7F2;
+}
+
+.seo-landing-header .header-lang-arrow {
+    stroke: #C9A84C;
+}
+
+.seo-landing-header .header-lang-dropdown {
+    top: calc(100% + 8px);
+    right: 0;
+    left: auto;
+}
+
+/* RTL Support for SEO Landing Pages */
+[dir="rtl"] .seo-landing-header .header-lang-dropdown {
+    right: auto;
+    left: 0;
+}
+
+[dir="rtl"] .seo-landing-page {
+    text-align: right;
+}
+
+[dir="rtl"] .seo-dish-header {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .seo-schedule-grid,
+[dir="rtl"] .seo-nav-links-grid,
+[dir="rtl"] .seo-practical-card,
+[dir="rtl"] .seo-hero-section {
+    direction: rtl;
+}
+
+[dir="rtl"] .seo-hero-section {
+    text-align: center;
+}
+
+[dir="rtl"] .seo-back-link svg {
+    transform: rotate(180deg);
+}
+
+[dir="rtl"] .seo-back-link:hover {
+    transform: translateX(2px);
+}
+
+[dir="rtl"] .seo-dish-badge-pill {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+@media (max-width: 640px) {
+    .seo-header-actions {
+        gap: 6px;
+    }
+    .seo-landing-header .header-lang-btn {
+        padding: 5px 8px;
+        height: 34px;
+        gap: 4px;
+    }
+    .seo-landing-header .header-lang-code {
+        font-size: 11px;
+    }
+    .seo-call-btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+    .seo-back-link {
+        padding: 6px 8px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 440px) {
+    .seo-call-text {
+        display: none;
+    }
+    .seo-back-link span {
+        display: none;
+    }
+    .seo-back-link {
+        padding: 8px;
+    }
+}
+
 /* Hero Section */
 .seo-hero-section {
     padding: 48px 16px 36px;

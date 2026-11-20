@@ -22,6 +22,18 @@
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://menugreycorner.pages.dev/pizzas-fes.html" />
 
+    <!-- Multilingual dynamic titles & descriptions -->
+    <meta name="title-fr" content="Pizzas à Fès — Carte, Prix & Pâte Fine | Grey Corner Café" />
+    <meta name="desc-fr" content="Dégustez d'authentiques pizzas artisanales à Fès au Grey Corner Café : Fruits de Mer, 4 Saisons, 5 Fromages, Poulet Crème et Margherita. Ingrédients frais et pâte croustillante." />
+    <meta name="title-en" content="Pizzas in Fez — Menu, Prices & Thin Crust | Grey Corner Café" />
+    <meta name="desc-en" content="Enjoy authentic artisanal pizzas in Fez at Grey Corner Café: Seafood, 4 Seasons, 5 Cheeses, Creamy Chicken, and Margherita. Fresh ingredients and crispy crust." />
+    <meta name="title-de" content="Pizzas in Fès — Speisekarte, Preise & Dünner Teig | Grey Corner Café" />
+    <meta name="desc-de" content="Genießen Sie authentische handwerkliche Pizzen in Fès im Grey Corner Café: Meeresfrüchte, 4 Jahreszeiten, 5 Käse, Hähnchen Sahnesauce und Margherita. Frische Zutaten und knuspriger Teig." />
+    <meta name="title-es" content="Pizzas en Fez — Carta, Precios y Masa Fina | Grey Corner Café" />
+    <meta name="desc-es" content="Disfrute de auténticas pizzas artesanales en Fez en Grey Corner Café: Mariscos, 4 Estaciones, 5 Quesos, Pollo con Crema y Margherita. Ingredientes frescos y masa crujiente." />
+    <meta name="title-ar" content="بيتزا في فاس — قائمة الأسعار وعجينة رقيقة مقرمشة | مقهى غري كورنر" />
+    <meta name="desc-ar" content="تذوقوا أشهى أنواع البيتزا الإيطالية الأصيلة في فاس بمقهى غري كورنر: فواكه البحر، 4 فصول، 5 أجبان، دجاج بالصلصة البيضاء ومارغريتا. مكونات طازجة وعجينة مقرمشة خفيفة." />
+
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Pizzas Artisanales à Fès — Carte & Prix | Grey Corner Café" />
@@ -47,7 +59,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Cairo:wght@400;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 
@@ -168,20 +180,59 @@
 
 <body class="seo-landing-page">
 
-    <!-- Header navigation minimale -->
+    <!-- Header navigation minimale avec sélecteur de langue -->
     <header class="seo-landing-header">
         <div class="container seo-header-inner">
             <a href="index.html" class="seo-back-link">
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                <span>Menu Interactif</span>
+                <span data-i18n data-fr="Menu Interactif" data-en="Interactive Menu" data-de="Interaktives Menü" data-es="Menú Interactivo" data-ar="القائمة التفاعلية">Menu Interactif</span>
             </a>
             <a href="index.html" class="seo-logo-wrap" title="Grey Corner Café Fès">
                 <img src="images/logo-gold.webp" class="logo-big" alt="Grey Corner Café — Restaurant & Pizzas à Fès">
             </a>
-            <a href="tel:+212535940168" class="seo-call-btn" title="Appeler Grey Corner">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                <span class="seo-call-text">Appeler</span>
-            </a>
+            <div class="seo-header-actions">
+                <!-- Sélecteur de langue compact -->
+                <div class="header-lang-wrapper" id="headerLangWrapper">
+                    <button class="header-lang-btn" id="headerLangBtn" type="button" aria-expanded="false" aria-haspopup="true" title="Changer de langue">
+                        <span class="header-lang-flag" id="headerActiveFlag">🇫🇷</span>
+                        <span class="header-lang-code" id="headerActiveCode">FR</span>
+                        <svg class="header-lang-arrow" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="header-lang-dropdown" id="headerLangDropdown" role="menu">
+                        <button class="lang-button active" data-lang="fr" type="button" role="menuitem" title="Français">
+                            <span class="hl-flag">🇫🇷</span>
+                            <span class="hl-name">Français</span>
+                            <span class="hl-check">✓</span>
+                        </button>
+                        <button class="lang-button" data-lang="en" type="button" role="menuitem" title="English">
+                            <span class="hl-flag">🇬🇧</span>
+                            <span class="hl-name">English</span>
+                            <span class="hl-check">✓</span>
+                        </button>
+                        <button class="lang-button" data-lang="de" type="button" role="menuitem" title="Deutsch">
+                            <span class="hl-flag">🇩🇪</span>
+                            <span class="hl-name">Deutsch</span>
+                            <span class="hl-check">✓</span>
+                        </button>
+                        <button class="lang-button" data-lang="es" type="button" role="menuitem" title="Español">
+                            <span class="hl-flag">🇪🇸</span>
+                            <span class="hl-name">Español</span>
+                            <span class="hl-check">✓</span>
+                        </button>
+                        <button class="lang-button" data-lang="ar" type="button" role="menuitem" title="العربية">
+                            <span class="hl-flag">🇲🇦</span>
+                            <span class="hl-name">العربية</span>
+                            <span class="hl-check">✓</span>
+                        </button>
+                    </div>
+                </div>
+                <a href="tel:+212535940168" class="seo-call-btn" title="Appeler Grey Corner">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                    <span class="seo-call-text" data-i18n data-fr="Appeler" data-en="Call" data-de="Anrufen" data-es="Llamar" data-ar="اتصال">Appeler</span>
+                </a>
+            </div>
         </div>
     </header>
 
@@ -189,14 +240,19 @@
         <!-- Hero Section -->
         <section class="seo-hero-section">
             <div class="container">
-                <div class="seo-hero-badge">Pâte Fine & Pâte Façonnée Main • Fès</div>
-                <h1 class="seo-hero-title">Pizzas Artisanales au Four à Fès au Grey Corner Café</h1>
-                <p class="seo-hero-desc">
+                <div class="seo-hero-badge" data-i18n data-fr="Pâte Fine & Pâte Façonnée Main • Fès" data-en="Thin Crust & Handcrafted Dough • Fez" data-de="Dünner Teig & Handgemacht • Fès" data-es="Masa Fina y Hecha a Mano • Fez" data-ar="عجينة رقيقة ومصنوعة يدوياً • فاس">Pâte Fine & Pâte Façonnée Main • Fès</div>
+                <h1 class="seo-hero-title" data-i18n data-fr="Pizzas Artisanales au Four à Fès au Grey Corner Café" data-en="Oven-Baked Artisanal Pizzas in Fez at Grey Corner Café" data-de="Ofengebackene handwerkliche Pizzen in Fès im Grey Corner Café" data-es="Pizzas Artesanales al Horno en Fez en Grey Corner Café" data-ar="بيتزا إيطالية أصيلة ومخبوزة في الفرن بفاس بمقهى غري كورنر">Pizzas Artisanales au Four à Fès au Grey Corner Café</h1>
+                <p class="seo-hero-desc" data-i18n
+                   data-fr="Retrouvez le goût authentique de la pizza italienne cuite à haute température : une pâte légère et aérée, une sauce tomate cuisinée aux herbes aromatiques, de la mozzarella filante et des garnitures nobles (fruits de mer, fromages affinés, viandes sélectionnées)."
+                   data-en="Discover the authentic taste of high-temperature baked Italian pizza: light and airy crust, house tomato sauce simmered with herbs, stringy mozzarella, and premium toppings (seafood, aged cheeses, selected meats)."
+                   data-de="Entdecken Sie den authentischen Geschmack italienischer Pizza bei hoher Temperatur: ein leichter und luftiger Teig, hausgemachte Tomatensauce mit Kräutern, schmelzender Mozzarella und erlesene Beläge (Meeresfrüchte, gereifte Käse, ausgewählte Fleischsorten)."
+                   data-es="Disfrute del auténtico sabor de la pizza italiana horneada a alta temperatura: una masa ligera y crujiente, salsa de tomate casera con hierbas, mozzarella fundente e ingredientes selectos (mariscos, quesos curados, carnes seleccionadas)."
+                   data-ar="استمتعوا بالمذاق الإيطالي الأصيل للبيتزا المطهوة في درجات حرارة عالية: عجينة خفيفة ومقرمشة، صلصة طماطم متبلة بالأعشاب العطرية، جبن موزاريلا ذائب ومكونات طازجة فاخرة (فواكه بحر، أجبان معتقة ولحوم مختارة).">
                     Retrouvez le goût authentique de la pizza italienne cuite à haute température : une pâte légère et aérée, une sauce tomate cuisinée aux herbes aromatiques, de la mozzarella filante et des garnitures nobles (fruits de mer, fromages affinés, viandes sélectionnées).
                 </p>
                 <div class="seo-hero-actions">
-                    <a href="index.html" class="seo-primary-cta">Accéder au Menu Tactile & Commander ➔</a>
-                    <a href="#carte-pizzas" class="seo-secondary-cta">Voir les 11 pizzas dès 40 MAD</a>
+                    <a href="index.html" class="seo-primary-cta" data-i18n data-fr="Accéder au Menu Tactile & Commander ➔" data-en="Access Interactive Menu & Order ➔" data-de="Zur Touch-Speisekarte & Bestellen ➔" data-es="Acceder al Menú Táctil y Pedir ➔" data-ar="الولوج إلى القائمة الرقمية والطلب ➔">Accéder au Menu Tactile & Commander ➔</a>
+                    <a href="#carte-pizzas" class="seo-secondary-cta" data-i18n data-fr="Voir les 11 pizzas dès 40 MAD" data-en="View all 11 pizzas from 40 MAD" data-de="Alle 11 Pizzen ab 40 MAD ansehen" data-es="Ver las 11 pizzas desde 40 MAD" data-ar="عرض 11 نوع بيتزا ابتداءً من 40 د.م">Voir les 11 pizzas dès 40 MAD</a>
                 </div>
             </div>
         </section>
@@ -204,8 +260,8 @@
         <!-- Grille Pizzas -->
         <section class="seo-dishes-section" id="carte-pizzas">
             <div class="container">
-                <h2 class="seo-section-heading">Nos Pizzas Incontournables</h2>
-                <p class="seo-section-sub">Des recettes équilibrées, préparées à la commande pour une fraîcheur irréprochable.</p>
+                <h2 class="seo-section-heading" data-i18n data-fr="Nos Pizzas Incontournables" data-en="Our Signature Pizzas" data-de="Unsere beliebtesten Pizzen" data-es="Nuestras Pizzas Imprescindibles" data-ar="أشهى أنواع البيتزا المفضلة">Nos Pizzas Incontournables</h2>
+                <p class="seo-section-sub" data-i18n data-fr="Des recettes équilibrées, préparées à la commande pour une fraîcheur irréprochable." data-en="Balanced recipes, freshly prepared to order for guaranteed perfection." data-de="Ausgewogene Rezepte, frisch auf Bestellung zubereitet für perfekte Qualität." data-es="Recetas equilibradas, preparadas al momento para una frescura impecable." data-ar="وصفات متوازنة تُحضر طازجة فور طلبها لضمان ألذ مذاق وجودة.">Des recettes équilibrées, préparées à la commande pour une fraîcheur irréprochable.</p>
 
                 <div class="seo-dishes-grid">
 
@@ -213,18 +269,23 @@
                     <article class="seo-dish-card">
                         <div class="seo-dish-media">
                             <img src="images/pizza-fruitsmer.webp" alt="Pizza Fruits de Mer au Grey Corner Café Fès" class="seo-dish-img" loading="lazy" decoding="async">
-                            <span class="seo-dish-badge-pill">Best-Seller</span>
+                            <span class="seo-dish-badge-pill" data-i18n data-fr="Best-Seller" data-en="Best Seller" data-de="Bestseller" data-es="Más Vendido" data-ar="الأكثر طلباً">Best-Seller</span>
                         </div>
                         <div class="seo-dish-body">
                             <div class="seo-dish-header">
-                                <h3 class="seo-dish-title">PIZZA FRUITS DE MER</h3>
+                                <h3 class="seo-dish-title" data-i18n data-fr="PIZZA FRUITS DE MER" data-en="SEAFOOD PIZZA" data-de="MEERESFRÜCHTE PIZZA" data-es="PIZZA DE MARISCO" data-ar="بيتزا فواكه البحر">PIZZA FRUITS DE MER</h3>
                                 <span class="seo-dish-price">88 MAD</span>
                             </div>
-                            <p class="seo-dish-desc">
+                            <p class="seo-dish-desc" data-i18n
+                               data-fr="La pizza marine star de notre établissement : sauce tomate mijotée, mozzarella fondante, crevettes royales décortiquées, calamars tendres, moules et touche d'origan sauvage séché."
+                               data-en="Our star seafood pizza: simmered tomato sauce, melted mozzarella, peeled king prawns, tender calamari, mussels, and wild oregano."
+                               data-de="Unser Meeresfrüchte-Klassiker: geschmorte Tomatensauce, schmelzender Mozzarella, geschälte Riesengarnelen, zarter Tintenfisch, Muscheln und wilder Oregano."
+                               data-es="Nuestra estrella marina: salsa de tomate casera, mozzarella fundente, langostinos pelados, calamares tiernos, mejillones y toque de orégano silvestre."
+                               data-ar="بيتزا البحر الأشهر لدينا: صلصة طماطم غنية، جبنة موزاريلا ذائبة، روبيان ملكي، كلمار طري، بلح البحر ولمسة من الزعتر البري.">
                                 La pizza marine star de notre établissement : sauce tomate mijotée, mozzarella fondante, crevettes royales décortiquées, calamars tendres, moules et touche d'origan sauvage séché.
                             </p>
                             <div class="seo-dish-footer">
-                                <a href="index.html" class="seo-dish-btn">Commander sur le menu interactif</a>
+                                <a href="index.html" class="seo-dish-btn" data-i18n data-fr="Commander sur le menu interactif" data-en="Order on interactive menu" data-de="Auf der Speisekarte bestellen" data-es="Pedir en el menú interactivo" data-ar="طلب عبر القائمة التفاعلية">Commander sur le menu interactif</a>
                             </div>
                         </div>
                     </article>
@@ -233,18 +294,23 @@
                     <article class="seo-dish-card">
                         <div class="seo-dish-media">
                             <img src="images/pizza-4saisons.webp" alt="Pizza 4 Saisons traditionnelle à Fès" class="seo-dish-img" loading="lazy" decoding="async">
-                            <span class="seo-dish-badge-pill">Classique Italien</span>
+                            <span class="seo-dish-badge-pill" data-i18n data-fr="Classique Italien" data-en="Italian Classic" data-de="Italienischer Klassiker" data-es="Clásico Italiano" data-ar="كلاسيكيات إيطالية">Classique Italien</span>
                         </div>
                         <div class="seo-dish-body">
                             <div class="seo-dish-header">
-                                <h3 class="seo-dish-title">PIZZA 4 SAISONS</h3>
+                                <h3 class="seo-dish-title" data-i18n data-fr="PIZZA 4 SAISONS" data-en="4 SEASONS PIZZA" data-de="4 JAHRESZEITEN PIZZA" data-es="PIZZA CUATRO ESTACIONES" data-ar="بيتزا الفصول الأربعة">PIZZA 4 SAISONS</h3>
                                 <span class="seo-dish-price">88 MAD</span>
                             </div>
-                            <p class="seo-dish-desc">
+                            <p class="seo-dish-desc" data-i18n
+                               data-fr="L'harmonie des quatre saveurs : sauce tomate parfumée, mozzarella, champignons de Paris frais émincés, cœurs d'artichauts, lamelles de dinde fumée et poivrons grillés."
+                               data-en="Four harmonious flavors: seasoned tomato sauce, mozzarella, sliced fresh mushrooms, artichoke hearts, smoked turkey strips, and grilled peppers."
+                               data-de="Harmonie aus vier Jahreszeiten: gewürzte Tomatensauce, Mozzarella, frische Champignons, Artischockenherzen, geräucherte Putenstreifen und gegrillte Paprika."
+                               data-es="La armonía de cuatro sabores: salsa de tomate aromatizada, mozzarella, champiñones frescos, corazones de alcachofa, pavo ahumado y pimientos asados."
+                               data-ar="تناغم النكهات الأربع: صلصة طماطم عطرية، موزاريلا، فطر باريسي طازج، قلوب خرشوف، شرائح ديك رومي مدخن وفلفل مشوي.">
                                 L'harmonie des quatre saveurs : sauce tomate parfumée, mozzarella, champignons de Paris frais émincés, cœurs d'artichauts, lamelles de dinde fumée et poivrons grillés.
                             </p>
                             <div class="seo-dish-footer">
-                                <a href="index.html" class="seo-dish-btn">Commander sur le menu interactif</a>
+                                <a href="index.html" class="seo-dish-btn" data-i18n data-fr="Commander sur le menu interactif" data-en="Order on interactive menu" data-de="Auf der Speisekarte bestellen" data-es="Pedir en el menú interactivo" data-ar="طلب عبر القائمة التفاعلية">Commander sur le menu interactif</a>
                             </div>
                         </div>
                     </article>
@@ -253,18 +319,23 @@
                     <article class="seo-dish-card">
                         <div class="seo-dish-media">
                             <img src="images/pizza-5fromages.webp" alt="Pizza 5 Fromages au Grey Corner Café Fès" class="seo-dish-img" loading="lazy" decoding="async">
-                            <span class="seo-dish-badge-pill">Pour les Amateurs de Fromage</span>
+                            <span class="seo-dish-badge-pill" data-i18n data-fr="Pour les Amateurs de Fromage" data-en="For Cheese Lovers" data-de="Für Käseliebhaber" data-es="Para Amantes del Queso" data-ar="لعشاق الأجبان">Pour les Amateurs de Fromage</span>
                         </div>
                         <div class="seo-dish-body">
                             <div class="seo-dish-header">
-                                <h3 class="seo-dish-title">PIZZA 5 FROMAGES</h3>
+                                <h3 class="seo-dish-title" data-i18n data-fr="PIZZA 5 FROMAGES" data-en="5 CHEESES PIZZA" data-de="5 KÄSE PIZZA" data-es="PIZZA 5 QUESOS" data-ar="بيتزا 5 أجبان">PIZZA 5 FROMAGES</h3>
                                 <span class="seo-dish-price">78 MAD</span>
                             </div>
-                            <p class="seo-dish-desc">
+                            <p class="seo-dish-desc" data-i18n
+                               data-fr="Une alliance gourmande et onctueuse : mozzarella, gorgonzola au caractère prononcé, parmesan affiné, emmental doux et chèvre crémeux, nappés d'un trait d'huile d'olive."
+                               data-en="A creamy gourmet blend: mozzarella, rich gorgonzola, aged parmesan, mild emmental, and creamy goat cheese, finished with extra virgin olive oil."
+                               data-de="Cremige Gourmet-Kombination: Mozzarella, kräftiger Gorgonzola, gereifter Parmesan, milder Emmentaler und cremiger Ziegenkäse mit nativem Olivenöl."
+                               data-es="Una alianza gourmet cremosa: mozzarella, gorgonzola de gran carácter, parmesano curado, emmental suave y queso de cabra cremoso con un toque de aceite de oliva."
+                               data-ar="مزيج غني وكريمي لا يقاوم: جبنة موزاريلا، غورغونزولا مميزة، بارميزان معتق، إيمنتال وجبن ماعز ناعم مع قطرات زيت زيتون بكر.">
                                 Une alliance gourmande et onctueuse : mozzarella, gorgonzola au caractère prononcé, parmesan affiné, emmental doux et chèvre crémeux, nappés d'un trait d'huile d'olive.
                             </p>
                             <div class="seo-dish-footer">
-                                <a href="index.html" class="seo-dish-btn">Commander sur le menu interactif</a>
+                                <a href="index.html" class="seo-dish-btn" data-i18n data-fr="Commander sur le menu interactif" data-en="Order on interactive menu" data-de="Auf der Speisekarte bestellen" data-es="Pedir en el menú interactivo" data-ar="طلب عبر القائمة التفاعلية">Commander sur le menu interactif</a>
                             </div>
                         </div>
                     </article>
@@ -273,18 +344,23 @@
                     <article class="seo-dish-card">
                         <div class="seo-dish-media">
                             <img src="images/pizza-pouletblanche.webp" alt="Pizza Poulet Sauce Blanche crème et champignons à Fès" class="seo-dish-img" loading="lazy" decoding="async">
-                            <span class="seo-dish-badge-pill">Crémeuse & Fondante</span>
+                            <span class="seo-dish-badge-pill" data-i18n data-fr="Crémeuse & Fondante" data-en="Creamy & Tender" data-de="Cremig & Zart" data-es="Cremosa y Tierna" data-ar="صلصة بيضاء كريمية">Crémeuse & Fondante</span>
                         </div>
                         <div class="seo-dish-body">
                             <div class="seo-dish-header">
-                                <h3 class="seo-dish-title">POULET SAUCE BLANCHE</h3>
+                                <h3 class="seo-dish-title" data-i18n data-fr="POULET SAUCE BLANCHE" data-en="CHICKEN WHITE SAUCE" data-de="HÄHNCHEN WEISSE SOßE" data-es="POLLO CON SALSA BLANCA" data-ar="دجاج بالصلصة البيضاء">POULET SAUCE BLANCHE</h3>
                                 <span class="seo-dish-price">78 MAD</span>
                             </div>
-                            <p class="seo-dish-desc">
+                            <p class="seo-dish-desc" data-i18n
+                               data-fr="Base crème fraîche onctueuse, morceaux de filet de poulet marinés et dorés, champignons sautés au beurre, mozzarella dorée et origan."
+                               data-en="Rich cream base, seasoned golden chicken breast pieces, butter-sautéed mushrooms, melted mozzarella, and oregano."
+                               data-de="Feine Crème-fraîche-Basis, marinierte goldbraune Hähnchenbruststücke, in Butter sautierte Champignons, geschmolzener Mozzarella und Oregano."
+                               data-es="Base de crema suave, tiras de pechuga de pollo marinadas y doradas, champiñones salteados a la mantequilla, mozzarella fundente y orégano."
+                               data-ar="قاعدة صلصة بيضاء كريمية مخملية، قطع صدر دجاج متبلة ومحمرة، فطر سوتيه بالزبدة، جبنة موزاريلا ذهبية وزعتر بري.">
                                 Base crème fraîche onctueuse, morceaux de filet de poulet marinés et dorés, champignons sautés au beurre, mozzarella dorée et origan.
                             </p>
                             <div class="seo-dish-footer">
-                                <a href="index.html" class="seo-dish-btn">Commander sur le menu interactif</a>
+                                <a href="index.html" class="seo-dish-btn" data-i18n data-fr="Commander sur le menu interactif" data-en="Order on interactive menu" data-de="Auf der Speisekarte bestellen" data-es="Pedir en el menú interactivo" data-ar="طلب عبر القائمة التفاعلية">Commander sur le menu interactif</a>
                             </div>
                         </div>
                     </article>
@@ -297,26 +373,27 @@
         <section class="seo-practical-section">
             <div class="container">
                 <div class="seo-practical-card">
-                    <h2>Déguster une Pizza au Grey Corner Café à Fès</h2>
-                    <p>Nos pizzas sont disponibles au déjeuner comme au dîner, sur place dans notre salle climatisée ou en terrasse :</p>
+                    <h2 data-i18n data-fr="Déguster une Pizza au Grey Corner Café à Fès" data-en="Enjoying a Pizza at Grey Corner Café in Fez" data-de="Pizza genießen im Grey Corner Café in Fès" data-es="Disfrutar de una Pizza en Grey Corner Café en Fez" data-ar="الاستمتاع بتناول البيتزا في مقهى غري كورنر بفاس">Déguster une Pizza au Grey Corner Café à Fès</h2>
+                    <p data-i18n data-fr="Nos pizzas sont disponibles au déjeuner comme au dîner, sur place dans notre salle climatisée ou en terrasse :" data-en="Our pizzas are available for lunch and dinner, dine-in in our air-conditioned lounge or on the terrace:" data-de="Unsere Pizzen sind mittags und abends erhältlich, im klimatisierten Salon oder auf der Terrasse:" data-es="Nuestras pizzas están disponibles tanto para el almuerzo como para la cena, en sala climatizada o terraza:" data-ar="نقدم البيتزا طوال اليوم للغداء والعشاء، داخل صالتنا المكيفة المريحة أو على التراس في الهواء الطلق:">Nos pizzas sont disponibles au déjeuner comme au dîner, sur place dans notre salle climatisée ou en terrasse :</p>
                     <div class="seo-schedule-grid">
                         <div class="seo-schedule-item">
-                            <strong>Service Cuisine & Pizzeria :</strong>
-                            <span>12h00 – 23h00 tous les jours</span>
+                            <strong data-i18n data-fr="Service Cuisine & Pizzeria :" data-en="Kitchen & Pizzeria Hours:" data-de="Küche & Pizzeria Zeiten:" data-es="Horario Cocina y Pizzería:" data-ar="أوقات المطبخ والبيتزا:">Service Cuisine & Pizzeria :</strong>
+                            <span data-i18n data-fr="12h00 – 23h00 tous les jours" data-en="12:00 PM – 11:00 PM every day" data-de="12:00 – 23:00 Uhr täglich" data-es="12:00 – 23:00 todos los días" data-ar="12:00 ظهراً – 11:00 ليلاً يومياً">12h00 – 23h00 tous les jours</span>
                         </div>
                         <div class="seo-schedule-item">
-                            <strong>Cadre :</strong>
-                            <span>Terrasse & Salon climatisé avec Wi-Fi</span>
+                            <strong data-i18n data-fr="Cadre :" data-en="Setting:" data-de="Ambiente:" data-es="Ambiente:" data-ar="الأجواء:">Cadre :</strong>
+                            <span data-i18n data-fr="Terrasse & Salon climatisé avec Wi-Fi" data-en="Terrace & Air-Conditioned Lounge with Wi-Fi" data-de="Terrasse & klimatisierter Salon mit WLAN" data-es="Terraza y Salón climatizado con Wi-Fi" data-ar="تراس خارجي وصالة مكيفة مجهزة بالواي فاي">Terrasse & Salon climatisé avec Wi-Fi</span>
                         </div>
                         <div class="seo-schedule-item">
-                            <strong>Commande & Service à Table :</strong>
-                            <span>Menu interactif tactile direct</span>
+                            <strong data-i18n data-fr="Commande & Service à Table :" data-en="Order & Table Service:" data-de="Bestellung & Tischservice:" data-es="Pedido y Servicio de Mesa:" data-ar="الطلب والخدمة على الطاولة:">Commande & Service à Table :</strong>
+                            <span data-i18n data-fr="Menu interactif tactile direct" data-en="Direct interactive digital menu" data-de="Direktes interaktives Touch-Menü" data-es="Menú interactivo táctil directo" data-ar="طلب مباشر عبر القائمة الرقمية التفاعلية">Menu interactif tactile direct</span>
                         </div>
                     </div>
                     <div class="seo-address-highlight">
-                        📍 <strong>Grey Corner Café :</strong> 7 Résidence Al Amane Prestigia, Champs de Course, Fès 30000, Maroc.
+                        📍 <strong data-i18n data-fr="Grey Corner Café :" data-en="Grey Corner Café:" data-de="Grey Corner Café:" data-es="Grey Corner Café:" data-ar="مقهى غري كورنر:">Grey Corner Café :</strong>
+                        <span data-i18n data-fr="7 Résidence Al Amane Prestigia, Champs de Course, Fès 30000, Maroc." data-en="7 Résidence Al Amane Prestigia, Champs de Course, Fez 30000, Morocco." data-de="7 Résidence Al Amane Prestigia, Champs de Course, Fès 30000, Marokko." data-es="7 Résidence Al Amane Prestigia, Champs de Course, Fez 30000, Marruecos." data-ar="7 إقامة الأمان بريستيجيا، الشان دورس، فاس 30000، المغرب.">7 Résidence Al Amane Prestigia, Champs de Course, Fès 30000, Maroc.</span>
                         <br>
-                        📞 Téléphone : <a href="tel:+212535940168">+212 535 940 168</a> • WhatsApp : <a href="https://wa.me/212666265160" target="_blank" rel="noopener">+212 666 265 160</a>
+                        <span data-i18n data-fr="📞 Téléphone : " data-en="📞 Phone: " data-de="📞 Telefon: " data-es="📞 Teléfono: " data-ar="📞 الهاتف: ">📞 Téléphone : </span><a href="tel:+212535940168">+212 535 940 168</a> • WhatsApp : <a href="https://wa.me/212666265160" target="_blank" rel="noopener">+212 666 265 160</a>
                     </div>
                 </div>
             </div>
@@ -325,19 +402,19 @@
         <!-- Maillage interne vers les autres pages -->
         <section class="seo-links-nav-section">
             <div class="container">
-                <h3 class="seo-nav-title">Découvrez également :</h3>
+                <h3 class="seo-nav-title" data-i18n data-fr="Découvrez également :" data-en="Also discover:" data-de="Entdecken Sie auch:" data-es="Descubra también:" data-ar="اكتشفوا أيضاً:">Découvrez également :</h3>
                 <div class="seo-nav-links-grid">
                     <a href="brunch-fes.html" class="seo-nav-link-card">
-                        <strong>Brunch à Fès (Duo & Signature)</strong>
-                        <span>Formules brunch complètes du week-end dès 85 MAD ➔</span>
+                        <strong data-i18n data-fr="Brunch à Fès (Duo & Signature)" data-en="Brunch in Fez (Duo & Signature)" data-de="Brunch in Fès (Duo & Signature)" data-es="Brunch en Fez (Dúo y Signature)" data-ar="برانش في فاس (دويو وسيغناتشر)">Brunch à Fès (Duo & Signature)</strong>
+                        <span data-i18n data-fr="Formules brunch complètes du week-end dès 85 MAD ➔" data-en="Complete weekend brunch packages from 85 MAD ➔" data-de="Komplette Wochenend-Brunch-Formeln ab 85 MAD ➔" data-es="Fórmulas completas de brunch de fin de semana desde 85 MAD ➔" data-ar="صيغ برانش متكاملة طوال أيام الأسبوع ونهاية الأسبوع ابتداءً من 85 د.م ➔">Formules brunch complètes du week-end dès 85 MAD ➔</span>
                     </a>
                     <a href="petit-dejeuner-fes.html" class="seo-nav-link-card">
-                        <strong>Petits-Déjeuners Beldi & Fassi</strong>
-                        <span>Formules du matin avec mlaoui, harcha et khlii dès 42 MAD ➔</span>
+                        <strong data-i18n data-fr="Petits-Déjeuners Beldi & Fassi" data-en="Beldi & Fassi Breakfasts" data-de="Beldi & Fassi Frühstücke" data-es="Desayunos Beldi y Fassi" data-ar="فطور بلدي وفاسي تقليدي">Petits-Déjeuners Beldi & Fassi</strong>
+                        <span data-i18n data-fr="Formules du matin avec mlaoui, harcha et khlii dès 42 MAD ➔" data-en="Morning formulas with mlaoui, harcha and khlii from 42 MAD ➔" data-de="Morgenformeln mit Mlaoui, Harcha und Khlii ab 42 MAD ➔" data-es="Desayunos con mlaoui, harcha y khlii desde 42 MAD ➔" data-ar="تشكيلات الصباح مع ملاوي، حرشة، خليع طازج ابتداءً من 42 د.م ➔">Formules du matin avec mlaoui, harcha et khlii dès 42 MAD ➔</span>
                     </a>
                     <a href="https://greycorner.pages.dev/" target="_blank" rel="noopener" class="seo-nav-link-card">
-                        <strong>Site Principal du Restaurant</strong>
-                        <span>Découvrez l'ambiance et la carte complète de Grey Corner Fès ➔</span>
+                        <strong data-i18n data-fr="Site Principal du Restaurant" data-en="Official Restaurant Website" data-de="Offizielle Website des Restaurants" data-es="Sitio Web Oficial del Restaurante" data-ar="الموقع الرسمي للمطعم">Site Principal du Restaurant</strong>
+                        <span data-i18n data-fr="Découvrez l'ambiance et la carte complète de Grey Corner Fès ➔" data-en="Discover the venue, ambiance and our universe in Fez ➔" data-de="Entdecken Sie den Ort, das Ambiente und unsere Welt in Fès ➔" data-es="Descubra el local, el ambiente y nuestro universo en Fez ➔" data-ar="اكتشفوا المكان، الأجواء وعالمنا الراقي في فاس ➔">Découvrez l'ambiance et la carte complète de Grey Corner Fès ➔</span>
                     </a>
                 </div>
             </div>
@@ -347,11 +424,14 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            © 2025-2026 Grey Corner Café Fès — Menu & Carte Gourmande.
+            <span data-i18n data-fr="© 2025-2026 Grey Corner Café Fès — Menu & Carte Gourmande." data-en="© 2025-2026 Grey Corner Café Fez — Menu & Gourmet Card." data-de="© 2025-2026 Grey Corner Café Fès — Menü & Gourmetkarte." data-es="© 2025-2026 Grey Corner Café Fez — Menú y Carta Gourmet." data-ar="© 2025-2026 مقهى غري كورنر فاس — قائمة الطعام والمشروبات.">© 2025-2026 Grey Corner Café Fès — Menu & Carte Gourmande.</span>
             <br>
-            7 Résidence Al Amane Prestigia, Champs de Course, Fès, Maroc • 📞 <a href="tel:+212535940168">+212 535 940 168</a>
+            <span data-i18n data-fr="7 Résidence Al Amane Prestigia, Champs de Course, Fès, Maroc" data-en="7 Résidence Al Amane Prestigia, Champs de Course, Fez, Morocco" data-de="7 Résidence Al Amane Prestigia, Champs de Course, Fès, Marokko" data-es="7 Résidence Al Amane Prestigia, Champs de Course, Fez, Marruecos" data-ar="7 إقامة الأمان بريستيجيا، الشان دورس، فاس، المغرب">7 Résidence Al Amane Prestigia, Champs de Course, Fès, Maroc</span> • 📞 <a href="tel:+212535940168">+212 535 940 168</a>
         </div>
     </footer>
+
+    <!-- Contrôleur multilingue partagé -->
+    <script defer src="js/landing-i18n.js"></script>
 
 </body>
 </html>
