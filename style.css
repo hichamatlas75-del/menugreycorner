@@ -2028,6 +2028,37 @@ header {
     }
 }
 
+/* Support RTL pour la section présentation SEO sur le menu principal */
+.rtl-mode .seo-presentation-section,
+.rtl-mode .seo-content-card {
+    direction: rtl;
+    text-align: right;
+}
+
+.rtl-mode .seo-sec-title,
+.rtl-mode .seo-sub-title,
+.rtl-mode .seo-category-card h4 {
+    font-family: 'Cairo', 'Playfair Display', serif;
+    text-align: right;
+}
+
+.rtl-mode .seo-sec-desc,
+.rtl-mode .seo-category-card p,
+.rtl-mode .seo-local-info-bar {
+    font-family: 'Cairo', sans-serif;
+    text-align: right;
+}
+
+.rtl-mode .seo-cat-badge {
+    align-self: flex-start;
+}
+
+.rtl-mode .seo-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
 /* =========================================
    FOOTER
 ========================================= */

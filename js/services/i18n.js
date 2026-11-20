@@ -31,7 +31,19 @@ export function applyLanguageToStaticTexts() {
   document.querySelectorAll("[data-i18n]").forEach(el => {
     const value = el.getAttribute(`data-${currentLang}`)
       || el.getAttribute("data-fr");
-    if (value !== null) el.textContent = value;
+    if (value !== null) {
+      if (value.indexOf('<') !== -1 && value.indexOf('>') !== -1) {
+        el.innerHTML = value;
+      } else {
+        el.textContent = value;
+      }
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-aria]").forEach(el => {
+    const value = el.getAttribute(`data-aria-${currentLang}`)
+      || el.getAttribute("data-aria-fr");
+    if (value !== null) el.setAttribute("aria-label", value);
   });
 
   document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
